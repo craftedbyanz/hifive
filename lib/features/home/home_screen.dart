@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
+import '../../state/state.dart';
 import '../../widgets/app_scroll.dart';
 import '../../widgets/common.dart';
 import '../profile/profile.dart';

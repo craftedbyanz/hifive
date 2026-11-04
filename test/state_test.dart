@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hifive/core/state.dart';
 import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/state/state.dart';
 
 AppState stateWith(Map<String, dynamic> data, MemoryAppRepository repository) =>
     AppState(repository: repository..data = data, feedback: SilentFeedback());

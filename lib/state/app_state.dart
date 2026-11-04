@@ -4,11 +4,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../core/services/feedback_service.dart';
+import '../core/services/system_actions.dart';
 import '../data/data.dart';
 import '../domain/models/models.dart';
 import '../domain/repositories/repositories.dart';
-import 'feedback_service.dart';
-import 'system_actions.dart';
 
 class AppState extends ChangeNotifier {
   final AppRepository repository;

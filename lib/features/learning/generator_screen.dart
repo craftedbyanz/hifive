@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
 import '../../data/content/en/lessons.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../state/state.dart';
 import '../../widgets/async_view.dart';
 import '../../widgets/common.dart';
 import '../../widgets/press.dart';

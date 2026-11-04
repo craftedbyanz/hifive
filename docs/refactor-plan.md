@@ -28,12 +28,12 @@ test/                  mirrors lib/
 
 ## Tasks
 
-### 1. Split `lib/core` into layers (no UI change) - in progress
+### 1. Split `lib/core` into layers (no UI change) - done
 
 1. Design (done): `core/design.dart` becomes `core/design/` with `tokens.dart` (D) and `palette.dart` (Palette); `HomeDesign` moves to `features/home/home_design.dart`.
 2. Models (done): `core/models.dart` becomes `domain/models/`, one file per concept, with a barrel; answer grading and word diffs move to `domain/grading.dart`.
 3. Repositories (done): interfaces go to `domain/repositories/`, mocks to `data/mock/`, storage to `data/local/`, content to `data/content/en/`.
-4. State and services: `AppState` and `AppScope` go to `state/`; feedback and system actions go to `core/services/`.
+4. State and services (done): `AppState` and `AppScope` go to `state/`; feedback and system actions go to `core/services/`.
 
 ### 2. Split `widgets/common.dart` (no UI change) - todo
 

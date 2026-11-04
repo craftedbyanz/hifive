@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hifive/core/state.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/state/state.dart';
 
 import 'helpers.dart';
 

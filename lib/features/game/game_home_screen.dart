@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
 import '../../domain/models/models.dart';
+import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'game_glass_button.dart';
 import 'game_help_screen.dart';

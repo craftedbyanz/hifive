@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
+import '../../state/state.dart';
 
 const levels = [
   'A1 - Beginner',

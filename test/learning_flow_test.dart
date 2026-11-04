@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/core/design/design.dart';
-import 'package:hifive/core/state.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
@@ -12,6 +11,7 @@ import 'package:hifive/features/game/game.dart';
 import 'package:hifive/features/history/history.dart';
 import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
+import 'package:hifive/state/state.dart';
 
 import 'helpers.dart';
 

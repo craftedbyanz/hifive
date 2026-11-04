@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
-import '../core/state.dart';
+import '../state/state.dart';
 
 /// Sizes measured at the default text size grow with a larger system text
 /// size, as the reference's boxes do; at the default they are unchanged.

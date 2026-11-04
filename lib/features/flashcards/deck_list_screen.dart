@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../state/state.dart';
 import '../../widgets/app_scroll.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';

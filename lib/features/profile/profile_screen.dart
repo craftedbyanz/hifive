@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
+import '../../state/state.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glyphs.dart';

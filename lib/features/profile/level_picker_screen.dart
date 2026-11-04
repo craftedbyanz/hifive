@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
+import '../../state/state.dart';
 import '../../widgets/press.dart';
 import '../learning/learning.dart';
 import 'settings_kit.dart';

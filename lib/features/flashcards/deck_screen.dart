@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/state.dart';
 import '../../domain/models/models.dart';
+import '../../state/state.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glass_menu.dart';
