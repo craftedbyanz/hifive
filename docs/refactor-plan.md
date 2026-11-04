@@ -35,7 +35,7 @@ test/                  mirrors lib/
 3. Repositories (done): interfaces go to `domain/repositories/`, mocks to `data/mock/`, storage to `data/local/`, content to `data/content/en/`.
 4. State and services (done): `AppState` and `AppScope` go to `state/`; feedback and system actions go to `core/services/`.
 
-### 2. Split `widgets/common.dart` (no UI change) - todo
+### 2. Split `widgets/common.dart` (no UI change) - done
 
 Separate navigation, buttons, sheets and dialogs, surfaces and branding into their own files behind a `common.dart` barrel.
 

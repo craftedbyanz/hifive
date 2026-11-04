@@ -188,20 +188,20 @@ Use these instead of building a new one.
 
 | Need | Use | File |
 | --- | --- | --- |
-| Navigate | `go(context, page)`; cover pages mix in `CoverPage` | `widgets/common.dart` |
-| Page with title and back | `AppPage` / `Header`, or `HeaderScrollPage` for a pinned blurred header | `widgets/common.dart`, `widgets/blur_header.dart` |
+| Navigate | `go(context, page)`; cover pages mix in `CoverPage` | `widgets/navigation.dart` |
+| Page with title and back | `AppPage` / `Header`, or `HeaderScrollPage` for a pinned blurred header | `widgets/page.dart`, `widgets/blur_header.dart` |
 | Round glass back / more button, 44 pt | `HeaderRoundButton` | `widgets/blur_header.dart` |
 | Game page buttons | `GameGlassButton` | `features/game/game_glass_button.dart` |
-| Primary or outlined button | `ActionButton` | `widgets/common.dart` |
+| Primary or outlined button | `ActionButton` | `widgets/buttons.dart` |
 | Press feedback | `PressFade` (fades to 20% in 350 ms, back in 150 ms) | `widgets/press.dart` |
 | Popup or overflow menu | `showGlassMenu` with `GlassMenuItem` (icons, ticks, swatches, red danger rows, submenus via `title` and `behind`) | `widgets/glass_menu.dart` |
-| Confirmation | `confirm()`: the iOS 26 alert, `destructive: true` for red actions | `widgets/common.dart` |
-| Bottom sheet | `sheet()`; floating sheets inset 9 pt with a 38 pt corner when the reference floats them | `widgets/common.dart` |
-| Section label in spaced capitals | `CapsLabel` | `widgets/common.dart` |
+| Confirmation | `confirm()`: the iOS 26 alert, `destructive: true` for red actions | `widgets/sheets.dart` |
+| Bottom sheet | `sheet()`; floating sheets inset 9 pt with a 38 pt corner when the reference floats them | `widgets/sheets.dart` |
+| Section label in spaced capitals | `CapsLabel` | `widgets/labels.dart` |
 | Loading, error, empty | `AsyncView`, `LoadingView`, `ErrorView` ("Thử lại"), `EmptyView` | `widgets/async_view.dart` |
-| Toast | `toast()` | `widgets/common.dart` |
+| Toast | `toast()` | `widgets/navigation.dart` |
 | Completion medal and confetti | `MedalPainter`, `StillConfettiPainter`, `ConfettiPainter` | `widgets/medal.dart`, `widgets/confetti_painter.dart` |
-| Size that holds text | `context.grow(value)` | `widgets/common.dart` |
+| Size that holds text | `context.grow(value)` | `widgets/text_grow.dart` |
 
 Icons: Cupertino icons first (`CupertinoIcons`), Material rounded icons where none fits. The reference's two-tone illustrations are approximated; say so in a comment.
 

@@ -56,7 +56,7 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 
 - Follow `docs/design-system.md` for type, color, spacing, shape, components and motion. Reuse its tokens and widgets; a new pattern goes into that file.
 - Each `lib/features/<area>/` has one file per screen plus a barrel named after the area. Add new files to the barrel. Inside an area, import sibling files; across areas, import the barrel. `HomeScreen` is the root.
-- Reuse `lib/widgets/common.dart`: `go(context, page)` for navigation, `toast`, `confirm`, `AppPage`, `Header`, `ActionButton`, `Surface`.
+- Reuse the shared widgets behind the `lib/widgets/common.dart` barrel: `go(context, page)` and `toast` (`navigation.dart`), `confirm` and `sheet` (`sheets.dart`), `AppPage` and `Header` (`page.dart`), `ActionButton` (`buttons.dart`), `Surface` and `Glass` (`surfaces.dart`). Put a new shared widget in the file for its kind and export it from the barrel.
 - Text styles use `D.text(...)` from `lib/core/design/tokens.dart` (import the `lib/core/design/design.dart` barrel). `HomeDesign` (`lib/features/home/home_design.dart`) holds values for Home only.
 - Features contain no color literals: use `D` for shared colors and `Palette` for screen-specific ones. `Colors.white`, `black` and `transparent` are fine.
 - Widgets used by more than one feature go in `lib/widgets`. Features must not import each other in a cycle.
