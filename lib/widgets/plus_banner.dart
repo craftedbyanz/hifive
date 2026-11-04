@@ -3,13 +3,16 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../core/design.dart';
+import '../core/design/design.dart';
 import 'ambient.dart';
 import 'common.dart';
 
 class PlusBanner extends StatelessWidget {
   final VoidCallback onTap;
   const PlusBanner({super.key, required this.onTap});
+
+  /// Measured on Home (F01) at 393 pt.
+  static const _height = 101.0;
   @override
   Widget build(BuildContext context) => Material(
     color: D.blue,
@@ -18,7 +21,7 @@ class PlusBanner extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(28),
       child: SizedBox(
-        height: HomeDesign.bannerHeight,
+        height: _height,
         child: Stack(
           alignment: Alignment.center,
           children: [

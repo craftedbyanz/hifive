@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../../core/models.dart';
 import '../../widgets/common.dart';
 import '../../widgets/confetti_painter.dart';

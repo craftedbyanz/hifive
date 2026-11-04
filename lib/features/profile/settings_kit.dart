@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/press.dart';
 

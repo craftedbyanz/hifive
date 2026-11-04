@@ -1,0 +1,55 @@
+# Structure refactor plan
+
+Goal: a folder structure that can grow to several study languages and a focus mode without touching unrelated code. Each task lands as its own commits and is reviewed before the next one starts. Tasks marked "no UI change" are proven with `tool/pixel_snapshot_test.dart` (before and after captures compared with `diff -rq`).
+
+Status values: todo, in progress, done.
+
+## Target layout
+
+```
+lib/
+  main.dart
+  app/                 HifiveApp, routes
+  core/
+    design/            D tokens, Palette
+    services/          FeedbackService, SystemActions
+  domain/
+    models/            plain data classes and enums
+    repositories/      repository interfaces only
+  data/
+    local/             AppRepository implementations
+    mock/              Mock* repository implementations
+    content/en/        English lesson, deck and help content
+  state/               AppState, AppScope
+  features/<area>/     one file per screen plus a barrel
+  widgets/             widgets shared by several features
+test/                  mirrors lib/
+```
+
+## Tasks
+
+### 1. Split `lib/core` into layers (no UI change) - in progress
+
+1. Design (done): `core/design.dart` becomes `core/design/` with `tokens.dart` (D) and `palette.dart` (Palette); `HomeDesign` moves to `features/home/home_design.dart`.
+2. Models: `core/models.dart` becomes `domain/models/`, one file per concept, with a barrel.
+3. Repositories: interfaces go to `domain/repositories/`, mocks to `data/mock/`, storage to `data/local/`, content to `data/content/en/`.
+4. State and services: `AppState` and `AppScope` go to `state/`; feedback and system actions go to `core/services/`.
+
+### 2. Split `widgets/common.dart` (no UI change) - todo
+
+Separate navigation, buttons, sheets and dialogs, surfaces and branding into their own files behind a `common.dart` barrel.
+
+### 3. Remove import cycles between features (no UI change) - todo
+
+Break the learning, insights, history cycle through `app/routes.dart`, and add a cycle check to `scripts/check.sh`.
+
+### 4. Add study language and course (behavior change) - todo
+
+1. `Language` and `Course` models; `AppState` stores the study language with a default for older data.
+2. Repositories take the language; English content sits under `data/content/en/`.
+3. Text-to-speech takes its locale from the course instead of a fixed `en-US`.
+4. The language screen saves the choice; languages without content stay "Sắp ra mắt".
+
+### 5. Tidy tests and dependencies - todo
+
+Move tests into folders that mirror `lib/`, and drop the unused `integration_test` dependency.

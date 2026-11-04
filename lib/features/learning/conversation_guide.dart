@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../../widgets/common.dart';
 
 /// "Hướng dẫn Cài đặt", opened from ⓘ in the conversation settings popover

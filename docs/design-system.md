@@ -8,7 +8,7 @@ The rules every screen follows, so new work looks like the rest of the app. The 
 2. **Decide once, then reuse.** A new value is chosen deliberately and recorded here. A value nobody measured or decided is written as such in a code comment.
 3. **Points, not pixels.** Every size is in iOS points at the 393 pt width. Screenshots are 3×.
 4. **Default text size is the baseline.** Text scales from 1 (it never shrinks below the default) to 23/17 at the largest standard size. Any fixed height or width that holds text uses `context.grow(value)` so it grows with it.
-5. **No color literals in features.** Use `D` for shared colors and `Palette` for screen-specific ones (`lib/core/design.dart`).
+5. **No color literals in features.** Use `D` for shared colors and `Palette` for screen-specific ones (`lib/core/design/`).
 
 ## Typography
 
@@ -43,7 +43,7 @@ Use these roles; do not invent a new size for an existing role.
 | Lesson answer | SF Pro Display 21 / w500, line 1.24, 0.75 tracking | Answer card |
 | Paragraph | SF Pro 17 / w500, line 1.53, −0.43 | Writing lesson |
 
-`HomeDesign` holds values measured for Home only; reuse them elsewhere only with evidence of the same style.
+`HomeDesign` (`features/home/home_design.dart`) holds values measured for Home only; reuse them elsewhere only with evidence of the same style.
 
 ## Color
 

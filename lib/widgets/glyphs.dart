@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../core/design.dart';
+import '../core/design/design.dart';
 
 class FlagPainter extends CustomPainter {
   const FlagPainter();

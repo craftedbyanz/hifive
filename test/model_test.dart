@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/core/catalog.dart';
-import 'package:hifive/core/design.dart';
+import 'package:hifive/core/design/design.dart';
 import 'package:hifive/core/models.dart';
 import 'package:hifive/core/state.dart';
 

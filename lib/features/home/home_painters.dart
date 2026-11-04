@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 
 export '../../widgets/glyphs.dart';
 

@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 
 /// The small artwork on the seven Hifive 101 cards, traced from zoomed
 /// reference captures on a 160 × 120 canvas.

@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../core/design.dart';
+import '../core/design/design.dart';
 import '../core/state.dart';
 
 /// Sizes measured at the default text size grow with a larger system text

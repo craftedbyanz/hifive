@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../../widgets/common.dart';
 
 class GameHelpScreen extends StatefulWidget {

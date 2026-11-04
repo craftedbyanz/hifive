@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../../core/state.dart';
 import '../../widgets/common.dart';
 import '../../widgets/plus_banner.dart';
 import '../information/information.dart';
 import '../learning/learning.dart';
+import 'home_design.dart';
 import 'home_painters.dart';
 
 class HomeIntro extends StatelessWidget {

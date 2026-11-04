@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../core/design.dart';
+import '../core/design/design.dart';
 import 'common.dart';
 
 /// Centered spinner with an optional caption, for content still loading.

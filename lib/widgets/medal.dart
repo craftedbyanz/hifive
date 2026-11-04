@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../core/design.dart';
+import '../core/design/design.dart';
 
 /// The gold rosette shown on completion: flashcard sessions and lessons.
 class MedalPainter extends CustomPainter {

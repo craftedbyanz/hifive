@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../core/design.dart';
+import '../core/design/design.dart';
 
 class ConfettiPainter extends CustomPainter {
   final double progress;

@@ -3,11 +3,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../flashcards/flashcards.dart';
 import '../game/game.dart';
 import '../information/information.dart';
 import '../insights/insights.dart';
+import 'home_design.dart';
 import 'home_menu_motion.dart';
 import 'home_painters.dart';
 

@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/catalog.dart';
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../../widgets/common.dart';
 import '../flashcards/flashcards.dart';
 import '../game/game.dart';
 import '../information/information.dart';
 import '../learning/learning.dart';
+import 'home_design.dart';
 import 'home_mini_art.dart';
 
 /// The lower half of Home, measured against survey screenshots 91 and 92.

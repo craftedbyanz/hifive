@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/catalog.dart';
-import '../../core/design.dart';
+import '../../core/design/design.dart';
 import '../../core/models.dart';
 import '../../core/state.dart';
 import '../../widgets/async_view.dart';

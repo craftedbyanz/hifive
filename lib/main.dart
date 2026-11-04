@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'core/design.dart';
+import 'core/design/design.dart';
 import 'core/state.dart';
 import 'features/home/home.dart';
 import 'widgets/ambient.dart';
