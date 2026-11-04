@@ -10,7 +10,7 @@ import '../../state/state.dart';
 import '../../widgets/async_view.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glass_menu.dart';
-import '../insights/insights.dart';
+import 'completion_screen.dart';
 import 'dictionary.dart';
 import 'grading_sheet.dart';
 

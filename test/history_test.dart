@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/features/history/history.dart';
+import 'package:hifive/features/learning/learning.dart';
 
 import 'helpers.dart';
 

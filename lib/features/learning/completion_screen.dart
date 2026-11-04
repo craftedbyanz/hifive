@@ -4,7 +4,7 @@ import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../history/history.dart';
+import 'result_screen.dart';
 
 class CompletionScreen extends StatefulWidget {
   final StudySession session;

@@ -14,6 +14,7 @@ guard() {
 guard 'use D or Palette instead of a color literal' 'Color\(($|[[:space:]]*0x)'
 guard 'change state through a named AppState method' '\.commit\(\)'
 [ "$fail" -eq 0 ]
+dart run tool/feature_cycles.dart
 
 dart format --output=none --set-exit-if-changed lib test tool
 flutter analyze

@@ -39,9 +39,9 @@ test/                  mirrors lib/
 
 Separate navigation, buttons, sheets and dialogs, surfaces and branding into their own files behind a `common.dart` barrel.
 
-### 3. Remove import cycles between features (no UI change) - todo
+### 3. Remove import cycles between features (no UI change) - done
 
-Break the learning, insights, history cycle through `app/routes.dart`, and add a cycle check to `scripts/check.sh`.
+The cycle was learning -> insights (CompletionScreen) -> history (ResultScreen) -> learning. Both screens show a finished study session, so they moved to `learning`, and the small flag they share moved to `widgets/glyphs.dart` as `MiniFlag`. This keeps navigation typed, so the planned `app/routes.dart` indirection was not needed. `tool/feature_cycles.dart` now fails `scripts/check.sh` on any cycle.
 
 ### 4. Add study language and course (behavior change) - todo
 

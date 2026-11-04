@@ -4,7 +4,6 @@ import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/game/game.dart';
-import 'package:hifive/features/history/history.dart';
 import 'package:hifive/features/home/home.dart';
 import 'package:hifive/features/information/information.dart';
 import 'package:hifive/features/insights/insights.dart';

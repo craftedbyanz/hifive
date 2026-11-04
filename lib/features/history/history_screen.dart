@@ -10,8 +10,8 @@ import '../../state/state.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glass_menu.dart';
+import '../../widgets/glyphs.dart';
 import '../learning/learning.dart';
-import 'result_screen.dart';
 
 /// Saved results, laid out from survey 75/82/124/125 (iPhone): sections of
 /// sideways cards under a title, a hairline and "Xem thêm ›", and a frosted
@@ -567,7 +567,7 @@ class SessionTile extends StatelessWidget {
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(left: 5),
-                      child: HistoryFlag(),
+                      child: MiniFlag(),
                     ),
                     const Spacer(),
                     _Ring(
@@ -599,35 +599,6 @@ class SessionTile extends StatelessWidget {
       ),
     );
   }
-}
-
-/// A small US flag: stripes and a blue canton.
-class HistoryFlag extends StatelessWidget {
-  const HistoryFlag({super.key});
-  @override
-  Widget build(BuildContext context) =>
-      const CustomPaint(size: Size(18, 12), painter: _FlagPainter());
-}
-
-class _FlagPainter extends CustomPainter {
-  const _FlagPainter();
-  @override
-  void paint(Canvas canvas, Size size) {
-    final stripe = size.height / 7;
-    for (var i = 0; i < 7; i++) {
-      canvas.drawRect(
-        Rect.fromLTWH(0, i * stripe, size.width, stripe),
-        Paint()..color = i.isEven ? Palette.flagRed : Colors.white,
-      );
-    }
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width * .45, stripe * 4),
-      Paint()..color = Palette.flagBlue,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 /// The progress ring at the card's top right.

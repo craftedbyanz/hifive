@@ -6,7 +6,7 @@ import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../insights/insights.dart';
+import 'completion_screen.dart';
 
 /// Live conversation practice.
 ///

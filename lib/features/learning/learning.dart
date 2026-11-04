@@ -1,5 +1,6 @@
 export 'chat_screen.dart';
 export 'collection_screen.dart';
+export 'completion_screen.dart';
 export 'conversation_guide.dart';
 export 'dictionary.dart';
 export 'feedback_panel.dart';
@@ -7,4 +8,5 @@ export 'generator_screen.dart';
 export 'grading_sheet.dart';
 export 'level_information.dart';
 export 'practice_screen.dart';
+export 'result_screen.dart';
 export 'topic_screen.dart';

@@ -5,9 +5,9 @@ import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
+import '../../widgets/glyphs.dart';
 import '../../widgets/medal.dart';
-import '../learning/learning.dart';
-import 'history_screen.dart';
+import 'learning.dart';
 
 class ResultScreen extends StatelessWidget {
   final StudySession session;
@@ -100,7 +100,7 @@ class ResultScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 20),
-                  const HistoryFlag(),
+                  const MiniFlag(),
                 ],
               ),
               const SizedBox(height: 12),

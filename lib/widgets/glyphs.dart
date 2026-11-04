@@ -366,3 +366,32 @@ class ShieldPainter extends CustomPainter {
   @override
   bool shouldRepaint(ShieldPainter oldDelegate) => color != oldDelegate.color;
 }
+
+/// A small US flag: stripes and a blue canton.
+class MiniFlag extends StatelessWidget {
+  const MiniFlag({super.key});
+  @override
+  Widget build(BuildContext context) =>
+      const CustomPaint(size: Size(18, 12), painter: _MiniFlagPainter());
+}
+
+class _MiniFlagPainter extends CustomPainter {
+  const _MiniFlagPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final stripe = size.height / 7;
+    for (var i = 0; i < 7; i++) {
+      canvas.drawRect(
+        Rect.fromLTWH(0, i * stripe, size.width, stripe),
+        Paint()..color = i.isEven ? Palette.flagRed : Colors.white,
+      );
+    }
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width * .45, stripe * 4),
+      Paint()..color = Palette.flagBlue,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}

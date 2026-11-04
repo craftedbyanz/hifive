@@ -59,7 +59,7 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 - Reuse the shared widgets behind the `lib/widgets/common.dart` barrel: `go(context, page)` and `toast` (`navigation.dart`), `confirm` and `sheet` (`sheets.dart`), `AppPage` and `Header` (`page.dart`), `ActionButton` (`buttons.dart`), `Surface` and `Glass` (`surfaces.dart`). Put a new shared widget in the file for its kind and export it from the barrel.
 - Text styles use `D.text(...)` from `lib/core/design/tokens.dart` (import the `lib/core/design/design.dart` barrel). `HomeDesign` (`lib/features/home/home_design.dart`) holds values for Home only.
 - Features contain no color literals: use `D` for shared colors and `Palette` for screen-specific ones. `Colors.white`, `black` and `transparent` are fine.
-- Widgets used by more than one feature go in `lib/widgets`. Features must not import each other in a cycle.
+- Widgets used by more than one feature go in `lib/widgets`. Features must not import each other in a cycle; `tool/feature_cycles.dart`, run by `scripts/check.sh`, enforces it. Home is the root and may import any area; a screen two areas both open belongs to the area that owns its data (session results live in `learning`).
 - UI strings are inline Vietnamese; there are no ARB files. Illustrations are widgets and vector geometry.
 - Give interaction targets a `ValueKey('kebab-case')` or tooltip, which is how tests find them.
 - Tests use `fresh()` and `mount()` from `test/helpers.dart`, which give `MemoryAppRepository`, `SilentFeedback`, a pinned clock and the 393 × 852 viewport. Widget test files need `setUpAll(loadAppFonts)`; without it, the test font causes false overflow errors.
