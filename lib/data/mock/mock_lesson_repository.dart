@@ -1,38 +1,8 @@
-import '../domain/models/models.dart';
-import 'mock_content.dart';
+import '../../domain/models/models.dart';
+import '../../domain/repositories/lesson_repository.dart';
+import '../content/en/lessons.dart';
 
-export 'mock_content.dart'
-    show
-        apologyQuestions,
-        paragraphQuestions,
-        conversationQuestions,
-        lessonCategories,
-        conversationCategories,
-        generatorDescription,
-        generatorPresets,
-        generatorSuggestions,
-        generatorExamples;
-
-/// Lesson catalog: categories, topics, collections and AI-generated practice.
-/// Every call is asynchronous because a backend will serve it; callers must
-/// handle loading, failure and empty results.
-abstract interface class LessonRepository {
-  Future<List<String>> categories(StudyMode mode);
-
-  /// Topics in [category]. [refresh] counts presses of "Làm mới", which asks
-  /// for a different selection of suggested topics.
-  Future<List<Topic>> topics(StudyMode mode, String category, {int refresh});
-
-  Future<List<Lesson>> lessons(Topic topic);
-
-  /// Preset topics on the AI chooser.
-  Future<List<String>> suggestions(StudyMode mode);
-
-  /// Builds a practice lesson from a free-text topic (the AI generator).
-  Future<Lesson> createPractice(String title, StudyMode mode);
-}
-
-/// Serves [mock_content.dart] after a short wait, standing in for the network.
+/// Serves the English content in `data/content/en/lessons.dart` after a short wait, standing in for the network.
 class MockLessonRepository implements LessonRepository {
   final Duration latency;
   MockLessonRepository({this.latency = const Duration(milliseconds: 350)});

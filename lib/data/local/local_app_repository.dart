@@ -3,10 +3,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract interface class AppRepository {
-  Future<Map<String, dynamic>?> load();
-  Future<void> save(Map<String, dynamic> data);
-}
+import '../../domain/repositories/app_repository.dart';
 
 class LocalAppRepository implements AppRepository {
   final SharedPreferencesAsync preferences;
@@ -23,16 +20,4 @@ class LocalAppRepository implements AppRepository {
   @override
   Future<void> save(Map<String, dynamic> data) =>
       preferences.setString('hifive.local.v1', jsonEncode(data));
-}
-
-class MemoryAppRepository implements AppRepository {
-  Map<String, dynamic>? data;
-  @override
-  Future<Map<String, dynamic>?> load() async => data == null
-      ? null
-      : Map<String, dynamic>.from(jsonDecode(jsonEncode(data)) as Map);
-  @override
-  Future<void> save(Map<String, dynamic> value) async {
-    data = Map<String, dynamic>.from(jsonDecode(jsonEncode(value)) as Map);
-  }
 }

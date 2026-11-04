@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hifive/core/catalog.dart';
 import 'package:hifive/core/design/design.dart';
 import 'package:hifive/core/state.dart';
+import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/main.dart';
 
 /// Loads the bundled font, so layout in tests matches the app.

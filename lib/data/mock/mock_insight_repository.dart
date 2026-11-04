@@ -1,10 +1,5 @@
-import '../domain/models/models.dart';
-
-/// AI suggestions on the Insight screen.
-abstract interface class InsightRepository {
-  /// Improvement tips based on this month's sessions.
-  Future<List<String>> tips(List<StudySession> month);
-}
+import '../../domain/models/models.dart';
+import '../../domain/repositories/insight_repository.dart';
 
 class MockInsightRepository implements InsightRepository {
   final Duration latency;

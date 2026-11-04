@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/catalog.dart';
 import '../../core/design/design.dart';
+import '../../data/content/help_content.dart';
 import '../../widgets/common.dart';
 import '../flashcards/flashcards.dart';
 import '../game/game.dart';

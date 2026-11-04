@@ -1,4 +1,4 @@
-import '../domain/models/models.dart';
+import '../../../domain/models/models.dart';
 
 List<Deck> seedDecks() {
   final entries = [

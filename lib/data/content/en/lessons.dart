@@ -1,4 +1,4 @@
-import '../domain/models/models.dart';
+import '../../../domain/models/models.dart';
 
 /// Local stand-in for the lesson catalog a backend will serve. Every topic has
 /// its own sentences, so flows can be tested with realistic variety. None of

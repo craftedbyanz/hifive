@@ -1,5 +1,5 @@
-import '../domain/models/models.dart';
-import 'lesson_repository.dart';
+import '../../../domain/models/models.dart';
+import 'lessons.dart';
 
 /// Clearly isolated demonstration records, not data read from a real account.
 List<StudySession> sampleHistory() => [

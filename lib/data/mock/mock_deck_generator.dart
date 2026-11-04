@@ -1,15 +1,6 @@
-import '../domain/models/models.dart';
-import 'seed_decks.dart';
-
-/// AI-generated flashcards for New Deck and Add Cards.
-abstract interface class DeckGenerator {
-  /// Returns up to [count] new words about [topic], leaving out [exclude].
-  Future<List<FlashWord>> generate({
-    required String topic,
-    required int count,
-    List<FlashWord> exclude,
-  });
-}
+import '../../domain/models/models.dart';
+import '../../domain/repositories/deck_generator.dart';
+import '../content/en/decks.dart';
 
 /// Hands out the words already bundled with the app. The reference's
 /// generation was never run, so neither its timing nor its output is known.

@@ -32,7 +32,7 @@ test/                  mirrors lib/
 
 1. Design (done): `core/design.dart` becomes `core/design/` with `tokens.dart` (D) and `palette.dart` (Palette); `HomeDesign` moves to `features/home/home_design.dart`.
 2. Models (done): `core/models.dart` becomes `domain/models/`, one file per concept, with a barrel; answer grading and word diffs move to `domain/grading.dart`.
-3. Repositories: interfaces go to `domain/repositories/`, mocks to `data/mock/`, storage to `data/local/`, content to `data/content/en/`.
+3. Repositories (done): interfaces go to `domain/repositories/`, mocks to `data/mock/`, storage to `data/local/`, content to `data/content/en/`.
 4. State and services: `AppState` and `AppScope` go to `state/`; feedback and system actions go to `core/services/`.
 
 ### 2. Split `widgets/common.dart` (no UI change) - todo
@@ -46,7 +46,7 @@ Break the learning, insights, history cycle through `app/routes.dart`, and add a
 ### 4. Add study language and course (behavior change) - todo
 
 1. `Language` and `Course` models; `AppState` stores the study language with a default for older data.
-2. Repositories take the language; English content sits under `data/content/en/`.
+2. Repositories take the language; English content sits under `data/content/en/`. The generator screen's copy (`generatorDescription`, `generatorExamples`) is read straight from `data/content/en/lessons.dart` and should come through `LessonRepository` instead.
 3. Text-to-speech takes its locale from the course instead of a fixed `en-US`.
 4. The language screen saves the choice; languages without content stay "Sắp ra mắt".
 
