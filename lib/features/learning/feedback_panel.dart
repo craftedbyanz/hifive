@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/models.dart';
+import '../../domain/grading.dart';
+import '../../domain/models/models.dart';
 import '../../widgets/common.dart';
 import '../../widgets/confetti_painter.dart';
 import 'dictionary.dart';

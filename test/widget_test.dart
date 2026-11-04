@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/core/catalog.dart';
-import 'package:hifive/core/models.dart';
+import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/game/game.dart';
 import 'package:hifive/features/history/history.dart';

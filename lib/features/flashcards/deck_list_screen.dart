@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/catalog.dart';
 import '../../core/design/design.dart';
-import '../../core/models.dart';
 import '../../core/state.dart';
+import '../../domain/models/models.dart';
 import '../../widgets/app_scroll.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';

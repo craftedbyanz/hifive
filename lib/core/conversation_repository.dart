@@ -1,5 +1,5 @@
+import '../domain/models/models.dart';
 import 'grading_repository.dart';
-import 'models.dart';
 
 /// Settings from the conversation topic screen's popover.
 class ChatSettings {

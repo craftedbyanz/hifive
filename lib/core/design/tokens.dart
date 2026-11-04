@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../models.dart';
+import '../../domain/models/models.dart';
 import 'palette.dart';
 
 abstract final class D {

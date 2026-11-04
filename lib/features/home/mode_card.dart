@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/models.dart';
 import '../../core/state.dart';
+import '../../domain/models/models.dart';
 import '../../widgets/glyphs.dart';
 import 'home_design.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../core/models.dart';
+import '../../domain/models/models.dart';
 import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
 import '../../widgets/medal.dart';

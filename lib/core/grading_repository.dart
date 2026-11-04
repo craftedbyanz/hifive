@@ -1,4 +1,5 @@
-import 'models.dart';
+import '../domain/grading.dart';
+import '../domain/models/models.dart';
 
 /// Grades answers and gives in-lesson help. A backend AI will replace the
 /// local comparison; callers must handle slow responses and failures.

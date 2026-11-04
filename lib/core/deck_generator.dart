@@ -1,4 +1,4 @@
-import 'models.dart';
+import '../domain/models/models.dart';
 import 'seed_decks.dart';
 
 /// AI-generated flashcards for New Deck and Add Cards.

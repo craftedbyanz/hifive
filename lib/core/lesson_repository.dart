@@ -1,5 +1,5 @@
+import '../domain/models/models.dart';
 import 'mock_content.dart';
-import 'models.dart';
 
 export 'mock_content.dart'
     show

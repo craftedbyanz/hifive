@@ -4,10 +4,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../domain/models/models.dart';
 import 'app_repository.dart';
 import 'catalog.dart';
 import 'feedback_service.dart';
-import 'models.dart';
 import 'system_actions.dart';
 
 class AppState extends ChangeNotifier {

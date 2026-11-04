@@ -1,4 +1,4 @@
-import 'models.dart';
+import '../domain/models/models.dart';
 
 /// AI suggestions on the Insight screen.
 abstract interface class InsightRepository {
