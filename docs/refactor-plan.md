@@ -54,6 +54,6 @@ The cycle was learning -> insights (CompletionScreen) -> history (ResultScreen) 
 3. Text-to-speech takes its locale from the course instead of a fixed `en-US`.
 4. The language screen saves the choice; languages without content stay "Sắp ra mắt".
 
-### 6. Tidy tests and dependencies - todo
+### 6. Tidy tests and dependencies - done
 
-Move tests into folders that mirror `lib/`, and drop the unused `integration_test` dependency.
+Tests moved into folders that mirror `lib/` (`test/app/` holds tests that cross several screens), and the unused `integration_test` dependency is gone.
