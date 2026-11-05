@@ -54,7 +54,7 @@ The cycle was learning -> insights (CompletionScreen) -> history (ResultScreen) 
 3. `FeedbackService.speak` takes a locale; `AppState.speak` passes the course's `speechLocale`.
 4. The language screen loads courses through the repository and saves the choice on "Xác nhận"; the profile row shows the study language.
 
-Still English-only: `DeckGenerator`, `GradingRepository` and `ConversationRepository` don't take a language yet, and Home's flag button is fixed to English.
+Follow-up (done): `GradingRepository`, `ConversationRepository` and `DeckGenerator` also take the language, and Home's flag shows the study language. Flag painters and `languageFlag` live in `widgets/glyphs.dart`.
 
 ### 6. Tidy tests and dependencies - done
 

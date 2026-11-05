@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
+import '../domain/models/models.dart';
 
 class FlagPainter extends CustomPainter {
   const FlagPainter();
@@ -394,4 +395,93 @@ class _MiniFlagPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+/// The flag drawn for [language], and its size: English's is flatter.
+(CustomPainter, Size) languageFlag(Language language) => switch (language) {
+  Language.english => (const FlagPainter(), const Size(44, 27)),
+  Language.korean => (const KoreaFlagPainter(), const Size(48, 33)),
+  Language.chinese => (const ChinaFlagPainter(), const Size(48, 33)),
+  Language.japanese => (const JapanFlagPainter(), const Size(48, 33)),
+};
+
+class KoreaFlagPainter extends CustomPainter {
+  const KoreaFlagPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(Offset.zero & size, Paint()..color = Palette.settingsPanel);
+    final c = size.center(Offset.zero);
+    final r = size.height * .27;
+    final disc = Rect.fromCircle(center: c, radius: r);
+    canvas.drawArc(disc, math.pi * .15, math.pi, true, Paint()..color = D.blue);
+    canvas.drawArc(
+      disc,
+      math.pi * 1.15,
+      math.pi,
+      true,
+      Paint()..color = Palette.flagRed,
+    );
+    final bars = Paint()
+      ..color = D.ink
+      ..strokeWidth = 1.6;
+    for (final (dx, dy) in const [
+      (-1.0, -1.0),
+      (1.0, -1.0),
+      (-1.0, 1.0),
+      (1.0, 1.0),
+    ]) {
+      for (var i = 0; i < 3; i++) {
+        final center =
+            c + Offset(dx * (r + 5 + i * 2.6), dy * (r * .72 + i * 1.8));
+        final along = Offset(dy * 3.2, -dx * 3.2);
+        canvas.drawLine(center - along, center + along, bars);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(KoreaFlagPainter oldDelegate) => false;
+}
+
+class ChinaFlagPainter extends CustomPainter {
+  const ChinaFlagPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(Offset.zero & size, Paint()..color = Palette.flagChinaRed);
+    final gold = Paint()..color = Palette.inputYellow;
+    _star(canvas, Offset(size.width * .19, size.height * .3), 5.6, gold);
+    for (final p in const [(.37, .12), (.45, .25), (.45, .42), (.37, .55)]) {
+      _star(canvas, Offset(size.width * p.$1, size.height * p.$2), 1.8, gold);
+    }
+  }
+
+  void _star(Canvas canvas, Offset c, double r, Paint paint) {
+    final path = Path();
+    for (var i = 0; i < 10; i++) {
+      final radius = i.isEven ? r : r * .42;
+      final a = -math.pi / 2 + i * math.pi / 5;
+      final p = c + Offset(math.cos(a), math.sin(a)) * radius;
+      i == 0 ? path.moveTo(p.dx, p.dy) : path.lineTo(p.dx, p.dy);
+    }
+    canvas.drawPath(path..close(), paint);
+  }
+
+  @override
+  bool shouldRepaint(ChinaFlagPainter oldDelegate) => false;
+}
+
+class JapanFlagPainter extends CustomPainter {
+  const JapanFlagPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(Offset.zero & size, Paint()..color = Palette.settingsPanel);
+    canvas.drawCircle(
+      size.center(Offset.zero),
+      size.height * .31,
+      Paint()..color = Palette.flagChinaRed,
+    );
+  }
+
+  @override
+  bool shouldRepaint(JapanFlagPainter oldDelegate) => false;
 }

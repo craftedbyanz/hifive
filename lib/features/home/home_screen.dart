@@ -222,15 +222,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           width: .34,
                         ),
                         onTap: () => go<void>(context, const LanguageScreen()),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 9,
                             vertical: 7,
                           ),
                           child: SizedBox(
+                            key: const ValueKey('home-flag'),
                             width: 34,
                             height: 22,
-                            child: CustomPaint(painter: FlagPainter()),
+                            child: CustomPaint(
+                              painter: languageFlag(state.language).$1,
+                            ),
                           ),
                         ),
                       ),

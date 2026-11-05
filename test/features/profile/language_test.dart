@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/features/home/home.dart';
+import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/widgets/common.dart';
 
 import '../../helpers.dart';
 
@@ -99,5 +102,56 @@ void main() {
     expect(codes, hasLength(Language.values.length));
     expect(Language.fromCode('en'), Language.english);
     expect(Language.fromCode(null), isNull);
+  });
+
+  testWidgets('answers are graded in the study language', (tester) async {
+    final grading = FailingGradingRepository()..fail = false;
+    final state = fresh(grading: grading)..language = Language.korean;
+    await mount(
+      tester,
+      state,
+      PracticeScreen(lesson: sampleLesson(StudyMode.grammar)),
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey('answer-input')),
+      apologyQuestions.first.answer,
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('submit-answer')));
+    await tester.pumpAndSettle();
+    expect(grading.languages, [Language.korean]);
+  });
+
+  test('only English has bundled flashcard words', () async {
+    const decks = MockDeckGenerator(latency: Duration.zero);
+    final english = await decks.generate(
+      language: Language.english,
+      topic: 'Travel',
+      count: 3,
+    );
+    expect(english, hasLength(3));
+    final korean = await decks.generate(
+      language: Language.korean,
+      topic: 'Travel',
+      count: 3,
+    );
+    expect(korean, isEmpty);
+  });
+
+  testWidgets('the Home flag follows the study language', (tester) async {
+    final state = fresh()..language = Language.japanese;
+    await mount(tester, state, const HomeScreen(animateAmbient: false));
+    CustomPainter? flag() => tester
+        .widget<CustomPaint>(
+          find.descendant(
+            of: find.byKey(const ValueKey('home-flag')),
+            matching: find.byType(CustomPaint),
+          ),
+        )
+        .painter;
+    expect(flag(), isA<JapanFlagPainter>());
+    state.setLanguage(Language.english);
+    await tester.pump();
+    expect(flag(), isA<FlagPainter>());
   });
 }

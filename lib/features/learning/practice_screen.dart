@@ -102,7 +102,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
     setState(() => busy = grading = true);
     Grade? graded;
     try {
-      graded = await state.grading.grade(current, answer);
+      graded = await state.grading.grade(state.language, current, answer);
     } catch (_) {
       // The sheet opens on its error state and offers a retry.
     }
@@ -116,7 +116,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
       answer: answer,
       mode: widget.lesson.mode,
       initial: graded,
-      grade: () => state.grading.grade(current, answer),
+      grade: () => state.grading.grade(state.language, current, answer),
       onGraded: record,
     );
     if (!mounted) return;
@@ -141,7 +141,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
           SizedBox(
             height: 220,
             child: AsyncView<List<String>>(
-              load: () => state.grading.assist(current, draft),
+              load: () => state.grading.assist(state.language, current, draft),
               loadingLabel: 'Đang phân tích bản nháp...',
               builder: (context, tips) => ListView(
                 children: [

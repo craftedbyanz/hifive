@@ -2,6 +2,8 @@ import '../../domain/grading.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/grading_repository.dart';
 
+/// Grades by local comparison, which works for any language; the draft help
+/// reads English words only.
 class MockGradingRepository implements GradingRepository {
   final Duration latency;
   const MockGradingRepository({
@@ -12,13 +14,21 @@ class MockGradingRepository implements GradingRepository {
   }
 
   @override
-  Future<Grade> grade(Question question, String submitted) async {
+  Future<Grade> grade(
+    Language language,
+    Question question,
+    String submitted,
+  ) async {
     await _wait();
     return gradeLocally(question, submitted);
   }
 
   @override
-  Future<List<String>> assist(Question question, String draft) async {
+  Future<List<String>> assist(
+    Language language,
+    Question question,
+    String draft,
+  ) async {
     await _wait();
     final typed = draft
         .toLowerCase()

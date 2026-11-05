@@ -20,9 +20,10 @@ class ChatTurn {
 /// the chat screen and this contract are the clone's own design, to be backed
 /// by an AI service later.
 abstract interface class ConversationRepository {
-  /// Grades the learner's [answer] to line [index] of [lesson] and returns the
-  /// partner's reply.
+  /// Grades the learner's [answer] to line [index] of [lesson], written in
+  /// [language], and returns the partner's reply.
   Future<ChatTurn> respond({
+    required Language language,
     required Lesson lesson,
     required int index,
     required String answer,

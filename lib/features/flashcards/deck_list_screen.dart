@@ -230,6 +230,7 @@ class _DeckFormState extends State<_DeckForm> {
     final deck = widget.deck;
     try {
       final words = await state.deckGenerator.generate(
+        language: state.language,
         topic: title.text.trim(),
         count: count,
         exclude: deck?.words ?? const [],

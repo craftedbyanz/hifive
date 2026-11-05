@@ -9,14 +9,6 @@ import '../learning/learning.dart';
 import 'level_picker_screen.dart';
 import 'settings_kit.dart';
 
-/// The flag drawn for [language], and its size: English's is flatter.
-(CustomPainter, Size) languageFlag(Language language) => switch (language) {
-  Language.english => (const FlagPainter(), const Size(44, 27)),
-  Language.korean => (const KoreaFlagPainter(), const Size(48, 33)),
-  Language.chinese => (const ChinaFlagPainter(), const Size(48, 33)),
-  Language.japanese => (const JapanFlagPainter(), const Size(48, 33)),
-};
-
 /// Lists every course from [LessonRepository.courses]. Picking one without
 /// content moves the ring and swaps the footer for a disabled "Sắp ra mắt",
 /// as on the reference; "Xác nhận" saves an available choice.

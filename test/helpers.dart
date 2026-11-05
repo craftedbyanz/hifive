@@ -95,15 +95,24 @@ class FailingLessonRepository implements LessonRepository {
 
 class FailingGradingRepository implements GradingRepository {
   bool fail = true;
+
+  /// The language of every grade request.
+  final languages = <Language>[];
   final GradingRepository inner = const MockGradingRepository(
     latency: Duration.zero,
   );
   @override
-  Future<Grade> grade(Question question, String submitted) =>
-      fail ? failing<Grade>() : inner.grade(question, submitted);
+  Future<Grade> grade(Language language, Question question, String submitted) {
+    languages.add(language);
+    return fail ? failing<Grade>() : inner.grade(language, question, submitted);
+  }
+
   @override
-  Future<List<String>> assist(Question question, String draft) =>
-      inner.assist(question, draft);
+  Future<List<String>> assist(
+    Language language,
+    Question question,
+    String draft,
+  ) => inner.assist(language, question, draft);
 }
 
 /// Mounts [page] at the 393 × 852 reference viewport.

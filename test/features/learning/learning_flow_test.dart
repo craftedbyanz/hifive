@@ -22,6 +22,7 @@ class _FailingConversation implements ConversationRepository {
   final inner = const MockConversationRepository(latency: Duration.zero);
   @override
   Future<ChatTurn> respond({
+    required Language language,
     required Lesson lesson,
     required int index,
     required String answer,
@@ -29,6 +30,7 @@ class _FailingConversation implements ConversationRepository {
   }) => fail
       ? failing<ChatTurn>()
       : inner.respond(
+          language: language,
           lesson: lesson,
           index: index,
           answer: answer,
@@ -46,6 +48,7 @@ class _FailingInsights implements InsightRepository {
 class _FailingDecks implements DeckGenerator {
   @override
   Future<List<FlashWord>> generate({
+    required Language language,
     required String topic,
     required int count,
     List<FlashWord> exclude = const [],

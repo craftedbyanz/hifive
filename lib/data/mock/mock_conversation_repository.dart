@@ -15,13 +15,18 @@ class MockConversationRepository implements ConversationRepository {
 
   @override
   Future<ChatTurn> respond({
+    required Language language,
     required Lesson lesson,
     required int index,
     required String answer,
     required ChatSettings settings,
   }) async {
     if (latency > Duration.zero) await Future<void>.delayed(latency);
-    final grade = await grading.grade(lesson.questions[index], answer);
+    final grade = await grading.grade(
+      language,
+      lesson.questions[index],
+      answer,
+    );
     final next = index + 1;
     final reply =
         next < lesson.questions.length && lesson.questions[next].partner

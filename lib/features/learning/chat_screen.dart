@@ -99,6 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToEnd();
     try {
       final turn = await state.conversation.respond(
+        language: state.language,
         lesson: widget.lesson,
         index: index,
         answer: answer,
