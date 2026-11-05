@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
@@ -9,7 +10,6 @@ import 'package:hifive/features/information/information.dart';
 import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/features/profile/profile.dart';
-import 'package:hifive/main.dart';
 
 import 'helpers.dart';
 

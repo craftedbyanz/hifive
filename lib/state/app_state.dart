@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../core/services/feedback_service.dart';
 import '../core/services/system_actions.dart';
-import '../data/data.dart';
 import '../domain/models/models.dart';
 import '../domain/repositories/repositories.dart';
 
@@ -20,28 +19,25 @@ class AppState extends ChangeNotifier {
   final FeedbackService feedback;
   final SystemActions system;
   final DateTime Function() now;
+
+  /// Wires the state to its services. `lib/app/app_state_factory.dart` picks
+  /// the implementations, so this layer never imports `lib/data`.
   AppState({
     required this.repository,
-    bool includeExamples = false,
-    LessonRepository? lessons,
-    GradingRepository? grading,
-    ConversationRepository? conversation,
-    DeckGenerator? deckGenerator,
-    InsightRepository? insights,
+    required this.lessons,
+    required this.grading,
+    required this.conversation,
+    required this.deckGenerator,
+    required this.insights,
+    required this.decks,
+    List<StudySession> examples = const [],
     FeedbackService? feedback,
     SystemActions? system,
     DateTime Function()? now,
-  }) : lessons = lessons ?? MockLessonRepository(),
-       grading = grading ?? const MockGradingRepository(),
-       conversation = conversation ?? const MockConversationRepository(),
-       deckGenerator =
-           deckGenerator ?? MockDeckGenerator(now: now ?? DateTime.now),
-       insights = insights ?? const MockInsightRepository(),
+  }) : history = [...examples],
        feedback = feedback ?? PlatformFeedback(),
        system = system ?? const PlatformSystemActions(),
-       now = now ?? DateTime.now {
-    if (includeExamples) history = sampleHistory();
-  }
+       now = now ?? DateTime.now;
   // Glass, the look every Home measurement was made with; the reference's
   // default for a new account was not seen.
   String name = 'An',
@@ -62,8 +58,8 @@ class AppState extends ChangeNotifier {
     StudyMode.grammar,
     StudyMode.conversation,
   ];
-  List<Deck> decks = seedDecks();
-  List<StudySession> history = [];
+  List<Deck> decks;
+  List<StudySession> history;
   late DateTime firstUse = now();
   Map<String, dynamic>? gameResume;
   String? storageError;

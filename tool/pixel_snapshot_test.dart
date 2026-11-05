@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
 import 'package:hifive/core/design/design.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
@@ -24,7 +25,7 @@ import 'package:hifive/features/profile/profile.dart';
 import 'package:hifive/state/state.dart';
 
 const out = String.fromEnvironment('PIX_OUT');
-AppState make() => AppState(
+AppState make() => createAppState(
   repository: MemoryAppRepository(),
   feedback: SilentFeedback(),
   includeExamples: true,

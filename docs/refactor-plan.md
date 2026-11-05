@@ -9,7 +9,7 @@ Status values: todo, in progress, done.
 ```
 lib/
   main.dart
-  app/                 HifiveApp, routes
+  app/                 HifiveApp, createAppState (composition root)
   core/
     design/            D tokens, Palette
     services/          FeedbackService, SystemActions
@@ -43,13 +43,17 @@ Separate navigation, buttons, sheets and dialogs, surfaces and branding into the
 
 The cycle was learning -> insights (CompletionScreen) -> history (ResultScreen) -> learning. Both screens show a finished study session, so they moved to `learning`, and the small flag they share moved to `widgets/glyphs.dart` as `MiniFlag`. This keeps navigation typed, so the planned `app/routes.dart` indirection was not needed. `tool/feature_cycles.dart` now fails `scripts/check.sh` on any cycle.
 
-### 4. Add study language and course (behavior change) - todo
+### 4. Composition root (no UI change) - done
+
+`HifiveApp` moved from `main.dart` to `lib/app/hifive_app.dart`. `AppState` now requires every repository and its seed decks, and `createAppState` in `lib/app/app_state_factory.dart` supplies the mocks, seed decks and sample history. `state/state.dart` no longer re-exports `data/local`. `scripts/check.sh` fails when `core`, `domain`, `state` or `widgets` import `lib/data`.
+
+### 5. Add study language and course (behavior change) - todo
 
 1. `Language` and `Course` models; `AppState` stores the study language with a default for older data.
 2. Repositories take the language; English content sits under `data/content/en/`. The generator screen's copy (`generatorDescription`, `generatorExamples`) is read straight from `data/content/en/lessons.dart` and should come through `LessonRepository` instead.
 3. Text-to-speech takes its locale from the course instead of a fixed `en-US`.
 4. The language screen saves the choice; languages without content stay "Sắp ra mắt".
 
-### 5. Tidy tests and dependencies - todo
+### 6. Tidy tests and dependencies - todo
 
 Move tests into folders that mirror `lib/`, and drop the unused `integration_test` dependency.

@@ -1,9 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
+import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/state/state.dart';
 
 AppState stateWith(Map<String, dynamic> data, MemoryAppRepository repository) =>
-    AppState(repository: repository..data = data, feedback: SilentFeedback());
+    createAppState(
+      repository: repository..data = data,
+      feedback: SilentFeedback(),
+    );
 
 void main() {
   group('load keeps the app usable when saved data is bad', () {
@@ -56,7 +61,7 @@ void main() {
     });
 
     test('a repository that throws an error is handled', () async {
-      final state = AppState(
+      final state = createAppState(
         repository: _ThrowingRepository(),
         feedback: SilentFeedback(),
       );
@@ -70,7 +75,10 @@ void main() {
     late AppState state;
     setUp(() {
       repository = MemoryAppRepository();
-      state = AppState(repository: repository, feedback: SilentFeedback());
+      state = createAppState(
+        repository: repository,
+        feedback: SilentFeedback(),
+      );
     });
     Future<Map<String, dynamic>> saved() async {
       await state.flush();
@@ -134,7 +142,7 @@ void main() {
     });
 
     test('clearHistory empties saved results', () async {
-      state = AppState(
+      state = createAppState(
         repository: repository,
         feedback: SilentFeedback(),
         includeExamples: true,
@@ -145,18 +153,22 @@ void main() {
 
   test('valid saved data still round-trips', () async {
     final repository = MemoryAppRepository();
-    final first = AppState(repository: repository, feedback: SilentFeedback())
-      ..name = 'Linh'
-      ..totalXp = 12
-      ..gameResume = {
-        'title': 'T',
-        'index': 1,
-        'score': 2,
-        'words': <Object>[],
-      };
+    final first =
+        createAppState(repository: repository, feedback: SilentFeedback())
+          ..name = 'Linh'
+          ..totalXp = 12
+          ..gameResume = {
+            'title': 'T',
+            'index': 1,
+            'score': 2,
+            'words': <Object>[],
+          };
     first.commit();
     await first.flush();
-    final second = AppState(repository: repository, feedback: SilentFeedback());
+    final second = createAppState(
+      repository: repository,
+      feedback: SilentFeedback(),
+    );
     await second.load();
     expect(second.storageError, isNull);
     expect(second.name, 'Linh');

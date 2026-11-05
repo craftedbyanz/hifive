@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
 import 'package:hifive/core/design/design.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/grading.dart';
@@ -11,7 +12,7 @@ import 'helpers.dart';
 void main() {
   appearanceLooks();
   test('demo records expose three saved-result modes without affecting current streak', () async {
-    final state = AppState(
+    final state = createAppState(
       repository: MemoryAppRepository(),
       feedback: SilentFeedback(),
       includeExamples: true,
@@ -62,7 +63,10 @@ void main() {
     'completion persists and reloads without overwriting previous results',
     () async {
       final repo = MemoryAppRepository();
-      final state = AppState(repository: repo, feedback: SilentFeedback());
+      final state = createAppState(
+        repository: repo,
+        feedback: SilentFeedback(),
+      );
       await state.load();
       final lesson = sampleLesson(StudyMode.grammar, title: 'Một buổi học');
       for (var i = 0; i < 2; i++) {
@@ -77,7 +81,10 @@ void main() {
         );
       }
       await state.flush();
-      final reloaded = AppState(repository: repo, feedback: SilentFeedback());
+      final reloaded = createAppState(
+        repository: repo,
+        feedback: SilentFeedback(),
+      );
       await reloaded.load();
       expect(reloaded.history.map((s) => s.id), ['result-1', 'result-0']);
       expect(
@@ -90,7 +97,7 @@ void main() {
   test(
     'streak handles yesterday, gaps, duplicate sessions and month boundaries',
     () {
-      final state = AppState(
+      final state = createAppState(
         repository: MemoryAppRepository(),
         feedback: SilentFeedback(),
         now: () => DateTime(2026, 11, 2),
@@ -122,7 +129,7 @@ void main() {
     () async {
       final repo = MemoryAppRepository();
       final now = DateTime(2026, 11, 1, 10);
-      final state = AppState(
+      final state = createAppState(
         repository: repo,
         now: () => now,
         feedback: SilentFeedback(),
@@ -130,7 +137,7 @@ void main() {
       final word = state.decks.first.words.first;
       state.rate(word, 2);
       await state.flush();
-      final next = AppState(repository: repo, feedback: SilentFeedback());
+      final next = createAppState(repository: repo, feedback: SilentFeedback());
       await next.load();
       expect(next.decks.first.words.first.status, 'review');
       expect(
@@ -140,7 +147,7 @@ void main() {
     },
   );
   test('saved dictionary words deduplicate case-insensitively', () {
-    final state = AppState(
+    final state = createAppState(
       repository: MemoryAppRepository(),
       feedback: SilentFeedback(),
     );
