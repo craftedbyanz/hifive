@@ -22,7 +22,7 @@ Flutter 3.47.9, Dart 3.13.7, Xcode 27.2, Android SDK 36, JDK 21.
 
 ```sh
 scripts/check.sh                                              # guards, format, analyze, test
-flutter test test/model_test.dart --plain-name "<test name>"  # single test
+flutter test test/domain/model_test.dart --plain-name "<test name>"  # single test
 scripts/install_iphone.sh                                     # Release build, installed over the app on a USB iPhone
 ```
 
@@ -34,7 +34,7 @@ Physical iPhone: builds sign with team `WQ4W9V3W7A`. Install in place with `scri
 
 ## Verification after changes
 
-After every Dart change, run `scripts/check.sh` and fix any failures before reporting. Add or update a test in `test/` for behavior changes.
+After every Dart change, run `scripts/check.sh` and fix any failures before reporting. Add or update a test in `test/` for behavior changes, in the folder that mirrors the code under test (`test/features/<area>/`, `test/state/`, …); `test/app/` holds tests that cross several screens.
 
 - **Refactors that should not change the UI:** prove it with `tool/pixel_snapshot_test.dart`. Capture before the first edit, capture again after, and compare with `diff -rq`.
 - **Keyboard, focus, gesture or animation changes:** widget tests are not enough. Also run the app on the Simulator or iPhone.

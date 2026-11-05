@@ -5,7 +5,7 @@ import 'package:flutter/physics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/features/home/home.dart';
 
-import 'helpers.dart';
+import '../../helpers.dart';
 
 void main() {
   setUpAll(loadAppFonts);

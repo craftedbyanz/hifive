@@ -281,7 +281,7 @@ Used for fades and art, not for plain surfaces. Bottom controls that float over 
 
 ## Accessibility
 
-- Text scales with the system size up to 23/17 (Principles 4); `test/text_scale_test.dart` guards it.
+- Text scales with the system size up to 23/17 (Principles 4); `test/app/text_scale_test.dart` guards it.
 - Custom tappable widgets get `Semantics` (button, label), which `PressFade` and the header buttons already add.
 - Contrast follows the section above.
 - Reduce Motion does not stop ambient motion (matches the reference); transitions keep their normal timing.
@@ -304,5 +304,5 @@ Places that still differ from these rules, kept because they were measured that 
 5. Loading, error and empty states through `AsyncView`.
 6. Interactive targets get a `ValueKey` or tooltip and a hit box of at least 44 pt.
 7. Haptics through `FeedbackService`; motion from the duration table.
-8. Add the screen to `test/text_scale_test.dart`, which lays it out at the largest text size and at Android's 411 × 914.
+8. Add the screen to `test/app/text_scale_test.dart`, which lays it out at the largest text size and at Android's 411 × 914.
 9. Run it on the iPhone and check it against these rules.

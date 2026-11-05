@@ -4,7 +4,7 @@ import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/features/learning/learning.dart';
 
-import 'helpers.dart';
+import '../../helpers.dart';
 
 const tall = Size(393, 2400);
 

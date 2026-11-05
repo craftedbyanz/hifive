@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/features/history/history.dart';
 import 'package:hifive/features/learning/learning.dart';
 
-import 'helpers.dart';
+import '../../helpers.dart';
 
 const tall = Size(393, 1600);
 

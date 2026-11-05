@@ -7,7 +7,7 @@ import 'package:hifive/features/profile/profile.dart';
 import 'package:hifive/state/state.dart';
 import 'package:hifive/widgets/common.dart';
 
-import 'helpers.dart';
+import '../../helpers.dart';
 
 const _tall = Size(393, 2100);
 

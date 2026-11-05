@@ -8,7 +8,7 @@ import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/state/state.dart';
 import 'package:hifive/widgets/common.dart';
 
-import 'helpers.dart';
+import '../helpers.dart';
 
 void main() {
   appearanceLooks();

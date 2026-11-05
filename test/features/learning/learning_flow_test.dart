@@ -13,7 +13,7 @@ import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/state/state.dart';
 
-import 'helpers.dart';
+import '../../helpers.dart';
 
 const tall = Size(393, 2400);
 

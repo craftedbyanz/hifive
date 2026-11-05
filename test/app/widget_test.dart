@@ -11,7 +11,7 @@ import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/features/profile/profile.dart';
 
-import 'helpers.dart';
+import '../helpers.dart';
 
 void main() {
   setUpAll(loadAppFonts);

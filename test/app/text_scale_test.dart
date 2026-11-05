@@ -10,7 +10,7 @@ import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/features/profile/profile.dart';
 
-import 'helpers.dart';
+import '../helpers.dart';
 
 /// The reference grows its text with a larger system size; every screen must
 /// still lay out at the largest standard size on a 393 × 852 iPhone.
