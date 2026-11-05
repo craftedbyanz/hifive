@@ -1,3 +1,4 @@
+export 'course.dart';
 export 'deck.dart';
 export 'grade.dart';
 export 'lesson.dart';

@@ -2,7 +2,9 @@ import '../../domain/models/models.dart';
 import '../../domain/repositories/lesson_repository.dart';
 import '../content/en/lessons.dart';
 
-/// Serves the English content in `data/content/en/lessons.dart` after a short wait, standing in for the network.
+/// Serves the English content in `data/content/en/lessons.dart` after a short
+/// wait, standing in for the network. Other languages have no course yet, so
+/// their catalog is empty.
 class MockLessonRepository implements LessonRepository {
   final Duration latency;
   MockLessonRepository({this.latency = const Duration(milliseconds: 350)});
@@ -19,27 +21,63 @@ class MockLessonRepository implements LessonRepository {
     return value();
   }
 
+  /// Languages whose course has content.
+  static const withContent = {Language.english};
+
   @override
-  Future<List<String>> categories(StudyMode mode) =>
-      _serve(() => mockCategories(mode));
+  Future<List<Course>> courses() => _serve(
+    () => [
+      for (final l in Language.values)
+        Course(l, available: withContent.contains(l)),
+    ],
+  );
+
+  @override
+  Future<List<String>> categories(Language language, StudyMode mode) =>
+      _serve(() => _has(language) ? mockCategories(mode) : const []);
 
   @override
   Future<List<Topic>> topics(
+    Language language,
     StudyMode mode,
     String category, {
     int refresh = 0,
-  }) => _serve(() => topicsNow(mode, category, refresh: refresh));
+  }) => _serve(
+    () =>
+        _has(language) ? topicsNow(mode, category, refresh: refresh) : const [],
+  );
 
   @override
-  Future<List<Lesson>> lessons(Topic topic) => _serve(() => lessonsNow(topic));
+  Future<List<Lesson>> lessons(Language language, Topic topic) =>
+      _serve(() => _has(language) ? lessonsNow(topic) : const []);
 
   @override
-  Future<List<String>> suggestions(StudyMode mode) =>
-      _serve(() => generatorSuggestions);
+  Future<GeneratorCatalog> generator(Language language, StudyMode mode) =>
+      _serve(
+        () => _has(language)
+            ? GeneratorCatalog(
+                presets: [
+                  for (final (title, line) in generatorPresets)
+                    GeneratorPreset(title, line),
+                ],
+                examples: generatorExamples,
+              )
+            : const GeneratorCatalog(presets: [], examples: []),
+      );
 
   @override
-  Future<Lesson> createPractice(String title, StudyMode mode) =>
-      _serve(() => practiceNow(title, mode));
+  Future<Lesson> createPractice(
+    Language language,
+    String title,
+    StudyMode mode,
+  ) => _serve(() {
+    if (!_has(language)) {
+      throw StateError('No ${language.title} course yet');
+    }
+    return practiceNow(title, mode);
+  });
+
+  static bool _has(Language language) => withContent.contains(language);
 
   /// Synchronous view of the catalog, for sample data and tests.
   static List<Topic> topicsNow(

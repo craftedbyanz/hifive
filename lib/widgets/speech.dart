@@ -2,6 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../state/state.dart';
 
-/// Speaks [word] through the app's [FeedbackService].
+/// Speaks [word] in the study language through the app's [FeedbackService].
 void playWord(BuildContext context, String word) =>
-    AppScope.read(context).feedback.speak(word);
+    AppScope.read(context).speak(word);

@@ -59,7 +59,7 @@ class VoiceScreen extends StatelessWidget {
                 height: 89,
                 onTap: () {
                   s.setVoice(name);
-                  s.feedback.speak(
+                  s.speak(
                     'Welcome to Hifive. Let us learn something new today.',
                   );
                 },

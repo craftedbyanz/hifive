@@ -49,6 +49,10 @@ class AppState extends ChangeNotifier {
       chatTone = 'Thoải mái';
   bool showHints = false, chatFree = true, sound = true, haptic = true;
 
+  /// The language being studied. Only languages whose course has content
+  /// can be chosen; English is the default for data saved before courses.
+  Language language = Language.english;
+
   /// The conversation settings tip showed on the first visit (1 November)
   /// and not on a later one, so it stays dismissed once closed.
   bool chatTipSeen = false;
@@ -80,6 +84,7 @@ class AppState extends ChangeNotifier {
   void _apply(Map<String, dynamic> j) {
     final savedName = j['name'] as String? ?? name,
         savedLevel = j['level'] as String? ?? level,
+        savedLanguage = Language.fromCode(j['language'] as String?) ?? language,
         savedAppearance = j['appearance'] as String? ?? appearance,
         savedInputColor = j['inputColor'] as String? ?? inputColor,
         savedVoice = j['voice'] as String? ?? voice,
@@ -113,6 +118,7 @@ class AppState extends ChangeNotifier {
         : Map<String, dynamic>.from(j['gameResume'] as Map);
     name = savedName;
     level = savedLevel;
+    language = savedLanguage;
     appearance = savedAppearance;
     inputColor = savedInputColor;
     // Saved before voices were selectable.
@@ -145,6 +151,7 @@ class AppState extends ChangeNotifier {
     'version': 1,
     'name': name,
     'level': level,
+    'language': language.code,
     'appearance': appearance,
     'inputColor': inputColor,
     'voice': voice,
@@ -225,6 +232,15 @@ class AppState extends ChangeNotifier {
     name = value;
     commit();
   }
+
+  void setLanguage(Language value) {
+    language = value;
+    commit();
+  }
+
+  /// Speaks [text] in the study language's voice.
+  Future<void> speak(String text) =>
+      feedback.speak(text, locale: language.speechLocale);
 
   void setLevel(String value) {
     level = value;

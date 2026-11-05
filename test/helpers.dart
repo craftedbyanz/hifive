@@ -21,6 +21,7 @@ Future<void> loadAppFonts() async {
 AppState fresh({
   bool includeExamples = false,
   AppRepository? repository,
+  FeedbackService? feedback,
   SystemActions? system,
   LessonRepository? lessons,
   GradingRepository? grading,
@@ -29,7 +30,7 @@ AppState fresh({
   InsightRepository? insights,
 }) => createAppState(
   repository: repository ?? MemoryAppRepository(),
-  feedback: SilentFeedback(),
+  feedback: feedback ?? SilentFeedback(),
   system: system ?? RecordingSystemActions(),
   includeExamples: includeExamples,
   lessons: lessons ?? MockLessonRepository(latency: Duration.zero),
@@ -67,22 +68,29 @@ class FailingLessonRepository implements LessonRepository {
   }
 
   @override
-  Future<List<String>> categories(StudyMode mode) => inner.categories(mode);
+  Future<List<Course>> courses() => _maybe(inner.courses);
+  @override
+  Future<List<String>> categories(Language language, StudyMode mode) =>
+      inner.categories(language, mode);
   @override
   Future<List<Topic>> topics(
+    Language language,
     StudyMode mode,
     String category, {
     int refresh = 0,
-  }) => _maybe(() => inner.topics(mode, category, refresh: refresh));
+  }) => _maybe(() => inner.topics(language, mode, category, refresh: refresh));
   @override
-  Future<List<Lesson>> lessons(Topic topic) =>
-      _maybe(() => inner.lessons(topic));
+  Future<List<Lesson>> lessons(Language language, Topic topic) =>
+      _maybe(() => inner.lessons(language, topic));
   @override
-  Future<List<String>> suggestions(StudyMode mode) =>
-      _maybe(() => inner.suggestions(mode));
+  Future<GeneratorCatalog> generator(Language language, StudyMode mode) =>
+      _maybe(() => inner.generator(language, mode));
   @override
-  Future<Lesson> createPractice(String title, StudyMode mode) =>
-      _maybe(() => inner.createPractice(title, mode));
+  Future<Lesson> createPractice(
+    Language language,
+    String title,
+    StudyMode mode,
+  ) => _maybe(() => inner.createPractice(language, title, mode));
 }
 
 class FailingGradingRepository implements GradingRepository {
@@ -121,4 +129,22 @@ Future<void> mount(
     ),
   );
   await tester.pumpAndSettle();
+}
+
+/// Records what was spoken, and in which locale.
+class RecordingFeedback extends SilentFeedback {
+  final spoken = <(String, String)>[];
+  @override
+  Future<void> speak(String text, {required String locale}) async =>
+      spoken.add((text, locale));
+}
+
+/// The mock catalog with [generator] answering from [catalog], to prove a
+/// screen reads its copy through [LessonRepository].
+class CatalogLessonRepository extends MockLessonRepository {
+  final GeneratorCatalog catalog;
+  CatalogLessonRepository(this.catalog) : super(latency: Duration.zero);
+  @override
+  Future<GeneratorCatalog> generator(Language language, StudyMode mode) async =>
+      catalog;
 }

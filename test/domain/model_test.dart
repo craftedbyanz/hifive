@@ -160,13 +160,13 @@ void main() {
     final repo = MockLessonRepository(latency: Duration.zero);
     test('every category of every mode has runnable topics', () async {
       for (final mode in StudyMode.values) {
-        final categories = await repo.categories(mode);
+        final categories = await repo.categories(Language.english, mode);
         expect(categories.first, 'Dành cho bạn');
         for (final category in categories) {
-          final topics = await repo.topics(mode, category);
+          final topics = await repo.topics(Language.english, mode, category);
           expect(topics, isNotEmpty, reason: '${mode.name} / $category');
           for (final topic in topics) {
-            final lessons = await repo.lessons(topic);
+            final lessons = await repo.lessons(Language.english, topic);
             expect(lessons, isNotEmpty);
             for (final lesson in lessons) {
               expect(
@@ -184,9 +184,16 @@ void main() {
     test('each topic has its own sentences', () async {
       for (final mode in StudyMode.values) {
         final seen = <String>{};
-        for (final category in await repo.categories(mode)) {
-          for (final topic in await repo.topics(mode, category)) {
-            final first = (await repo.lessons(topic)).first.questions.first;
+        for (final category in await repo.categories(Language.english, mode)) {
+          for (final topic in await repo.topics(
+            Language.english,
+            mode,
+            category,
+          )) {
+            final first = (await repo.lessons(
+              Language.english,
+              topic,
+            )).first.questions.first;
             seen.add('${topic.id}|${first.answer}');
           }
         }
@@ -197,16 +204,27 @@ void main() {
     });
 
     test('conversation has its own categories', () async {
-      final grammar = await repo.categories(StudyMode.grammar);
-      final conversation = await repo.categories(StudyMode.conversation);
+      final grammar = await repo.categories(
+        Language.english,
+        StudyMode.grammar,
+      );
+      final conversation = await repo.categories(
+        Language.english,
+        StudyMode.conversation,
+      );
       expect(grammar, hasLength(19));
       expect(conversation, contains('Sân bay & Khách sạn'));
       expect(grammar, isNot(contains('Sân bay & Khách sạn')));
     });
 
     test('refresh changes the suggested topics', () async {
-      final first = await repo.topics(StudyMode.grammar, 'Dành cho bạn');
+      final first = await repo.topics(
+        Language.english,
+        StudyMode.grammar,
+        'Dành cho bạn',
+      );
       final next = await repo.topics(
+        Language.english,
         StudyMode.grammar,
         'Dành cho bạn',
         refresh: 1,
@@ -216,8 +234,16 @@ void main() {
     });
 
     test('the same AI topic text gives the same practice', () async {
-      final a = await repo.createPractice('Gọi cà phê', StudyMode.grammar);
-      final b = await repo.createPractice('Gọi cà phê', StudyMode.grammar);
+      final a = await repo.createPractice(
+        Language.english,
+        'Gọi cà phê',
+        StudyMode.grammar,
+      );
+      final b = await repo.createPractice(
+        Language.english,
+        'Gọi cà phê',
+        StudyMode.grammar,
+      );
       expect(a.title, 'Gọi cà phê');
       expect(a.questions, same(b.questions));
     });

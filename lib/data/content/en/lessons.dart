@@ -98,13 +98,6 @@ const generatorPresets = [
   ('Yêu cầu lịch sự', 'Could you please...?'),
 ];
 
-final generatorSuggestions = [for (final (t, _) in generatorPresets) t];
-
-/// The chooser's line under "MÔ TẢ CHỦ ĐỀ" for a preset.
-String generatorDescription(String topic) => generatorPresets
-    .firstWhere((p) => p.$1 == topic, orElse: () => (topic, topic))
-    .$2;
-
 /// Sample prompts on the AI editor (survey 28).
 /// The first two in the reference's order; the rest were not seen in order.
 const generatorExamples = [

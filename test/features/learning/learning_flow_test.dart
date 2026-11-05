@@ -255,7 +255,8 @@ void main() {
     testWidgets('the wheel selects a preset and starts it', (tester) async {
       await mount(tester, fresh(), const GeneratorScreen(), size: tall);
       expect(find.text('Tạo chủ đề độc đáo của riêng bạn.'), findsOneWidget);
-      final index = generatorSuggestions.indexOf('Gọi cà phê') + 1;
+      final index =
+          generatorPresets.indexWhere((p) => p.$1 == 'Gọi cà phê') + 1;
       await tester.drag(
         find.byType(ListWheelScrollView),
         Offset(0, -64.0 * index),
@@ -272,12 +273,9 @@ void main() {
 
     testWidgets('tapping a row brings it to the middle', (tester) async {
       await mount(tester, fresh(), const GeneratorScreen(), size: tall);
-      await tester.tap(find.text(generatorSuggestions[1]));
+      await tester.tap(find.text(generatorPresets[1].$1));
       await tester.pumpAndSettle();
-      expect(
-        find.text(generatorDescription(generatorSuggestions[1])),
-        findsOneWidget,
-      );
+      expect(find.text(generatorPresets[1].$2), findsOneWidget);
     });
 
     testWidgets('the editor offers the reference examples', (tester) async {
@@ -292,6 +290,24 @@ void main() {
       await tester.tap(find.text('Bắt Đầu Luyện Tập'));
       await tester.pumpAndSettle();
       expect(find.byType(PracticeScreen), findsOneWidget);
+    });
+
+    testWidgets('presets and examples come from the repository', (
+      tester,
+    ) async {
+      const catalog = GeneratorCatalog(
+        presets: [GeneratorPreset('Du lịch', 'Hỏi đường ở sân bay')],
+        examples: ['Airport small talk'],
+      );
+      final state = fresh(lessons: CatalogLessonRepository(catalog));
+      await mount(tester, state, const GeneratorScreen(), size: tall);
+      await tester.tap(find.text('Du lịch'));
+      await tester.pumpAndSettle();
+      expect(find.text('Hỏi đường ở sân bay'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('generator-describe')));
+      await tester.pumpAndSettle();
+      expect(find.text('Airport small talk'), findsOneWidget);
+      expect(find.text(generatorExamples[0]), findsNothing);
     });
 
     testWidgets('a conversation topic opens the chat', (tester) async {

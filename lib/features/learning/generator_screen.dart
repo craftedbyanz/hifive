@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../data/content/en/lessons.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../state/state.dart';
@@ -37,8 +36,13 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
   bool generating = false;
   final wheel = FixedExtentScrollController();
 
-  Future<List<String>> load() =>
-      AppScope.read(context).lessons.suggestions(widget.mode);
+  /// The last catalog loaded, whose sample prompts the editor offers.
+  GeneratorCatalog? catalog;
+
+  Future<GeneratorCatalog> load() async {
+    final state = AppScope.read(context);
+    return catalog = await state.lessons.generator(state.language, widget.mode);
+  }
 
   @override
   void dispose() {
@@ -50,8 +54,12 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
     if (title.trim().isEmpty) return editTopic();
     setState(() => generating = true);
     try {
-      final lesson = await AppScope.read(context).lessons
-          .createPractice(title.trim(), widget.mode);
+      final state = AppScope.read(context);
+      final lesson = await state.lessons.createPractice(
+        state.language,
+        title.trim(),
+        widget.mode,
+      );
       if (!mounted) return;
       setState(() => generating = false);
       await go<void>(
@@ -89,7 +97,11 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(38),
           ),
-          child: _TopicEditor(initial: typed, mode: widget.mode),
+          child: _TopicEditor(
+            initial: typed,
+            mode: widget.mode,
+            examples: catalog?.examples ?? const [],
+          ),
         ),
       ),
     );
@@ -100,8 +112,8 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
 
   /// What the arrow starts: the typed topic on the custom row, else the
   /// selected preset.
-  String chosen(List<String> presets) =>
-      selected == 0 ? typed : presets[selected - 1];
+  String chosen(List<GeneratorPreset> presets) =>
+      selected == 0 ? typed : presets[selected - 1].title;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -109,23 +121,23 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
     resizeToAvoidBottomInset: false,
     body: SafeArea(
       bottom: false,
-      child: AsyncView<List<String>>(
+      child: AsyncView<GeneratorCatalog>(
         load: load,
-        isEmpty: (l) => l.isEmpty,
+        isEmpty: (c) => c.presets.isEmpty,
         empty: const EmptyView(
           title: 'Chưa có gợi ý',
           subtitle: 'Hãy tự mô tả chủ đề bạn muốn luyện tập.',
         ),
-        builder: (context, presets) => _body(presets),
+        builder: (context, catalog) => _body(catalog.presets),
       ),
     ),
   );
 
-  Widget _body(List<String> presets) {
+  Widget _body(List<GeneratorPreset> presets) {
     final topic = chosen(presets);
     final line = selected == 0
         ? (typed.isEmpty ? 'Tạo chủ đề độc đáo của riêng bạn.' : typed)
-        : generatorDescription(topic);
+        : presets[selected - 1].description;
     final bottom = MediaQuery.paddingOf(context).bottom;
     return Column(
       children: [
@@ -203,7 +215,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
               childDelegate: ListWheelChildBuilderDelegate(
                 childCount: presets.length + 1,
                 builder: (context, i) => _Row(
-                  text: i == 0 ? _custom : presets[i - 1],
+                  text: i == 0 ? _custom : presets[i - 1].title,
                   custom: i == 0,
                   selected: i == selected,
                   onTap: () {
@@ -350,7 +362,12 @@ class _Row extends StatelessWidget {
 class _TopicEditor extends StatefulWidget {
   final String initial;
   final StudyMode mode;
-  const _TopicEditor({required this.initial, required this.mode});
+  final List<String> examples;
+  const _TopicEditor({
+    required this.initial,
+    required this.mode,
+    required this.examples,
+  });
   @override
   State<_TopicEditor> createState() => _TopicEditorState();
 }
@@ -456,11 +473,11 @@ class _TopicEditorState extends State<_TopicEditor> {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               clipBehavior: Clip.none,
-              itemCount: generatorExamples.length,
+              itemCount: widget.examples.length,
               separatorBuilder: (_, _) => const SizedBox(width: 6),
               itemBuilder: (_, i) => PressFade(
                 onTap: () => setState(() {
-                  controller.text = generatorExamples[i];
+                  controller.text = widget.examples[i];
                 }),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -471,7 +488,7 @@ class _TopicEditorState extends State<_TopicEditor> {
                     border: Border.all(color: D.line),
                   ),
                   child: Text(
-                    generatorExamples[i],
+                    widget.examples[i],
                     style: D.text(11, weight: FontWeight.w700),
                   ),
                 ),

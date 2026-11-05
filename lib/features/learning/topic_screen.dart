@@ -29,7 +29,8 @@ class _TopicScreenState extends State<TopicScreen> {
   bool popoverOpen = false;
 
   Future<List<String>> _loadCategories() async {
-    final list = await AppScope.read(context).lessons.categories(widget.mode);
+    final state = AppScope.read(context);
+    final list = await state.lessons.categories(state.language, widget.mode);
     if (mounted && list.isNotEmpty && category == null) {
       setState(() {
         category = list.first;
@@ -41,10 +42,15 @@ class _TopicScreenState extends State<TopicScreen> {
 
   /// A failure is shown by the grid's [FutureBuilder], which may subscribe a
   /// frame later, so the error is marked handled here.
-  Future<List<Topic>> _loadTopics() =>
-      AppScope.read(context).lessons
-          .topics(widget.mode, category!, refresh: refresh)
-        ..ignore();
+  Future<List<Topic>> _loadTopics() {
+    final state = AppScope.read(context);
+    return state.lessons.topics(
+      state.language,
+      widget.mode,
+      category!,
+      refresh: refresh,
+    )..ignore();
+  }
 
   void _select(String c) => setState(() {
     category = c;

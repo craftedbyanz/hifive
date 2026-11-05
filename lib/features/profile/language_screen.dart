@@ -2,14 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../learning/learning.dart';
 import 'level_picker_screen.dart';
 import 'settings_kit.dart';
 
-/// Picking a language that is coming soon moves the ring and swaps the footer
-/// for a disabled "Sắp ra mắt", as on the reference. Nothing is saved.
+/// The flag drawn for [language], and its size: English's is flatter.
+(CustomPainter, Size) languageFlag(Language language) => switch (language) {
+  Language.english => (const FlagPainter(), const Size(44, 27)),
+  Language.korean => (const KoreaFlagPainter(), const Size(48, 33)),
+  Language.chinese => (const ChinaFlagPainter(), const Size(48, 33)),
+  Language.japanese => (const JapanFlagPainter(), const Size(48, 33)),
+};
+
+/// Lists every course from [LessonRepository.courses]. Picking one without
+/// content moves the ring and swaps the footer for a disabled "Sắp ra mắt",
+/// as on the reference; "Xác nhận" saves an available choice.
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
   @override
@@ -17,52 +27,85 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  static const _languages = [
-    ('English', 'English', FlagPainter()),
-    ('Korean', '한국어', KoreaFlagPainter()),
-    ('Chinese', '中文', ChinaFlagPainter()),
-    ('Japanese', '日本語', JapanFlagPainter()),
-  ];
-  String _selected = 'English';
+  late Language _selected = AppScope.read(context).language;
+  late Future<List<Course>> _courses = _load();
+
+  Future<List<Course>> _load() =>
+      AppScope.read(context).lessons.courses()..ignore();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => FutureBuilder<List<Course>>(
+    future: _courses,
+    builder: (context, snapshot) {
+      final done = snapshot.connectionState == ConnectionState.done;
+      final courses = done && !snapshot.hasError ? snapshot.data : null;
+      return _page(
+        courses,
+        list: !done
+            ? const LoadingView()
+            : snapshot.hasError
+            ? ErrorView(
+                onRetry: () => setState(() {
+                  _courses = _load();
+                }),
+              )
+            : courses!.isEmpty
+            ? const EmptyView(
+                title: 'Chưa có khoá học',
+                subtitle: 'Hãy quay lại sau.',
+              )
+            : null,
+      );
+    },
+  );
+
+  /// The page around [courses], or around [list] while they load or fail.
+  Widget _page(List<Course>? courses, {Widget? list}) {
     final s = AppScope.of(context);
-    final soon = _selected != 'English';
+    final ready = list == null;
+    final soon =
+        ready && !courses!.any((c) => c.language == _selected && c.available);
     return SettingsPage(
       title: 'Ngôn ngữ học',
       padding: const EdgeInsets.fromLTRB(24, 133, 24, 215),
-      footer: Padding(
-        padding: EdgeInsets.fromLTRB(24, soon ? 0 : 11, 24, 50),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (!soon) ...[
-              _LevelBox(
-                level: s.level,
-                onTap: () => go<void>(context, const LevelPickerScreen()),
-              ),
-              const SizedBox(height: 12),
-            ],
-            soon
-                ? const SettingsCta(
-                    'Sắp ra mắt',
-                    color: Palette.ctaDisabled,
-                    onTap: null,
-                    icon: Icon(
-                      CupertinoIcons.clock_fill,
-                      size: 17,
-                      color: Colors.white,
+      footer: !ready
+          ? null
+          : Padding(
+              padding: EdgeInsets.fromLTRB(24, soon ? 0 : 11, 24, 50),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!soon) ...[
+                    _LevelBox(
+                      level: s.level,
+                      onTap: () => go<void>(context, const LevelPickerScreen()),
                     ),
-                  )
-                : SettingsCta(
-                    'Xác nhận',
-                    color: Palette.ctaCyan,
-                    onTap: () => Navigator.pop(context),
-                  ),
-          ],
-        ),
-      ),
+                    const SizedBox(height: 12),
+                  ],
+                  soon
+                      ? const SettingsCta(
+                          'Sắp ra mắt',
+                          color: Palette.ctaDisabled,
+                          onTap: null,
+                          icon: Icon(
+                            CupertinoIcons.clock_fill,
+                            size: 17,
+                            color: Colors.white,
+                          ),
+                        )
+                      : SettingsCta(
+                          'Xác nhận',
+                          color: Palette.ctaCyan,
+                          onTap: () {
+                            if (_selected != s.language) {
+                              s.setLanguage(_selected);
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
+                ],
+              ),
+            ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -79,35 +122,53 @@ class _LanguageScreenState extends State<LanguageScreen> {
           const SizedBox(height: 31),
           const SettingsSectionTitle('Ngôn ngữ'),
           const SizedBox(height: 14),
-          for (final (name, native, flag) in _languages)
+          ?list,
+          for (final course in courses ?? const <Course>[])
             Padding(
               padding: const EdgeInsets.only(bottom: 14),
-              child: SelectCard(
-                key: ValueKey('language-$name'),
-                selected: _selected == name,
-                height: 82,
-                onTap: () => setState(() => _selected = name),
-                child: Row(
-                  children: [
-                    SizedBox(width: name == 'English' ? 20 : 21),
-                    CustomPaint(
-                      size: name == 'English'
-                          ? const Size(44, 27)
-                          : const Size(48, 33),
-                      painter: flag,
-                    ),
-                    SizedBox(width: name == 'English' ? 22 : 18),
-                    Expanded(
-                      child: _LanguageText(
-                        name: name,
-                        native: native,
-                        soon: name != 'English',
-                      ),
-                    ),
-                  ],
-                ),
+              child: _LanguageCard(
+                course: course,
+                selected: _selected == course.language,
+                onTap: () => setState(() => _selected = course.language),
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LanguageCard extends StatelessWidget {
+  final Course course;
+  final bool selected;
+  final VoidCallback onTap;
+  const _LanguageCard({
+    required this.course,
+    required this.selected,
+    required this.onTap,
+  });
+  @override
+  Widget build(BuildContext context) {
+    final language = course.language;
+    final english = language == Language.english;
+    final (flag, size) = languageFlag(language);
+    return SelectCard(
+      key: ValueKey('language-${language.title}'),
+      selected: selected,
+      height: 82,
+      onTap: onTap,
+      child: Row(
+        children: [
+          SizedBox(width: english ? 20 : 21),
+          CustomPaint(size: size, painter: flag),
+          SizedBox(width: english ? 22 : 18),
+          Expanded(
+            child: _LanguageText(
+              name: language.title,
+              native: language.nativeTitle,
+              soon: !course.available,
+            ),
+          ),
         ],
       ),
     );

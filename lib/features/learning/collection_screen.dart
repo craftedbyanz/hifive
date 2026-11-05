@@ -31,8 +31,10 @@ class _CollectionScreenState extends State<CollectionScreen> {
   // A page is 335 of 393 pt: a 307.6 pt card and 27.4 pt between cards.
   final pages = PageController(viewportFraction: 335 / 393);
 
-  Future<List<Lesson>> load() =>
-      AppScope.read(context).lessons.lessons(widget.topic);
+  Future<List<Lesson>> load() {
+    final state = AppScope.read(context);
+    return state.lessons.lessons(state.language, widget.topic);
+  }
 
   @override
   void dispose() {

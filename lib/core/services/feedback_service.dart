@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 abstract interface class FeedbackService {
-  Future<void> speak(String text);
+  /// Speaks [text] with a voice for [locale], such as `en-US`.
+  Future<void> speak(String text, {required String locale});
   Future<void> stop();
   void tap();
   void success();
@@ -14,9 +15,9 @@ class PlatformFeedback implements FeedbackService {
   final FlutterTts _tts = FlutterTts();
   bool sound = true, haptic = true;
   @override
-  Future<void> speak(String text) async {
+  Future<void> speak(String text, {required String locale}) async {
     try {
-      await _tts.setLanguage('en-US');
+      await _tts.setLanguage(locale);
       await _tts.setSpeechRate(.45);
       await _tts.speak(text);
     } on Exception {
@@ -47,7 +48,7 @@ class PlatformFeedback implements FeedbackService {
 
 class SilentFeedback implements FeedbackService {
   @override
-  Future<void> speak(String text) async {}
+  Future<void> speak(String text, {required String locale}) async {}
   @override
   Future<void> stop() async {}
   @override

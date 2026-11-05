@@ -175,6 +175,37 @@ void main() {
     expect(second.totalXp, 12);
     expect(second.gameResume?['index'], 1);
   });
+
+  group('study language', () {
+    test('defaults to English for data saved before courses', () async {
+      final state = stateWith({'name': 'Lan'}, MemoryAppRepository());
+      await state.load();
+      expect(state.language, Language.english);
+      expect(state.storageError, isNull);
+    });
+
+    test('an unknown saved code falls back to English', () async {
+      final state = stateWith({'language': 'xx'}, MemoryAppRepository());
+      await state.load();
+      expect(state.language, Language.english);
+    });
+
+    test('is saved by code and restored', () async {
+      final repository = MemoryAppRepository();
+      final first = createAppState(
+        repository: repository,
+        feedback: SilentFeedback(),
+      )..setLanguage(Language.japanese);
+      await first.flush();
+      expect(repository.data!['language'], 'ja');
+      final second = createAppState(
+        repository: repository,
+        feedback: SilentFeedback(),
+      );
+      await second.load();
+      expect(second.language, Language.japanese);
+    });
+  });
 }
 
 class _ThrowingRepository implements AppRepository {

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
@@ -57,6 +58,7 @@ class ProfileScreen extends StatelessWidget {
           _Card(
             children: [
               _LanguageRow(
+                language: s.language,
                 level: s.level,
                 onTap: () => open(const LanguageScreen()),
               ),
@@ -470,60 +472,68 @@ class _Row extends StatelessWidget {
 }
 
 class _LanguageRow extends StatelessWidget {
+  final Language language;
   final String level;
   final VoidCallback onTap;
-  const _LanguageRow({required this.level, required this.onTap});
+  const _LanguageRow({
+    required this.language,
+    required this.level,
+    required this.onTap,
+  });
   @override
-  Widget build(BuildContext context) => PressFade(
-    key: const ValueKey('profile-language'),
-    onTap: onTap,
-    child: SizedBox(
-      height: 81,
-      child: Row(
-        children: [
-          const SizedBox(width: 22),
-          const CustomPaint(size: Size(44, 27), painter: FlagPainter()),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'English',
-                  style: D.text(17, weight: FontWeight.w600, height: 22 / 17),
-                ),
-                Text(
-                  'English',
-                  style: D.text(13, color: D.secondary, height: 17 / 13),
-                ),
-                const SizedBox(height: 2),
-              ],
-            ),
-          ),
-          Container(
-            width: 32,
-            height: 24,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: D.purple.withValues(alpha: .12),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              level,
-              style: D.text(
-                12,
-                weight: FontWeight.w700,
-                color: D.purple,
-                height: 1,
+  Widget build(BuildContext context) {
+    final (flag, size) = languageFlag(language);
+    return PressFade(
+      key: const ValueKey('profile-language'),
+      onTap: onTap,
+      child: SizedBox(
+        height: 81,
+        child: Row(
+          children: [
+            const SizedBox(width: 22),
+            CustomPaint(size: size, painter: flag),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    language.title,
+                    style: D.text(17, weight: FontWeight.w600, height: 22 / 17),
+                  ),
+                  Text(
+                    language.nativeTitle,
+                    style: D.text(13, color: D.secondary, height: 17 / 13),
+                  ),
+                  const SizedBox(height: 2),
+                ],
               ),
             ),
-          ),
-          const SizedBox(width: 20),
-        ],
+            Container(
+              width: 32,
+              height: 24,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: D.purple.withValues(alpha: .12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                level,
+                style: D.text(
+                  12,
+                  weight: FontWeight.w700,
+                  color: D.purple,
+                  height: 1,
+                ),
+              ),
+            ),
+            const SizedBox(width: 20),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _LogoutRow extends StatelessWidget {

@@ -47,12 +47,14 @@ The cycle was learning -> insights (CompletionScreen) -> history (ResultScreen) 
 
 `HifiveApp` moved from `main.dart` to `lib/app/hifive_app.dart`. `AppState` now requires every repository and its seed decks, and `createAppState` in `lib/app/app_state_factory.dart` supplies the mocks, seed decks and sample history. `state/state.dart` no longer re-exports `data/local`. `scripts/check.sh` fails when `core`, `domain`, `state` or `widgets` import `lib/data`.
 
-### 5. Add study language and course (behavior change) - todo
+### 5. Add study language and course (behavior change) - done
 
-1. `Language` and `Course` models; `AppState` stores the study language with a default for older data.
-2. Repositories take the language; English content sits under `data/content/en/`. The generator screen's copy (`generatorDescription`, `generatorExamples`) is read straight from `data/content/en/lessons.dart` and should come through `LessonRepository` instead.
-3. Text-to-speech takes its locale from the course instead of a fixed `en-US`.
-4. The language screen saves the choice; languages without content stay "Sắp ra mắt".
+1. `Language` (saved by code) and `Course` live in `domain/models/course.dart`; `AppState.language` is saved, with English for older data.
+2. Every `LessonRepository` call takes the language. `courses()` reports which have content, and `generator()` replaces `suggestions()` so the generator screen no longer reads `data/content/en/lessons.dart`.
+3. `FeedbackService.speak` takes a locale; `AppState.speak` passes the course's `speechLocale`.
+4. The language screen loads courses through the repository and saves the choice on "Xác nhận"; the profile row shows the study language.
+
+Still English-only: `DeckGenerator`, `GradingRepository` and `ConversationRepository` don't take a language yet, and Home's flag button is fixed to English.
 
 ### 6. Tidy tests and dependencies - done
 
