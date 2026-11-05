@@ -60,8 +60,8 @@ void main() {
   testWidgets('sign out keeps all saved data and stays on the page', (
     tester,
   ) async {
-    final repository = MemoryAppRepository();
-    final state = fresh(repository: repository);
+    final store = MemoryRecordStore();
+    final state = fresh(store: store);
     state.name = 'Linh';
     await mount(tester, state, const ProfileScreen(), size: _tall);
     await tester.tap(find.byKey(const ValueKey('profile-logout')));
@@ -72,7 +72,7 @@ void main() {
     );
     expect(state.name, 'Linh');
     expect(find.byType(ProfileScreen), findsOneWidget);
-    expect(repository.data, isNull);
+    expect(store.records, isEmpty);
   });
 
   testWidgets('every settings row is listed in reference order', (

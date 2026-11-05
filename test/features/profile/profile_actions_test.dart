@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/data/data.dart';
+import 'package:hifive/domain/sync/sync.dart';
 import 'package:hifive/features/information/information.dart';
 import 'package:hifive/features/profile/profile.dart';
 import 'package:hifive/state/state.dart';
@@ -185,14 +186,15 @@ void main() {
   });
 
   testWidgets('a chosen voice is saved', (tester) async {
-    final repository = MemoryAppRepository();
-    final state = fresh(repository: repository);
+    final store = MemoryRecordStore();
+    final state = fresh(store: store);
     await mount(tester, state, const VoiceScreen(), size: _tall);
     expect(state.voice, 'Aaron');
     await tester.tap(find.byKey(const ValueKey('voice-Nicky')));
     await tester.pump();
     expect(state.voice, 'Nicky');
-    expect(state.toJson()['voice'], 'Nicky');
+    await state.flush();
+    expect(store.data(RecordKind.setting, 'voice'), {'v': 'Nicky'});
   });
 
   testWidgets('voice help opens and its pill closes it', (tester) async {

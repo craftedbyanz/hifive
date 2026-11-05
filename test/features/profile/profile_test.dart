@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/domain/sync/sync.dart';
 import 'package:hifive/features/profile/profile.dart';
 
 import '../../helpers.dart';
@@ -12,8 +13,8 @@ void main() {
   setUpAll(loadAppFonts);
 
   testWidgets('editing the name saves a trimmed value', (tester) async {
-    final repository = MemoryAppRepository();
-    final state = fresh(repository: repository);
+    final store = MemoryRecordStore();
+    final state = fresh(store: store);
     await mount(tester, state, const EditProfileScreen());
     await tester.enterText(find.byType(TextField).first, '  Linh  ');
     await tester.pump();
@@ -21,7 +22,7 @@ void main() {
     await tester.pump();
     await state.flush();
     expect(state.name, 'Linh');
-    expect(repository.data?['name'], 'Linh');
+    expect(store.data(RecordKind.setting, 'name'), {'v': 'Linh'});
   });
 
   testWidgets('a blank name cannot be saved', (tester) async {

@@ -239,7 +239,7 @@ class _DeckFormState extends State<_DeckForm> {
       if (deck == null) {
         state.addDeck(
           Deck(
-            id: 'deck-${state.now().microsecondsSinceEpoch}',
+            id: state.newId(),
             title: title.text.trim(),
             description: 'Bộ từ vựng mẫu của bạn',
             words: words,

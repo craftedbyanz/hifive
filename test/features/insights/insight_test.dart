@@ -113,11 +113,15 @@ void main() {
   });
 
   testWidgets('first use is saved and restored', (tester) async {
-    final state = _state();
-    final saved = state.toJson();
-    final repository = MemoryAppRepository();
-    await repository.save(saved);
-    final restored = fresh(repository: repository);
+    final store = MemoryRecordStore();
+    final first = fresh(
+      store: store,
+      legacy: MemoryAppRepository()
+        ..data = {'firstUse': '2026-10-03T00:00:00.000'},
+    );
+    await first.load();
+    expect(first.firstUse, DateTime(2026, 10, 3));
+    final restored = fresh(store: store);
     await restored.load();
     expect(restored.firstUse, DateTime(2026, 10, 3));
   });

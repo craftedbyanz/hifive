@@ -20,7 +20,8 @@ Future<void> loadAppFonts() async {
 /// The catalog answers at once in tests unless a test passes its own.
 AppState fresh({
   bool includeExamples = false,
-  AppRepository? repository,
+  RecordStore? store,
+  AppRepository? legacy,
   FeedbackService? feedback,
   SystemActions? system,
   LessonRepository? lessons,
@@ -29,7 +30,8 @@ AppState fresh({
   DeckGenerator? deckGenerator,
   InsightRepository? insights,
 }) => createAppState(
-  repository: repository ?? MemoryAppRepository(),
+  store: store ?? MemoryRecordStore(),
+  legacy: legacy,
   feedback: feedback ?? SilentFeedback(),
   system: system ?? RecordingSystemActions(),
   includeExamples: includeExamples,

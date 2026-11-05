@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,9 +7,15 @@ import '../core/services/feedback_service.dart';
 import '../core/services/system_actions.dart';
 import '../domain/models/models.dart';
 import '../domain/repositories/repositories.dart';
+import '../domain/sync/sync.dart';
+import 'app_records.dart';
 
 class AppState extends ChangeNotifier {
-  final AppRepository repository;
+  /// The device database, the app's source of truth.
+  final RecordStore store;
+
+  /// The JSON blob saved before records, imported once on first launch.
+  final AppRepository? legacy;
   final LessonRepository lessons;
   final GradingRepository grading;
   final ConversationRepository conversation;
@@ -19,25 +24,35 @@ class AppState extends ChangeNotifier {
   final FeedbackService feedback;
   final SystemActions system;
   final DateTime Function() now;
+  final List<Deck> _builtIn;
+  final List<StudySession> _examples;
 
   /// Wires the state to its services. `lib/app/app_state_factory.dart` picks
-  /// the implementations, so this layer never imports `lib/data`.
+  /// the implementations, so this layer never imports `lib/data`. [decks]
+  /// are the built-in decks; [examples] are sample results shown but never
+  /// stored.
   AppState({
-    required this.repository,
+    required this.store,
+    this.legacy,
     required this.lessons,
     required this.grading,
     required this.conversation,
     required this.deckGenerator,
     required this.insights,
-    required this.decks,
+    required List<Deck> decks,
     List<StudySession> examples = const [],
     FeedbackService? feedback,
     SystemActions? system,
     DateTime Function()? now,
-  }) : history = [...examples],
+  }) : _builtIn = decks,
+       _examples = examples,
+       decks = decks,
+       history = [...examples],
        feedback = feedback ?? PlatformFeedback(),
        system = system ?? const PlatformSystemActions(),
-       now = now ?? DateTime.now;
+       now = now ?? DateTime.now {
+    _clock = HlcClock(node: _deviceId, now: this.now);
+  }
   // Glass, the look every Home measurement was made with; the reference's
   // default for a new account was not seen.
   String name = 'An',
@@ -67,77 +82,87 @@ class AppState extends ChangeNotifier {
   late DateTime firstUse = now();
   Map<String, dynamic>? gameResume;
   String? storageError;
+
+  /// This install's id, saved on [load]. It names the device in HLC stamps.
+  late String _deviceId = uuidV7(now());
+  late HlcClock _clock;
+  final _pending = <SyncRecord>[];
   Future<void> _writes = Future.value();
+
+  /// A new id that won't collide with ids made on other devices.
+  String newId() => uuidV7(now());
+
+  /// Reads the records, importing the old JSON blob on first launch. Any
+  /// failure leaves the defaults whole and stops saving, so unreadable data
+  /// is never overwritten.
   Future<void> load() async {
     try {
-      final j = await repository.load();
-      if (j != null) _apply(j);
+      final saved = await store.meta('deviceId');
+      if (saved == null) {
+        await store.setMeta('deviceId', _deviceId);
+      } else {
+        _deviceId = saved;
+        _clock = HlcClock(node: _deviceId, now: now, last: _clock.last);
+      }
+      var records = await store.loadAll();
+      if (records.isEmpty && await store.meta('legacyImported') == null) {
+        final blob = await legacy?.load();
+        if (blob != null) {
+          records = importLegacy(
+            blob,
+            builtIn: _builtIn,
+            deviceId: _deviceId,
+            stamp: _clock.tick,
+            now: now(),
+          );
+          await store.write(records);
+        }
+        await store.setMeta('legacyImported', '1');
+      }
+      final restored = restore(
+        records,
+        builtIn: _builtIn,
+        examples: _examples,
+        deviceId: _deviceId,
+      );
+      _clock.receive(restored.latest);
+      _apply(restored);
+      if (!restored.hasOwnFirstUse) {
+        _put(AppKinds.firstUse, _deviceId, {'at': firstUse.toIso8601String()});
+        await store.write(_takePending());
+      }
     } catch (_) {
       // Unreadable or mistyped data must not stop the app from opening.
+      _pending.clear();
       storageError =
           'Không thể đọc dữ liệu đã lưu. Dữ liệu gốc chưa bị ghi đè.';
     }
     _syncFeedback();
   }
 
-  /// Parses everything before assigning, so bad data leaves the defaults whole.
-  void _apply(Map<String, dynamic> j) {
-    final savedName = j['name'] as String? ?? name,
-        savedLevel = j['level'] as String? ?? level,
-        savedLanguage = Language.fromCode(j['language'] as String?) ?? language,
-        savedAppearance = j['appearance'] as String? ?? appearance,
-        savedInputColor = j['inputColor'] as String? ?? inputColor,
-        savedVoice = j['voice'] as String? ?? voice,
-        savedDifficulty = j['difficulty'] as String? ?? difficulty,
-        savedTone = j['chatTone'] as String? ?? chatTone;
-    final savedChatFree = j['chatFree'] as bool? ?? true,
-        savedTipSeen = j['chatTipSeen'] as bool? ?? false;
-    final savedHints = j['showHints'] as bool? ?? false,
-        savedSound = j['sound'] as bool? ?? true,
-        savedHaptic = j['haptic'] as bool? ?? true;
-    final savedBest = j['bestScore'] as int? ?? 0,
-        savedPlayed = j['gamesPlayed'] as int? ?? 0,
-        savedXp = j['totalXp'] as int? ?? 0;
-    final order = j['modeOrder'] as List?;
-    final savedOrder = order != null && order.toSet().length == 3
-        ? order.map((i) => StudyMode.values[i as int]).toList()
-        : modeOrder;
-    final savedDecks = j['decks'] == null
-        ? decks
-        : (j['decks'] as List)
-              .map((d) => Deck.fromJson(Map<String, dynamic>.from(d as Map)))
-              .toList();
-    final savedHistory = (j['history'] as List? ?? const [])
-        .map((h) => StudySession.fromJson(Map<String, dynamic>.from(h as Map)))
-        .toList();
-    final savedFirstUse = j['firstUse'] == null
-        ? null
-        : DateTime.parse(j['firstUse'] as String);
-    final savedResume = j['gameResume'] == null
-        ? null
-        : Map<String, dynamic>.from(j['gameResume'] as Map);
-    name = savedName;
-    level = savedLevel;
-    language = savedLanguage;
-    appearance = savedAppearance;
-    inputColor = savedInputColor;
-    // Saved before voices were selectable.
-    voice = savedVoice == 'System' ? voice : savedVoice;
-    difficulty = savedDifficulty;
-    chatTone = savedTone;
-    chatFree = savedChatFree;
-    chatTipSeen = savedTipSeen;
-    showHints = savedHints;
-    sound = savedSound;
-    haptic = savedHaptic;
-    bestScore = savedBest;
-    gamesPlayed = savedPlayed;
-    totalXp = savedXp;
-    modeOrder = savedOrder;
-    decks = savedDecks;
-    history = savedHistory;
-    gameResume = savedResume;
-    if (savedFirstUse != null) firstUse = savedFirstUse;
+  void _apply(RestoredState r) {
+    final s = r.settings;
+    name = s['name'] as String? ?? name;
+    level = s['level'] as String? ?? level;
+    appearance = s['appearance'] as String? ?? appearance;
+    inputColor = s['inputColor'] as String? ?? inputColor;
+    voice = s['voice'] as String? ?? voice;
+    difficulty = s['difficulty'] as String? ?? difficulty;
+    chatTone = s['chatTone'] as String? ?? chatTone;
+    chatFree = s['chatFree'] as bool? ?? chatFree;
+    showHints = s['showHints'] as bool? ?? showHints;
+    chatTipSeen = s['chatTipSeen'] as bool? ?? chatTipSeen;
+    language = r.language ?? language;
+    modeOrder = r.modeOrder ?? modeOrder;
+    sound = r.sound ?? sound;
+    haptic = r.haptic ?? haptic;
+    gameResume = r.gameResume;
+    decks = r.decks;
+    history = r.history;
+    gamesPlayed = r.gamesPlayed;
+    totalXp = r.totalXp;
+    bestScore = r.bestScore;
+    if (r.firstUse != null) firstUse = r.firstUse!;
   }
 
   void _syncFeedback() {
@@ -147,36 +172,34 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  Map<String, dynamic> toJson() => {
-    'version': 1,
-    'name': name,
-    'level': level,
-    'language': language.code,
-    'appearance': appearance,
-    'inputColor': inputColor,
-    'voice': voice,
-    'difficulty': difficulty,
-    'chatTone': chatTone,
-    'chatFree': chatFree,
-    'chatTipSeen': chatTipSeen,
-    'showHints': showHints,
-    'sound': sound,
-    'haptic': haptic,
-    'modeOrder': modeOrder.map((m) => m.index).toList(),
-    'decks': decks.map((d) => d.toJson()).toList(),
-    'history': history.map((h) => h.toJson()).toList(),
-    'bestScore': bestScore,
-    'gamesPlayed': gamesPlayed,
-    'totalXp': totalXp,
-    'gameResume': gameResume,
-    'firstUse': firstUse.toIso8601String(),
-  };
+  /// Queues a record for the next [commit], stamped now.
+  void _put(String kind, String id, Map<String, dynamic>? data) =>
+      _pending.add(SyncRecord(kind, id, data, _clock.tick()));
+
+  void _setting(String key, Object value) =>
+      _put(RecordKind.setting, key, {'v': value});
+
+  void _device(String key, Object? value) =>
+      _put(RecordKind.device, key, {'v': value});
+
+  List<SyncRecord> _takePending() {
+    final batch = [..._pending];
+    _pending.clear();
+    return batch;
+  }
+
+  /// Notifies listeners and writes the records queued since the last commit
+  /// in one transaction.
   void commit() {
     _syncFeedback();
     notifyListeners();
-    if (storageError != null) return;
-    final snapshot = jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>;
-    _writes = _writes.then((_) => repository.save(snapshot)).catchError((
+    if (storageError != null) {
+      _pending.clear();
+      return;
+    }
+    final batch = _takePending();
+    if (batch.isEmpty) return;
+    _writes = _writes.then((_) => store.write(batch)).catchError((
       Object error,
     ) {
       storageError = 'Không thể lưu thay đổi trên thiết bị.';
@@ -188,15 +211,20 @@ class AppState extends ChangeNotifier {
   void complete(StudySession session) {
     if (!history.any((s) => s.id == session.id)) {
       history.insert(0, session);
+      _put(RecordKind.session, session.id, sessionData(session));
       commit();
     }
   }
 
   void rate(FlashWord word, int rating) {
-    final interval = word.nextIntervals[rating];
-    word.status = rating == 0 ? 'learning' : 'review';
-    word.intervalDays = interval.inDays;
-    word.due = now().add(interval);
+    final event = ReviewEvent(
+      id: newId(),
+      wordId: word.id,
+      at: now(),
+      rating: rating,
+    );
+    applyReview(word, event);
+    _put(RecordKind.review, event.id, event.toJson());
     commit();
   }
 
@@ -210,31 +238,37 @@ class AppState extends ChangeNotifier {
           description: 'Từ vựng của riêng bạn',
           words: [],
         );
-    if (saved == null) decks.add(deck);
+    if (saved == null) {
+      decks.add(deck);
+      _put(RecordKind.deck, deck.id, deckData(deck, now()));
+    }
     if (!deck.words.any((w) => w.word.toLowerCase() == word.toLowerCase())) {
-      deck.words.add(
-        FlashWord(
-          id: 'saved-${now().microsecondsSinceEpoch}',
-          word: word,
-          meaning: meaning,
-        ),
+      final card = FlashWord(
+        id: savedWordId(word),
+        word: word,
+        meaning: meaning,
       );
+      deck.words.add(card);
+      _put(RecordKind.word, card.id, wordData(card, deck.id, now()));
       commit();
     }
   }
 
   void setVoice(String value) {
     voice = value;
+    _setting('voice', value);
     commit();
   }
 
   void setName(String value) {
     name = value;
+    _setting('name', value);
     commit();
   }
 
   void setLanguage(Language value) {
     language = value;
+    _setting('language', value.code);
     commit();
   }
 
@@ -244,21 +278,25 @@ class AppState extends ChangeNotifier {
 
   void setLevel(String value) {
     level = value;
+    _setting('level', value);
     commit();
   }
 
   void setAppearance(String value) {
     appearance = value;
+    _setting('appearance', value);
     commit();
   }
 
   void setInputColor(String value) {
     inputColor = value;
+    _setting('inputColor', value);
     commit();
   }
 
   void setDifficulty(String value) {
     difficulty = value;
+    _setting('difficulty', value);
     commit();
   }
 
@@ -268,72 +306,105 @@ class AppState extends ChangeNotifier {
 
   void setChatFree(bool value) {
     chatFree = value;
+    _setting('chatFree', value);
     commit();
   }
 
   void setChatTone(String value) {
     chatTone = value;
+    _setting('chatTone', value);
     commit();
   }
 
   void dismissChatTip() {
     if (chatTipSeen) return;
     chatTipSeen = true;
+    _setting('chatTipSeen', true);
     commit();
   }
 
   void setShowHints(bool value) {
     showHints = value;
+    _setting('showHints', value);
     commit();
   }
 
   void setSound(bool value) {
     sound = value;
+    _device('sound', value);
     commit();
   }
 
   void setHaptic(bool value) {
     haptic = value;
+    _device('haptic', value);
     commit();
   }
 
+  void _saveModeOrder() =>
+      _setting('modeOrder', [for (final m in modeOrder) m.index]);
+
   void resetModeOrder() {
     modeOrder = StudyMode.values.toList();
+    _saveModeOrder();
     commit();
   }
 
   void moveMode(int from, int to) {
     final mode = modeOrder.removeAt(from);
     modeOrder.insert(to, mode);
+    _saveModeOrder();
     commit();
   }
 
   void addDeck(Deck deck) {
     decks.add(deck);
+    _put(RecordKind.deck, deck.id, deckData(deck, now()));
+    _putWords(deck, deck.words);
     commit();
   }
 
   void addWords(Deck deck, List<FlashWord> words) {
     deck.words.addAll(words);
+    _putWords(deck, words);
     commit();
   }
 
+  void _putWords(Deck deck, List<FlashWord> words) {
+    final base = now();
+    for (var i = 0; i < words.length; i++) {
+      // A millisecond apart, so the cards keep their order.
+      final at = base.add(Duration(milliseconds: i));
+      _put(RecordKind.word, words[i].id, wordData(words[i], deck.id, at));
+    }
+  }
+
   void resetSchedule(Deck deck) {
+    final at = now();
     for (final word in deck.words) {
-      word.status = 'new';
-      word.due = null;
-      word.intervalDays = 0;
+      final event = ReviewEvent(
+        id: newId(),
+        wordId: word.id,
+        at: at,
+        rating: ReviewEvent.reset,
+      );
+      applyReview(word, event);
+      _put(RecordKind.review, event.id, event.toJson());
     }
     commit();
   }
 
+  /// Hides every result dated before now, here and, after sync, on other
+  /// devices; a lesson finished later elsewhere stays.
   void clearHistory() {
     history.clear();
+    _put(RecordKind.historyCleared, 'history', {'at': now().toIso8601String()});
     commit();
   }
 
   void saveGameProgress(Map<String, dynamic> progress) {
     gameResume = progress;
+    _device('gameResume', progress);
     commit();
   }
 
@@ -341,7 +412,14 @@ class AppState extends ChangeNotifier {
     gamesPlayed++;
     totalXp += score;
     bestScore = max(bestScore, score);
-    if (clearResume) gameResume = null;
+    _put(RecordKind.game, newId(), {
+      'score': score,
+      'at': now().toIso8601String(),
+    });
+    if (clearResume) {
+      gameResume = null;
+      _device('gameResume', null);
+    }
     commit();
   }
 

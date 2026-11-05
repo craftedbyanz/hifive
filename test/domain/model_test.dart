@@ -14,7 +14,7 @@ void main() {
   appearanceLooks();
   test('demo records expose three saved-result modes without affecting current streak', () async {
     final state = createAppState(
-      repository: MemoryAppRepository(),
+      store: MemoryRecordStore(),
       feedback: SilentFeedback(),
       includeExamples: true,
       now: () => DateTime(2026, 11, 1),
@@ -63,11 +63,8 @@ void main() {
   test(
     'completion persists and reloads without overwriting previous results',
     () async {
-      final repo = MemoryAppRepository();
-      final state = createAppState(
-        repository: repo,
-        feedback: SilentFeedback(),
-      );
+      final repo = MemoryRecordStore();
+      final state = createAppState(store: repo, feedback: SilentFeedback());
       await state.load();
       final lesson = sampleLesson(StudyMode.grammar, title: 'Một buổi học');
       for (var i = 0; i < 2; i++) {
@@ -82,10 +79,7 @@ void main() {
         );
       }
       await state.flush();
-      final reloaded = createAppState(
-        repository: repo,
-        feedback: SilentFeedback(),
-      );
+      final reloaded = createAppState(store: repo, feedback: SilentFeedback());
       await reloaded.load();
       expect(reloaded.history.map((s) => s.id), ['result-1', 'result-0']);
       expect(
@@ -99,7 +93,7 @@ void main() {
     'streak handles yesterday, gaps, duplicate sessions and month boundaries',
     () {
       final state = createAppState(
-        repository: MemoryAppRepository(),
+        store: MemoryRecordStore(),
         feedback: SilentFeedback(),
         now: () => DateTime(2026, 11, 2),
       );
@@ -128,17 +122,17 @@ void main() {
   test(
     'review ratings update due dates on the clone only and survive reload',
     () async {
-      final repo = MemoryAppRepository();
+      final repo = MemoryRecordStore();
       final now = DateTime(2026, 11, 1, 10);
       final state = createAppState(
-        repository: repo,
+        store: repo,
         now: () => now,
         feedback: SilentFeedback(),
       );
       final word = state.decks.first.words.first;
       state.rate(word, 2);
       await state.flush();
-      final next = createAppState(repository: repo, feedback: SilentFeedback());
+      final next = createAppState(store: repo, feedback: SilentFeedback());
       await next.load();
       expect(next.decks.first.words.first.status, 'review');
       expect(
@@ -149,7 +143,7 @@ void main() {
   );
   test('saved dictionary words deduplicate case-insensitively', () {
     final state = createAppState(
-      repository: MemoryAppRepository(),
+      store: MemoryRecordStore(),
       feedback: SilentFeedback(),
     );
     state.saveWord('Sorry', 'xin lỗi');

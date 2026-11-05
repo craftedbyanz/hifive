@@ -26,7 +26,7 @@ import 'package:hifive/state/state.dart';
 
 const out = String.fromEnvironment('PIX_OUT');
 AppState make() => createAppState(
-  repository: MemoryAppRepository(),
+  store: MemoryRecordStore(),
   feedback: SilentFeedback(),
   includeExamples: true,
   now: () => DateTime(2026, 11, 1, 9, 30),

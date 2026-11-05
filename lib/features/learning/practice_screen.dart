@@ -209,7 +209,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
     if (index == widget.lesson.questions.length - 1) {
       final state = AppScope.read(context);
       final session = StudySession(
-        id: 'session-${widget.lesson.id}-${state.now().microsecondsSinceEpoch}',
+        id: state.newId(),
         lesson: widget.lesson,
         date: state.now(),
         answers: records

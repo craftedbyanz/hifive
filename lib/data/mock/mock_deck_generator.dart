@@ -1,5 +1,6 @@
 import '../../domain/models/models.dart';
 import '../../domain/repositories/deck_generator.dart';
+import '../../domain/sync/ids.dart';
 import '../content/en/decks.dart';
 
 /// Hands out the words already bundled with the app. The reference's
@@ -25,13 +26,12 @@ class MockDeckGenerator implements DeckGenerator {
     final unique = <String, FlashWord>{
       for (final w in seedDecks().expand((d) => d.words)) w.word: w,
     };
-    final stamp = now().microsecondsSinceEpoch;
     return unique.values
         .where((w) => !exclude.any((v) => v.word == w.word))
         .take(count)
         .map(
           (w) => FlashWord(
-            id: 'local-$stamp-${w.id}',
+            id: uuidV7(now()),
             word: w.word,
             meaning: w.meaning,
             phonetic: w.phonetic,

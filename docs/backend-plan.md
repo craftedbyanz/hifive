@@ -32,19 +32,22 @@ Everything the learner creates is a **record**: `kind`, `id`, a JSON `data` map 
 | `review` | review id | yes | Append-only review log: a rating, a schedule reset or, for migrated data, a state snapshot. A card's schedule is the log replayed in time order, so reviews of one card on two devices both count. |
 | `game` | game id | yes | One row per finished game; played count, XP and best score are derived (count, sum, max). |
 | `legacyStats` | device id | yes | Counters from the old JSON blob, added to the derived totals. |
+| `firstUse` | device id | yes | When each device was first used; the app shows the earliest. |
 | `device` | name | no | Device-only state: sound, haptic and the unfinished game. |
 
-`firstUse` is the earliest of the stored first-use time and every session date. `chatTipSeen` is only ever written as true.
+`chatTipSeen` is only ever written as true. Reviews made at the same moment replay in the order of their record stamps.
 
 **Signing out** deletes the account's local records; the next learner starts clean. **Signing in** on a device that has guest records merges them into the account with the rules above.
 
 ## Steps
 
-### 1. Local SQLite store - in progress
+### 1. Local SQLite store - done
 
 1. Sync primitives in `lib/domain/sync/`: HLC, UUID v7, records, the merge rule and review replay, with tests.
 2. `RecordStore` interface in `domain/repositories`, a SQLite implementation in `data/local` and a memory one for tests.
 3. `AppState` loads from records and writes only the records a change touches; the first launch converts the `hifive.local.v1` blob and keeps it untouched.
+
+Done with `sqlite3` 3.7.1 (pinned) and `path_provider`. Verified by tests for both stores, import, reload and two-device merges, and on the iOS Simulator by importing a seeded blob.
 
 ### 2. Firebase Authentication - todo
 

@@ -6,6 +6,7 @@ import 'package:hifive/core/design/design.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
+import 'package:hifive/domain/sync/sync.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/game/game.dart';
 import 'package:hifive/features/history/history.dart';
@@ -162,7 +163,8 @@ void main() {
     testWidgets('a closed settings tip stays closed on later visits', (
       tester,
     ) async {
-      final state = fresh();
+      final store = MemoryRecordStore();
+      final state = fresh(store: store);
       await mount(
         tester,
         state,
@@ -171,7 +173,8 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('chat-tip-close')));
       await tester.pump();
       expect(state.chatTipSeen, isTrue);
-      expect(state.toJson()['chatTipSeen'], isTrue);
+      await state.flush();
+      expect(store.data(RecordKind.setting, 'chatTipSeen'), {'v': true});
       await tester.pumpWidget(const SizedBox());
       await mount(
         tester,
