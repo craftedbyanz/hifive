@@ -47,7 +47,7 @@ Everything the learner creates is a **record**: `kind`, `id`, a JSON `data` map 
 2. `RecordStore` interface in `domain/repositories`, a SQLite implementation in `data/local` and a memory one for tests.
 3. `AppState` loads from records and writes only the records a change touches; the first launch converts the `hifive.local.v1` blob and keeps it untouched.
 
-Done with `sqlite3` 3.7.1 (pinned) and `path_provider`. Verified by tests for both stores, import, reload and two-device merges, and on the iOS Simulator by importing a seeded blob.
+Done with `sqlite3` (latest 3.x) and `path_provider`. Verified by tests for both stores, import, reload and two-device merges, and on the iOS Simulator by importing a seeded blob.
 
 ### 2. Firebase Authentication - todo
 
