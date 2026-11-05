@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "440247164777",
+    "project_id": "hifive-3371b",
+    "storage_bucket": "hifive-3371b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440247164777:android:5d883b7da4f39c77cfa7f8",
+        "android_client_info": {
+          "package_name": "com.anznguyen.hifive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440247164777-2sm6gc433iau0o5vbcasa12s72lf35a2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anznguyen.hifive",
+            "certificate_hash": "0a3280795c2d3eb53108273165a55be81cdb3dc8"
+          }
+        },
+        {
+          "client_id": "440247164777-9q60d3r0p8s09t13igr9cbin8o1n59t2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdDz2EIBOF532IKZTuhuctSFD58LtTskI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440247164777-9q60d3r0p8s09t13igr9cbin8o1n59t2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "440247164777-nfka3rjve3odufgbgv0j4qsif18ob91v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anznguyen.hifive"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

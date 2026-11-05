@@ -28,6 +28,8 @@ scripts/install_iphone.sh                                     # Release build, i
 
 Devices: iOS Simulator `87E929A8-9364-4443-AC07-69345651B181` (393 × 852); Android emulator `Flutter_API_36`. `flutter_tts` Swift Package Manager notices during iOS builds are expected.
 
+Firebase project `hifive-3371b` (Spark plan). `lib/firebase_options.dart`, `ios/Runner/GoogleService-Info.plist` and `android/app/google-services.json` come from `flutterfire configure --project=hifive-3371b --platforms=ios,android`; re-run it after adding an app or provider, and register new Android signing keys with `firebase apps:android:sha:create`. The `xcodeproj` Ruby gem it needs is installed with `gem install --user-install`.
+
 Physical iPhone: builds sign with team `WQ4W9V3W7A`. Install in place with `scripts/install_iphone.sh`, never `flutter install`, which uninstalls first and erases the app's data.
 
 `tool/pixel_snapshot_test.dart` renders every screen to PNG; its header has the command.
