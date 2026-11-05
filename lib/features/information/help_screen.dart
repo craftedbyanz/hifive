@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../data/content/help_content.dart';
 import '../../widgets/common.dart';
 import 'article_screen.dart';
+import 'help_content.dart';
 
 class HelpScreen extends StatelessWidget {
   final int index;

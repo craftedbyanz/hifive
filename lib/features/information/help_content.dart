@@ -1,3 +1,5 @@
+/// The help articles on Home and in Help: app UI copy in Vietnamese, the same
+/// for every course.
 const helpTitles = [
   '3 Chế Độ Luyện Tập Chính',
   'Trợ Lý AI & Hệ Thống Phản Hồi',
