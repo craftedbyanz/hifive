@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
+import '../../widgets/common.dart';
 import '../../widgets/glyphs.dart';
 import 'home_design.dart';
 
@@ -13,7 +14,7 @@ class ModeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appearance = AppScope.of(context).appearance;
-    final (tint, foreground) = D.cardLook(appearance, mode);
+    final (tint, foreground) = mode.cardLook(appearance);
     return Semantics(
       button: true,
       label: mode.title,
@@ -192,7 +193,7 @@ class ModeCard extends StatelessWidget {
                                 alpha: .17,
                               ),
                               child: mode == StudyMode.writing
-                                  ? _WritingGlyph(color: D.modeColor(mode))
+                                  ? _WritingGlyph(color: mode.color)
                                   : CustomPaint(
                                       size: Size.square(
                                         mode == StudyMode.grammar ? 30 : 26,

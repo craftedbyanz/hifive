@@ -63,11 +63,11 @@ Use these roles; do not invent a new size for an existing role.
 
 ### Mode colors
 
-Writing #3B82F6 (blue), grammar #8A5BF6 (violet), conversation #06B6D4 (cyan) via `D.modeColor`. Accents inside a mode follow the reference, not the card color: grammar and writing lessons use lime #D0FD3E (`Palette.grammarAccent`) for the title period, start button and tip bullets; writing uses purple for "SỬA LỖI" and its bullets; conversation uses #2965EA (`Palette.chatBlue`).
+Writing #3B82F6 (blue), grammar #8A5BF6 (violet), conversation #06B6D4 (cyan) via `mode.color` (`StudyModeLook` in `lib/widgets/mode_look.dart`, which also gives `mode.icon` and `mode.inputColor(name)`). Accents inside a mode follow the reference, not the card color: grammar and writing lessons use lime #D0FD3E (`Palette.grammarAccent`) for the title period, start button and tip bullets; writing uses purple for "SỬA LỖI" and its bullets; conversation uses #2965EA (`Palette.chatBlue`).
 
 ### Appearances
 
-The Home and Appearance cards take their fill and ink from `D.cardLook(appearance, mode)`. Never color a mode card by hand.
+The Home and Appearance cards take their fill and ink from `mode.cardLook(appearance)`. Never color a mode card by hand.
 
 | Appearance | Card |
 | --- | --- |
@@ -299,7 +299,7 @@ Places that still differ from these rules, kept because they were measured that 
 
 1. Page and header from `AppPage` or `HeaderScrollPage`; buttons from the table above.
 2. Every text style from the type scale; section labels through `CapsLabel`.
-3. Colors from `D` or `Palette` only; mode cards from `D.cardLook`.
+3. Colors from `D` or `Palette` only; mode cards from `mode.cardLook`.
 4. Fixed sizes that hold text through `context.grow`.
 5. Loading, error and empty states through `AsyncView`.
 6. Interactive targets get a `ValueKey` or tooltip and a hit box of at least 44 pt.

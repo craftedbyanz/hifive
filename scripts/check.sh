@@ -19,6 +19,11 @@ if matches=$(grep -rnE "^import '[^']*data/" lib/core lib/domain lib/state lib/w
   echo "$matches"
   fail=1
 fi
+if matches=$(grep -rnE "^import '[^']*(domain|state|features|widgets)/" lib/core); then
+  echo "Rule broken: lib/core must not import outer layers"
+  echo "$matches"
+  fail=1
+fi
 [ "$fail" -eq 0 ]
 dart run tool/feature_cycles.dart
 

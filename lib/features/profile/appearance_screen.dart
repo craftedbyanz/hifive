@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
+import '../../widgets/common.dart';
 import '../../widgets/press.dart';
 import 'settings_kit.dart';
 
@@ -179,10 +180,10 @@ class _OrderRow extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: D.modeColor(mode).withValues(alpha: .72),
+              color: mode.color.withValues(alpha: .72),
               shape: BoxShape.circle,
             ),
-            child: Icon(D.modeIcon(mode), size: 22, color: Colors.white),
+            child: Icon(mode.icon, size: 22, color: Colors.white),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -343,7 +344,7 @@ class _PreviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final copy = _modeCopy[mode]!;
-    final look = D.cardLook(style, mode);
+    final look = mode.cardLook(style);
     final fill = style == 'Glass' ? copy.$6 : look.$1;
     final ink = look.$2;
     return ClipRRect(
@@ -401,7 +402,7 @@ class _PreviewCard extends StatelessWidget {
                   color: ink.withValues(alpha: .2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(D.modeIcon(mode), size: 24, color: ink),
+                child: Icon(mode.icon, size: 24, color: ink),
               ),
             ),
             Positioned(

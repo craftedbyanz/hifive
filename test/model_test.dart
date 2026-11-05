@@ -6,6 +6,7 @@ import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/grading.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/state/state.dart';
+import 'package:hifive/widgets/common.dart';
 
 import 'helpers.dart';
 
@@ -250,16 +251,13 @@ void main() {
 
 void appearanceLooks() {
   test('card looks follow the reference per appearance', () {
-    expect(D.cardLook('Regular', StudyMode.grammar).$1, Palette.regularDark);
-    expect(D.cardLook('Regular', StudyMode.writing).$1, Colors.white);
-    expect(D.cardLook('Mono', StudyMode.grammar), (
+    expect(StudyMode.grammar.cardLook('Regular').$1, Palette.regularDark);
+    expect(StudyMode.writing.cardLook('Regular').$1, Colors.white);
+    expect(StudyMode.grammar.cardLook('Mono'), (
       Palette.monoCard,
       Palette.monoInk,
     ));
-    expect(D.cardLook('Minimal', StudyMode.writing).$2, D.ink);
-    expect(
-      D.cardLook('Glass', StudyMode.grammar).$1,
-      D.modeColor(StudyMode.grammar),
-    );
+    expect(StudyMode.writing.cardLook('Minimal').$2, D.ink);
+    expect(StudyMode.grammar.cardLook('Glass').$1, StudyMode.grammar.color);
   });
 }

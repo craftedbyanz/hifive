@@ -87,7 +87,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         for (final mode in StudyMode.values)
           ListTile(
             key: ValueKey('history-new-${mode.name}'),
-            leading: Icon(D.modeIcon(mode)),
+            leading: Icon(mode.icon),
             title: Text(mode.title),
             subtitle: Text(mode.category),
             onTap: () {

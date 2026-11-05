@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../domain/models/models.dart';
-import 'palette.dart';
 
 abstract final class D {
   static const ink = Color(0xff111827),
@@ -15,35 +11,10 @@ abstract final class D {
       turquoise = Color(0xff08b1ca),
       lime = Color(0xffceff32),
       orange = Color(0xffff7919),
-      green = Color(0xff10b98a);
-  static Color modeColor(StudyMode m) => switch (m) {
-    StudyMode.writing => blue,
-    StudyMode.grammar => const Color(0xff8a5bf6),
-    StudyMode.conversation => const Color(0xff06b6d4),
-  };
-
-  /// Card fill and ink per appearance, from the reference on the iPhone
-  /// (4 November 2026): Glass keeps each mode's colour; Regular gives
-  /// Paragraph a white card and Quick Fix a near-black one (Speaking's was
-  /// only seen at the edge, so it keeps its colour); Mono is pale grey with
-  /// slate ink; Minimal is white with ink.
-  static (Color, Color) cardLook(String appearance, StudyMode mode) =>
-      switch (appearance) {
-        'Mono' => (Palette.monoCard, Palette.monoInk),
-        'Minimal' => (Colors.white, D.ink),
-        'Regular' => switch (mode) {
-          StudyMode.writing => (Colors.white, D.ink),
-          StudyMode.grammar => (Palette.regularDark, Colors.white),
-          StudyMode.conversation => (D.modeColor(mode), Colors.white),
-        },
-        _ => (D.modeColor(mode), Colors.white),
-      };
-
-  static IconData modeIcon(StudyMode m) => switch (m) {
-    StudyMode.writing => Icons.article_rounded,
-    StudyMode.grammar => Icons.sync_rounded,
-    StudyMode.conversation => CupertinoIcons.ellipses_bubble_fill,
-  };
+      green = Color(0xff10b98a),
+      violet = Color(0xff8a5bf6),
+      cyan = Color(0xff06b6d4),
+      answerBlue = Color(0xff0084ff);
 
   /// Answer-box colors offered by Lesson Settings and the lesson menu.
   static const inputColors = [
@@ -56,17 +27,6 @@ abstract final class D {
     'Purple',
     'Indigo',
   ];
-  static Color input(StudyMode mode, String color) =>
-      {
-        'Orange': Palette.inputOrange,
-        'Yellow': Palette.inputYellow,
-        'Green': Palette.inputGreen,
-        'Blue': Palette.inputBlue,
-        'Pink': Palette.inputPink,
-        'Purple': Palette.inputPurple,
-        'Indigo': Palette.inputIndigo,
-      }[color] ??
-      (mode == StudyMode.writing ? purple : const Color(0xff0084ff));
   static TextStyle text(
     double size, {
     FontWeight weight = FontWeight.w400,

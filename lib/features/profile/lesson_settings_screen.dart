@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
+import '../../widgets/common.dart';
 import '../../widgets/press.dart';
 import 'settings_kit.dart';
 
@@ -14,7 +15,7 @@ class LessonSettingsScreen extends StatelessWidget {
   static const _colors = D.inputColors;
   static Color _swatch(String name) => name == 'Default'
       ? Palette.previewDefault
-      : D.input(StudyMode.grammar, name);
+      : StudyMode.grammar.inputColor(name);
 
   @override
   Widget build(BuildContext context) {

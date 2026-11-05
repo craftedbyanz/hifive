@@ -189,7 +189,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
             c,
             c,
             checked: state.inputColor == c,
-            dot: D.input(StudyMode.grammar, c),
+            dot: StudyMode.grammar.inputColor(c),
           ),
       ],
       title: 'Màu nền',
@@ -370,7 +370,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
   @override
   Widget build(BuildContext context) {
     final state = AppScope.of(context), mode = widget.lesson.mode;
-    final color = D.input(mode, state.inputColor);
+    final color = mode.inputColor(state.inputColor);
     return PopScope(
       canPop: allowExit,
       onPopInvokedWithResult: (didPop, _) {

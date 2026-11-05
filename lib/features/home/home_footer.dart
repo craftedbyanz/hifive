@@ -17,14 +17,14 @@ Color footerTint(Color modeColor) =>
     Color.lerp(modeColor, Palette.footerBase, .67)!;
 Color glassTint(Color modeColor) => modeColor == D.blue
     ? Palette.glassWriting
-    : modeColor == D.modeColor(StudyMode.grammar)
+    : modeColor == StudyMode.grammar.color
     ? Palette.glassGrammar
     : Palette.glassConversation;
 
 /// The dark hairline around the footer buttons, measured for each card.
 Color glassEdge(Color modeColor) => modeColor == D.blue
     ? Palette.edgeWriting
-    : modeColor == D.modeColor(StudyMode.grammar)
+    : modeColor == StudyMode.grammar.color
     ? Palette.edgeGrammar
     : Palette.edgeConversation;
 

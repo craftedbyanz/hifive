@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final state = AppScope.of(context), modes = state.modeOrder;
-    final color = D.modeColor(modes[selected.clamp(0, 2)]);
+    final color = modes[selected.clamp(0, 2)].color;
     final bottom = MediaQuery.paddingOf(context).bottom + 8;
     return PopScope(
       canPop: !menu,
