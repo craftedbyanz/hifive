@@ -76,6 +76,10 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 - **Check state instead of assuming it:** remotes, git identity, connected devices and whether a tool is running.
 - **Make one commit per concern, and never push unless asked.**
 
+## Backend plan
+
+`docs/backend-plan.md` holds the offline-first and sync design (records, HLC, merge rules per kind) and its steps. Follow its local data model when changing what the app stores.
+
 ## Git commits
 
 Every commit message follows @docs/git-commit-rules.md: Conventional Commits (`type(scope): description`), an imperative title under 50 characters (72 at most) with no final period, a blank line, then a plain-text bullet body wrapped at 72 that adds only what the title doesn't say. Never add a `Co-Authored-By` or other AI attribution trailer.
