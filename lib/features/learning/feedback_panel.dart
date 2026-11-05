@@ -5,7 +5,6 @@ import '../../core/design/design.dart';
 import '../../domain/grading.dart';
 import '../../domain/models/models.dart';
 import '../../widgets/common.dart';
-import '../../widgets/confetti_painter.dart';
 import 'dictionary.dart';
 
 class FeedbackPanel extends StatefulWidget {

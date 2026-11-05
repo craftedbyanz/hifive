@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
-import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glyphs.dart';
-import '../../widgets/medal.dart';
-import 'learning.dart';
+import 'chat_screen.dart';
+import 'practice_screen.dart';
 
 class ResultScreen extends StatelessWidget {
   final StudySession session;

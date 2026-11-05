@@ -7,10 +7,7 @@ import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../state/state.dart';
-import '../../widgets/app_scroll.dart';
-import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
-import '../../widgets/press.dart';
 import 'deck_screen.dart';
 
 /// A deck's icon, by its saved number.

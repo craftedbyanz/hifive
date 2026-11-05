@@ -9,8 +9,6 @@ import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glass_menu.dart';
-import '../../widgets/press.dart';
 import 'review_complete.dart';
 import 'review_guide.dart';
 

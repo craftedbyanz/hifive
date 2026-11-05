@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../widgets/press.dart';
+import '../../widgets/common.dart';
 
 /// The swipe guide over a dark, heavily blurred copy of the session.
 Future<void> showReviewGuide(BuildContext context) => showGeneralDialog<void>(

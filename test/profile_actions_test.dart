@@ -6,7 +6,6 @@ import 'package:hifive/features/information/information.dart';
 import 'package:hifive/features/profile/profile.dart';
 import 'package:hifive/state/state.dart';
 import 'package:hifive/widgets/common.dart';
-import 'package:hifive/widgets/press.dart';
 
 import 'helpers.dart';
 

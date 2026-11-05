@@ -2,10 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glyphs.dart';
-import '../../widgets/press.dart';
 
 /// The reference's policy text, kept as its visible copy. Its statements describe
 /// the original service: this clone stores everything on the device.

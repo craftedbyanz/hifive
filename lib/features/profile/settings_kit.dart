@@ -3,8 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../widgets/blur_header.dart';
-import '../../widgets/press.dart';
+import '../../widgets/common.dart';
 
 /// Header title size shared by the Profile sub-screens.
 const settingsTitleSize = 16.5;

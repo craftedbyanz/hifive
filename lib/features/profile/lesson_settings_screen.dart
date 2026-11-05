@@ -7,7 +7,6 @@ import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../../widgets/press.dart';
 import 'settings_kit.dart';
 
 class LessonSettingsScreen extends StatelessWidget {

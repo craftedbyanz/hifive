@@ -7,10 +7,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
-import '../../widgets/async_view.dart';
-import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glyphs.dart';
 
 /// Layout measured against the reference on a 393 × 852 iPhone. Content
 /// positions are in points from the top of the screen.

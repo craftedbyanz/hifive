@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../../core/design/design.dart';
 
-export '../../widgets/glyphs.dart';
-
 class StreakBarsPainter extends CustomPainter {
   const StreakBarsPainter();
   @override

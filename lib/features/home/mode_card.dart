@@ -4,7 +4,6 @@ import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glyphs.dart';
 import 'home_design.dart';
 
 class ModeCard extends StatelessWidget {

@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../widgets/medal.dart';
-import '../../widgets/press.dart';
+import '../../widgets/common.dart';
 
 /// The end of a session. Measured from video: the content fades in over about
 /// 0.4 s while the medal scales up, then gold confetti bursts out from behind it.

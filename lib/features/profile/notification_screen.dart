@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../../widgets/press.dart';
 import 'settings_kit.dart';
 
 const _months = [

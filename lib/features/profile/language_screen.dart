@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glyphs.dart';
-import '../../widgets/press.dart';
 import '../learning/learning.dart';
 import 'level_picker_screen.dart';
 import 'settings_kit.dart';

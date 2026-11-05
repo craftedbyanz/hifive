@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../widgets/common.dart';
-import '../../widgets/press.dart';
 
 /// Opens a full-height sheet like the system ones the reference presents.
 Future<T?> pageSheet<T>(BuildContext context, Widget child) =>

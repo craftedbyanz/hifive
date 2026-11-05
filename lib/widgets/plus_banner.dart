@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../core/design/design.dart';
-import 'ambient.dart';
 import 'common.dart';
 
 class PlusBanner extends StatelessWidget {

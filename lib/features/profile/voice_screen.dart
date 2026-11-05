@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../state/state.dart';
-import '../../widgets/blur_header.dart';
-import '../../widgets/press.dart';
+import '../../widgets/common.dart';
 import 'settings_kit.dart';
 
 class VoiceScreen extends StatelessWidget {

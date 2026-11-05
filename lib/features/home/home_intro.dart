@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../../widgets/plus_banner.dart';
 import '../information/information.dart';
 import '../learning/learning.dart';
 import 'home_design.dart';

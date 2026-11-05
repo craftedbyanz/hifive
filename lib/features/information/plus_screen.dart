@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../state/state.dart';
-import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
-import '../../widgets/press.dart';
 import 'privacy_screen.dart';
 
 /// The reference's upgrade screen, opened as a cover. Nothing here can purchase

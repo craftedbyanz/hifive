@@ -7,10 +7,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
-import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glass_menu.dart';
-import '../../widgets/glyphs.dart';
 import '../learning/learning.dart';
 
 /// Saved results, laid out from survey 75/82/124/125 (iPhone): sections of

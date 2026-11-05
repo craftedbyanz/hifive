@@ -9,7 +9,6 @@ import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import '../../widgets/confetti_painter.dart';
 import 'game_glass_button.dart';
 
 class GameScreen extends StatefulWidget {

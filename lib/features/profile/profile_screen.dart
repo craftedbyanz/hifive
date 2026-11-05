@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../state/state.dart';
-import '../../widgets/blur_header.dart';
 import '../../widgets/common.dart';
-import '../../widgets/glyphs.dart';
-import '../../widgets/plus_banner.dart';
-import '../../widgets/press.dart';
 import '../information/information.dart';
 import 'account_forms.dart';
 import 'appearance_screen.dart';

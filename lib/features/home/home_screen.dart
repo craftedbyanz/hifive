@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 
 import '../../core/design/design.dart';
 import '../../state/state.dart';
-import '../../widgets/app_scroll.dart';
 import '../../widgets/common.dart';
 import '../profile/profile.dart';
 import 'home_footer.dart';
@@ -14,7 +13,6 @@ import 'home_intro.dart';
 import 'home_lower.dart';
 import 'home_menu_motion.dart';
 import 'home_menu_overlay.dart';
-import 'home_painters.dart';
 import 'mode_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
