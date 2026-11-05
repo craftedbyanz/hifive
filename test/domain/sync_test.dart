@@ -130,6 +130,32 @@ void main() {
       expect(word.due, isNull);
     });
 
+    test('events at the same moment follow their record stamps', () {
+      final word = _word('w');
+      // A rating then a reset in one millisecond, with ids that sort the
+      // other way round.
+      replayReviews(
+        [word],
+        [
+          ReviewEvent(
+            id: 'z',
+            wordId: 'w',
+            at: t,
+            rating: 3,
+            stamp: const Hlc(1, 0, 'a'),
+          ),
+          ReviewEvent(
+            id: 'a',
+            wordId: 'w',
+            at: t,
+            rating: ReviewEvent.reset,
+            stamp: const Hlc(1, 1, 'a'),
+          ),
+        ],
+      );
+      expect(word.status, 'new');
+    });
+
     test('a snapshot carries over a migrated schedule', () {
       final word = _word('w');
       final due = DateTime(2026, 12, 1);

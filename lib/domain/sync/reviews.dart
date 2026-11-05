@@ -1,4 +1,5 @@
 import '../models/deck.dart';
+import 'hlc.dart';
 
 /// One entry in a card's review log. Replaying a card's log in time order
 /// gives its schedule, so reviews made on two devices both count.
@@ -12,6 +13,10 @@ class ReviewEvent {
   final String status;
   final DateTime? due;
   final int intervalDays;
+
+  /// The stamp of the record holding this event. It orders events made at
+  /// the same moment the way they were written.
+  final Hlc stamp;
   const ReviewEvent({
     required this.id,
     required this.wordId,
@@ -20,6 +25,7 @@ class ReviewEvent {
     this.status = 'new',
     this.due,
     this.intervalDays = 0,
+    this.stamp = Hlc.zero,
   });
 
   static const reset = -1, snapshot = -2;
@@ -35,16 +41,20 @@ class ReviewEvent {
     },
   };
 
-  factory ReviewEvent.fromJson(String id, Map<String, dynamic> j) =>
-      ReviewEvent(
-        id: id,
-        wordId: j['wordId'] as String,
-        at: DateTime.parse(j['at'] as String),
-        rating: j['rating'] as int,
-        status: j['status'] as String? ?? 'new',
-        due: j['due'] == null ? null : DateTime.parse(j['due'] as String),
-        intervalDays: j['intervalDays'] as int? ?? 0,
-      );
+  factory ReviewEvent.fromJson(
+    String id,
+    Map<String, dynamic> j, {
+    Hlc stamp = Hlc.zero,
+  }) => ReviewEvent(
+    id: id,
+    wordId: j['wordId'] as String,
+    at: DateTime.parse(j['at'] as String),
+    rating: j['rating'] as int,
+    status: j['status'] as String? ?? 'new',
+    due: j['due'] == null ? null : DateTime.parse(j['due'] as String),
+    intervalDays: j['intervalDays'] as int? ?? 0,
+    stamp: stamp,
+  );
 }
 
 /// Applies one event to [word]'s schedule.
@@ -69,7 +79,8 @@ void applyReview(FlashWord word, ReviewEvent event) {
   }
 }
 
-/// Rebuilds every card's schedule from [events], in time order (ties by id).
+/// Rebuilds every card's schedule from [events], in time order; events at
+/// the same moment follow their record stamps, then their ids.
 /// Cards without events are left new.
 void replayReviews(Iterable<FlashWord> words, Iterable<ReviewEvent> events) {
   final byWord = <String, List<ReviewEvent>>{};
@@ -85,7 +96,9 @@ void replayReviews(Iterable<FlashWord> words, Iterable<ReviewEvent> events) {
     if (log == null) continue;
     log.sort((a, b) {
       final t = a.at.compareTo(b.at);
-      return t != 0 ? t : a.id.compareTo(b.id);
+      if (t != 0) return t;
+      final s = a.stamp.compareTo(b.stamp);
+      return s != 0 ? s : a.id.compareTo(b.id);
     });
     for (final e in log) {
       applyReview(word, e);
