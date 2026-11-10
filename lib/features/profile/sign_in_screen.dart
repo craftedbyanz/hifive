@@ -263,9 +263,32 @@ String accountSubtitle(AuthUser? user) => switch (user?.method) {
   AuthMethod.email => 'Đã đăng nhập bằng email',
 };
 
+/// The sign-in method's name, shown before the sync status.
+String accountMethod(AuthUser user) => switch (user.method) {
+  AuthMethod.apple => 'Apple',
+  AuthMethod.google => 'Google',
+  AuthMethod.email => 'Email',
+};
+
 IconData accountIcon(AuthUser? user) => switch (user?.method) {
   null => CupertinoIcons.person_crop_circle_badge_plus,
   AuthMethod.apple => Icons.apple,
   AuthMethod.google => Icons.g_mobiledata_rounded,
   AuthMethod.email => CupertinoIcons.mail_solid,
 };
+
+/// The sync line under the account, or null when there is nothing to say:
+/// signed out, or a build without the sync API.
+String? syncStatus(AppState s) {
+  if (s.user == null || s.syncService == null) return null;
+  if (s.syncing) return 'Đang đồng bộ...';
+  if (s.syncError != null) return 'Chưa đồng bộ được';
+  final at = s.lastSyncedAt;
+  if (at == null) return 'Chưa đồng bộ';
+  final now = s.now();
+  final hm =
+      '${at.hour.toString().padLeft(2, '0')}:${at.minute.toString().padLeft(2, '0')}';
+  return DateUtils.isSameDay(at, now)
+      ? 'Đã đồng bộ lúc $hm'
+      : 'Đã đồng bộ ${at.day}/${at.month}';
+}

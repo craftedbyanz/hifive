@@ -100,6 +100,8 @@ response: { cursor, records: [changed after cursor], hasMore }
 - C. App: sync triggers, reloading state, sign-out deletion, sync status on Profile.
 
 Part A done: `worker/` with 28 tests, run by `scripts/check.sh`. Part B done: `RecordStore` gained `dirtyRecords`, `applyRemote`, `markSynced`, `clearRecords` and `deleteMeta`; `SyncService` (`HttpSyncService` over `http`), `AuthService.idToken()` and `Syncer` in `lib/domain/sync/syncer.dart`, which keeps a cursor per account (`syncCursor:<uid>`). `test/sync_fakes.dart` holds a Dart fake of the Worker's rules, and `test/domain/sync_contract_test.dart` fails if the Worker and the app disagree on the synced kinds or the stamp format.
+
+Part C done: `AppState` syncs when it has a `SyncService` and a signed-in learner: after `load()`, right after sign-in (which also pushes guest data), 20 seconds after the last change (`syncDelay`, so a burst costs one request), every 5 minutes, and on leaving the app (`appPaused`); returning (`appResumed`) restarts it. Calls during a sync join it and run once more. Pulls rebuild state through `restore()` and move the clock past the latest stamp. Signing out with sync pushes first (asking again if that fails), deletes local records and the account's cursor, and resets to a fresh install; without sync it keeps local data. Profile shows `Apple · Đã đồng bộ lúc 10:42`. The API address comes from `--dart-define=HIFIVE_API=…`; without it the app stays offline-only.
 - D. Deploy to `workers.dev` after `npx wrangler login`, then an end-to-end check with a real Firebase test account through the Auth REST API.
 
 ### 4. Course content on R2 - todo

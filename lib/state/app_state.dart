@@ -17,6 +17,10 @@ class AppState extends ChangeNotifier {
   /// The JSON blob saved before records, imported once on first launch.
   final AppRepository? legacy;
   final AuthService auth;
+
+  /// The sync API, or null when the build has no API address; then nothing
+  /// syncs and signing out keeps local data.
+  final SyncService? syncService;
   final LessonRepository lessons;
   final GradingRepository grading;
   final ConversationRepository conversation;
@@ -36,6 +40,7 @@ class AppState extends ChangeNotifier {
     required this.store,
     this.legacy,
     required this.auth,
+    this.syncService,
     required this.lessons,
     required this.grading,
     required this.conversation,
@@ -92,6 +97,27 @@ class AppState extends ChangeNotifier {
   AuthUser? user;
   late final StreamSubscription<AuthUser?> _authChanges;
 
+  /// When this device last finished a sync with the account, if ever.
+  DateTime? lastSyncedAt;
+
+  /// Why the last sync failed, or null after a success.
+  SyncError? syncError;
+  bool syncing = false;
+  Future<void>? _syncing;
+  bool _syncAgain = false;
+  Timer? _syncSoon, _syncEvery;
+
+  /// How long after a change the app syncs, so a burst of changes such as a
+  /// review session costs one request.
+  static const syncDelay = Duration(seconds: 20);
+  static const syncInterval = Duration(minutes: 5);
+
+  /// Set once [load] finished; sync waits for it, so it never runs with a
+  /// temporary device id or unread data.
+  bool _loaded = false;
+
+  bool get syncEnabled => _loaded && syncService != null && user != null;
+
   /// This install's id, saved on [load]. It names the device in HLC stamps.
   late String _deviceId = uuidV7(now());
   late HlcClock _clock;
@@ -140,6 +166,12 @@ class AppState extends ChangeNotifier {
         _put(AppKinds.firstUse, _deviceId, {'at': firstUse.toIso8601String()});
         await store.write(_takePending());
       }
+      if (user case final AuthUser u) {
+        final at = await store.meta(_lastSyncKey(u.uid));
+        lastSyncedAt = at == null ? null : DateTime.tryParse(at);
+      }
+      _loaded = true;
+      if (user != null) _startSyncing();
     } catch (_) {
       // Unreadable or mistyped data must not stop the app from opening.
       _pending.clear();
@@ -208,6 +240,7 @@ class AppState extends ChangeNotifier {
     }
     final batch = _takePending();
     if (batch.isEmpty) return;
+    _scheduleSync(syncDelay);
     _writes = _writes.then((_) => store.write(batch)).catchError((
       Object error,
     ) {
@@ -218,31 +251,192 @@ class AppState extends ChangeNotifier {
 
   Future<void> flush() => _writes;
 
-  /// Remembers which account this device's records belong to, so sync can
-  /// merge them into it.
+  /// Remembers which account this device's records belong to, then syncs:
+  /// on first sign-in that merges the guest data into the account.
   void _onUser(AuthUser? next) {
+    // A sign-in method already applied this account; the stream repeats it.
+    if (next != null && next.uid == user?.uid) return;
     user = next;
     if (next != null && storageError == null) {
       _writes = _writes.then((_) => store.setMeta('accountUid', next.uid));
+      _startSyncing();
+    } else {
+      _stopSyncing();
     }
     notifyListeners();
   }
 
-  Future<void> signInWithApple() => auth.signInWithApple();
-  Future<void> signInWithGoogle() => auth.signInWithGoogle();
+  /// Applies the account as soon as sign-in returns, so screens and sync
+  /// don't wait for the auth stream's next event.
+  Future<void> _signIn(Future<AuthUser> Function() call) async =>
+      _onUser(await call());
+
+  Future<void> signInWithApple() => _signIn(auth.signInWithApple);
+  Future<void> signInWithGoogle() => _signIn(auth.signInWithGoogle);
   Future<void> signInWithEmail(String email, String password) =>
-      auth.signInWithEmail(email.trim(), password);
+      _signIn(() => auth.signInWithEmail(email.trim(), password));
   Future<void> createAccount(String email, String password) =>
-      auth.createAccount(email.trim(), password);
+      _signIn(() => auth.createAccount(email.trim(), password));
   Future<void> sendPasswordReset(String email) =>
       auth.sendPasswordReset(email.trim());
 
-  /// Signs out but keeps every local record: nothing is on a server yet, so
-  /// deleting them would lose the learner's data. See the backend plan.
-  Future<void> signOut() => auth.signOut();
+  static String _lastSyncKey(String uid) => 'lastSyncedAt:$uid';
+
+  /// Syncs now unless it can't: signed out, no API, unreadable data. A call
+  /// during a sync waits for it and runs once more, so no change is missed.
+  Future<void> sync() {
+    if (!syncEnabled || storageError != null) return Future.value();
+    if (_syncing case final running?) {
+      _syncAgain = true;
+      return running;
+    }
+    return _syncing = _runSync().whenComplete(() => _syncing = null);
+  }
+
+  Future<void> _runSync() async {
+    _syncSoon?.cancel();
+    syncing = true;
+    notifyListeners();
+    try {
+      do {
+        _syncAgain = false;
+        await _syncOnce();
+      } while (_syncAgain && syncEnabled);
+      syncError = null;
+    } on SyncException catch (e) {
+      syncError = e.error;
+    } finally {
+      syncing = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _syncOnce() async {
+    final account = user;
+    await flush();
+    final token = await auth.idToken();
+    if (account == null || token == null) return;
+    final outcome = await Syncer(
+      store: store,
+      service: syncService!,
+    ).run(uid: account.uid, deviceId: _deviceId, idToken: token);
+    // Later local edits must win over everything just pulled.
+    _clock.receive(outcome.latest);
+    if (outcome.pulled > 0) {
+      await flush();
+      _apply(
+        restore(
+          await store.loadAll(),
+          builtIn: _builtIn,
+          examples: _examples,
+          deviceId: _deviceId,
+        ),
+      );
+      _syncFeedback();
+    }
+    lastSyncedAt = now();
+    await store.setMeta(
+      _lastSyncKey(account.uid),
+      lastSyncedAt!.toIso8601String(),
+    );
+  }
+
+  void _scheduleSync(Duration delay) {
+    if (!syncEnabled) return;
+    _syncSoon?.cancel();
+    _syncSoon = Timer(delay, sync);
+  }
+
+  void _startSyncing() {
+    if (!syncEnabled) return;
+    _syncEvery?.cancel();
+    _syncEvery = Timer.periodic(syncInterval, (_) => sync());
+    sync();
+  }
+
+  void _stopSyncing() {
+    _syncSoon?.cancel();
+    _syncEvery?.cancel();
+    _syncSoon = _syncEvery = null;
+  }
+
+  /// The app came back to the foreground: catch up with other devices.
+  void appResumed() {
+    if (user != null) _startSyncing();
+  }
+
+  /// The app is leaving the screen: push what changed while it can.
+  void appPaused() {
+    _stopSyncing();
+    sync();
+  }
+
+  /// Tries to push every pending change before signing out. True when
+  /// nothing would be lost, including when sync isn't set up.
+  Future<bool> pushBeforeSignOut() async {
+    if (!syncEnabled) return true;
+    await sync();
+    return syncError == null && (await store.dirtyRecords(limit: 1)).isEmpty;
+  }
+
+  /// Signs out. With sync set up, the account's data is on the server, so
+  /// this device deletes it and starts again as a guest; without sync,
+  /// local data stays, since it exists nowhere else.
+  Future<void> signOut() async {
+    final account = user;
+    final clear = syncService != null && account != null;
+    _stopSyncing();
+    await auth.signOut();
+    if (!clear) return;
+    await flush();
+    _pending.clear();
+    await store.clearRecords();
+    for (final key in [
+      'accountUid',
+      Syncer.cursorKey(account.uid),
+      _lastSyncKey(account.uid),
+    ]) {
+      await store.deleteMeta(key);
+    }
+    _resetToDefaults();
+    _put(AppKinds.firstUse, _deviceId, {'at': firstUse.toIso8601String()});
+    commit();
+  }
+
+  /// The state of a fresh install, used after signing out.
+  void _resetToDefaults() {
+    name = 'An';
+    level = 'A1';
+    appearance = 'Glass';
+    inputColor = 'Default';
+    voice = 'Aaron';
+    difficulty = 'Dễ';
+    chatTone = 'Thoải mái';
+    showHints = false;
+    chatFree = true;
+    sound = true;
+    haptic = true;
+    language = Language.english;
+    chatTipSeen = false;
+    modeOrder = [StudyMode.writing, StudyMode.grammar, StudyMode.conversation];
+    gameResume = null;
+    firstUse = now();
+    lastSyncedAt = null;
+    syncError = null;
+    _apply(
+      restore(
+        const [],
+        builtIn: _builtIn,
+        examples: _examples,
+        deviceId: _deviceId,
+      ),
+    );
+    _syncFeedback();
+  }
 
   @override
   void dispose() {
+    _stopSyncing();
     _authChanges.cancel();
     super.dispose();
   }

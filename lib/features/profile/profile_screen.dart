@@ -72,6 +72,7 @@ class ProfileScreen extends StatelessWidget {
             children: [
               _AccountRow(
                 user: s.user,
+                status: syncStatus(s),
                 onTap: s.user == null ? () => open(const SignInScreen()) : null,
               ),
             ],
@@ -175,22 +176,37 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  /// Signs out after a confirmation. Local data stays on the device until
-  /// sync exists, so the learner loses nothing.
+  /// Signs out after a confirmation. With sync, pending changes are pushed
+  /// first and the device's copy is deleted; a failed push asks again.
   static Future<void> _signOut(BuildContext context, AppState s) async {
     if (s.user == null) {
       toast(context, 'Bạn chưa đăng nhập.');
       return;
     }
+    final synced = s.syncService != null;
     final ok = await confirm(
       context,
       'Đăng xuất?',
-      'Dữ liệu học trên máy này vẫn được giữ lại.',
+      synced
+          ? 'Dữ liệu học đã được lưu vào tài khoản và sẽ bị xoá khỏi máy này.'
+          : 'Dữ liệu học trên máy này vẫn được giữ lại.',
       action: 'Đăng xuất',
       cancel: 'Huỷ',
       destructive: true,
     );
-    if (!ok) return;
+    if (!ok || !context.mounted) return;
+    if (!await s.pushBeforeSignOut()) {
+      if (!context.mounted) return;
+      final anyway = await confirm(
+        context,
+        'Chưa đồng bộ xong',
+        'Một số thay đổi chưa được lưu vào tài khoản và sẽ bị mất. Vẫn đăng xuất?',
+        action: 'Vẫn đăng xuất',
+        cancel: 'Huỷ',
+        destructive: true,
+      );
+      if (!anyway) return;
+    }
     await s.signOut();
     if (context.mounted) toast(context, 'Đã đăng xuất.');
   }
@@ -567,8 +583,13 @@ class _LanguageRow extends StatelessWidget {
 /// Who is signed in, or a row that opens sign-in.
 class _AccountRow extends StatelessWidget {
   final AuthUser? user;
+  final String? status;
   final VoidCallback? onTap;
-  const _AccountRow({required this.user, required this.onTap});
+  const _AccountRow({
+    required this.user,
+    required this.status,
+    required this.onTap,
+  });
   @override
   Widget build(BuildContext context) => PressFade(
     key: const ValueKey('profile-account'),
@@ -601,7 +622,13 @@ class _AccountRow extends StatelessWidget {
                   style: D.text(13, weight: FontWeight.w700, height: 18 / 13),
                 ),
                 Text(
-                  accountSubtitle(user),
+                  switch ((user, status)) {
+                    (final AuthUser u, final String s) =>
+                      '${accountMethod(u)} · $s',
+                    _ => accountSubtitle(user),
+                  },
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: D.text(12, color: D.secondary, height: 16 / 12),
                 ),
               ],
