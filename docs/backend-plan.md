@@ -39,6 +39,19 @@ Everything the learner creates is a **record**: `kind`, `id`, a JSON `data` map 
 
 **Signing out** deletes the account's local records; the next learner starts clean. **Signing in** on a device that has guest records merges them into the account with the rules above.
 
+## Deferred
+
+Noted on 10 November 2026 to do later, in this order of need:
+
+1. **Android builds on this Mac.** Cloudflare Gateway re-signs HTTPS with "Gateway CA - Cloudflare Managed G1", which macOS trusts and the Zulu JDK 21 that Gradle uses does not, so Gradle can't download new dependencies (`PKIX path building failed`). Fix by importing that CA into the JDK (`keytool -importcert -cacerts`) or by adding `-Djavax.net.ssl.trustStoreType=KeychainStore` to `org.gradle.jvmargs` in `~/.gradle/gradle.properties`. Until then Android changes can't be verified here.
+2. **Real sign-in on a physical iPhone.** Run `scripts/install_iphone.sh` and try Apple, Google and email sign-up. That build also registers the Sign in with Apple capability for the App ID; if Xcode reports a provisioning error, enable it for `com.anznguyen.hifive` in Apple Developer.
+
+### Before release
+
+- Account deletion, after sync: delete the learner's server data, revoke Apple tokens, delete the Firebase account, then the local data. Needs Apple's OAuth code flow settings in Firebase (Team ID `WQ4W9V3W7A`, Key ID, `.p8` key).
+- The official Google "G" logo on the Google button, drawn as vector, per Google's sign-in branding guidelines.
+- Play App Signing SHA-1 and SHA-256 registered for the Android app.
+
 ## Steps
 
 ### 1. Local SQLite store - done
