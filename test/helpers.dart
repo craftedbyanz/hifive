@@ -22,6 +22,7 @@ AppState fresh({
   bool includeExamples = false,
   RecordStore? store,
   AppRepository? legacy,
+  AuthService? auth,
   FeedbackService? feedback,
   SystemActions? system,
   LessonRepository? lessons,
@@ -32,6 +33,7 @@ AppState fresh({
 }) => createAppState(
   store: store ?? MemoryRecordStore(),
   legacy: legacy,
+  auth: auth,
   feedback: feedback ?? SilentFeedback(),
   system: system ?? RecordingSystemActions(),
   includeExamples: includeExamples,

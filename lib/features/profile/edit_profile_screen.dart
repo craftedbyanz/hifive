@@ -95,7 +95,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    'Chưa kết nối tài khoản',
+                    s.user?.email ?? 'Chưa kết nối tài khoản',
                     style: D.text(
                       15.5,
                       color: Palette.settingsMuted,

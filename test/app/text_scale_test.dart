@@ -80,6 +80,7 @@ Future<void> layOut(
     'streak': const StreakScreen(),
     'insight': const InsightScreen(),
     'profile': const ProfileScreen(),
+    'sign in': const SignInScreen(),
     'decks': const DeckListScreen(),
     'deck': DeckScreen(deck: s.decks.first),
     'game home': const GameHomeScreen(),

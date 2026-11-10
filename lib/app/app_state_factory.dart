@@ -9,6 +9,7 @@ import '../state/state.dart';
 AppState createAppState({
   required RecordStore store,
   AppRepository? legacy,
+  AuthService? auth,
   bool includeExamples = false,
   LessonRepository? lessons,
   GradingRepository? grading,
@@ -21,6 +22,7 @@ AppState createAppState({
 }) => AppState(
   store: store,
   legacy: legacy,
+  auth: auth ?? MemoryAuthService(),
   lessons: lessons ?? MockLessonRepository(),
   grading: grading ?? const MockGradingRepository(),
   conversation: conversation ?? const MockConversationRepository(),

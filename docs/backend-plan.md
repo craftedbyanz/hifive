@@ -51,7 +51,7 @@ Done with `sqlite3` (latest 3.x) and `path_provider`. Verified by tests for both
 
 ### 2. Firebase Authentication - in progress
 
-Done: project `hifive-3371b` on the Spark plan with Email/Password, Google and Apple enabled; iOS and Android apps registered; the debug key's SHA-1 and SHA-256 added; `firebase_core` initialised in `main.dart`. Before the App Store: fill Apple's OAuth code flow settings (Team ID, Key ID, `.p8` key) so account deletion can revoke Apple tokens. Before Google Play: add the Play App Signing SHA fingerprints.
+Done: project `hifive-3371b` on the Spark plan with Email/Password, Google and Apple enabled; iOS and Android apps registered; the debug key's SHA-1 and SHA-256 added; `firebase_core` initialised in `main.dart`. Also done: `AuthService` with Firebase and memory versions; Profile shows the account and opens `SignInScreen` (Apple on iOS, Google, email with sign-up and password reset); signing in records `accountUid` in the store's meta; signing out asks first and keeps every local record until sync exists. Still to verify on a physical iPhone and an Android build: real Apple, Google and email sign-in. Still to build: account deletion (required by the App Store). Before the App Store: fill Apple's OAuth code flow settings (Team ID, Key ID, `.p8` key) so account deletion can revoke Apple tokens. Before Google Play: add the Play App Signing SHA fingerprints.
 
 
 Apple, Google and email sign-in; guest use until sign-in; local records merge into the account on sign-in and are deleted on sign-out.

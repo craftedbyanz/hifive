@@ -87,6 +87,7 @@ void main() {
     'level': (s) => const LevelPickerScreen(),
     'lesson_settings': (s) => const LessonSettingsScreen(),
     'voice': (s) => const VoiceScreen(),
+    'sign_in': (s) => const SignInScreen(),
     'appearance': (s) => const AppearanceScreen(),
     'notification': (s) => const NotificationScreen(),
     for (final m in StudyMode.values) ...{

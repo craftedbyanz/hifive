@@ -57,19 +57,14 @@ void main() {
     expect(find.byType(PlusScreen), findsOneWidget);
   });
 
-  testWidgets('sign out keeps all saved data and stays on the page', (
-    tester,
-  ) async {
+  testWidgets('logout without an account changes nothing', (tester) async {
     final store = MemoryRecordStore();
     final state = fresh(store: store);
     state.name = 'Linh';
     await mount(tester, state, const ProfileScreen(), size: _tall);
     await tester.tap(find.byKey(const ValueKey('profile-logout')));
     await tester.pump();
-    expect(
-      find.text('Bản cục bộ không có tài khoản để đăng xuất.'),
-      findsOneWidget,
-    );
+    expect(find.text('Bạn chưa đăng nhập.'), findsOneWidget);
     expect(state.name, 'Linh');
     expect(find.byType(ProfileScreen), findsOneWidget);
     expect(store.records, isEmpty);

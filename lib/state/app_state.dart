@@ -16,6 +16,7 @@ class AppState extends ChangeNotifier {
 
   /// The JSON blob saved before records, imported once on first launch.
   final AppRepository? legacy;
+  final AuthService auth;
   final LessonRepository lessons;
   final GradingRepository grading;
   final ConversationRepository conversation;
@@ -34,6 +35,7 @@ class AppState extends ChangeNotifier {
   AppState({
     required this.store,
     this.legacy,
+    required this.auth,
     required this.lessons,
     required this.grading,
     required this.conversation,
@@ -52,6 +54,8 @@ class AppState extends ChangeNotifier {
        system = system ?? const PlatformSystemActions(),
        now = now ?? DateTime.now {
     _clock = HlcClock(node: _deviceId, now: this.now);
+    user = auth.current;
+    _authChanges = auth.changes.listen(_onUser);
   }
   // Glass, the look every Home measurement was made with; the reference's
   // default for a new account was not seen.
@@ -82,6 +86,11 @@ class AppState extends ChangeNotifier {
   late DateTime firstUse = now();
   Map<String, dynamic>? gameResume;
   String? storageError;
+
+  /// The signed-in learner, or null while the app is used without an
+  /// account. Local data stays on the device either way until sync exists.
+  AuthUser? user;
+  late final StreamSubscription<AuthUser?> _authChanges;
 
   /// This install's id, saved on [load]. It names the device in HLC stamps.
   late String _deviceId = uuidV7(now());
@@ -208,6 +217,36 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> flush() => _writes;
+
+  /// Remembers which account this device's records belong to, so sync can
+  /// merge them into it.
+  void _onUser(AuthUser? next) {
+    user = next;
+    if (next != null && storageError == null) {
+      _writes = _writes.then((_) => store.setMeta('accountUid', next.uid));
+    }
+    notifyListeners();
+  }
+
+  Future<void> signInWithApple() => auth.signInWithApple();
+  Future<void> signInWithGoogle() => auth.signInWithGoogle();
+  Future<void> signInWithEmail(String email, String password) =>
+      auth.signInWithEmail(email.trim(), password);
+  Future<void> createAccount(String email, String password) =>
+      auth.createAccount(email.trim(), password);
+  Future<void> sendPasswordReset(String email) =>
+      auth.sendPasswordReset(email.trim());
+
+  /// Signs out but keeps every local record: nothing is on a server yet, so
+  /// deleting them would lose the learner's data. See the backend plan.
+  Future<void> signOut() => auth.signOut();
+
+  @override
+  void dispose() {
+    _authChanges.cancel();
+    super.dispose();
+  }
+
   void complete(StudySession session) {
     if (!history.any((s) => s.id == session.id)) {
       history.insert(0, session);

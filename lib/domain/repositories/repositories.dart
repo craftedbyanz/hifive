@@ -1,4 +1,5 @@
 export 'app_repository.dart';
+export 'auth_service.dart';
 export 'conversation_repository.dart';
 export 'deck_generator.dart';
 export 'grading_repository.dart';

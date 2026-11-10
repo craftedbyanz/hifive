@@ -13,6 +13,11 @@ Future<void> main() async {
   final state = createAppState(
     store: SqliteRecordStore.open('${dir.path}/hifive.db'),
     legacy: LocalAppRepository(),
+    auth: FirebaseAuthService(
+      iosClientId: DefaultFirebaseOptions.currentPlatform.iosClientId,
+      // The web OAuth client from google-services.json (client_type 3).
+      webClientId: '440247164777-9q60d3r0p8s09t13igr9cbin8o1n59t2.apps.googleusercontent.com',
+    ),
     includeExamples: true,
   );
   await state.load();
