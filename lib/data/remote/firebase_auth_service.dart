@@ -128,6 +128,9 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
+  Future<String?> idToken() async => _auth.currentUser?.getIdToken();
+
+  @override
   Future<void> signOut() async {
     await _auth.signOut();
     if (_googleReady != null) {

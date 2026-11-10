@@ -52,4 +52,7 @@ abstract interface class AuthService {
   Future<AuthUser> createAccount(String email, String password);
   Future<void> sendPasswordReset(String email);
   Future<void> signOut();
+
+  /// A fresh ID token for the API, or null when signed out.
+  Future<String?> idToken();
 }

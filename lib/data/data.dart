@@ -12,3 +12,4 @@ export 'mock/mock_grading_repository.dart';
 export 'mock/mock_insight_repository.dart';
 export 'mock/mock_lesson_repository.dart';
 export 'remote/firebase_auth_service.dart';
+export 'remote/http_sync_service.dart';

@@ -6,3 +6,4 @@ export 'grading_repository.dart';
 export 'insight_repository.dart';
 export 'lesson_repository.dart';
 export 'record_store.dart';
+export 'sync_service.dart';

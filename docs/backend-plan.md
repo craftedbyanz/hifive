@@ -98,6 +98,8 @@ response: { cursor, records: [changed after cursor], hasMore }
 - A. Worker, D1 migration and tests that run locally (`vitest` with `@cloudflare/vitest-pool-workers`, which supports vitest 4.x only).
 - B. App: store methods for dirty, remote and synced records; `SyncService` with an HTTP version; `AuthService` ID tokens; the sync loop, tested with a Dart fake server that applies the same rules.
 - C. App: sync triggers, reloading state, sign-out deletion, sync status on Profile.
+
+Part A done: `worker/` with 28 tests, run by `scripts/check.sh`. Part B done: `RecordStore` gained `dirtyRecords`, `applyRemote`, `markSynced`, `clearRecords` and `deleteMeta`; `SyncService` (`HttpSyncService` over `http`), `AuthService.idToken()` and `Syncer` in `lib/domain/sync/syncer.dart`, which keeps a cursor per account (`syncCursor:<uid>`). `test/sync_fakes.dart` holds a Dart fake of the Worker's rules, and `test/domain/sync_contract_test.dart` fails if the Worker and the app disagree on the synced kinds or the stamp format.
 - D. Deploy to `workers.dev` after `npx wrangler login`, then an end-to-end check with a real Firebase test account through the Auth REST API.
 
 ### 4. Course content on R2 - todo

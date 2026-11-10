@@ -81,6 +81,10 @@ class MemoryAuthService implements AuthService {
   }
 
   @override
+  Future<String?> idToken() async =>
+      _current == null ? null : 'token-${_current!.uid}';
+
+  @override
   Future<void> signOut() async {
     _current = null;
     _changes.add(null);

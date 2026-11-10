@@ -33,6 +33,57 @@ void main() {
         expect(all.single.hlc, const Hlc(2, 0, 'a'));
       });
 
+      test('lists dirty records oldest first, up to a limit', () async {
+        final store = make();
+        await store.write([
+          _r('setting', 'b', 'x', 3),
+          _r('setting', 'a', 'x', 1),
+          _r('device', 'sound', false, 2),
+          _r('setting', 'c', 'x', 2),
+        ]);
+        final dirty = await store.dirtyRecords(limit: 2);
+        expect(dirty.map((r) => r.id), ['a', 'c']);
+      });
+
+      test('pulled records are kept by stamp and never dirty', () async {
+        final store = make();
+        await store.write([_r('setting', 'name', 'Mine', 5)]);
+        await store.applyRemote([
+          _r('setting', 'name', 'Older', 4),
+          _r('setting', 'voice', 'Mia', 9),
+        ]);
+        final all = {for (final r in await store.loadAll()) r.id: r.data};
+        expect(all, {
+          'name': {'v': 'Mine'},
+          'voice': {'v': 'Mia'},
+        });
+        expect((await store.dirtyRecords()).map((r) => r.id), ['name']);
+        await store.applyRemote([_r('setting', 'name', 'Newer', 6)]);
+        expect(await store.dirtyRecords(), isEmpty);
+      });
+
+      test('marking synced spares records changed since the push', () async {
+        final store = make();
+        final pushed = [_r('setting', 'a', 1, 1), _r('setting', 'b', 1, 1)];
+        await store.write(pushed);
+        await store.write([_r('setting', 'b', 2, 2)]);
+        await store.markSynced(pushed);
+        expect((await store.dirtyRecords()).map((r) => r.id), ['b']);
+      });
+
+      test('clearing records keeps meta values', () async {
+        final store = make();
+        await store.write([_r('setting', 'a', 1, 1)]);
+        await store.setMeta('deviceId', 'abc');
+        await store.setMeta('syncCursor:u1', '4');
+        await store.clearRecords();
+        await store.deleteMeta('syncCursor:u1');
+        expect(await store.loadAll(), isEmpty);
+        expect(await store.dirtyRecords(), isEmpty);
+        expect(await store.meta('deviceId'), 'abc');
+        expect(await store.meta('syncCursor:u1'), isNull);
+      });
+
       test('stores small values about the install', () async {
         final store = make();
         expect(await store.meta('deviceId'), isNull);
