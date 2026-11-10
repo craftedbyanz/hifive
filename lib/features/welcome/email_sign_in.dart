@@ -19,16 +19,38 @@ String? authMessage(AuthError error) => switch (error) {
   AuthError.unknown => 'Không đăng nhập được. Vui lòng thử lại.',
 };
 
-/// Sign in with Apple (when the build allows it), Google or an email and
-/// password, or create an email account. The last page of [WelcomeScreen];
-/// once signed in, [AuthGate] shows Home.
-class SignInPanel extends StatefulWidget {
-  const SignInPanel({super.key});
-  @override
-  State<SignInPanel> createState() => _SignInPanelState();
+/// Runs one sign-in call and toasts its failure; cancelling says nothing.
+/// Success needs no word, because [AuthGate] moves on. [done] is said after
+/// calls that keep the learner where they are. True when the call succeeded.
+Future<bool> runAuth(
+  BuildContext context,
+  Future<void> Function() call, {
+  String? done,
+}) async {
+  try {
+    await call();
+    if (context.mounted && done != null) toast(context, done);
+    return true;
+  } on AuthException catch (e) {
+    final message = authMessage(e.error);
+    if (context.mounted && message != null) toast(context, message);
+    return false;
+  }
 }
 
-class _SignInPanelState extends State<SignInPanel> {
+/// Opens [EmailSignInForm] in a sheet over the sign-in screen.
+Future<void> showEmailSignIn(BuildContext context) =>
+    sheet<void>(context, const EmailSignInForm());
+
+/// Sign in with an email and password, create an email account, or ask for
+/// a password reset. Closes its sheet once signed in.
+class EmailSignInForm extends StatefulWidget {
+  const EmailSignInForm({super.key});
+  @override
+  State<EmailSignInForm> createState() => _EmailSignInFormState();
+}
+
+class _EmailSignInFormState extends State<EmailSignInForm> {
   final email = TextEditingController(), password = TextEditingController();
   bool creating = false, busy = false;
 
@@ -39,19 +61,12 @@ class _SignInPanelState extends State<SignInPanel> {
     super.dispose();
   }
 
-  /// Runs one sign-in call; success needs no word, because the gate opens
-  /// Home. [done] is said after calls that keep the learner here.
   Future<void> _run(Future<void> Function() call, {String? done}) async {
     setState(() => busy = true);
-    try {
-      await call();
-      if (mounted && done != null) toast(context, done);
-    } on AuthException catch (e) {
-      final message = authMessage(e.error);
-      if (mounted && message != null) toast(context, message);
-    } finally {
-      if (mounted) setState(() => busy = false);
-    }
+    final ok = await runAuth(context, call, done: done);
+    if (!mounted) return;
+    setState(() => busy = false);
+    if (ok && done == null) Navigator.of(context).maybePop();
   }
 
   void _submit(AppState s) => _run(
@@ -78,49 +93,19 @@ class _SignInPanelState extends State<SignInPanel> {
         !busy && email.text.trim().isNotEmpty && password.text.isNotEmpty;
     return SingleChildScrollView(
       key: const ValueKey('sign-in-scroll'),
-      padding: EdgeInsets.fromLTRB(
-        24,
-        12,
-        24,
-        24 + MediaQuery.viewInsetsOf(context).bottom,
-      ),
+      padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Center(child: AppLogo(size: 64)),
-          const SizedBox(height: 20),
           Text(
-            creating ? 'Tạo tài khoản Hifive' : 'Bắt đầu với Hifive',
-            textAlign: TextAlign.center,
-            style: D.text(24, weight: FontWeight.w800, height: 30 / 24),
+            creating ? 'Tạo tài khoản Hifive' : 'Đăng nhập bằng email',
+            style: D.text(22, weight: FontWeight.w800, height: 28 / 22),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             'Lưu tiến độ và học tiếp trên mọi thiết bị.',
-            textAlign: TextAlign.center,
             style: D.text(14, color: Palette.settingsMuted, height: 20 / 14),
           ),
-          const SizedBox(height: 28),
-          if (s.auth.supportsApple) ...[
-            ActionButton(
-              'Tiếp tục với Apple',
-              key: const ValueKey('sign-in-apple'),
-              icon: Icons.apple,
-              onTap: busy ? null : () => _run(s.signInWithApple),
-            ),
-            const SizedBox(height: 12),
-          ],
-          ActionButton(
-            'Tiếp tục với Google',
-            key: const ValueKey('sign-in-google'),
-            icon: Icons.g_mobiledata_rounded,
-            outlined: true,
-            color: D.ink,
-            foreground: D.ink,
-            onTap: busy ? null : () => _run(s.signInWithGoogle),
-          ),
-          const SizedBox(height: 26),
-          const _OrDivider(),
           const SizedBox(height: 22),
           _Field(
             key: const ValueKey('sign-in-email'),
@@ -212,24 +197,6 @@ class _Field extends StatelessWidget {
       enabledBorder: _border(Palette.settingsPanel),
       focusedBorder: _border(Palette.ctaDisabled),
     ),
-  );
-}
-
-class _OrDivider extends StatelessWidget {
-  const _OrDivider();
-  @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      const Expanded(child: Divider(color: Palette.settingsPanel)),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Text(
-          'hoặc dùng email',
-          style: D.text(12.5, color: Palette.settingsMuted, height: 16 / 12.5),
-        ),
-      ),
-      const Expanded(child: Divider(color: Palette.settingsPanel)),
-    ],
   );
 }
 

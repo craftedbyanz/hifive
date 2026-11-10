@@ -239,10 +239,12 @@ Borderless by default: `isCollapsed`, no fill, `InputBorder.none`, placed inside
 | Card flip (flashcards) | 0.33 s |
 | Rating fly-out | 0.62–0.97 s |
 | Flow Letter solved word | holds 1.1 s, next color fades in 0.3 s |
-| Welcome pages | page turn 350 ms `easeOutCubic`; art, title and text fade and lift 8% in 300 ms, 60 ms apart; dots 200 ms |
+| Sign-in demos | each scene plays a 4 s timeline (`phase()` slices it), holds, and the next fades and scales in from 0.96 after 4.8 s; background tint 600 ms; title 220 ms; dots 200 ms |
+| Onboarding steps | step change 350 ms `easeOutCubic`; heading, title and text fade and lift 8% in 300 ms, 60 ms apart (`Reveal`); progress bars 300 ms; demos "think" 900 ms |
+| Preparing wait | dots on three tilted rings in the mode colours, one turn per 6 s; they gather into the logo over the 2.8 s wait |
 | Auth gate (welcome to Home and back) | fade and scale from 0.98, 350 ms `easeOutCubic` in, `easeIn` out |
 
-Ambient motion (Home orb, banner stars) runs even under Reduce Motion, as on the reference. New motion (welcome pages, auth gate) stops under Reduce Motion. Tests turn it off with `animateAmbient: false`.
+Ambient motion (Home orb, banner stars) runs even under Reduce Motion, as on the reference. New motion (sign-in demos, onboarding, auth gate) stops under Reduce Motion and shows each demo's finished frame (`welcomeAutoplay()`); tests turn it off with `animateAmbient: false`.
 
 Durations and curves for new motion, taken from what the code already uses:
 

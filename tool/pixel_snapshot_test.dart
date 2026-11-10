@@ -89,7 +89,8 @@ void main() {
     'lesson_settings': (s) => const LessonSettingsScreen(),
     'voice': (s) => const VoiceScreen(),
     'welcome': (s) => const WelcomeScreen(),
-    'sign_in': (s) => const Scaffold(body: SafeArea(child: SignInPanel())),
+    'sign_in': (s) => const Scaffold(body: SafeArea(child: EmailSignInForm())),
+    'onboarding': (s) => const OnboardingScreen(),
     'appearance': (s) => const AppearanceScreen(),
     'notification': (s) => const NotificationScreen(),
     for (final m in StudyMode.values) ...{

@@ -1,153 +1,35 @@
+import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import 'sign_in_panel.dart';
+import '../information/information.dart';
+import 'email_sign_in.dart';
+import 'welcome_motion.dart';
 
-/// Three pages about Hifive, then sign-in. A device that has seen the pages
-/// opens on sign-in; the pages stay a swipe away.
+part 'welcome_scenes.dart';
+
+/// The first screen when signed out: short demos of what Hifive does play
+/// one after another above the sign-in buttons, which never move.
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-const _signInPage = 3;
-
-/// Element entering (design system motion table).
-const _enter = Duration(milliseconds: 300);
-
-/// Page change, as a panel moves.
-const _turn = Duration(milliseconds: 350);
+/// How long each demo stays before the next one; its own timeline is
+/// [_sceneLength], then it holds its last frame.
+const _sceneHold = Duration(milliseconds: 4800);
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  late int page = AppScope.read(context).introSeen ? _signInPage : 0;
-  late final pages = PageController(initialPage: page);
-
-  @override
-  void dispose() {
-    pages.dispose();
-    super.dispose();
-  }
-
-  void _goTo(int target) {
-    if (MediaQuery.disableAnimationsOf(context)) {
-      pages.jumpToPage(target);
-    } else {
-      pages.animateToPage(target, duration: _turn, curve: Curves.easeOutCubic);
-    }
-  }
-
-  void _changed(int p) {
-    setState(() => page = p);
-    if (p == _signInPage) AppScope.read(context).finishIntro();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final intro = page < _signInPage;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 52,
-              child: Align(
-                alignment: Alignment.centerRight,
-                // Removed, not just hidden, on sign-in, so screen readers
-                // don't announce a button nobody can see.
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  switchInCurve: Curves.easeOut,
-                  switchOutCurve: Curves.easeOut,
-                  child: intro
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: _TextButton(
-                            'Bỏ qua',
-                            key: const ValueKey('welcome-skip'),
-                            onTap: () => _goTo(_signInPage),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
-              ),
-            ),
-            Expanded(
-              child: PageView(
-                key: const ValueKey('welcome-pages'),
-                controller: pages,
-                onPageChanged: _changed,
-                children: [
-                  _IntroPage(
-                    active: page == 0,
-                    art: const _WelcomeArt(),
-                    title: 'Học ngoại ngữ bằng cách viết và nói',
-                    body: 'Hifive chấm từng câu bạn viết và gợi ý cách nói tự nhiên hơn.',
-                  ),
-                  _IntroPage(
-                    active: page == 1,
-                    art: _ModesArt(active: page == 1),
-                    title: 'Ba cách luyện tập',
-                    body: 'Viết đoạn văn, luyện ngữ pháp hay trò chuyện. Chọn cách hợp với mục tiêu hôm nay.',
-                  ),
-                  _IntroPage(
-                    active: page == 2,
-                    art: const _MemoryArt(),
-                    title: 'Nhớ lâu hơn mỗi ngày',
-                    body: 'Lưu từ mới vào bộ thẻ, ôn đúng lúc sắp quên và giữ chuỗi ngày học.',
-                  ),
-                  const SignInPanel(),
-                ],
-              ),
-            ),
-            AnimatedSize(
-              duration: _enter,
-              curve: Curves.easeOutCubic,
-              child: intro
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
-                      child: Column(
-                        children: [
-                          _Dots(count: _signInPage, current: page),
-                          const SizedBox(height: 24),
-                          ActionButton(
-                            page == _signInPage - 1 ? 'Bắt đầu' : 'Tiếp tục',
-                            key: const ValueKey('welcome-next'),
-                            onTap: () => _goTo(page + 1),
-                          ),
-                        ],
-                      ),
-                    )
-                  : const SizedBox(width: double.infinity),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Fades and lifts its child in when [active] turns on, after [delay].
-class _Reveal extends StatefulWidget {
-  final bool active;
-  final Duration delay;
-  final Widget child;
-  const _Reveal({
-    required this.active,
-    required this.child,
-    this.delay = Duration.zero,
-  });
-  @override
-  State<_Reveal> createState() => _RevealState();
-}
-
-class _RevealState extends State<_Reveal> {
-  bool shown = false;
+  int scene = 0;
+  bool busy = false;
+  Timer? _next;
 
   @override
   void didChangeDependencies() {
@@ -156,184 +38,257 @@ class _RevealState extends State<_Reveal> {
   }
 
   @override
-  void didUpdateWidget(_Reveal old) {
-    super.didUpdateWidget(old);
-    if (widget.active != old.active) _schedule();
+  void dispose() {
+    _next?.cancel();
+    super.dispose();
   }
 
+  /// Moves on to the next demo after [_sceneHold] while demos autoplay.
   void _schedule() {
-    if (!widget.active) return;
-    if (MediaQuery.disableAnimationsOf(context) ||
-        widget.delay == Duration.zero) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) setState(() => shown = true);
-      });
-    } else {
-      Future<void>.delayed(widget.delay, () {
-        if (mounted && widget.active) setState(() => shown = true);
-      });
-    }
+    _next?.cancel();
+    if (!welcomeAutoplay(context)) return;
+    _next = Timer(_sceneHold, () {
+      if (mounted) _show((scene + 1) % _scenes.length);
+    });
+  }
+
+  void _show(int index) {
+    setState(() => scene = index);
+    _schedule();
+  }
+
+  Future<void> _signIn(Future<void> Function() call) async {
+    setState(() => busy = true);
+    await runAuth(context, call);
+    if (mounted) setState(() => busy = false);
   }
 
   @override
   Widget build(BuildContext context) {
+    final s = AppScope.of(context);
+    final current = _scenes[scene];
     final still = MediaQuery.disableAnimationsOf(context);
-    final visible = shown || still;
-    return AnimatedOpacity(
-      opacity: visible ? 1 : 0,
-      duration: still ? Duration.zero : _enter,
-      curve: Curves.easeOutCubic,
-      child: AnimatedSlide(
-        offset: visible ? Offset.zero : const Offset(0, .08),
-        duration: still ? Duration.zero : _enter,
-        curve: Curves.easeOutCubic,
-        child: widget.child,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: TweenAnimationBuilder<Color?>(
+        tween: ColorTween(end: current.color.withValues(alpha: .16)),
+        duration: still ? Duration.zero : const Duration(milliseconds: 600),
+        curve: Curves.easeOut,
+        builder: (context, tint, child) => DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [0, .62],
+              colors: [tint!, Colors.white],
+            ),
+          ),
+          child: child,
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  key: const ValueKey('welcome-stage'),
+                  behavior: HitTestBehavior.opaque,
+                  onHorizontalDragEnd: (d) {
+                    final v = d.primaryVelocity ?? 0;
+                    if (v.abs() < 200) return;
+                    final step = v < 0 ? 1 : -1;
+                    _show((scene + step) % _scenes.length);
+                  },
+                  child: _Stage(scene: scene),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 4, 24, 12),
+                child: Column(
+                  children: [
+                    _Dots(count: _scenes.length, current: scene, onTap: _show),
+                    const SizedBox(height: 18),
+                    if (s.auth.supportsApple) ...[
+                      ActionButton(
+                        'Tiếp tục với Apple',
+                        key: const ValueKey('sign-in-apple'),
+                        icon: Icons.apple,
+                        onTap: busy ? null : () => _signIn(s.signInWithApple),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                    ActionButton(
+                      'Tiếp tục với Google',
+                      key: const ValueKey('sign-in-google'),
+                      icon: Icons.g_mobiledata_rounded,
+                      color: s.auth.supportsApple ? Colors.white : D.ink,
+                      foreground: s.auth.supportsApple ? D.ink : Colors.white,
+                      outlined: s.auth.supportsApple,
+                      onTap: busy ? null : () => _signIn(s.signInWithGoogle),
+                    ),
+                    const SizedBox(height: 12),
+                    ActionButton(
+                      'Tiếp tục với email',
+                      key: const ValueKey('sign-in-email-open'),
+                      icon: CupertinoIcons.mail,
+                      outlined: true,
+                      color: D.ink,
+                      foreground: D.ink,
+                      onTap: busy ? null : () => showEmailSignIn(context),
+                    ),
+                    const SizedBox(height: 14),
+                    const _Terms(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-class _IntroPage extends StatelessWidget {
-  final bool active;
-  final Widget art;
-  final String title, body;
-  const _IntroPage({
-    required this.active,
-    required this.art,
-    required this.title,
-    required this.body,
-  });
+/// The current demo with its title, centred in the space above the dots.
+class _Stage extends StatelessWidget {
+  final int scene;
+  const _Stage({required this.scene});
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    // Centered in the space between the top bar and the dots; scrolls when
-    // a large text size needs more room.
-    builder: (context, box) => SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: box.maxHeight),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) {
+    final still = MediaQuery.disableAnimationsOf(context);
+    final current = _scenes[scene];
+    return LayoutBuilder(
+      builder: (context, box) {
+        // The art gives up height first on short screens and large text.
+        final art = (box.maxHeight - context.grow(150)).clamp(0.0, 290.0);
+        return Column(
           children: [
-            _Reveal(
-              active: active,
-              child: SizedBox(height: 260, child: art),
+            const SizedBox(height: 8),
+            const _Brand(),
+            const Spacer(),
+            SizedBox(
+              height: art,
+              child: art < 120
+                  ? null
+                  : AnimatedSwitcher(
+                      duration: still ? Duration.zero : welcomeTurn,
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeIn,
+                      transitionBuilder: (child, animation) => FadeTransition(
+                        opacity: animation,
+                        child: ScaleTransition(
+                          scale: Tween(begin: .96, end: 1.0).animate(animation),
+                          child: child,
+                        ),
+                      ),
+                      child: FittedBox(
+                        key: ValueKey('scene-$scene'),
+                        child: SizedBox(
+                          width: 345,
+                          height: 290,
+                          child: _SceneArt(index: scene),
+                        ),
+                      ),
+                    ),
             ),
-            const SizedBox(height: 36),
-            _Reveal(
-              active: active,
-              delay: const Duration(milliseconds: 60),
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: D.text(26, weight: FontWeight.w800, height: 32 / 26),
+            const SizedBox(height: 22),
+            AnimatedSwitcher(
+              duration: still
+                  ? Duration.zero
+                  : const Duration(milliseconds: 220),
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeOut,
+              child: Padding(
+                key: ValueKey('title-$scene'),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  children: [
+                    Text(
+                      current.title,
+                      textAlign: TextAlign.center,
+                      style: D.text(
+                        26,
+                        weight: FontWeight.w800,
+                        height: 32 / 26,
+                        spacing: -.5,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      current.body,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: D.text(15, color: D.secondary, height: 21 / 15),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 12),
-            _Reveal(
-              active: active,
-              delay: const Duration(milliseconds: 120),
-              child: Text(
-                body,
-                textAlign: TextAlign.center,
-                style: D.text(15, color: D.secondary, height: 22 / 15),
-              ),
-            ),
-            const SizedBox(height: 24),
+            const Spacer(),
           ],
-        ),
-      ),
-    ),
-  );
+        );
+      },
+    );
+  }
 }
 
-/// The logo inside rings in the three mode colors.
-class _WelcomeArt extends StatelessWidget {
-  const _WelcomeArt();
+/// The logo and the lowercase wordmark.
+class _Brand extends StatelessWidget {
+  const _Brand();
   @override
-  Widget build(BuildContext context) => Center(
-    child: Stack(
-      alignment: Alignment.center,
+  Widget build(BuildContext context) => Semantics(
+    label: 'Hifive',
+    excludeSemantics: true,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        for (final (i, mode) in StudyMode.values.indexed)
-          Container(
-            width: 240 - i * 48.0,
-            height: 240 - i * 48.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: mode.color.withValues(alpha: .08 + i * .04),
-            ),
-          ),
-        const AppLogo(size: 88),
+        const AppLogo(size: 30),
+        const SizedBox(width: 8),
+        Text(
+          'hifive',
+          style: D.text(21, weight: FontWeight.w800, spacing: -.6, height: 1),
+        ),
       ],
     ),
   );
 }
 
-/// The three modes as rows that arrive one after another.
-class _ModesArt extends StatelessWidget {
-  final bool active;
-  const _ModesArt({required this.active});
-  static const _labels = {
-    StudyMode.writing: ('Luyện viết', 'Viết đoạn văn theo gợi ý'),
-    StudyMode.grammar: ('Ngữ pháp', 'Sửa lỗi trong từng câu'),
-    StudyMode.conversation: ('Hội thoại', 'Phản xạ khi trò chuyện'),
-  };
+class _Dots extends StatelessWidget {
+  final int count, current;
+  final ValueChanged<int> onTap;
+  const _Dots({
+    required this.count,
+    required this.current,
+    required this.onTap,
+  });
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      for (final (i, mode) in StudyMode.values.indexed)
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: _Reveal(
-            active: active,
-            delay: Duration(milliseconds: 80 * i),
-            child: Container(
-              height: 68,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: D.line),
-                boxShadow: D.shadow,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: mode.color,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(mode.icon, size: 20, color: Colors.white),
+      for (var i = 0; i < count; i++)
+        Semantics(
+          button: true,
+          selected: i == current,
+          label: 'Giới thiệu ${i + 1} trên $count',
+          child: GestureDetector(
+            key: ValueKey('welcome-dot-$i'),
+            behavior: HitTestBehavior.opaque,
+            onTap: () => onTap(i),
+            // A 44 pt tall hit box around the 8 pt dot.
+            child: SizedBox(
+              width: 34,
+              height: 44,
+              child: Center(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOut,
+                  width: i == current ? 24 : 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: i == current ? D.ink : D.line,
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _labels[mode]!.$1,
-                          style: D.text(
-                            15,
-                            weight: FontWeight.w700,
-                            height: 20 / 15,
-                          ),
-                        ),
-                        Text(
-                          _labels[mode]!.$2,
-                          style: D.text(
-                            12.5,
-                            color: D.secondary,
-                            height: 17 / 12.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -342,129 +297,66 @@ class _ModesArt extends StatelessWidget {
   );
 }
 
-/// A small stack of word cards with a streak badge.
-class _MemoryArt extends StatelessWidget {
-  const _MemoryArt();
-  Widget _card(String word, String meaning, {required bool front}) => Container(
-    width: 200,
-    height: 132,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(22),
-      border: Border.all(color: D.line),
-      boxShadow: D.shadow,
-    ),
-    alignment: Alignment.center,
-    child: front
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                word,
-                style: D.text(24, weight: FontWeight.w800, height: 30 / 24),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                meaning,
-                style: D.text(14, color: D.secondary, height: 18 / 14),
-              ),
-            ],
-          )
-        : null,
-  );
-
+/// The agreement line under the buttons, with both documents a tap away.
+class _Terms extends StatelessWidget {
+  const _Terms();
   @override
-  Widget build(BuildContext context) => Center(
-    child: SizedBox(
-      width: 260,
-      height: 220,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Transform.rotate(angle: -.14, child: _card('', '', front: false)),
-          Transform.rotate(angle: .08, child: _card('', '', front: false)),
-          _card('remember', 'ghi nhớ', front: true),
-          Positioned(
-            right: 8,
-            top: 14,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-              decoration: BoxDecoration(
-                color: D.orange,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.local_fire_department_rounded,
-                    size: 16,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '7 ngày',
-                    style: D.text(
-                      12.5,
-                      weight: FontWeight.w700,
-                      color: Colors.white,
-                      height: 1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final s = AppScope.read(context);
+    final base = D.text(12, color: D.secondary, height: 17 / 12);
+    final link = D.text(
+      12,
+      weight: FontWeight.w700,
+      color: D.ink,
+      height: 17 / 12,
+    );
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text('Khi tiếp tục, bạn đồng ý với ', style: base),
+        _TermsLink(
+          'Điều khoản',
+          key: const ValueKey('welcome-terms'),
+          style: link,
+          onTap: () async {
+            if (!await s.system.openTerms() && context.mounted) {
+              toast(context, 'Không mở được điều khoản dịch vụ.');
+            }
+          },
+        ),
+        Text(' và ', style: base),
+        _TermsLink(
+          'Chính sách quyền riêng tư',
+          key: const ValueKey('welcome-privacy'),
+          style: link,
+          onTap: () => go<void>(context, const PrivacyScreen()),
+        ),
+      ],
+    );
+  }
 }
 
-class _Dots extends StatelessWidget {
-  final int count, current;
-  const _Dots({required this.count, required this.current});
+class _TermsLink extends StatelessWidget {
+  final String text;
+  final TextStyle style;
+  final VoidCallback onTap;
+  const _TermsLink(
+    this.text, {
+    super.key,
+    required this.style,
+    required this.onTap,
+  });
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Trang ${current + 1} trên $count',
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var i = 0; i < count; i++)
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: i == current ? 22 : 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: i == current ? D.ink : D.line,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-      ],
-    ),
-  );
-}
-
-class _TextButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onTap;
-  const _TextButton(this.text, {super.key, required this.onTap});
-  @override
-  Widget build(BuildContext context) => PressFade(
-    onTap: onTap,
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 44, minWidth: 44),
+    link: true,
+    child: GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Center(
-          widthFactor: 1,
-          child: Text(
-            text,
-            style: D.text(15, weight: FontWeight.w600, color: D.secondary),
-          ),
-        ),
+        // Taller hit area without moving the line.
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Text(text, style: style),
       ),
     ),
   );

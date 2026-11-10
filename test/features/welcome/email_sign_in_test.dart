@@ -21,8 +21,8 @@ void main() {
   testWidgets('email sign-in signs in and links the store', (tester) async {
     final auth = MemoryAuthService()..accounts['lan@example.com'] = 'secret1';
     final store = MemoryRecordStore();
-    final state = fresh(auth: auth, store: store)..introSeen = true;
-    await mount(tester, state, const WelcomeScreen());
+    final state = fresh(auth: auth, store: store);
+    await mount(tester, state, const Scaffold(body: EmailSignInForm()));
     expect(
       tester
           .widget<ActionButton>(find.byKey(const ValueKey('sign-in-submit')))
@@ -40,21 +40,21 @@ void main() {
 
   testWidgets('a wrong password explains itself and stays', (tester) async {
     final auth = MemoryAuthService()..accounts['lan@example.com'] = 'secret1';
-    final state = fresh(auth: auth)..introSeen = true;
-    await mount(tester, state, const WelcomeScreen());
+    final state = fresh(auth: auth);
+    await mount(tester, state, const Scaffold(body: EmailSignInForm()));
     await _type(tester, 'sign-in-email', 'lan@example.com');
     await _type(tester, 'sign-in-password', 'nope');
     await tester.tap(find.byKey(const ValueKey('sign-in-submit')));
     await tester.pump();
     expect(find.text('Email hoặc mật khẩu không đúng.'), findsOneWidget);
     expect(state.user, isNull);
-    expect(find.byType(SignInPanel), findsOneWidget);
+    expect(find.byType(EmailSignInForm), findsOneWidget);
   });
 
   testWidgets('a new account can be created', (tester) async {
     final auth = MemoryAuthService();
-    final state = fresh(auth: auth)..introSeen = true;
-    await mount(tester, state, const WelcomeScreen());
+    final state = fresh(auth: auth);
+    await mount(tester, state, const Scaffold(body: EmailSignInForm()));
     await tester.tap(find.byKey(const ValueKey('sign-in-mode')));
     await tester.pump();
     expect(find.text('Tạo tài khoản'), findsWidgets);
@@ -72,7 +72,7 @@ void main() {
 
   testWidgets('a cancelled Google sign-in says nothing', (tester) async {
     final auth = MemoryAuthService()..failNext = AuthError.cancelled;
-    final state = fresh(auth: auth)..introSeen = true;
+    final state = fresh(auth: auth);
     await mount(tester, state, const WelcomeScreen());
     await tester.tap(find.byKey(const ValueKey('sign-in-google')));
     await tester.pump();
@@ -88,13 +88,13 @@ void main() {
   ) async {
     await mount(
       tester,
-      fresh(auth: MemoryAuthService(supportsApple: false))..introSeen = true,
+      fresh(auth: MemoryAuthService(supportsApple: false)),
       const WelcomeScreen(),
     );
     expect(find.byKey(const ValueKey('sign-in-apple')), findsNothing);
     await mount(
       tester,
-      fresh(auth: MemoryAuthService())..introSeen = true,
+      fresh(auth: MemoryAuthService()),
       const WelcomeScreen(),
     );
     expect(find.byKey(const ValueKey('sign-in-apple')), findsOneWidget);
@@ -104,8 +104,8 @@ void main() {
     final auth = MemoryAuthService();
     await mount(
       tester,
-      fresh(auth: auth)..introSeen = true,
-      const WelcomeScreen(),
+      fresh(auth: auth),
+      const Scaffold(body: EmailSignInForm()),
     );
     await tester.tap(find.byKey(const ValueKey('sign-in-reset')));
     await tester.pump();
@@ -116,8 +116,8 @@ void main() {
     );
     await mount(
       tester,
-      fresh(auth: auth)..introSeen = true,
-      const WelcomeScreen(),
+      fresh(auth: auth),
+      const Scaffold(body: EmailSignInForm()),
     );
     await _type(tester, 'sign-in-email', ' lan@example.com');
     await tester.tap(find.byKey(const ValueKey('sign-in-reset')));
@@ -135,9 +135,7 @@ void main() {
       ),
     );
     final store = MemoryRecordStore();
-    final state = fresh(auth: auth, store: store)
-      ..setName('Lan')
-      ..introSeen = true;
+    final state = fresh(auth: auth, store: store)..setName('Lan');
     await state.flush();
     await mount(tester, state, const ProfileScreen(), size: _tall);
     expect(find.text('lan@icloud.com'), findsOneWidget);

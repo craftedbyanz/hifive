@@ -97,9 +97,12 @@ class AppState extends ChangeNotifier {
   AuthUser? user;
   late final StreamSubscription<AuthUser?> _authChanges;
 
-  /// Whether this device has shown the welcome pages; then the gate opens
-  /// straight on sign-in. Kept in meta, so signing out doesn't reset it.
-  bool introSeen = false;
+  /// Whether the account finished onboarding (name, level, goals). A synced
+  /// setting, so a second device signing in skips it.
+  bool onboarded = false;
+
+  /// Learning goals picked during onboarding, as [learningGoals] ids.
+  List<String> goals = const [];
 
   /// When this device last finished a sync with the account, if ever.
   DateTime? lastSyncedAt;
@@ -174,7 +177,6 @@ class AppState extends ChangeNotifier {
         final at = await store.meta(_lastSyncKey(u.uid));
         lastSyncedAt = at == null ? null : DateTime.tryParse(at);
       }
-      introSeen = await store.meta('introSeen') == '1';
       _loaded = true;
       if (user != null) _startSyncing();
     } catch (_) {
@@ -198,6 +200,8 @@ class AppState extends ChangeNotifier {
     chatFree = s['chatFree'] as bool? ?? chatFree;
     showHints = s['showHints'] as bool? ?? showHints;
     chatTipSeen = s['chatTipSeen'] as bool? ?? chatTipSeen;
+    onboarded = s['onboarded'] as bool? ?? onboarded;
+    goals = s['goals'] as List<String>? ?? goals;
     language = r.language ?? language;
     modeOrder = r.modeOrder ?? modeOrder;
     sound = r.sound ?? sound;
@@ -365,11 +369,27 @@ class AppState extends ChangeNotifier {
     _syncSoon = _syncEvery = null;
   }
 
-  void finishIntro() {
-    if (introSeen) return;
-    introSeen = true;
-    _writes = _writes.then((_) => store.setMeta('introSeen', '1'));
-    notifyListeners();
+  /// True while a signed-in account that hasn't onboarded on this device
+  /// waits for its first sync, which may bring onboarding from another
+  /// device. A failed sync ends the wait.
+  bool get awaitingAccount =>
+      !onboarded && syncEnabled && lastSyncedAt == null && syncError == null;
+
+  /// Saves the answers from onboarding and opens the app.
+  void completeOnboarding({
+    required String name,
+    required String level,
+    required List<String> goals,
+  }) {
+    this.name = name;
+    this.level = level;
+    this.goals = List.unmodifiable(goals);
+    onboarded = true;
+    _setting('name', name);
+    _setting('level', level);
+    _setting('goals', goals);
+    _setting('onboarded', true);
+    commit();
   }
 
   /// The app came back to the foreground: catch up with other devices.
@@ -430,6 +450,8 @@ class AppState extends ChangeNotifier {
     haptic = true;
     language = Language.english;
     chatTipSeen = false;
+    onboarded = false;
+    goals = const [];
     modeOrder = [StudyMode.writing, StudyMode.grammar, StudyMode.conversation];
     gameResume = null;
     firstUse = now();

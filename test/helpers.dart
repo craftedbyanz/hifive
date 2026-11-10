@@ -30,6 +30,7 @@ AppState fresh({
   ConversationRepository? conversation,
   DeckGenerator? deckGenerator,
   InsightRepository? insights,
+  bool onboarded = true,
 }) => createAppState(
   store: store ?? MemoryRecordStore(),
   legacy: legacy,
@@ -44,7 +45,7 @@ AppState fresh({
   deckGenerator: deckGenerator,
   insights: insights,
   now: () => DateTime(2026, 11, 1, 1, 43),
-);
+)..onboarded = onboarded;
 
 /// A grammar, writing or conversation lesson built from the bundled banks.
 Lesson sampleLesson(StudyMode mode, {String title = 'Test'}) => Lesson(

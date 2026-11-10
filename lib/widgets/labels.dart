@@ -20,10 +20,13 @@ class CapsLabel extends StatelessWidget {
   );
   final String text;
   final bool small;
-  const CapsLabel(this.text, {super.key, this.small = false});
+
+  /// Replaces the muted ink, for a label inside a mode-colored card.
+  final Color? color;
+  const CapsLabel(this.text, {super.key, this.small = false, this.color});
   @override
   Widget build(BuildContext context) =>
-      Text(text, style: small ? smallStyle : style);
+      Text(text, style: (small ? smallStyle : style).copyWith(color: color));
 }
 
 class PillBadge extends StatelessWidget {

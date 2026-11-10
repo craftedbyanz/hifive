@@ -9,7 +9,8 @@ abstract final class AppKinds {
 
 /// Settings stored as `setting` records, one per name. String settings keep
 /// their value; [boolSettings] are booleans; `modeOrder` is a list of
-/// [StudyMode] indexes; `language` is a [Language] code.
+/// [StudyMode] indexes; `language` is a [Language] code; `goals` is a list
+/// of [learningGoals] ids.
 const stringSettings = {
   'name',
   'level',
@@ -19,7 +20,20 @@ const stringSettings = {
   'difficulty',
   'chatTone',
 };
-const boolSettings = {'chatFree', 'showHints', 'chatTipSeen'};
+const boolSettings = {'chatFree', 'showHints', 'chatTipSeen', 'onboarded'};
+
+/// Learning goals offered during onboarding, stored by id in the `goals`
+/// setting. Only append; an id never changes meaning.
+const learningGoals = [
+  'daily',
+  'travel',
+  'work',
+  'exam',
+  'study',
+  'writing',
+  'media',
+  'family',
+];
 
 /// What [restore] reads back from the records.
 class RestoredState {
@@ -152,6 +166,11 @@ RestoredState restore(
           language = Language.fromCode(v as String);
         } else if (r.id == 'modeOrder') {
           modeOrder = _modeOrder(v);
+        } else if (r.id == 'goals') {
+          settings['goals'] = [
+            for (final g in (v as List).cast<String>())
+              if (learningGoals.contains(g)) g,
+          ];
         }
       case RecordKind.device:
         final v = d['v'];
