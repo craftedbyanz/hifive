@@ -9,8 +9,8 @@
     {
       "binding": "DB",
       "database_name": "hifive",
-      // Replaced with the real id when the database is created (part D).
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // Created on 10 November 2026 in the APAC region.
+      "database_id": "37c646f6-ae87-4acf-9bc4-05e7c1e42bbd",
       "migrations_dir": "migrations"
     }
   ]

@@ -60,7 +60,10 @@ else
 fi
 
 if [ "$skip_build" -eq 0 ]; then
-  flutter build ios --release --target lib/main.dart
+  # The sync Worker; set HIFIVE_API to build against another one, or to an
+  # empty string for an offline-only build.
+  flutter build ios --release --target lib/main.dart \
+    --dart-define=HIFIVE_API="${HIFIVE_API-https://hifive-api.hifive-worker.workers.dev}"
 fi
 if [ ! -d "$app" ]; then
   echo "$app not found. Run without --skip-build." >&2

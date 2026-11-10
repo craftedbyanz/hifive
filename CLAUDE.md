@@ -23,7 +23,7 @@ Flutter 3.47.9, Dart 3.13.7, Xcode 27.2, Android SDK 36, JDK 21.
 ```sh
 scripts/check.sh                                              # guards, format, analyze, test
 flutter test test/domain/model_test.dart --plain-name "<test name>"  # single test
-scripts/install_iphone.sh                                     # Release build, installed over the app on a USB iPhone
+scripts/install_iphone.sh                                     # Release build with sync, installed over the app on a USB iPhone
 (cd worker && npm test)                                       # sync Worker tests (TypeScript, D1 on Miniflare)
 (cd worker && npx wrangler dev)                               # run the Worker locally; apply migrations first with `npx wrangler d1 migrations apply hifive --local`
 ```
@@ -82,7 +82,7 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 
 ## Worker
 
-`worker/` is the sync API on Cloudflare Workers (TypeScript, D1); see `docs/backend-plan.md`. `src/auth.ts` verifies Firebase ID tokens (401 for a bad token, 503 when Google's keys can't be fetched), `src/sync.ts` validates and applies `POST /v1/sync` in one D1 batch, and `migrations/` holds the D1 schema; a new table or column is a new numbered migration, never an edit to an applied one. Tests use `@cloudflare/vitest-plugin`, which isolates storage per file only, so `test/setup.ts` empties the tables before each test.
+`worker/` is the sync API on Cloudflare Workers, deployed with `(cd worker && npx wrangler deploy)` to `https://hifive-api.hifive-worker.workers.dev` (personal Cloudflare account, D1 `hifive` in APAC). The app syncs only when built with `--dart-define=HIFIVE_API=<that address>`, which `scripts/install_iphone.sh` passes; plain `flutter run` stays offline-only. Apply a new migration remotely with `(cd worker && npm run migrate:remote)` before deploying code that needs it. (TypeScript, D1); see `docs/backend-plan.md`. `src/auth.ts` verifies Firebase ID tokens (401 for a bad token, 503 when Google's keys can't be fetched), `src/sync.ts` validates and applies `POST /v1/sync` in one D1 batch, and `migrations/` holds the D1 schema; a new table or column is a new numbered migration, never an edit to an applied one. Tests use `@cloudflare/vitest-plugin`, which isolates storage per file only, so `test/setup.ts` empties the tables before each test.
 
 ## Backend plan
 

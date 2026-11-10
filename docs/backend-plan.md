@@ -69,7 +69,7 @@ Done: project `hifive-3371b` on the Spark plan with Email/Password, Google and A
 
 Apple, Google and email sign-in; guest use until sign-in; local records merge into the account on sign-in and are deleted on sign-out.
 
-### 3. Sync Worker and D1 - in progress
+### 3. Sync Worker and D1 - done
 
 Decided on 10 November 2026: the Worker is TypeScript in `worker/` of this repo, so one commit can change both ends of the protocol; D1 holds all server data; signing out deletes local data after pushing pending changes.
 
@@ -102,6 +102,8 @@ response: { cursor, records: [changed after cursor], hasMore }
 Part A done: `worker/` with 28 tests, run by `scripts/check.sh`. Part B done: `RecordStore` gained `dirtyRecords`, `applyRemote`, `markSynced`, `clearRecords` and `deleteMeta`; `SyncService` (`HttpSyncService` over `http`), `AuthService.idToken()` and `Syncer` in `lib/domain/sync/syncer.dart`, which keeps a cursor per account (`syncCursor:<uid>`). `test/sync_fakes.dart` holds a Dart fake of the Worker's rules, and `test/domain/sync_contract_test.dart` fails if the Worker and the app disagree on the synced kinds or the stamp format.
 
 Part C done: `AppState` syncs when it has a `SyncService` and a signed-in learner: after `load()`, right after sign-in (which also pushes guest data), 20 seconds after the last change (`syncDelay`, so a burst costs one request), every 5 minutes, and on leaving the app (`appPaused`); returning (`appResumed`) restarts it. Calls during a sync join it and run once more. Pulls rebuild state through `restore()` and move the clock past the latest stamp. Signing out with sync pushes first (asking again if that fails), deletes local records and the account's cursor, and resets to a fresh install; without sync it keeps local data. Profile shows `Apple · Đã đồng bộ lúc 10:42`. The API address comes from `--dart-define=HIFIVE_API=…`; without it the app stays offline-only.
+
+Part D done on 10 November 2026: D1 `hifive` (APAC, id `37c646f6-…`) migrated and the Worker deployed to `https://hifive-api.hifive-worker.workers.dev`. Wrangler registered the `hifive-worker` subdomain on its own in non-interactive mode; the chosen name was `anznguyen`, which can only be changed in the Cloudflare dashboard (Workers & Pages, Subdomain, Change); after changing it, update `scripts/install_iphone.sh` and CLAUDE.md. Verified end to end with a real Firebase ID token from a temporary email account: 401 without or with a tampered token, push from one device and pull on another, an older stamp losing, device records refused, rows in D1; the test account and its rows were deleted afterwards. Not yet verified: the app syncing on a device, which needs a real sign-in (Deferred item 2).
 - D. Deploy to `workers.dev` after `npx wrangler login`, then an end-to-end check with a real Firebase test account through the Auth REST API.
 
 ### 4. Course content on R2 - todo
