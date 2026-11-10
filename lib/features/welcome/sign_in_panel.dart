@@ -5,7 +5,6 @@ import '../../core/design/design.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
-import 'settings_kit.dart';
 
 /// What each sign-in failure tells the learner. Cancelling says nothing.
 String? authMessage(AuthError error) => switch (error) {
@@ -20,16 +19,16 @@ String? authMessage(AuthError error) => switch (error) {
   AuthError.unknown => 'Không đăng nhập được. Vui lòng thử lại.',
 };
 
-/// Sign in with Apple (iOS), Google or an email and password, or create an
-/// email account. Learning data stays on the device; signing in links it to
-/// the account for sync later.
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+/// Sign in with Apple (when the build allows it), Google or an email and
+/// password, or create an email account. The last page of [WelcomeScreen];
+/// once signed in, [AuthGate] shows Home.
+class SignInPanel extends StatefulWidget {
+  const SignInPanel({super.key});
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignInPanel> createState() => _SignInPanelState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInPanelState extends State<SignInPanel> {
   final email = TextEditingController(), password = TextEditingController();
   bool creating = false, busy = false;
 
@@ -40,14 +39,13 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
-  /// Runs one sign-in call, then leaves on success or explains the failure.
+  /// Runs one sign-in call; success needs no word, because the gate opens
+  /// Home. [done] is said after calls that keep the learner here.
   Future<void> _run(Future<void> Function() call, {String? done}) async {
     setState(() => busy = true);
     try {
       await call();
-      if (!mounted) return;
-      toast(context, done ?? 'Đã đăng nhập.');
-      if (done == null) Navigator.pop(context);
+      if (mounted && done != null) toast(context, done);
     } on AuthException catch (e) {
       final message = authMessage(e.error);
       if (mounted && message != null) toast(context, message);
@@ -78,20 +76,28 @@ class _SignInScreenState extends State<SignInScreen> {
     final s = AppScope.of(context);
     final ready =
         !busy && email.text.trim().isNotEmpty && password.text.isNotEmpty;
-    return SettingsPage(
-      title: creating ? 'Tạo tài khoản' : 'Đăng nhập',
-      background: Colors.white,
-      padding: const EdgeInsets.fromLTRB(24, 135, 24, 60),
+    return SingleChildScrollView(
+      key: const ValueKey('sign-in-scroll'),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        12,
+        24,
+        24 + MediaQuery.viewInsetsOf(context).bottom,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const Center(child: AppLogo(size: 64)),
+          const SizedBox(height: 20),
           Text(
-            'Lưu tiến độ của bạn',
+            creating ? 'Tạo tài khoản Hifive' : 'Bắt đầu với Hifive',
+            textAlign: TextAlign.center,
             style: D.text(24, weight: FontWeight.w800, height: 30 / 24),
           ),
           const SizedBox(height: 8),
           Text(
-            'Đăng nhập để giữ dữ liệu học khi đổi máy và học trên nhiều thiết bị. Dữ liệu hiện có trên máy này vẫn được giữ.',
+            'Lưu tiến độ và học tiếp trên mọi thiết bị.',
+            textAlign: TextAlign.center,
             style: D.text(14, color: Palette.settingsMuted, height: 20 / 14),
           ),
           const SizedBox(height: 28),

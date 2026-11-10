@@ -9,13 +9,13 @@ import '../../domain/repositories/repositories.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
+import '../welcome/welcome.dart';
 import 'account_forms.dart';
 import 'appearance_screen.dart';
 import 'edit_profile_screen.dart';
 import 'language_screen.dart';
 import 'lesson_settings_screen.dart';
 import 'notification_screen.dart';
-import 'sign_in_screen.dart';
 import 'voice_screen.dart';
 
 /// Layout measured against the reference on a 393 × 852 iPhone.
@@ -73,7 +73,8 @@ class ProfileScreen extends StatelessWidget {
               _AccountRow(
                 user: s.user,
                 status: syncStatus(s),
-                onTap: s.user == null ? () => open(const SignInScreen()) : null,
+                // Signed out, the app shows the welcome screen instead.
+                onTap: null,
               ),
             ],
           ),
@@ -207,8 +208,9 @@ class ProfileScreen extends StatelessWidget {
       );
       if (!anyway) return;
     }
+    // No toast: the gate swaps to the welcome screen, which says enough,
+    // and a snack bar during that swap would show on two scaffolds.
     await s.signOut();
-    if (context.mounted) toast(context, 'Đã đăng xuất.');
   }
 
   static Future<void> _system(

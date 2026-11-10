@@ -12,7 +12,9 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(HifiveApp(state: fresh(), animateAmbient: false));
+    await tester.pumpWidget(
+      HifiveApp(state: fresh(auth: signedIn()), animateAmbient: false),
+    );
     await tester.pumpAndSettle();
   }
 

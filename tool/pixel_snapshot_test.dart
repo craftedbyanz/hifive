@@ -22,6 +22,7 @@ import 'package:hifive/features/information/information.dart';
 import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/features/welcome/welcome.dart';
 import 'package:hifive/state/state.dart';
 
 const out = String.fromEnvironment('PIX_OUT');
@@ -87,7 +88,8 @@ void main() {
     'level': (s) => const LevelPickerScreen(),
     'lesson_settings': (s) => const LessonSettingsScreen(),
     'voice': (s) => const VoiceScreen(),
-    'sign_in': (s) => const SignInScreen(),
+    'welcome': (s) => const WelcomeScreen(),
+    'sign_in': (s) => const Scaffold(body: SafeArea(child: SignInPanel())),
     'appearance': (s) => const AppearanceScreen(),
     'notification': (s) => const NotificationScreen(),
     for (final m in StudyMode.values) ...{

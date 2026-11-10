@@ -6,6 +6,7 @@ import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/domain/sync/sync.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/features/welcome/welcome.dart';
 import 'package:hifive/state/state.dart';
 
 import '../helpers.dart';

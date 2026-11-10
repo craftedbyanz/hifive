@@ -18,7 +18,7 @@ void main() {
   testWidgets('home menu opens flashcards and back restores home', (
     tester,
   ) async {
-    final s = fresh();
+    final s = fresh(auth: signedIn());
     tester.view.physicalSize = const Size(393, 852);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -321,7 +321,9 @@ void main() {
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(HifiveApp(state: fresh(), animateAmbient: false));
+      await tester.pumpWidget(
+        HifiveApp(state: fresh(auth: signedIn()), animateAmbient: false),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.text('Menu'));
       await tester.pump();
@@ -346,7 +348,9 @@ void main() {
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(HifiveApp(state: fresh(), animateAmbient: false));
+      await tester.pumpWidget(
+        HifiveApp(state: fresh(auth: signedIn()), animateAmbient: false),
+      );
       await tester.pumpAndSettle();
       final card = find.ancestor(
         of: find.text('Đoạn văn'),

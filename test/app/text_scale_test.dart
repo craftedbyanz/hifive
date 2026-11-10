@@ -9,6 +9,7 @@ import 'package:hifive/features/home/home.dart';
 import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/features/welcome/welcome.dart';
 
 import '../helpers.dart';
 
@@ -80,7 +81,8 @@ Future<void> layOut(
     'streak': const StreakScreen(),
     'insight': const InsightScreen(),
     'profile': const ProfileScreen(),
-    'sign in': const SignInScreen(),
+    'welcome': const WelcomeScreen(),
+    'sign in': const Scaffold(body: SafeArea(child: SignInPanel())),
     'decks': const DeckListScreen(),
     'deck': DeckScreen(deck: s.decks.first),
     'game home': const GameHomeScreen(),

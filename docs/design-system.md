@@ -239,8 +239,10 @@ Borderless by default: `isCollapsed`, no fill, `InputBorder.none`, placed inside
 | Card flip (flashcards) | 0.33 s |
 | Rating fly-out | 0.62–0.97 s |
 | Flow Letter solved word | holds 1.1 s, next color fades in 0.3 s |
+| Welcome pages | page turn 350 ms `easeOutCubic`; art, title and text fade and lift 8% in 300 ms, 60 ms apart; dots 200 ms |
+| Auth gate (welcome to Home and back) | fade and scale from 0.98, 350 ms `easeOutCubic` in, `easeIn` out |
 
-Ambient motion (Home orb, banner stars) runs even under Reduce Motion, as on the reference. Tests turn it off with `animateAmbient: false`.
+Ambient motion (Home orb, banner stars) runs even under Reduce Motion, as on the reference. New motion (welcome pages, auth gate) stops under Reduce Motion. Tests turn it off with `animateAmbient: false`.
 
 Durations and curves for new motion, taken from what the code already uses:
 

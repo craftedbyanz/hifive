@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../core/design/design.dart';
 import '../features/home/home.dart';
+import '../features/welcome/welcome.dart';
 import '../state/state.dart';
 import '../widgets/ambient.dart';
 import '../widgets/app_scroll.dart';
@@ -26,7 +27,7 @@ class HifiveApp extends StatelessWidget {
         scrollBehavior: const AppScrollBehavior(),
         builder: (context, child) =>
             AmbientMotion(enabled: animateAmbient, child: textScaling(child!)),
-        home: HomeScreen(animateAmbient: animateAmbient),
+        home: AuthGate(child: HomeScreen(animateAmbient: animateAmbient)),
       ),
     ),
   );

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/features/welcome/welcome.dart';
 import 'package:hifive/widgets/common.dart';
 
 import '../../helpers.dart';
@@ -17,23 +18,11 @@ Future<void> _type(WidgetTester tester, String key, String text) async {
 void main() {
   setUpAll(loadAppFonts);
 
-  testWidgets('profile invites sign-in and opens the sign-in screen', (
-    tester,
-  ) async {
-    await mount(tester, fresh(), const ProfileScreen(), size: _tall);
-    expect(find.text('Lưu tiến độ trên nhiều thiết bị'), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('profile-account')));
-    await tester.pumpAndSettle();
-    expect(find.byType(SignInScreen), findsOneWidget);
-  });
-
-  testWidgets('email sign-in signs in, links the store and leaves', (
-    tester,
-  ) async {
+  testWidgets('email sign-in signs in and links the store', (tester) async {
     final auth = MemoryAuthService()..accounts['lan@example.com'] = 'secret1';
     final store = MemoryRecordStore();
-    final state = fresh(auth: auth, store: store);
-    await mount(tester, state, const SignInScreen());
+    final state = fresh(auth: auth, store: store)..introSeen = true;
+    await mount(tester, state, const WelcomeScreen());
     expect(
       tester
           .widget<ActionButton>(find.byKey(const ValueKey('sign-in-submit')))
@@ -45,28 +34,27 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('sign-in-submit')));
     await tester.pumpAndSettle();
     expect(state.user?.email, 'lan@example.com');
-    expect(find.byType(SignInScreen), findsNothing);
     await state.flush();
     expect(store.metadata['accountUid'], state.user!.uid);
   });
 
   testWidgets('a wrong password explains itself and stays', (tester) async {
     final auth = MemoryAuthService()..accounts['lan@example.com'] = 'secret1';
-    final state = fresh(auth: auth);
-    await mount(tester, state, const SignInScreen());
+    final state = fresh(auth: auth)..introSeen = true;
+    await mount(tester, state, const WelcomeScreen());
     await _type(tester, 'sign-in-email', 'lan@example.com');
     await _type(tester, 'sign-in-password', 'nope');
     await tester.tap(find.byKey(const ValueKey('sign-in-submit')));
     await tester.pump();
     expect(find.text('Email hoặc mật khẩu không đúng.'), findsOneWidget);
     expect(state.user, isNull);
-    expect(find.byType(SignInScreen), findsOneWidget);
+    expect(find.byType(SignInPanel), findsOneWidget);
   });
 
   testWidgets('a new account can be created', (tester) async {
     final auth = MemoryAuthService();
-    final state = fresh(auth: auth);
-    await mount(tester, state, const SignInScreen());
+    final state = fresh(auth: auth)..introSeen = true;
+    await mount(tester, state, const WelcomeScreen());
     await tester.tap(find.byKey(const ValueKey('sign-in-mode')));
     await tester.pump();
     expect(find.text('Tạo tài khoản'), findsWidgets);
@@ -84,8 +72,8 @@ void main() {
 
   testWidgets('a cancelled Google sign-in says nothing', (tester) async {
     final auth = MemoryAuthService()..failNext = AuthError.cancelled;
-    final state = fresh(auth: auth);
-    await mount(tester, state, const SignInScreen());
+    final state = fresh(auth: auth)..introSeen = true;
+    await mount(tester, state, const WelcomeScreen());
     await tester.tap(find.byKey(const ValueKey('sign-in-google')));
     await tester.pump();
     expect(find.byType(SnackBar), findsNothing);
@@ -100,17 +88,25 @@ void main() {
   ) async {
     await mount(
       tester,
-      fresh(auth: MemoryAuthService(supportsApple: false)),
-      const SignInScreen(),
+      fresh(auth: MemoryAuthService(supportsApple: false))..introSeen = true,
+      const WelcomeScreen(),
     );
     expect(find.byKey(const ValueKey('sign-in-apple')), findsNothing);
-    await mount(tester, fresh(auth: MemoryAuthService()), const SignInScreen());
+    await mount(
+      tester,
+      fresh(auth: MemoryAuthService())..introSeen = true,
+      const WelcomeScreen(),
+    );
     expect(find.byKey(const ValueKey('sign-in-apple')), findsOneWidget);
   });
 
   testWidgets('a password reset needs an email first', (tester) async {
     final auth = MemoryAuthService();
-    await mount(tester, fresh(auth: auth), const SignInScreen());
+    await mount(
+      tester,
+      fresh(auth: auth)..introSeen = true,
+      const WelcomeScreen(),
+    );
     await tester.tap(find.byKey(const ValueKey('sign-in-reset')));
     await tester.pump();
     expect(auth.resetsSent, isEmpty);
@@ -118,7 +114,11 @@ void main() {
       find.text('Nhập email để nhận liên kết đặt lại mật khẩu.'),
       findsOneWidget,
     );
-    await mount(tester, fresh(auth: auth), const SignInScreen());
+    await mount(
+      tester,
+      fresh(auth: auth)..introSeen = true,
+      const WelcomeScreen(),
+    );
     await _type(tester, 'sign-in-email', ' lan@example.com');
     await tester.tap(find.byKey(const ValueKey('sign-in-reset')));
     await tester.pump();
@@ -135,7 +135,9 @@ void main() {
       ),
     );
     final store = MemoryRecordStore();
-    final state = fresh(auth: auth, store: store)..setName('Lan');
+    final state = fresh(auth: auth, store: store)
+      ..setName('Lan')
+      ..introSeen = true;
     await state.flush();
     await mount(tester, state, const ProfileScreen(), size: _tall);
     expect(find.text('lan@icloud.com'), findsOneWidget);

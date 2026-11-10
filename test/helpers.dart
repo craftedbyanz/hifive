@@ -161,3 +161,12 @@ class CatalogLessonRepository extends MockLessonRepository {
   Future<GeneratorCatalog> generator(Language language, StudyMode mode) async =>
       catalog;
 }
+
+/// The learner in tests that open the whole app, which needs an account.
+const testUser = AuthUser(
+  uid: 'u-test',
+  method: AuthMethod.email,
+  email: 'test@hifive.vn',
+);
+
+MemoryAuthService signedIn() => MemoryAuthService(signedIn: testUser);

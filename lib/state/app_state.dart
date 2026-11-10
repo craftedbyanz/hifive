@@ -97,6 +97,10 @@ class AppState extends ChangeNotifier {
   AuthUser? user;
   late final StreamSubscription<AuthUser?> _authChanges;
 
+  /// Whether this device has shown the welcome pages; then the gate opens
+  /// straight on sign-in. Kept in meta, so signing out doesn't reset it.
+  bool introSeen = false;
+
   /// When this device last finished a sync with the account, if ever.
   DateTime? lastSyncedAt;
 
@@ -170,6 +174,7 @@ class AppState extends ChangeNotifier {
         final at = await store.meta(_lastSyncKey(u.uid));
         lastSyncedAt = at == null ? null : DateTime.tryParse(at);
       }
+      introSeen = await store.meta('introSeen') == '1';
       _loaded = true;
       if (user != null) _startSyncing();
     } catch (_) {
@@ -358,6 +363,13 @@ class AppState extends ChangeNotifier {
     _syncSoon?.cancel();
     _syncEvery?.cancel();
     _syncSoon = _syncEvery = null;
+  }
+
+  void finishIntro() {
+    if (introSeen) return;
+    introSeen = true;
+    _writes = _writes.then((_) => store.setMeta('introSeen', '1'));
+    notifyListeners();
   }
 
   /// The app came back to the foreground: catch up with other devices.
