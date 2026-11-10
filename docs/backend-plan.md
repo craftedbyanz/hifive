@@ -46,6 +46,8 @@ Noted on 10 November 2026 to do later, in this order of need:
 1. **Android builds on this Mac.** Cloudflare Gateway re-signs HTTPS with "Gateway CA - Cloudflare Managed G1", which macOS trusts and the Zulu JDK 21 that Gradle uses does not, so Gradle can't download new dependencies (`PKIX path building failed`). Fix by importing that CA into the JDK (`keytool -importcert -cacerts`) or by adding `-Djavax.net.ssl.trustStoreType=KeychainStore` to `org.gradle.jvmargs` in `~/.gradle/gradle.properties`. Until then Android changes can't be verified here.
 2. **Real sign-in on a physical iPhone.** Run `scripts/install_iphone.sh` and try Apple, Google and email sign-up. That build also registers the Sign in with Apple capability for the App ID; if Xcode reports a provisioning error, enable it for `com.anznguyen.hifive` in Apple Developer.
 
+3. **Apple Developer Program.** Team `WQ4W9V3W7A` ("Thành An") is a personal team, found on 10 November 2026 when signing failed: it can't have Sign in with Apple, its installs stop working after 7 days, it gets no push notifications (APNs, so no Cloud Messaging) and it can't publish. Sign in with Apple is therefore off: `CODE_SIGN_ENTITLEMENTS` was removed from the Runner target (the `Runner.entitlements` file stays) and the Apple button shows only with `--dart-define=HIFIVE_APPLE_SIGN_IN=true`. After enrolling, set `CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements` again and pass that define in `scripts/install_iphone.sh`.
+
 ### Before release
 
 - Account deletion, after sync: delete the learner's server data, revoke Apple tokens, delete the Firebase account, then the local data. Needs Apple's OAuth code flow settings in Firebase (Team ID `WQ4W9V3W7A`, Key ID, `.p8` key).

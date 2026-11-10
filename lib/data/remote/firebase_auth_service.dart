@@ -15,10 +15,15 @@ class FirebaseAuthService implements AuthService {
 
   /// The project's web OAuth client, which Android needs to get an ID token.
   final String webClientId;
+
+  /// Whether the build carries the Sign in with Apple entitlement, which a
+  /// personal (free) Apple team can't have.
+  final bool appleSignIn;
   final FirebaseAuth _auth;
   FirebaseAuthService({
     required this.iosClientId,
     required this.webClientId,
+    this.appleSignIn = false,
     FirebaseAuth? auth,
   }) : _auth = auth ?? FirebaseAuth.instance;
 
@@ -46,7 +51,7 @@ class FirebaseAuthService implements AuthService {
   Stream<AuthUser?> get changes => _auth.authStateChanges().map(_user);
 
   @override
-  bool get supportsApple => Platform.isIOS;
+  bool get supportsApple => appleSignIn && Platform.isIOS;
 
   Future<AuthUser> _run(Future<UserCredential> Function() call) async {
     try {
