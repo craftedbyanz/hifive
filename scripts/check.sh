@@ -30,3 +30,7 @@ dart run tool/feature_cycles.dart
 dart format --output=none --set-exit-if-changed lib test tool
 flutter analyze
 flutter test
+
+# The sync Worker (worker/): its tests run locally on Miniflare with D1.
+[ -d worker/node_modules ] || (cd worker && npm ci)
+(cd worker && npm run typecheck && npm test)

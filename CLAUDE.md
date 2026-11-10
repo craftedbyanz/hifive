@@ -24,6 +24,8 @@ Flutter 3.47.9, Dart 3.13.7, Xcode 27.2, Android SDK 36, JDK 21.
 scripts/check.sh                                              # guards, format, analyze, test
 flutter test test/domain/model_test.dart --plain-name "<test name>"  # single test
 scripts/install_iphone.sh                                     # Release build, installed over the app on a USB iPhone
+(cd worker && npm test)                                       # sync Worker tests (TypeScript, D1 on Miniflare)
+(cd worker && npx wrangler dev)                               # run the Worker locally; apply migrations first with `npx wrangler d1 migrations apply hifive --local`
 ```
 
 Devices: iOS Simulator `87E929A8-9364-4443-AC07-69345651B181` (393 × 852); Android emulator `Flutter_API_36`. `flutter_tts` Swift Package Manager notices during iOS builds are expected.
@@ -77,6 +79,10 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 - **Confirm outputs exist before deleting their source, and never chain the delete.** zsh doesn't word-split `$var`, so loop over files with `while read`.
 - **Check state instead of assuming it:** remotes, git identity, connected devices and whether a tool is running.
 - **Make one commit per concern, and never push unless asked.**
+
+## Worker
+
+`worker/` is the sync API on Cloudflare Workers (TypeScript, D1); see `docs/backend-plan.md`. `src/auth.ts` verifies Firebase ID tokens (401 for a bad token, 503 when Google's keys can't be fetched), `src/sync.ts` validates and applies `POST /v1/sync` in one D1 batch, and `migrations/` holds the D1 schema; a new table or column is a new numbered migration, never an edit to an applied one. Tests use `@cloudflare/vitest-plugin`, which isolates storage per file only, so `test/setup.ts` empties the tables before each test.
 
 ## Backend plan
 

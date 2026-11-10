@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hifive-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "observability": { "enabled": true },
+  "vars": { "FIREBASE_PROJECT_ID": "hifive-3371b" },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "hifive",
+      // Replaced with the real id when the database is created (part D).
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
