@@ -69,9 +69,36 @@ Done: project `hifive-3371b` on the Spark plan with Email/Password, Google and A
 
 Apple, Google and email sign-in; guest use until sign-in; local records merge into the account on sign-in and are deleted on sign-out.
 
-### 3. Sync Worker and D1 - todo
+### 3. Sync Worker and D1 - in progress
 
-`POST /sync` pushes dirty records and pulls rows changed since the device's cursor (a server sequence number). Sync runs on launch, on returning to the foreground, after a lesson and at most every few minutes. Tests simulate two devices editing offline, deletes against edits, skewed clocks and interrupted syncs.
+Decided on 10 November 2026: the Worker is TypeScript in `worker/` of this repo, so one commit can change both ends of the protocol; D1 holds all server data; signing out deletes local data after pushing pending changes.
+
+**D1 tables** (`worker/migrations/`):
+
+- `users (uid PK, email, created_at, last_seen_at, seq)`: one row per account; `seq` is the account's last change number.
+- `devices (uid, device_id, last_sync_at, PK (uid, device_id))`.
+- `records (uid, kind, id, data, hlc, seq, PK (uid, kind, id))`: the learning data, with an index on `(uid, seq)`.
+
+**`POST /v1/sync`**, with `Authorization: Bearer <Firebase ID token>`:
+
+```
+request:  { deviceId, cursor, records: [{ kind, id, data, hlc }] }   // up to 500
+response: { cursor, records: [changed after cursor], hasMore }
+```
+
+1. Verify the ID token: RS256 signature against Google's public keys (cached), `aud` and `iss` for `hifive-3371b`, expiry. The uid comes from the token only.
+2. Validate: known kinds only, never `device`; size limits on ids, data and the batch; HLC format.
+3. In one D1 batch (a transaction): store each record whose HLC is greater than the stored one and give it the account's next `seq`; update `users` and `devices`.
+4. Return records with `seq` greater than the cursor, oldest first, at most 500; `hasMore` asks the app to call again.
+
+**App side:** push dirty records, store pulled ones without marking them dirty, clear a dirty flag only if the record didn't change during the request, move the HLC past the latest pulled stamp, and reload `AppState` when something arrived. Sync runs on launch, after sign-in, on returning to or leaving the app, after a lesson (debounced) and every 5 minutes while open. Signing out pushes pending changes (asking first if that fails), deletes local data and resets the app.
+
+**Parts**, one commit each:
+
+- A. Worker, D1 migration and tests that run locally (`vitest` with `@cloudflare/vitest-pool-workers`, which supports vitest 4.x only).
+- B. App: store methods for dirty, remote and synced records; `SyncService` with an HTTP version; `AuthService` ID tokens; the sync loop, tested with a Dart fake server that applies the same rules.
+- C. App: sync triggers, reloading state, sign-out deletion, sync status on Profile.
+- D. Deploy to `workers.dev` after `npx wrangler login`, then an end-to-end check with a real Firebase test account through the Auth REST API.
 
 ### 4. Course content on R2 - todo
 
