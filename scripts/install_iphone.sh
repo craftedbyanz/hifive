@@ -1,7 +1,9 @@
 #!/bin/bash
-# Builds the Release app and installs it over the current one on a USB-connected
-# iPhone, keeping the app's data. Installs fresh if the app is not on the phone.
-# Picks the iPhone automatically, or asks when several are plugged in.
+# Builds the Release app and installs it over the current one on an iPhone,
+# keeping the app's data. Installs fresh if the app is not on the phone.
+# Uses iPhones connected by USB; with none, a paired iPhone on the same Wi-Fi
+# (unlocked, and paired with this Mac by USB once before). Picks the iPhone
+# automatically, or asks when there are several.
 # Usage: scripts/install_iphone.sh [--skip-build]
 #
 # Uses devicectl because `flutter install` uninstalls the old version first,
@@ -28,16 +30,23 @@ while IFS=$'\t' read -r udid label; do
   labels+=("$label")
 done < <(python3 -I - "$json" <<'PY'
 import json, sys
+wired, wifi = [], []
 for d in json.load(open(sys.argv[1]))["result"]["devices"]:
-    hw, props = d["hardwareProperties"], d["deviceProperties"]
-    if hw.get("deviceType") == "iPhone" and d["connectionProperties"].get("transportType") == "wired":
-        print(f'{hw["udid"]}\t{props["name"]} ({hw.get("marketingName") or hw.get("productType")}, {hw["udid"]})')
+    hw, props, conn = d["hardwareProperties"], d["deviceProperties"], d["connectionProperties"]
+    if hw.get("deviceType") != "iPhone" or hw.get("reality") != "physical":
+        continue
+    label = f'{props["name"]} ({hw.get("marketingName") or hw.get("productType")}, {hw["udid"]}'
+    if conn.get("transportType") == "wired":
+        wired.append(f'{hw["udid"]}\t{label})')
+    elif conn.get("transportType") == "localNetwork" and conn.get("pairingState") == "paired":
+        wifi.append(f'{hw["udid"]}\t{label}, Wi-Fi)')
+print("\n".join(wired or wifi))
 PY
 )
 
 count=${#udids[@]}
 if [ "$count" -eq 0 ]; then
-  echo "No iPhone connected by USB. Plug it in, unlock it and trust this Mac." >&2
+  echo "No iPhone found by USB or Wi-Fi. Plug it in, unlock it and trust this Mac." >&2
   exit 1
 elif [ "$count" -eq 1 ]; then
   target=${udids[0]}

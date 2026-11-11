@@ -23,7 +23,7 @@ Flutter 3.47.9, Dart 3.13.7, Xcode 27.2, Android SDK 36, JDK 21.
 ```sh
 scripts/check.sh                                              # guards, format, analyze, test
 flutter test test/domain/model_test.dart --plain-name "<test name>"  # single test
-scripts/install_iphone.sh                                     # Release build with sync, installed over the app on a USB iPhone
+scripts/install_iphone.sh                                     # Release build with sync, installed over the app on an iPhone by USB, or by Wi-Fi when paired
 (cd worker && npm test)                                       # sync Worker tests (TypeScript, D1 on Miniflare)
 (cd worker && npx wrangler dev)                               # run the Worker locally; apply migrations first with `npx wrangler d1 migrations apply hifive --local`
 ```
