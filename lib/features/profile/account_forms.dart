@@ -84,19 +84,7 @@ class _AppIcon extends StatelessWidget {
   final double size;
   const _AppIcon(this.size);
   @override
-  Widget build(BuildContext context) => Container(
-    width: size,
-    height: size,
-    alignment: Alignment.center,
-    decoration: ShapeDecoration(
-      color: Colors.white,
-      shape: RoundedSuperellipseBorder(
-        borderRadius: BorderRadius.circular(size * .23),
-        side: const BorderSide(color: Palette.ctaDisabled),
-      ),
-    ),
-    child: AppLogo(size: size * .86),
-  );
+  Widget build(BuildContext context) => AppLogo(size: size);
 }
 
 /// Stands in for the system's offer code sheet. No code is sent anywhere.

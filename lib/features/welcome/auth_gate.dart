@@ -154,6 +154,8 @@ class _Veil extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     label: 'Đang đăng nhập',
     liveRegion: true,
+    // The logo and spinner say nothing more.
+    excludeSemantics: true,
     child: AnimatedBuilder(
       animation: progress,
       builder: (context, _) {

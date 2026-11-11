@@ -4,58 +4,87 @@ import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
 
-/// The app's logo as the reference draws it on white: long overlapping petals,
-/// deepening toward the middle, around a white four-point star.
+/// The hifive logo: five rounded bars, a hand raised for a high five and a
+/// voice's sound wave at once, each in a study mode's color, on an ink tile.
+/// [tile] false draws the bars alone, for the Android adaptive icon.
 class AppLogo extends StatelessWidget {
   final double size;
-  const AppLogo({super.key, required this.size});
+  final bool tile;
+  const AppLogo({super.key, required this.size, this.tile = true});
   @override
-  Widget build(BuildContext context) =>
-      CustomPaint(size: Size.square(size), painter: const _AppLogoPainter());
+  Widget build(BuildContext context) => Semantics(
+    label: 'Hifive',
+    image: true,
+    child: CustomPaint(
+      size: Size.square(size),
+      painter: LogoPainter(tile: tile),
+    ),
+  );
 }
 
-class _AppLogoPainter extends CustomPainter {
-  const _AppLogoPainter();
+/// Paints [AppLogo]; also used to render the app icons
+/// (`tool/app_icons_test.dart`). The geometry is drawn on a 1024 grid.
+class LogoPainter extends CustomPainter {
+  /// Draws the ink tile under the bars.
+  final bool tile;
+
+  /// Rounds the tile's corners; the iOS icon is square, as iOS masks it.
+  final bool rounded;
+
+  /// Scales the bars about the centre, for an icon's safe zone.
+  final double scale;
+  const LogoPainter({this.tile = true, this.rounded = true, this.scale = 1});
+
+  /// Each bar's left edge, top and bottom on the 1024 grid; all are 84 wide.
+  static const _bars = [
+    (222.0, 470.0),
+    (346.0, 300.0),
+    (470.0, 230.0),
+    (594.0, 290.0),
+    (718.0, 400.0),
+  ];
+  static const _barWidth = 84.0, _barBottom = 760.0;
+
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
-    final petal = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Palette.logoTop, Palette.logoMiddle, Palette.logoBottom],
-      ).createShader(rect)
-      ..color = Colors.white.withValues(alpha: .62);
-    final w = size.width;
-    final c = size.center(Offset.zero);
-    for (var i = 0; i < 8; i++) {
-      final angle = i * math.pi / 4;
-      final along = Offset(math.sin(angle), -math.cos(angle)) * (w * .25);
-      canvas.save();
-      canvas.translate(c.dx + along.dx, c.dy + along.dy);
-      canvas.rotate(angle);
-      canvas.drawOval(
-        Rect.fromCenter(center: Offset.zero, width: w * .34, height: w * .5),
-        petal,
-      );
-      canvas.restore();
+    final unit = size.width / 1024;
+    canvas.save();
+    canvas.scale(unit);
+    if (tile) {
+      const square = Rect.fromLTWH(0, 0, 1024, 1024);
+      final ink = Paint()..color = D.ink;
+      if (rounded) {
+        canvas.drawRSuperellipse(
+          RSuperellipse.fromRectAndRadius(square, const Radius.circular(230)),
+          ink,
+        );
+      } else {
+        canvas.drawRect(square, ink);
+      }
     }
-    final r = w * .21;
-    const k = .16;
-    canvas.drawPath(
-      Path()
-        ..moveTo(c.dx, c.dy - r)
-        ..quadraticBezierTo(c.dx + r * k, c.dy - r * k, c.dx + r, c.dy)
-        ..quadraticBezierTo(c.dx + r * k, c.dy + r * k, c.dx, c.dy + r)
-        ..quadraticBezierTo(c.dx - r * k, c.dy + r * k, c.dx - r, c.dy)
-        ..quadraticBezierTo(c.dx - r * k, c.dy - r * k, c.dx, c.dy - r)
-        ..close(),
-      Paint()..color = Colors.white,
-    );
+    // The bars stand on one baseline; [scale] shrinks them about their
+    // block's centre, 17 units above the tile's middle, as drawn.
+    canvas.translate(512, 495);
+    canvas.scale(scale);
+    canvas.translate(-512, -495);
+    for (final (i, (left, top)) in _bars.indexed) {
+      canvas.drawRRect(
+        RRect.fromLTRBR(
+          left,
+          top,
+          left + _barWidth,
+          _barBottom,
+          const Radius.circular(_barWidth / 2),
+        ),
+        Paint()..color = Palette.logoBars[i],
+      );
+    }
+    canvas.restore();
   }
 
   @override
-  bool shouldRepaint(_AppLogoPainter oldDelegate) => false;
+  bool shouldRepaint(LogoPainter old) =>
+      old.tile != tile || old.rounded != rounded || old.scale != scale;
 }
 
 class Flower extends StatelessWidget {

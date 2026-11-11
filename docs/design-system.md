@@ -10,6 +10,14 @@ The rules every screen follows, so new work looks like the rest of the app. The 
 4. **Default text size is the baseline.** Text scales from 1 (it never shrinks below the default) to 23/17 at the largest standard size. Any fixed height or width that holds text uses `context.grow(value)` so it grows with it.
 5. **No color literals in features.** Use `D` for shared colors and `Palette` for screen-specific ones (`lib/core/design/`).
 
+## Logo
+
+Chosen on 11 November 2026: five rounded bars on an ink tile (`AppLogo`, `LogoPainter` in `lib/widgets/branding.dart`). The bars read as a hand raised for a high five and as a voice's sound wave; left to right they take conversation cyan, writing blue, indigo, grammar violet and AI purple (`Palette.logoBars`). Geometry is on a 1024 grid: bars 84 wide with full round ends, 40 apart, standing on y 760; tile corner 230 (superellipse).
+
+- With the wordmark, the tile sits left of lowercase **hifive** in Plus Jakarta Sans 800, −1 tracking, about 0.8× the tile's height.
+- App icons and launch images are rendered from `LogoPainter` by `scripts/make_icons.sh`; never edit the PNGs by hand. iOS icons are square and opaque (iOS rounds them); the Android adaptive icon is the bars at 70% on `ic_launcher_background` (ink).
+- Launch screens show the 120 pt tile centred on white on both platforms.
+
 ## Typography
 
 Two families, each with one job.

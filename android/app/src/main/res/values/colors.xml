@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The logo's ink tile behind the adaptive icon's bars (D.ink). -->
+    <color name="ic_launcher_background">#111827</color>
+</resources>

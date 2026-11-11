@@ -38,9 +38,16 @@ abstract final class Palette {
   static const cardTintAmber = Color(0xfffef3c7);
   static const plusBody = Color(0xff8a8f99);
   static const policyBody = Color(0xff606775);
-  static const logoTop = Color(0xff22d3ee);
-  static const logoMiddle = Color(0xff1d8ff0);
-  static const logoBottom = Color(0xff7cb8fb);
+
+  /// The logo's five bars, left to right: conversation cyan, writing blue,
+  /// indigo, grammar violet, AI purple.
+  static const logoBars = [
+    Color(0xff06b6d4),
+    Color(0xff3b82f6),
+    Color(0xff6366f1),
+    Color(0xff8a5bf6),
+    Color(0xffa34ef5),
+  ];
   static const flagChinaRed = Color(0xffee3124);
   static const settingsPanel = Color(0xfff2f5f6);
   static const settingsPanelClear = Color(0x00f2f5f6);
