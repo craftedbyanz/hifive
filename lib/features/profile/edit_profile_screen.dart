@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../domain/repositories/repositories.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../welcome/welcome.dart';
 import 'settings_kit.dart';
 
-/// Measured against the reference. The clone has no account, so the email and
-/// connection rows say so, and deleting the account erases nothing.
+/// The display name, the account (its email, how it signs in and when it
+/// last synced), and account deletion, which isn't built yet.
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
   @override
@@ -95,7 +97,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    s.user?.email ?? 'Chưa kết nối tài khoản',
+                    s.user?.email ?? 'Tài khoản không có email',
                     style: D.text(
                       15.5,
                       color: Palette.settingsMuted,
@@ -118,39 +120,63 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             height: 61,
             child: Row(
               children: [
-                const Icon(
-                  CupertinoIcons.device_laptop,
-                  size: 22,
-                  color: D.ink,
-                ),
+                Icon(accountIcon(s.user), size: 24, color: D.ink),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    'Thiết bị này',
-                    style: D.text(14.5, height: 20 / 14.5),
-                  ),
+                  child: Text(switch (s.user) {
+                    final AuthUser u => accountMethod(u),
+                    null => 'Chưa đăng nhập',
+                  }, style: D.text(15.5, height: 20 / 15.5)),
                 ),
-                Container(
-                  height: 22,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Palette.settingsPanel,
-                    borderRadius: BorderRadius.circular(11),
-                  ),
-                  child: Text(
-                    'Chưa kết nối',
-                    style: D.text(
-                      11,
-                      weight: FontWeight.w600,
-                      color: Palette.settingsMuted,
-                      height: 1,
-                    ),
-                  ),
-                ),
+                if (s.user != null)
+                  const _Badge('Đã kết nối', key: ValueKey('profile-linked')),
               ],
             ),
           ),
+          if (syncStatus(s) case final String status) ...[
+            const SizedBox(height: 24),
+            const _FieldLabel('Đồng bộ'),
+            const SizedBox(height: 11),
+            _Box(
+              height: 61,
+              child: Row(
+                children: [
+                  const Icon(
+                    CupertinoIcons.arrow_2_circlepath,
+                    size: 22,
+                    color: D.ink,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      status,
+                      key: const ValueKey('profile-sync-status'),
+                      style: D.text(15.5, height: 20 / 15.5),
+                    ),
+                  ),
+                  if (!s.syncing)
+                    PressFade(
+                      key: const ValueKey('profile-sync-now'),
+                      onTap: s.sync,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minHeight: 44),
+                        child: Center(
+                          widthFactor: 1,
+                          child: Text(
+                            'Đồng bộ ngay',
+                            style: D.text(
+                              13,
+                              weight: FontWeight.w700,
+                              color: Palette.chatBlue,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
           const SizedBox(height: 48),
           Text(
             'Vùng nguy hiểm',
@@ -164,9 +190,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const SizedBox(height: 11),
           PressFade(
             key: const ValueKey('profile-delete'),
-            // There is no account here, so nothing is deleted.
-            onTap: () =>
-                toast(context, 'Bản cục bộ không có tài khoản để xóa.'),
+            // Deletion comes before release (docs/backend-plan.md).
+            onTap: () => toast(
+              context,
+              'Xóa tài khoản sẽ có trong bản phát hành chính thức.',
+            ),
             child: Container(
               height: 68,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -227,6 +255,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   static OutlineInputBorder _border(Color color) => OutlineInputBorder(
     borderRadius: BorderRadius.circular(18),
     borderSide: BorderSide(color: color),
+  );
+}
+
+/// "Đã kết nối": a small pill tinted in the link blue.
+class _Badge extends StatelessWidget {
+  final String text;
+  const _Badge(this.text, {super.key});
+  @override
+  Widget build(BuildContext context) => Container(
+    height: 26,
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      color: Palette.chatBlue.withValues(alpha: .1),
+      borderRadius: BorderRadius.circular(13),
+    ),
+    child: Text(
+      text,
+      style: D.text(
+        12,
+        weight: FontWeight.w700,
+        color: Palette.chatBlue,
+        height: 1,
+      ),
+    ),
   );
 }
 

@@ -138,8 +138,8 @@ void main() {
     final state = fresh(auth: auth, store: store)..setName('Lan');
     await state.flush();
     await mount(tester, state, const ProfileScreen(), size: _tall);
-    expect(find.text('lan@icloud.com'), findsOneWidget);
-    expect(find.text('Đã đăng nhập bằng Apple'), findsOneWidget);
+    // The account lives on Edit Profile now, not on Profile.
+    expect(find.text('lan@icloud.com'), findsNothing);
     await tester.tap(find.byKey(const ValueKey('profile-logout')));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Huỷ'));
@@ -150,7 +150,6 @@ void main() {
     await tester.tap(find.text('Đăng xuất').last);
     await tester.pumpAndSettle();
     expect(state.user, isNull);
-    expect(find.text('Lưu tiến độ trên nhiều thiết bị'), findsOneWidget);
     expect(state.name, 'Lan');
     expect(store.records, isNotEmpty);
   });

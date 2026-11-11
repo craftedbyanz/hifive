@@ -221,22 +221,7 @@ class _Link extends StatelessWidget {
   );
 }
 
-/// The account line on Profile: who is signed in, or an invitation to.
-String accountTitle(AuthUser? user) => switch (user) {
-  null => 'Đăng nhập',
-  AuthUser(email: final String email) => email,
-  AuthUser(displayName: final String name) => name,
-  _ => 'Tài khoản của bạn',
-};
-
-String accountSubtitle(AuthUser? user) => switch (user?.method) {
-  null => 'Lưu tiến độ trên nhiều thiết bị',
-  AuthMethod.apple => 'Đã đăng nhập bằng Apple',
-  AuthMethod.google => 'Đã đăng nhập bằng Google',
-  AuthMethod.email => 'Đã đăng nhập bằng email',
-};
-
-/// The sign-in method's name, shown before the sync status.
+/// The sign-in method's name, on Edit Profile.
 String accountMethod(AuthUser user) => switch (user.method) {
   AuthMethod.apple => 'Apple',
   AuthMethod.google => 'Google',

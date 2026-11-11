@@ -246,7 +246,10 @@ void main() {
 
     await tester.tap(find.byKey(const ValueKey('profile-delete')));
     await tester.pump();
-    expect(find.text('Bản cục bộ không có tài khoản để xóa.'), findsOneWidget);
+    expect(
+      find.text('Xóa tài khoản sẽ có trong bản phát hành chính thức.'),
+      findsOneWidget,
+    );
     expect(state.name, 'Linh');
 
     await tester.enterText(find.byKey(const ValueKey('profile-name')), 'Mai');

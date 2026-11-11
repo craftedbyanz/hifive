@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/domain/sync/sync.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/state/state.dart';
 
 import '../../helpers.dart';
+import '../../sync_fakes.dart';
 
 const tall = Size(393, 1800);
 
@@ -118,5 +122,50 @@ void main() {
   ) async {
     await mount(tester, fresh(), const NotificationScreen(), size: tall);
     expect(find.text('Chưa bật trong Cài đặt'), findsOneWidget);
+  });
+
+  testWidgets('Edit Profile shows the account and syncs on request', (
+    tester,
+  ) async {
+    final server = FakeSyncServer();
+    final state = createAppState(
+      store: MemoryRecordStore(),
+      auth: MemoryAuthService(
+        signedIn: const AuthUser(
+          uid: 'g1',
+          method: AuthMethod.google,
+          email: 'lan@gmail.com',
+        ),
+      ),
+      sync: server,
+      feedback: SilentFeedback(),
+      now: () => DateTime(2026, 11, 11, 10, 20),
+    )..onboarded = true;
+    await state.load();
+    await state.sync();
+    await mount(tester, state, const EditProfileScreen(), size: tall);
+    expect(find.text('lan@gmail.com'), findsOneWidget);
+    expect(find.text('Google'), findsOneWidget);
+    expect(find.byKey(const ValueKey('profile-linked')), findsOneWidget);
+    expect(find.text('Đã đồng bộ lúc 10:20'), findsOneWidget);
+    final before = server.requests;
+    await tester.tap(find.byKey(const ValueKey('profile-sync-now')));
+    await tester.pumpAndSettle();
+    expect(server.requests, greaterThan(before));
+    state.dispose();
+  });
+
+  testWidgets('without the sync API Edit Profile has no sync row', (
+    tester,
+  ) async {
+    await mount(
+      tester,
+      fresh(auth: signedIn()),
+      const EditProfileScreen(),
+      size: tall,
+    );
+    expect(find.text('test@hifive.vn'), findsOneWidget);
+    expect(find.text('Email'), findsOneWidget);
+    expect(find.byKey(const ValueKey('profile-sync-now')), findsNothing);
   });
 }

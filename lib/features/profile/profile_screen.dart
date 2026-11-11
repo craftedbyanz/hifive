@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
-import '../../domain/repositories/repositories.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
-import '../welcome/welcome.dart';
 import 'account_forms.dart';
 import 'appearance_screen.dart';
 import 'edit_profile_screen.dart';
@@ -63,18 +61,6 @@ class ProfileScreen extends StatelessWidget {
                 language: s.language,
                 level: s.level,
                 onTap: () => open(const LanguageScreen()),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
-          const _Label('Tài khoản'),
-          _Card(
-            children: [
-              _AccountRow(
-                user: s.user,
-                status: syncStatus(s),
-                // Signed out, the app shows the welcome screen instead.
-                onTap: null,
               ),
             ],
           ),
@@ -580,73 +566,6 @@ class _LanguageRow extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Who is signed in, or a row that opens sign-in.
-class _AccountRow extends StatelessWidget {
-  final AuthUser? user;
-  final String? status;
-  final VoidCallback? onTap;
-  const _AccountRow({
-    required this.user,
-    required this.status,
-    required this.onTap,
-  });
-  @override
-  Widget build(BuildContext context) => PressFade(
-    key: const ValueKey('profile-account'),
-    onTap: onTap,
-    child: SizedBox(
-      height: 81,
-      child: Row(
-        children: [
-          const SizedBox(width: 20),
-          Container(
-            width: 40,
-            height: 40,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Palette.profileIconDisc,
-              shape: BoxShape.circle,
-            ),
-            child: _RowIcon(accountIcon(user)),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  accountTitle(user),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: D.text(13, weight: FontWeight.w700, height: 18 / 13),
-                ),
-                Text(
-                  switch ((user, status)) {
-                    (final AuthUser u, final String s) =>
-                      '${accountMethod(u)} · $s',
-                    _ => accountSubtitle(user),
-                  },
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: D.text(12, color: D.secondary, height: 16 / 12),
-                ),
-              ],
-            ),
-          ),
-          if (onTap != null)
-            const Icon(
-              CupertinoIcons.chevron_forward,
-              size: 16,
-              color: Palette.settingsMuted,
-            ),
-          const SizedBox(width: 20),
-        ],
-      ),
-    ),
-  );
 }
 
 class _LogoutRow extends StatelessWidget {
