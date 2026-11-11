@@ -40,7 +40,8 @@ for d in json.load(open(sys.argv[1]))["result"]["devices"]:
         wired.append(f'{hw["udid"]}\t{label})')
     elif conn.get("transportType") == "localNetwork" and conn.get("pairingState") == "paired":
         wifi.append(f'{hw["udid"]}\t{label}, Wi-Fi)')
-print("\n".join(wired or wifi))
+for line in wired or wifi:
+    print(line)
 PY
 )
 
