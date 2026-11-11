@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,18 +13,20 @@ import 'preparing_view.dart';
 import 'welcome_motion.dart';
 
 part 'onboarding_demos.dart';
+part 'onboarding_intro.dart';
 part 'onboarding_steps.dart';
 
-/// After the first sign-in: three modes to try, then the learner's name,
-/// level and goals, then a short wait while the answers are saved. The
-/// answers sync, so another device signing in to the account skips this.
+/// After the first sign-in: a welcome, four ways to practise to try
+/// (flashcards first), then the learner's name, level and goals, then a
+/// short wait while the answers are saved. The answers sync, so another
+/// device signing in to the account skips this.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-const _nameStep = 3, _levelStep = 4, _goalStep = 5, _stepCount = 6;
+const _nameStep = 5, _levelStep = 6, _goalStep = 7, _stepCount = 8;
 
 /// The longest name, as on Profile.
 const _maxName = 12;
@@ -132,22 +135,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     body: SafeArea(
       child: Column(
         children: [
-          SizedBox(
-            height: 56,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 10, 24, 6),
             child: Row(
               children: [
-                const SizedBox(width: 6),
-                SizedBox(
-                  width: 44,
+                SizedBox.square(
+                  dimension: 44,
                   child: step == 0
                       ? null
                       : _BackButton(onTap: () => _goTo(step - 1)),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 12),
                 Expanded(
                   child: _Progress(step: step, count: _stepCount),
                 ),
-                const SizedBox(width: 56),
               ],
             ),
           ),
@@ -157,9 +158,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               controller: pages,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _WritingDemo(active: step == 0),
-                _GrammarDemo(active: step == 1),
-                _ChatDemo(active: step == 2),
+                _WelcomeStep(active: step == 0),
+                _FlashcardDemo(active: step == 1),
+                _WritingDemo(active: step == 2),
+                _GrammarDemo(active: step == 3),
+                _ChatDemo(active: step == 4),
                 _NameStep(
                   active: step == _nameStep,
                   controller: name,
@@ -182,10 +185,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 14),
-            child: ActionButton(
-              step == _stepCount - 1 ? 'Hoàn tất' : 'Tiếp tục',
-              key: const ValueKey('onboarding-next'),
-              onTap: _canContinue ? _next : null,
+            child: SizedBox(
+              height: 56,
+              child: ActionButton(
+                step == _stepCount - 1 ? 'Hoàn tất' : 'Tiếp tục',
+                key: const ValueKey('onboarding-next'),
+                trailing: step == _stepCount - 1
+                    ? null
+                    : CupertinoIcons.arrow_right,
+                onTap: _canContinue ? _next : null,
+              ),
             ),
           ),
         ],
@@ -204,9 +213,14 @@ class _BackButton extends StatelessWidget {
     child: PressFade(
       key: const ValueKey('onboarding-back'),
       onTap: onTap,
-      child: const SizedBox.square(
-        dimension: 44,
-        child: Icon(CupertinoIcons.chevron_back, size: 22, color: D.ink),
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: D.line.withValues(alpha: .6),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(CupertinoIcons.chevron_back, size: 20, color: D.ink),
       ),
     ),
   );
@@ -222,14 +236,14 @@ class _Progress extends StatelessWidget {
     child: Row(
       children: [
         for (var i = 0; i < count; i++) ...[
-          if (i > 0) const SizedBox(width: 5),
+          if (i > 0) const SizedBox(width: 6),
           Expanded(
             child: Container(
-              height: 4,
+              height: 5,
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
                 color: D.line,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(2.5),
               ),
               child: AnimatedFractionallySizedBox(
                 duration: MediaQuery.disableAnimationsOf(context)
@@ -240,7 +254,7 @@ class _Progress extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: D.ink,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(2.5),
                   ),
                 ),
               ),
@@ -257,6 +271,16 @@ class _Progress extends StatelessWidget {
 const _titleChar = Duration(milliseconds: 45);
 const _bodyChar = Duration(milliseconds: 12);
 const _titlePause = Duration(milliseconds: 160);
+
+/// Step heading styles: a two-line title, ink then an accent color, and a
+/// line of SF Pro under it.
+final _titleStyle = D.text(
+  26,
+  weight: FontWeight.w800,
+  spacing: -.6,
+  height: 32 / 26,
+);
+final _bodyStyle = D.system(15, color: D.secondary, height: 21 / 15);
 
 /// Whether the heading of the enclosing [_StepPage] has finished writing.
 class _HeadingDone extends InheritedWidget {
@@ -279,22 +303,26 @@ class _After extends StatelessWidget {
       Reveal(active: _HeadingDone.of(context), delay: delay, child: child);
 }
 
-/// A step: its heading (an optional mode tag, the title and a line under
-/// it) writes itself when the step becomes [active], then [children] come
-/// in through [_After]. Without autoplay everything shows at once.
+/// A step: its heading ([title] in ink, [accent] under it in
+/// [accentColor], then [body]) writes itself when the step becomes
+/// [active], then [children] come in through [_After]. With [fill] the
+/// children share the height left instead of scrolling. Without autoplay
+/// everything shows at once.
 class _StepPage extends StatefulWidget {
-  final bool active;
-  final StudyMode? mode;
-  final String title, body;
+  final bool active, fill;
+  final String title, accent, body;
+  final Color accentColor;
   final double gap;
   final List<Widget> children;
   const _StepPage({
     required this.active,
     required this.title,
+    required this.accent,
+    required this.accentColor,
     required this.body,
     required this.children,
-    this.mode,
     this.gap = 24,
+    this.fill = false,
   });
   @override
   State<_StepPage> createState() => _StepPageState();
@@ -302,32 +330,25 @@ class _StepPage extends StatefulWidget {
 
 class _StepPageState extends State<_StepPage>
     with SingleTickerProviderStateMixin {
-  static const _modeNames = {
-    StudyMode.writing: 'LUYỆN VIẾT',
-    StudyMode.grammar: 'NGỮ PHÁP',
-    StudyMode.conversation: 'HỘI THOẠI',
-  };
-
-  late final int _titleLength = widget.title.characters.length;
+  late final String _heading = '${widget.title}\n${widget.accent}';
+  late final int _headingLength = _heading.characters.length;
   late final int _bodyLength = widget.body.characters.length;
   late final writing = AnimationController(
     vsync: this,
-    duration: _titleChar * _titleLength + _titlePause + _bodyChar * _bodyLength,
+    duration:
+        _titleChar * _headingLength + _titlePause + _bodyChar * _bodyLength,
   )..addListener(_tick);
   bool done = false;
   int _shown = 0;
 
-  /// The share of the timeline when the title is written.
-  double get _titleEnd =>
-      (_titleChar * _titleLength).inMicroseconds /
-      writing.duration!.inMicroseconds;
-  double get _bodyStart =>
-      (_titleChar * _titleLength + _titlePause).inMicroseconds /
-      writing.duration!.inMicroseconds;
+  double _share(Duration d) =>
+      d.inMicroseconds / writing.duration!.inMicroseconds;
+  double get _titleEnd => _share(_titleChar * _headingLength);
+  double get _bodyStart => _share(_titleChar * _headingLength + _titlePause);
 
-  int get _titleChars => (_titleLength * (writing.value / _titleEnd))
+  int get _titleChars => (_headingLength * (writing.value / _titleEnd))
       .floor()
-      .clamp(0, _titleLength);
+      .clamp(0, _headingLength);
   int get _bodyChars =>
       (_bodyLength * ((writing.value - _bodyStart) / (1 - _bodyStart)))
           .floor()
@@ -365,7 +386,7 @@ class _StepPageState extends State<_StepPage>
     if (shown == _shown) return;
     final letter = body > 0
         ? (body % 3 == 0 ? widget.body.characters.elementAt(body - 1) : ' ')
-        : widget.title.characters.elementAt(title - 1);
+        : _heading.characters.elementAt(title - 1);
     _shown = shown;
     if (letter.trim().isNotEmpty) AppScope.read(context).feedback.tap();
   }
@@ -374,6 +395,44 @@ class _StepPageState extends State<_StepPage>
   void dispose() {
     writing.dispose();
     super.dispose();
+  }
+
+  /// The title and accent lines, written up to [count] characters.
+  Widget _title(int count) {
+    final titleLength = widget.title.characters.length;
+    final accent = TextStyle(color: widget.accentColor);
+    final full = Text.rich(
+      TextSpan(
+        style: _titleStyle,
+        children: [
+          TextSpan(text: '${widget.title}\n'),
+          TextSpan(text: widget.accent, style: accent),
+        ],
+      ),
+    );
+    if (count >= _headingLength) return full;
+    final shown = _heading.characters.take(count);
+    return Semantics(
+      label: '${widget.title} ${widget.accent}',
+      excludeSemantics: true,
+      child: Stack(
+        children: [
+          Opacity(opacity: 0, child: full),
+          Text.rich(
+            TextSpan(
+              style: _titleStyle,
+              children: [
+                TextSpan(text: shown.take(titleLength + 1).toString()),
+                TextSpan(
+                  text: shown.skip(titleLength + 1).toString(),
+                  style: accent,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   /// [text] written up to [count] characters over its full, hidden copy, so
@@ -393,72 +452,48 @@ class _StepPageState extends State<_StepPage>
         );
 
   @override
-  Widget build(BuildContext context) => _HeadingDone(
-    done: done,
-    child: SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-      child: Column(
+  Widget build(BuildContext context) {
+    final heading = AnimatedBuilder(
+      animation: writing,
+      builder: (context, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (widget.mode case final StudyMode m) ...[
-            Reveal(
-              active: widget.active,
-              child: Row(
+          Semantics(header: true, child: _title(_titleChars)),
+          const SizedBox(height: 12),
+          // The line under the title can change after writing, as the goal
+          // count does, so a finished heading shows it whole.
+          done
+              ? Text(widget.body, style: _bodyStyle)
+              : _written(widget.body, _bodyChars, _bodyStyle),
+        ],
+      ),
+    );
+    const padding = EdgeInsets.fromLTRB(24, 30, 24, 16);
+    return _HeadingDone(
+      done: done,
+      child: widget.fill
+          ? Padding(
+              padding: padding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: 26,
-                    height: 26,
-                    decoration: BoxDecoration(
-                      color: m.color,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(m.icon, size: 14, color: Colors.white),
-                  ),
-                  const SizedBox(width: 8),
-                  CapsLabel(_modeNames[m]!, color: m.color),
+                  heading,
+                  SizedBox(height: widget.gap),
+                  ...widget.children,
+                ],
+              ),
+            )
+          : SingleChildScrollView(
+              padding: padding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  heading,
+                  SizedBox(height: widget.gap),
+                  ...widget.children,
                 ],
               ),
             ),
-            const SizedBox(height: 14),
-          ],
-          AnimatedBuilder(
-            animation: writing,
-            builder: (context, _) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Semantics(
-                  header: true,
-                  child: _written(
-                    widget.title,
-                    _titleChars,
-                    D.text(
-                      28,
-                      weight: FontWeight.w800,
-                      spacing: -.5,
-                      height: 34 / 28,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                // The line under the title can change after writing, as the
-                // goal count does, so a finished heading shows it whole.
-                done
-                    ? Text(
-                        widget.body,
-                        style: D.text(15, color: D.secondary, height: 21 / 15),
-                      )
-                    : _written(
-                        widget.body,
-                        _bodyChars,
-                        D.text(15, color: D.secondary, height: 21 / 15),
-                      ),
-              ],
-            ),
-          ),
-          SizedBox(height: widget.gap),
-          ...widget.children,
-        ],
-      ),
-    ),
-  );
+    );
+  }
 }

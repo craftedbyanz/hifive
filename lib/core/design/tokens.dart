@@ -41,6 +41,33 @@ abstract final class D {
     height: height ?? 1.4,
     letterSpacing: spacing ?? 0,
   );
+
+  /// SF Pro, for lesson content (design system, Typography): Text below
+  /// 20 pt, Display from 20 pt, with the optical tracking Flutter doesn't
+  /// apply on its own.
+  static TextStyle system(
+    double size, {
+    FontWeight weight = FontWeight.w400,
+    Color color = ink,
+    double? height,
+    FontStyle? style,
+  }) => TextStyle(
+    fontFamily: size >= 20 ? 'CupertinoSystemDisplay' : 'CupertinoSystemText',
+    fontSize: size,
+    fontWeight: weight,
+    fontStyle: style,
+    color: color,
+    height: height,
+    letterSpacing: switch (size) {
+      >= 20 => 0,
+      >= 17 => -.43,
+      >= 16 => -.31,
+      >= 15 => -.23,
+      >= 14 => -.15,
+      >= 13 => -.08,
+      _ => 0,
+    },
+  );
   static final shadow = [
     BoxShadow(
       color: ink.withValues(alpha: .06),

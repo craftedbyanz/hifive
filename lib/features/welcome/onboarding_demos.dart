@@ -42,11 +42,12 @@ class _WritingDemoState extends State<_WritingDemo> {
   @override
   Widget build(BuildContext context) {
     final blue = StudyMode.writing.color;
-    final content = D.text(17, weight: FontWeight.w600, height: 24 / 17);
+    final content = D.system(17, weight: FontWeight.w500, height: 24 / 17);
     return _StepPage(
       active: widget.active,
-      mode: StudyMode.writing,
-      title: 'Viết, rồi nhận\ngóp ý ngay',
+      title: 'Viết một câu,',
+      accent: 'nhận góp ý ngay',
+      accentColor: StudyMode.writing.color,
       body: 'Hifive chấm từng câu bạn viết và chỉ cách nói tự nhiên hơn. Thử chấm câu dưới đây.',
       children: [
         _After(
@@ -179,7 +180,7 @@ class _WritingResult extends StatelessWidget {
   const _WritingResult({super.key});
   @override
   Widget build(BuildContext context) {
-    final base = D.text(16, weight: FontWeight.w600, height: 24 / 16);
+    final base = D.system(16, weight: FontWeight.w500, height: 24 / 16);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: _panel(border: D.orange.withValues(alpha: .5), width: 1.5),
@@ -236,7 +237,7 @@ class _WritingResult extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             'Việc bắt đầu trong quá khứ và vẫn còn tiếp diễn nên dùng thì hiện tại hoàn thành.',
-            style: D.text(14, color: D.secondary, height: 20 / 14),
+            style: D.system(14, color: D.secondary, height: 20 / 14),
           ),
         ],
       ),
@@ -270,8 +271,9 @@ class _GrammarDemoState extends State<_GrammarDemo> {
     final blank = solved ? _options[_answer] : '____';
     return _StepPage(
       active: widget.active,
-      mode: StudyMode.grammar,
-      title: 'Sửa lỗi\ntrong từng câu',
+      title: 'Sửa lỗi ngữ pháp',
+      accent: 'trong từng câu',
+      accentColor: StudyMode.grammar.color,
       body: 'Câu ngắn, giải thích rõ, để lỗi quen không lặp lại. Chọn từ đúng cho chỗ trống.',
       children: [
         _After(
@@ -285,7 +287,7 @@ class _GrammarDemoState extends State<_GrammarDemo> {
                 const SizedBox(height: 10),
                 Text(
                   'She $blank to work by bus every day.',
-                  style: D.text(19, weight: FontWeight.w700, height: 27 / 19),
+                  style: D.system(20, weight: FontWeight.w600, height: 28 / 20),
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -418,7 +420,7 @@ class _Note extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 body,
-                style: D.text(14, color: D.secondary, height: 20 / 14),
+                style: D.system(14, color: D.secondary, height: 20 / 14),
               ),
             ],
           ),
@@ -467,12 +469,13 @@ class _ChatDemoState extends State<_ChatDemo> {
   @override
   Widget build(BuildContext context) {
     final cyan = StudyMode.conversation.color;
-    final base = D.text(15, weight: FontWeight.w600, height: 21 / 15);
+    final base = D.system(16, weight: FontWeight.w500, height: 22 / 16);
     final picked = reply == null ? null : _replies[reply!];
     return _StepPage(
       active: widget.active,
-      mode: StudyMode.conversation,
-      title: 'Trò chuyện\nnhư ngoài đời',
+      title: 'Luyện nói',
+      accent: 'như ngoài đời',
+      accentColor: Palette.chatBlue,
       body: 'Luyện nói theo tình huống thật. Chọn một câu để trả lời.',
       children: [
         _After(

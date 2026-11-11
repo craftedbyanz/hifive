@@ -17,7 +17,7 @@ Two families, each with one job.
 | Family | Used for | How |
 | --- | --- | --- |
 | **Plus Jakarta Sans** (Regular 400, Medium 500, SemiBold 600, Bold 700, ExtraBold 800) | All app chrome: titles, labels, buttons, cards, numbers | `D.text(size, weight:, color:, height:, spacing:)` |
-| **SF Pro** (system) | Lesson content and system UI: the prompt and answer, feedback explanations and tips, the paragraph, iOS alerts, TipKit tips | `fontFamily: 'CupertinoSystemText'` below 20 pt, `'CupertinoSystemDisplay'` at 20 pt and above |
+| **SF Pro** (system) | Lesson content and system UI: the prompt and answer, feedback explanations and tips, the paragraph, iOS alerts, TipKit tips, onboarding body lines | `D.system(size, ...)`, which picks `'CupertinoSystemText'` below 20 pt and `'CupertinoSystemDisplay'` at 20 pt and above and sets the tracking below |
 
 SF Pro Text needs its optical tracking set by hand (Flutter does not apply it): 17 pt −0.43, 16 −0.31, 15 −0.23, 14 −0.15, 13 −0.08. An explicit `letterSpacing` replaces SF Display's own tracking, so Display text that sets one must add it back (the grammar answer uses 0.75 at 21 pt).
 
@@ -28,6 +28,7 @@ Use these roles; do not invent a new size for an existing role.
 | Role | Style | Example |
 | --- | --- | --- |
 | Page hero title | 38 / w800, −2 tracking, 1.04 line | "Viết nên / câu chuyện" |
+| Onboarding step title | 26 / w800, −0.6, line 32: an ink line, then an accent line in the step's color; body SF Pro 15, secondary, line 21 | "Chào mừng / đến với Hifive" |
 | Collection title | 28 / w800, −0.5, line 1.24 | "Di sản và lịch sử." |
 | Home greeting | `HomeDesign.greeting` 28 / w700, −0.87 | Home only |
 | Card title, large | 27 / w800, −1, line 1.26 | Collection set card |
@@ -192,7 +193,7 @@ Use these instead of building a new one.
 | Page with title and back | `AppPage` / `Header`, or `HeaderScrollPage` for a pinned blurred header | `widgets/page.dart`, `widgets/blur_header.dart` |
 | Round glass back / more button, 44 pt | `HeaderRoundButton` | `widgets/blur_header.dart` |
 | Game page buttons | `GameGlassButton` | `features/game/game_glass_button.dart` |
-| Primary or outlined button | `ActionButton` | `widgets/buttons.dart` |
+| Primary or outlined button | `ActionButton` (`trailing:` for an arrow after the label; 56 pt tall in onboarding) | `widgets/buttons.dart` |
 | Press feedback | `PressFade` (fades to 20% in 350 ms, back in 150 ms) | `widgets/press.dart` |
 | Popup or overflow menu | `showGlassMenu` with `GlassMenuItem` (icons, ticks, swatches, red danger rows, submenus via `title` and `behind`) | `widgets/glass_menu.dart` |
 | Confirmation | `confirm()`: the iOS 26 alert, `destructive: true` for red actions | `widgets/sheets.dart` |
@@ -241,6 +242,7 @@ Borderless by default: `isCollapsed`, no fill, `InputBorder.none`, placed inside
 | Flow Letter solved word | holds 1.1 s, next color fades in 0.3 s |
 | Sign-in demos | each scene plays a 4 s timeline (`phase()` slices it), holds, and the next fades and scales in from 0.96 after 4.8 s; background tint 600 ms; title 220 ms; dots 200 ms |
 | Onboarding steps | step change 350 ms `easeOutCubic`; the title writes itself at 45 ms a character with a `feedback.tap()` each, pauses 160 ms, then the line under it at 12 ms a character (a tick every third); the step's content then fades and lifts 8% in 300 ms (`Reveal`); progress bars 300 ms; demos "think" 900 ms |
+| Onboarding card stacks | the welcome stack deals its front card up and left every 2.8 s or on a tap, 600 ms `easeInOutCubic`, as the cards behind (20 pt lower, 6% smaller each) move up; a rated word card flies out sideways in 450 ms `easeInCubic` after a 0.33 s flip |
 | Preparing wait | dots on three tilted rings in the mode colours, one turn per 6 s; they gather into the logo over the 2.8 s wait |
 | Auth gate (welcome to Home and back) | on sign-in a frosted white veil (blur σ 22) with an arched top rises over sign-in in 900 ms `easeInOutCubic`, the logo fades in and breathes for 300 ms; then pages fade through white and scale from 0.98, 350 ms `easeOutCubic` in, `easeIn` out |
 

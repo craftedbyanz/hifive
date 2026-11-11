@@ -28,6 +28,14 @@ Future<void> _tapKey(WidgetTester tester, String key) async {
   await tester.pumpAndSettle();
 }
 
+/// A step heading, whose title and accent lines are one rich text.
+Finder _heading(String text) => find.textContaining(text, findRichText: true);
+
+/// The welcome stack, labelled by its front card.
+Finder _practice(String title) => find.byWidgetPredicate(
+  (w) => w is Semantics && w.properties.label == title,
+);
+
 bool _canContinue(WidgetTester tester) =>
     tester
         .widget<ActionButton>(find.byKey(const ValueKey('onboarding-next')))
@@ -45,6 +53,29 @@ void main() {
     await _openApp(tester, s);
     expect(find.byType(OnboardingScreen), findsOneWidget);
     expect(find.byKey(const ValueKey('onboarding-back')), findsNothing);
+
+    // Welcome: a tap deals the next way to practise to the front.
+    expect(_practice('Viết đoạn văn'), findsOneWidget);
+    await _tapKey(tester, 'onboarding-practice-stack');
+    expect(_practice('Sửa câu'), findsOneWidget);
+    await _tapKey(tester, 'onboarding-next');
+
+    // Flashcards: a tap flips the card; rating it sends it away and says
+    // when it comes back.
+    await _tapKey(tester, 'onboarding-card');
+    expect(find.text('tò mò'), findsOneWidget);
+    await _tapKey(tester, 'onboarding-remembered');
+    expect(find.text('Ôn lại sau 4 ngày'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('onboarding-card')),
+        matching: find.text('journey'),
+      ),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+    await _tapKey(tester, 'onboarding-next');
 
     // Writing: grading thinks, then explains.
     await tester.tap(find.byKey(const ValueKey('onboarding-grade')));
@@ -75,7 +106,7 @@ void main() {
     await _tapKey(tester, 'onboarding-next');
 
     // Name: the account has no display name, so it starts empty.
-    expect(find.text('Bạn tên là gì?'), findsOneWidget);
+    expect(_heading('Bạn tên là gì?'), findsOneWidget);
     expect(_canContinue(tester), isFalse);
     await tester.enterText(find.byKey(const ValueKey('onboarding-name')), '  ');
     await tester.pump();
@@ -136,15 +167,15 @@ void main() {
     tester,
   ) async {
     await _openApp(tester, fresh(auth: signedIn(), onboarded: false));
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 5; i++) {
       await _tapKey(tester, 'onboarding-next');
     }
     await tester.enterText(find.byKey(const ValueKey('onboarding-name')), 'An');
     await tester.pump();
     await _tapKey(tester, 'onboarding-next');
-    expect(find.text('Trình độ hiện tại\ncủa bạn?'), findsOneWidget);
+    expect(_heading('của bạn là gì?'), findsOneWidget);
     await _tapKey(tester, 'onboarding-back');
-    expect(find.text('Bạn tên là gì?'), findsOneWidget);
+    expect(_heading('Bạn tên là gì?'), findsOneWidget);
     expect(find.text('An'), findsOneWidget);
     expect(_canContinue(tester), isTrue);
   });
@@ -160,7 +191,7 @@ void main() {
       ),
     );
     await _openApp(tester, fresh(auth: auth, onboarded: false));
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 5; i++) {
       await _tapKey(tester, 'onboarding-next');
     }
     expect(find.text('Hương'), findsOneWidget);
@@ -269,21 +300,19 @@ void main() {
     expect(find.byType(OnboardingScreen), findsOneWidget);
 
     // The title is part-way written, ticking as it goes; the demo waits.
-    const title = 'Viết, rồi nhận\ngóp ý ngay';
-    final partTitle = find.byWidgetPredicate(
-      (w) =>
-          w is Text &&
-          (w.data?.isNotEmpty ?? false) &&
-          w.data != title &&
-          title.startsWith(w.data!),
-    );
+    const title = 'Chào mừng\nđến với Hifive';
+    final partTitle = find.byWidgetPredicate((w) {
+      if (w is! RichText) return false;
+      final text = w.text.toPlainText();
+      return text.isNotEmpty && text != title && title.startsWith(text);
+    });
     expect(partTitle, findsOneWidget);
     expect(feedback.taps, greaterThan(2));
     double gradeOpacity() => tester
         .widget<AnimatedOpacity>(
           find
               .ancestor(
-                of: find.byKey(const ValueKey('onboarding-grade')),
+                of: find.byKey(const ValueKey('onboarding-practice-stack')),
                 matching: find.byType(AnimatedOpacity),
               )
               .first,
@@ -293,7 +322,7 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
     await tester.pump(const Duration(milliseconds: 400));
     expect(partTitle, findsNothing);
-    expect(find.text(title), findsOneWidget);
+    expect(_heading(title), findsOneWidget);
     expect(gradeOpacity(), 1);
     await tester.pumpWidget(const SizedBox());
   });

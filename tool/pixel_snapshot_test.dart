@@ -186,4 +186,29 @@ void main() {
     await settle(t);
     await shot(t, 'review_back');
   });
+  testWidgets('onboarding_steps', (t) async {
+    await mount(t, scenes['onboarding']!);
+    Future<void> next() async {
+      await t.tap(find.byKey(const ValueKey('onboarding-next')));
+      await settle(t);
+    }
+
+    await next();
+    await shot(t, 'onboarding_cards');
+    await t.tap(find.byKey(const ValueKey('onboarding-card')));
+    await settle(t);
+    await shot(t, 'onboarding_card_back');
+    for (final name in ['writing', 'grammar', 'chat', 'name']) {
+      await next();
+      await shot(t, 'onboarding_$name');
+    }
+    await t.enterText(find.byKey(const ValueKey('onboarding-name')), 'Lan');
+    await settle(t);
+    await next();
+    await shot(t, 'onboarding_level');
+    await t.tap(find.byKey(const ValueKey('onboarding-level-B1')));
+    await settle(t);
+    await next();
+    await shot(t, 'onboarding_goals');
+  });
 }

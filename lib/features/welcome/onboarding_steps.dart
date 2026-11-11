@@ -18,7 +18,9 @@ class _NameStep extends StatelessWidget {
     final valid = name.isNotEmpty && name.characters.length <= _maxName;
     return _StepPage(
       active: active,
-      title: 'Bạn tên là gì?',
+      title: 'Chào bạn!',
+      accent: 'Bạn tên là gì?',
+      accentColor: D.blue,
       body: 'Hifive sẽ gọi bạn bằng tên này. Bạn có thể đổi trong Hồ sơ.',
       gap: 28,
       children: [
@@ -105,7 +107,9 @@ class _LevelStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _StepPage(
     active: active,
-    title: 'Trình độ hiện tại\ncủa bạn?',
+    title: 'Trình độ hiện tại',
+    accent: 'của bạn là gì?',
+    accentColor: StudyMode.grammar.color,
     body: 'Bài học bắt đầu từ mức này. Chưa chắc thì chọn thấp hơn một bậc.',
     gap: 20,
     children: [
@@ -206,7 +210,9 @@ class _GoalStep extends StatelessWidget {
     final full = selected.length >= _maxGoals;
     return _StepPage(
       active: active,
-      title: 'Bạn học để làm gì?',
+      title: 'Bạn học',
+      accent: 'để làm gì?',
+      accentColor: Palette.chatBlue,
       body: selected.isEmpty
           ? 'Chọn tối đa $_maxGoals mục tiêu.'
           : 'Đã chọn ${selected.length}/$_maxGoals mục tiêu.',

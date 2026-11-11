@@ -54,6 +54,9 @@ class ActionButton extends StatelessWidget {
   final VoidCallback? onTap;
   final Color color, foreground;
   final IconData? icon;
+
+  /// An icon after the label, such as the arrow on a "Tiếp tục" button.
+  final IconData? trailing;
   final bool outlined;
   const ActionButton(
     this.label, {
@@ -62,6 +65,7 @@ class ActionButton extends StatelessWidget {
     this.color = D.ink,
     this.foreground = Colors.white,
     this.icon,
+    this.trailing,
     this.outlined = false,
   });
   @override
@@ -110,6 +114,18 @@ class ActionButton extends StatelessWidget {
                   ),
                 ),
               ),
+              if (trailing != null) ...[
+                const SizedBox(width: 8),
+                Icon(
+                  trailing,
+                  size: 19,
+                  color: outlined
+                      ? D.ink
+                      : onTap == null
+                      ? D.muted
+                      : foreground,
+                ),
+              ],
             ],
           ),
         ),
