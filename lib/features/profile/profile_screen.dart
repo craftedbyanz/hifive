@@ -626,7 +626,7 @@ class _Footer extends StatelessWidget {
         const SizedBox(height: 33, child: Center(child: AppLogo(size: 24))),
         const SizedBox(height: 5),
         Text(
-          'Hifive v1.0.0 (1)',
+          'Hifive v1.0.0 (2)',
           style: D.text(
             10.5,
             weight: FontWeight.w600,
