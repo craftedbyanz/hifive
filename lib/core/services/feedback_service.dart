@@ -9,6 +9,10 @@ abstract interface class FeedbackService {
   Future<void> stop();
   void tap();
   void success();
+
+  /// A physical knock with no sound: light, or [heavy] for something
+  /// landing.
+  void impact({bool heavy = false});
 }
 
 class PlatformFeedback implements FeedbackService {
@@ -44,6 +48,14 @@ class PlatformFeedback implements FeedbackService {
     if (haptic) unawaited(HapticFeedback.mediumImpact());
     if (sound) unawaited(SystemSound.play(SystemSoundType.click));
   }
+
+  @override
+  void impact({bool heavy = false}) {
+    if (!haptic) return;
+    unawaited(
+      heavy ? HapticFeedback.heavyImpact() : HapticFeedback.lightImpact(),
+    );
+  }
 }
 
 class SilentFeedback implements FeedbackService {
@@ -55,4 +67,6 @@ class SilentFeedback implements FeedbackService {
   void tap() {}
   @override
   void success() {}
+  @override
+  void impact({bool heavy = false}) {}
 }

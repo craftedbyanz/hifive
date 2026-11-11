@@ -47,11 +47,38 @@ class _AuthGateState extends State<AuthGate>
     super.dispose();
   }
 
+  /// Points along the rise, as shares of the whole veil timeline, where a
+  /// light knock is felt: further apart at first, closer as the veil
+  /// speeds up, then one heavy knock as it covers the screen.
+  static const _knocks = [.04, .16, .26, .35, .43, .5, .56, .61, .65, .69];
+  static const _landing = .75;
+  int _knocked = 0;
+
   void _raiseVeil() {
     veiling = true;
+    _knocked = 0;
     veil.forward(from: 0).whenComplete(() {
       if (mounted) setState(() => veiling = false);
     });
+  }
+
+  /// Plays the knocks the veil has passed since the last frame.
+  void _feel() {
+    final feedback = AppScope.read(context).feedback;
+    while (_knocked < _knocks.length && veil.value >= _knocks[_knocked]) {
+      _knocked++;
+      feedback.impact();
+    }
+    if (_knocked == _knocks.length && veil.value >= _landing) {
+      _knocked++;
+      feedback.impact(heavy: true);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    veil.addListener(_feel);
   }
 
   @override

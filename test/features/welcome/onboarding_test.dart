@@ -298,6 +298,8 @@ void main() {
     }
     expect(find.byType(WelcomeScreen), findsNothing);
     expect(find.byType(OnboardingScreen), findsOneWidget);
+    // Light knocks as the veil rose, then a heavy one as it covered.
+    expect(feedback.impacts, [...List.filled(10, false), true]);
 
     // The title is part-way written, ticking as it goes; the demo waits.
     const title = 'Chào mừng\nđến với Hifive';
