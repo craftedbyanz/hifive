@@ -240,4 +240,61 @@ void main() {
     expect(s.name, 'An');
     s.dispose();
   });
+
+  testWidgets('signing in raises a veil, then the heading writes itself', (
+    tester,
+  ) async {
+    final feedback = RecordingFeedback();
+    final s = fresh(feedback: feedback, onboarded: false);
+    tester.view.physicalSize = const Size(393, 852);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(HifiveApp(state: s));
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.tap(find.byKey(const ValueKey('sign-in-google')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    // Signed in, but sign-in stays under the rising veil for now.
+    expect(s.user, isNotNull);
+    expect(find.byType(WelcomeScreen), findsOneWidget);
+    expect(find.byType(OnboardingScreen), findsNothing);
+    expect(find.bySemanticsLabel('Đang đăng nhập'), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 800));
+    // Frame by frame, as a device draws them.
+    for (var i = 0; i < 25; i++) {
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+    expect(find.byType(WelcomeScreen), findsNothing);
+    expect(find.byType(OnboardingScreen), findsOneWidget);
+
+    // The title is part-way written, ticking as it goes; the demo waits.
+    const title = 'Viết, rồi nhận\ngóp ý ngay';
+    final partTitle = find.byWidgetPredicate(
+      (w) =>
+          w is Text &&
+          (w.data?.isNotEmpty ?? false) &&
+          w.data != title &&
+          title.startsWith(w.data!),
+    );
+    expect(partTitle, findsOneWidget);
+    expect(feedback.taps, greaterThan(2));
+    double gradeOpacity() => tester
+        .widget<AnimatedOpacity>(
+          find
+              .ancestor(
+                of: find.byKey(const ValueKey('onboarding-grade')),
+                matching: find.byType(AnimatedOpacity),
+              )
+              .first,
+        )
+        .opacity;
+    expect(gradeOpacity(), 0);
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(partTitle, findsNothing);
+    expect(find.text(title), findsOneWidget);
+    expect(gradeOpacity(), 1);
+    await tester.pumpWidget(const SizedBox());
+  });
 }

@@ -252,84 +252,213 @@ class _Progress extends StatelessWidget {
   );
 }
 
-/// A step's heading: an optional mode tag, the title and a line under it,
-/// each fading in after the one before.
-class _Heading extends StatelessWidget {
+/// How fast a step's heading writes itself: the title a character at a
+/// time with a haptic tick each, then the line under it, faster.
+const _titleChar = Duration(milliseconds: 45);
+const _bodyChar = Duration(milliseconds: 12);
+const _titlePause = Duration(milliseconds: 160);
+
+/// Whether the heading of the enclosing [_StepPage] has finished writing.
+class _HeadingDone extends InheritedWidget {
+  final bool done;
+  const _HeadingDone({required this.done, required super.child});
+  static bool of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_HeadingDone>()?.done ?? true;
+  @override
+  bool updateShouldNotify(_HeadingDone old) => done != old.done;
+}
+
+/// Fades a step's content in once its heading has written itself, after
+/// [delay].
+class _After extends StatelessWidget {
+  final Duration delay;
+  final Widget child;
+  const _After({required this.child, this.delay = Duration.zero});
+  @override
+  Widget build(BuildContext context) =>
+      Reveal(active: _HeadingDone.of(context), delay: delay, child: child);
+}
+
+/// A step: its heading (an optional mode tag, the title and a line under
+/// it) writes itself when the step becomes [active], then [children] come
+/// in through [_After]. Without autoplay everything shows at once.
+class _StepPage extends StatefulWidget {
   final bool active;
   final StudyMode? mode;
   final String title, body;
-  const _Heading({
+  final double gap;
+  final List<Widget> children;
+  const _StepPage({
     required this.active,
     required this.title,
     required this.body,
+    required this.children,
     this.mode,
+    this.gap = 24,
   });
+  @override
+  State<_StepPage> createState() => _StepPageState();
+}
+
+class _StepPageState extends State<_StepPage>
+    with SingleTickerProviderStateMixin {
   static const _modeNames = {
     StudyMode.writing: 'LUYỆN VIẾT',
     StudyMode.grammar: 'NGỮ PHÁP',
     StudyMode.conversation: 'HỘI THOẠI',
   };
+
+  late final int _titleLength = widget.title.characters.length;
+  late final int _bodyLength = widget.body.characters.length;
+  late final writing = AnimationController(
+    vsync: this,
+    duration: _titleChar * _titleLength + _titlePause + _bodyChar * _bodyLength,
+  )..addListener(_tick);
+  bool done = false;
+  int _shown = 0;
+
+  /// The share of the timeline when the title is written.
+  double get _titleEnd =>
+      (_titleChar * _titleLength).inMicroseconds /
+      writing.duration!.inMicroseconds;
+  double get _bodyStart =>
+      (_titleChar * _titleLength + _titlePause).inMicroseconds /
+      writing.duration!.inMicroseconds;
+
+  int get _titleChars => (_titleLength * (writing.value / _titleEnd))
+      .floor()
+      .clamp(0, _titleLength);
+  int get _bodyChars =>
+      (_bodyLength * ((writing.value - _bodyStart) / (1 - _bodyStart)))
+          .floor()
+          .clamp(0, _bodyLength);
+
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      if (mode case final StudyMode m) ...[
-        Reveal(
-          active: active,
-          child: Row(
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _start();
+  }
+
+  @override
+  void didUpdateWidget(_StepPage old) {
+    super.didUpdateWidget(old);
+    _start();
+  }
+
+  void _start() {
+    if (!widget.active || done || writing.isAnimating) return;
+    if (!welcomeAutoplay(context)) {
+      writing.value = 1;
+      done = true;
+      return;
+    }
+    writing.forward().whenComplete(() {
+      if (mounted) setState(() => done = true);
+    });
+  }
+
+  /// A tick for each new letter of the title and every third of the line
+  /// under it, so the writing can be felt.
+  void _tick() {
+    final title = _titleChars, body = _bodyChars;
+    final shown = title + body;
+    if (shown == _shown) return;
+    final letter = body > 0
+        ? (body % 3 == 0 ? widget.body.characters.elementAt(body - 1) : ' ')
+        : widget.title.characters.elementAt(title - 1);
+    _shown = shown;
+    if (letter.trim().isNotEmpty) AppScope.read(context).feedback.tap();
+  }
+
+  @override
+  void dispose() {
+    writing.dispose();
+    super.dispose();
+  }
+
+  /// [text] written up to [count] characters over its full, hidden copy, so
+  /// the layout never moves while it writes; once written, just the text.
+  Widget _written(String text, int count, TextStyle style) =>
+      count >= text.characters.length
+      ? Text(text, style: style)
+      : Semantics(
+          label: text,
+          excludeSemantics: true,
+          child: Stack(
             children: [
-              Container(
-                width: 26,
-                height: 26,
-                decoration: BoxDecoration(
-                  color: m.color,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(m.icon, size: 14, color: Colors.white),
-              ),
-              const SizedBox(width: 8),
-              CapsLabel(_modeNames[m]!, color: m.color),
+              Opacity(opacity: 0, child: Text(text, style: style)),
+              Text(text.characters.take(count).toString(), style: style),
             ],
           ),
-        ),
-        const SizedBox(height: 14),
-      ],
-      Reveal(
-        active: active,
-        delay: const Duration(milliseconds: 60),
-        child: Text(
-          title,
-          style: D.text(
-            28,
-            weight: FontWeight.w800,
-            spacing: -.5,
-            height: 34 / 28,
-          ),
-        ),
-      ),
-      const SizedBox(height: 8),
-      Reveal(
-        active: active,
-        delay: const Duration(milliseconds: 120),
-        child: Text(
-          body,
-          style: D.text(15, color: D.secondary, height: 21 / 15),
-        ),
-      ),
-    ],
-  );
-}
+        );
 
-/// A step's scrolling body with the standard margins.
-class _StepPage extends StatelessWidget {
-  final List<Widget> children;
-  const _StepPage({required this.children});
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-    padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: children,
+  Widget build(BuildContext context) => _HeadingDone(
+    done: done,
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (widget.mode case final StudyMode m) ...[
+            Reveal(
+              active: widget.active,
+              child: Row(
+                children: [
+                  Container(
+                    width: 26,
+                    height: 26,
+                    decoration: BoxDecoration(
+                      color: m.color,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(m.icon, size: 14, color: Colors.white),
+                  ),
+                  const SizedBox(width: 8),
+                  CapsLabel(_modeNames[m]!, color: m.color),
+                ],
+              ),
+            ),
+            const SizedBox(height: 14),
+          ],
+          AnimatedBuilder(
+            animation: writing,
+            builder: (context, _) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Semantics(
+                  header: true,
+                  child: _written(
+                    widget.title,
+                    _titleChars,
+                    D.text(
+                      28,
+                      weight: FontWeight.w800,
+                      spacing: -.5,
+                      height: 34 / 28,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // The line under the title can change after writing, as the
+                // goal count does, so a finished heading shows it whole.
+                done
+                    ? Text(
+                        widget.body,
+                        style: D.text(15, color: D.secondary, height: 21 / 15),
+                      )
+                    : _written(
+                        widget.body,
+                        _bodyChars,
+                        D.text(15, color: D.secondary, height: 21 / 15),
+                      ),
+              ],
+            ),
+          ),
+          SizedBox(height: widget.gap),
+          ...widget.children,
+        ],
+      ),
     ),
   );
 }

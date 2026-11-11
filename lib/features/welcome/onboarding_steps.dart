@@ -17,16 +17,12 @@ class _NameStep extends StatelessWidget {
     final name = controller.text.trim();
     final valid = name.isNotEmpty && name.characters.length <= _maxName;
     return _StepPage(
+      active: active,
+      title: 'Bạn tên là gì?',
+      body: 'Hifive sẽ gọi bạn bằng tên này. Bạn có thể đổi trong Hồ sơ.',
+      gap: 28,
       children: [
-        _Heading(
-          active: active,
-          title: 'Bạn tên là gì?',
-          body: 'Hifive sẽ gọi bạn bằng tên này. Bạn có thể đổi trong Hồ sơ.',
-        ),
-        const SizedBox(height: 28),
-        Reveal(
-          active: active,
-          delay: const Duration(milliseconds: 180),
+        _After(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -108,18 +104,14 @@ class _LevelStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _StepPage(
+    active: active,
+    title: 'Trình độ hiện tại\ncủa bạn?',
+    body: 'Bài học bắt đầu từ mức này. Chưa chắc thì chọn thấp hơn một bậc.',
+    gap: 20,
     children: [
-      _Heading(
-        active: active,
-        title: 'Trình độ hiện tại\ncủa bạn?',
-        body:
-            'Bài học bắt đầu từ mức này. Chưa chắc thì chọn thấp hơn một bậc.',
-      ),
-      const SizedBox(height: 20),
       for (final (i, title) in levels.indexed) ...[
-        Reveal(
-          active: active,
-          delay: Duration(milliseconds: 160 + 40 * i),
+        _After(
+          delay: Duration(milliseconds: 40 * i),
           child: _OptionCard(
             key: ValueKey('onboarding-level-${title.substring(0, 2)}'),
             selected: selected == title.substring(0, 2),
@@ -213,18 +205,14 @@ class _GoalStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final full = selected.length >= _maxGoals;
     return _StepPage(
+      active: active,
+      title: 'Bạn học để làm gì?',
+      body: selected.isEmpty
+          ? 'Chọn tối đa $_maxGoals mục tiêu.'
+          : 'Đã chọn ${selected.length}/$_maxGoals mục tiêu.',
+      gap: 20,
       children: [
-        _Heading(
-          active: active,
-          title: 'Bạn học để làm gì?',
-          body: selected.isEmpty
-              ? 'Chọn tối đa $_maxGoals mục tiêu.'
-              : 'Đã chọn ${selected.length}/$_maxGoals mục tiêu.',
-        ),
-        const SizedBox(height: 20),
-        Reveal(
-          active: active,
-          delay: const Duration(milliseconds: 180),
+        _After(
           child: GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,

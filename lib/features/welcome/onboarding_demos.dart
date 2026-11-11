@@ -44,17 +44,12 @@ class _WritingDemoState extends State<_WritingDemo> {
     final blue = StudyMode.writing.color;
     final content = D.text(17, weight: FontWeight.w600, height: 24 / 17);
     return _StepPage(
+      active: widget.active,
+      mode: StudyMode.writing,
+      title: 'Viết, rồi nhận\ngóp ý ngay',
+      body: 'Hifive chấm từng câu bạn viết và chỉ cách nói tự nhiên hơn. Thử chấm câu dưới đây.',
       children: [
-        _Heading(
-          active: widget.active,
-          mode: StudyMode.writing,
-          title: 'Viết, rồi nhận\ngóp ý ngay',
-          body: 'Hifive chấm từng câu bạn viết và chỉ cách nói tự nhiên hơn. Thử chấm câu dưới đây.',
-        ),
-        const SizedBox(height: 24),
-        Reveal(
-          active: widget.active,
-          delay: const Duration(milliseconds: 180),
+        _After(
           child: Container(
             padding: const EdgeInsets.all(18),
             decoration: _panel(),
@@ -274,17 +269,12 @@ class _GrammarDemoState extends State<_GrammarDemo> {
     final solved = picked == _answer;
     final blank = solved ? _options[_answer] : '____';
     return _StepPage(
+      active: widget.active,
+      mode: StudyMode.grammar,
+      title: 'Sửa lỗi\ntrong từng câu',
+      body: 'Câu ngắn, giải thích rõ, để lỗi quen không lặp lại. Chọn từ đúng cho chỗ trống.',
       children: [
-        _Heading(
-          active: widget.active,
-          mode: StudyMode.grammar,
-          title: 'Sửa lỗi\ntrong từng câu',
-          body: 'Câu ngắn, giải thích rõ, để lỗi quen không lặp lại. Chọn từ đúng cho chỗ trống.',
-        ),
-        const SizedBox(height: 24),
-        Reveal(
-          active: widget.active,
-          delay: const Duration(milliseconds: 180),
+        _After(
           child: Container(
             padding: const EdgeInsets.all(18),
             decoration: _panel(),
@@ -480,17 +470,12 @@ class _ChatDemoState extends State<_ChatDemo> {
     final base = D.text(15, weight: FontWeight.w600, height: 21 / 15);
     final picked = reply == null ? null : _replies[reply!];
     return _StepPage(
+      active: widget.active,
+      mode: StudyMode.conversation,
+      title: 'Trò chuyện\nnhư ngoài đời',
+      body: 'Luyện nói theo tình huống thật. Chọn một câu để trả lời.',
       children: [
-        _Heading(
-          active: widget.active,
-          mode: StudyMode.conversation,
-          title: 'Trò chuyện\nnhư ngoài đời',
-          body: 'Luyện nói theo tình huống thật. Chọn một câu để trả lời.',
-        ),
-        const SizedBox(height: 24),
-        Reveal(
-          active: widget.active,
-          delay: const Duration(milliseconds: 180),
+        _After(
           child: _ChatLine(
             partner: true,
             color: cyan,
@@ -499,9 +484,8 @@ class _ChatDemoState extends State<_ChatDemo> {
         ),
         const SizedBox(height: 12),
         if (picked == null)
-          Reveal(
-            active: widget.active,
-            delay: const Duration(milliseconds: 260),
+          _After(
+            delay: const Duration(milliseconds: 80),
             child: Wrap(
               alignment: WrapAlignment.end,
               spacing: 10,

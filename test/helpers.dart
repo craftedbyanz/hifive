@@ -148,6 +148,9 @@ Future<void> mount(
 /// Records what was spoken, and in which locale.
 class RecordingFeedback extends SilentFeedback {
   final spoken = <(String, String)>[];
+  int taps = 0;
+  @override
+  void tap() => taps++;
   @override
   Future<void> speak(String text, {required String locale}) async =>
       spoken.add((text, locale));
