@@ -32,6 +32,10 @@ class _AuthGateState extends State<AuthGate>
     with SingleTickerProviderStateMixin {
   String? _uid;
 
+  /// Set after the first build. An account signed in before then was
+  /// restored on launch, not signed in just now, so it gets no veil.
+  bool _started = false;
+
   late final veil = AnimationController(
     vsync: this,
     duration: _veilRise + _veilHold,
@@ -92,10 +96,11 @@ class _AuthGateState extends State<AuthGate>
         if (mounted) Navigator.of(context).popUntil((r) => r.isFirst);
       });
     }
-    if (_uid == null && user != null && welcomeAutoplay(context)) {
+    if (_started && _uid == null && user != null && welcomeAutoplay(context)) {
       _raiseVeil();
     }
     _uid = user?.uid;
+    _started = true;
     final still = MediaQuery.disableAnimationsOf(context);
     // The same tree with or without the veil, so the demos keep playing
     // underneath it.

@@ -164,4 +164,22 @@ void main() {
     await tester.pump();
     expect(find.text(_chat), findsOneWidget);
   });
+
+  testWidgets('a signed-in learner opens straight on Home, without the veil', (
+    tester,
+  ) async {
+    // With motion on, as on a phone: the veil is for signing in, not for
+    // opening the app with an account already signed in.
+    final feedback = RecordingFeedback();
+    await _openApp(
+      tester,
+      fresh(auth: signedIn(), feedback: feedback),
+      animate: true,
+    );
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(WelcomeScreen), findsNothing);
+    expect(find.bySemanticsLabel('Đang đăng nhập'), findsNothing);
+    expect(feedback.impacts, isEmpty);
+    await tester.pumpWidget(const SizedBox());
+  });
 }
