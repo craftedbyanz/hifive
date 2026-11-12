@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'result_screen.dart';
@@ -47,18 +48,7 @@ class _CompletionScreenState extends State<CompletionScreen>
                       .7 + Curves.easeOutBack.transform(animation.value) * .3,
                   child: child,
                 ),
-                child: ShaderMask(
-                  shaderCallback: (rect) => const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Palette.flameTop, Palette.flameBottom],
-                  ).createShader(rect),
-                  child: const Icon(
-                    Icons.local_fire_department_rounded,
-                    size: 200,
-                    color: Colors.white,
-                  ),
-                ),
+                child: const StreakFlame(size: 200),
               ),
               // Flexible, so short screens never overflow.
               const Spacer(flex: 3),
@@ -73,7 +63,7 @@ class _CompletionScreenState extends State<CompletionScreen>
               ),
               const SizedBox(height: 16),
               Text(
-                'ngày liên tiếp',
+                context.t.daysInARow,
                 style: D.text(
                   27,
                   weight: FontWeight.w700,
@@ -95,23 +85,19 @@ class _CompletionScreenState extends State<CompletionScreen>
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: i == today
-                                  ? Palette.streakOrange
+                                  ? Palette.streakOrange.withValues(alpha: .14)
                                   : Colors.transparent,
                               border: i == today
                                   ? null
                                   : Border.all(color: D.line, width: 1.5),
                             ),
                             child: i == today
-                                ? const Icon(
-                                    Icons.local_fire_department_rounded,
-                                    color: Colors.white,
-                                    size: 22,
-                                  )
+                                ? const Center(child: StreakFlame(size: 24))
                                 : null,
                           ),
                           const SizedBox(height: 6.9),
                           Text(
-                            i == 7 ? 'CN' : 'T${i + 1}',
+                            context.t.weekdaysSunFirst.split(',')[i % 7],
                             style: D.text(
                               11,
                               weight: FontWeight.w700,
@@ -125,14 +111,14 @@ class _CompletionScreenState extends State<CompletionScreen>
               ),
               const SizedBox(height: 35),
               Text(
-                'Khởi động chuỗi mới!',
+                context.t.newStreakStarted,
                 style: D.text(23, weight: FontWeight.w800),
               ),
               const SizedBox(height: 9.5),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  'Một khởi đầu tuyệt vời. Hãy duy trì thói quen học tập mỗi ngày nhé!',
+                  context.t.greatStart,
                   textAlign: TextAlign.center,
                   style: D.text(15, color: D.secondary, height: 1.33),
                 ),
@@ -141,7 +127,7 @@ class _CompletionScreenState extends State<CompletionScreen>
               SizedBox(
                 height: 56,
                 child: ActionButton(
-                  'Tiếp tục',
+                  context.t.continueStep,
                   onTap: () => Navigator.of(context).pushReplacement(
                     MaterialPageRoute<void>(
                       builder: (_) =>

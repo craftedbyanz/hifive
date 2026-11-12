@@ -1,22 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 
 /// What each sign-in failure tells the learner. Cancelling says nothing.
-String? authMessage(AuthError error) => switch (error) {
+String? authMessage(AuthError error, AppLocalizations t) => switch (error) {
   AuthError.cancelled => null,
-  AuthError.wrongCredentials => 'Email hoặc mật khẩu không đúng.',
-  AuthError.emailInUse => 'Email này đã có tài khoản. Hãy đăng nhập.',
-  AuthError.weakPassword => 'Mật khẩu cần ít nhất 6 ký tự.',
-  AuthError.invalidEmail => 'Email không hợp lệ.',
-  AuthError.tooManyRequests => 'Bạn thử quá nhiều lần. Vui lòng đợi một lát.',
-  AuthError.network => 'Không có kết nối mạng. Vui lòng thử lại.',
-  AuthError.unavailable => 'Cách đăng nhập này chưa được bật.',
-  AuthError.unknown => 'Không đăng nhập được. Vui lòng thử lại.',
+  AuthError.wrongCredentials => t.authWrongCredentials,
+  AuthError.emailInUse => t.authEmailInUse,
+  AuthError.weakPassword => t.authWeakPassword,
+  AuthError.invalidEmail => t.authInvalidEmail,
+  AuthError.tooManyRequests => t.authTooManyRequests,
+  AuthError.network => t.authNetwork,
+  AuthError.unavailable => t.authUnavailable,
+  AuthError.unknown => t.authUnknown,
 };
 
 /// Runs one sign-in call and toasts its failure; cancelling says nothing.
@@ -27,12 +29,13 @@ Future<bool> runAuth(
   Future<void> Function() call, {
   String? done,
 }) async {
+  final t = context.t;
   try {
     await call();
     if (context.mounted && done != null) toast(context, done);
     return true;
   } on AuthException catch (e) {
-    final message = authMessage(e.error);
+    final message = authMessage(e.error, t);
     if (context.mounted && message != null) toast(context, message);
     return false;
   }
@@ -77,13 +80,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   void _reset(AppState s) {
     if (email.text.trim().isEmpty) {
-      toast(context, 'Nhập email để nhận liên kết đặt lại mật khẩu.');
+      toast(context, context.t.resetNeedsEmail);
       return;
     }
-    _run(
-      () => s.sendPasswordReset(email.text),
-      done: 'Đã gửi email đặt lại mật khẩu.',
-    );
+    _run(() => s.sendPasswordReset(email.text), done: context.t.resetSent);
   }
 
   @override
@@ -98,19 +98,21 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            creating ? 'Tạo tài khoản Hifive' : 'Đăng nhập bằng email',
+            creating
+                ? context.t.createAccountTitle
+                : context.t.emailSignInTitle,
             style: D.text(22, weight: FontWeight.w800, height: 28 / 22),
           ),
           const SizedBox(height: 6),
           Text(
-            'Lưu tiến độ và học tiếp trên mọi thiết bị.',
+            context.t.emailSignInBody,
             style: D.text(14, color: Palette.settingsMuted, height: 20 / 14),
           ),
           const SizedBox(height: 22),
           _Field(
             key: const ValueKey('sign-in-email'),
             controller: email,
-            hint: 'Email',
+            hint: context.t.emailHint,
             keyboard: TextInputType.emailAddress,
             onChanged: () => setState(() {}),
           ),
@@ -118,7 +120,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
           _Field(
             key: const ValueKey('sign-in-password'),
             controller: password,
-            hint: 'Mật khẩu',
+            hint: context.t.passwordHint,
             obscure: true,
             onChanged: () => setState(() {}),
             onSubmitted: ready ? () => _submit(s) : null,
@@ -126,10 +128,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
           const SizedBox(height: 18),
           ActionButton(
             busy
-                ? 'Đang xử lý...'
+                ? context.t.working
                 : creating
-                ? 'Tạo tài khoản'
-                : 'Đăng nhập',
+                ? context.t.createAccount
+                : context.t.signIn,
             key: const ValueKey('sign-in-submit'),
             onTap: ready ? () => _submit(s) : null,
           ),
@@ -138,13 +140,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _Link(
-                creating ? 'Đã có tài khoản? Đăng nhập' : 'Tạo tài khoản mới',
+                creating
+                    ? context.t.haveAccountSignIn
+                    : context.t.createNewAccount,
                 key: const ValueKey('sign-in-mode'),
                 onTap: busy ? null : () => setState(() => creating = !creating),
               ),
               if (!creating)
                 _Link(
-                  'Quên mật khẩu?',
+                  context.t.forgotPassword,
                   key: const ValueKey('sign-in-reset'),
                   onTap: busy ? null : () => _reset(s),
                 ),
@@ -237,16 +241,16 @@ IconData accountIcon(AuthUser? user) => switch (user?.method) {
 
 /// The sync line under the account, or null when there is nothing to say:
 /// signed out, or a build without the sync API.
-String? syncStatus(AppState s) {
+String? syncStatus(AppState s, AppLocalizations t) {
   if (s.user == null || s.syncService == null) return null;
-  if (s.syncing) return 'Đang đồng bộ...';
-  if (s.syncError != null) return 'Chưa đồng bộ được';
+  if (s.syncing) return t.syncing;
+  if (s.syncError != null) return t.syncFailed;
   final at = s.lastSyncedAt;
-  if (at == null) return 'Chưa đồng bộ';
+  if (at == null) return t.neverSynced;
   final now = s.now();
   final hm =
       '${at.hour.toString().padLeft(2, '0')}:${at.minute.toString().padLeft(2, '0')}';
   return DateUtils.isSameDay(at, now)
-      ? 'Đã đồng bộ lúc $hm'
-      : 'Đã đồng bộ ${at.day}/${at.month}';
+      ? t.syncedAtTime(hm)
+      : t.syncedOnDate(DateFormat.Md(t.localeName).format(at));
 }

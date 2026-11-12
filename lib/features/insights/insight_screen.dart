@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 
@@ -47,7 +48,7 @@ class _InsightScreenState extends State<InsightScreen> {
   @override
   Widget build(BuildContext context) {
     final s = AppScope.of(context), now = s.now();
-    final monthName = 'Tháng ${now.month}, ${now.year}';
+    final monthName = context.t.monthYearShort(now.month, now.year);
     final year = s.history.where((h) => h.date.year == now.year).toList();
     final month = year.where((h) => h.date.month == now.month).toList();
     final seconds = month.fold(0, (v, h) => v + h.seconds);
@@ -70,7 +71,7 @@ class _InsightScreenState extends State<InsightScreen> {
       (v, h) => v + h.answers.where((a) => a.firstScore < .65).length,
     );
     return HeaderScrollPage(
-      title: 'Insight',
+      title: context.t.menuInsight,
       subtitle: monthName,
       scrollKey: const ValueKey('insight-scroll'),
       padding: const EdgeInsets.fromLTRB(24, 149, 24, 127),
@@ -79,7 +80,7 @@ class _InsightScreenState extends State<InsightScreen> {
         children: [
           _Hero(streak: s.streak),
           Text(
-            'Streak hiện tại',
+            context.t.currentStreak,
             style: D.text(23, weight: FontWeight.w700, height: 29 / 23),
           ),
           const SizedBox(height: 4),
@@ -92,7 +93,7 @@ class _InsightScreenState extends State<InsightScreen> {
               ),
               const SizedBox(width: 6),
               Text(
-                'Cập nhật lúc 09:41 hôm nay',
+                context.t.updatedToday('09:41'),
                 style: D.text(13, color: Palette.insightFaint, height: 17 / 13),
               ),
             ],
@@ -111,8 +112,8 @@ class _InsightScreenState extends State<InsightScreen> {
               _StatData(
                 icon: const _BookGlyph(color: Palette.insightBook),
                 value: '$words',
-                unit: 'TỪ',
-                label: 'Từ vựng học',
+                unit: context.t.unitWords,
+                label: context.t.vocabularyLearned,
               ),
               _StatData(
                 icon: const Icon(
@@ -121,8 +122,8 @@ class _InsightScreenState extends State<InsightScreen> {
                   color: Palette.insightClock,
                 ),
                 value: _hoursAndMinutes(seconds),
-                unit: 'GIỜ',
-                label: 'Thời lượng',
+                unit: context.t.unitHours,
+                label: context.t.studyTime,
               ),
               _StatData(
                 icon: const Icon(
@@ -131,8 +132,8 @@ class _InsightScreenState extends State<InsightScreen> {
                   color: D.green,
                 ),
                 value: '${month.length}',
-                unit: 'BUỔI',
-                label: 'Buổi hoàn thành',
+                unit: context.t.unitSessions,
+                label: context.t.sessionsDone,
               ),
             ],
           ),
@@ -145,8 +146,8 @@ class _InsightScreenState extends State<InsightScreen> {
                   color: D.blue,
                 ),
                 value: '$sentences',
-                unit: 'CÂU',
-                label: 'Câu luyện tập',
+                unit: context.t.unitSentences,
+                label: context.t.sentencesPractised,
               ),
               _StatData(
                 icon: const Icon(
@@ -155,7 +156,7 @@ class _InsightScreenState extends State<InsightScreen> {
                   color: Palette.insightPeople,
                 ),
                 value: '${sessions(StudyMode.conversation)}',
-                label: 'Hội thoại',
+                label: context.t.modeChatTitle,
               ),
               _StatData(
                 icon: const CustomPaint(
@@ -163,8 +164,8 @@ class _InsightScreenState extends State<InsightScreen> {
                   painter: TextLinesPainter(color: Palette.yellow),
                 ),
                 value: '${sessions(StudyMode.writing)}',
-                unit: 'ĐOẠN',
-                label: 'Đoạn văn',
+                unit: context.t.unitParagraphs,
+                label: context.t.modeWritingTitle,
               ),
             ],
           ),
@@ -174,7 +175,7 @@ class _InsightScreenState extends State<InsightScreen> {
           if (mistakes == 0)
             // No reference state with zero mistakes has been observed.
             Text(
-              'Bạn chưa có lỗi ngữ pháp nào trong tháng này. Tuyệt vời!',
+              context.t.noMistakesMonth,
               style: D.text(21, weight: FontWeight.w700),
             )
           else ...[
@@ -195,9 +196,10 @@ class _InsightScreenState extends State<InsightScreen> {
   }
 
   Widget _tipsArea() => switch (_tips) {
-    _TipsState.idle => Padding(
-      padding: const EdgeInsets.only(top: 17),
-      child: Center(child: _SuggestButton(onTap: _showTips)),
+    _TipsState.idle => const Padding(
+      padding: EdgeInsets.only(top: 17),
+      // Suggestions come from samples, not AI yet: shown as coming soon.
+      child: Center(child: _SuggestButton()),
     ),
     _TipsState.loading => Padding(
       padding: const EdgeInsets.only(top: 17),
@@ -209,7 +211,7 @@ class _InsightScreenState extends State<InsightScreen> {
             const CupertinoActivityIndicator(radius: 8),
             const SizedBox(width: 8),
             Text(
-              'Đang tạo gợi ý...',
+              context.t.makingSuggestions,
               style: D.text(14, color: Palette.insightFaint),
             ),
           ],
@@ -223,8 +225,8 @@ class _InsightScreenState extends State<InsightScreen> {
     _TipsState.failed => Padding(
       padding: const EdgeInsets.only(top: 8),
       child: ErrorView(
-        title: 'Không tạo được gợi ý',
-        subtitle: 'Dịch vụ AI đang gặp sự cố. Vui lòng thử lại.',
+        title: context.t.suggestionsFailed,
+        subtitle: context.t.aiServiceDown,
         onRetry: _showTips,
       ),
     ),

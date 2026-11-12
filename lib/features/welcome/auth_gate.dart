@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'onboarding_screen.dart';
@@ -121,10 +122,10 @@ class _AuthGateState extends State<AuthGate>
         key: const ValueKey('home'),
         child: widget.child,
       ),
-      _ when s.awaitingAccount => const PreparingView(
-        key: ValueKey('restoring'),
-        steps: ['Đang tải dữ liệu của bạn'],
-        detail: 'Lấy tiến độ từ tài khoản về thiết bị này.',
+      _ when s.awaitingAccount => PreparingView(
+        key: const ValueKey('restoring'),
+        steps: [context.t.loadingYourData],
+        detail: context.t.loadingYourDataDetail,
       ),
       _ => const OnboardingScreen(key: ValueKey('onboarding')),
     };
@@ -157,7 +158,7 @@ class _Veil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Đang đăng nhập',
+    label: context.t.signingIn,
     liveRegion: true,
     // The logo and spinner say nothing more.
     excludeSemantics: true,

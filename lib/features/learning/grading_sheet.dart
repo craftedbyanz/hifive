@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 import 'feedback_panel.dart';
 
@@ -120,13 +121,13 @@ class _GradingSheetState extends State<GradingSheet> {
           children: [
             Expanded(
               child: EmptyView(
-                title: 'Không chấm được câu trả lời',
-                subtitle: 'Kết nối hoặc dịch vụ AI đang gặp sự cố.',
+                title: context.t.gradingFailed,
+                subtitle: context.t.gradingFailedBody,
                 icon: Icons.cloud_off_rounded,
                 action: SizedBox(
                   width: 180,
                   child: ActionButton(
-                    'Thử lại',
+                    context.t.retry,
                     key: const ValueKey('grading-retry'),
                     icon: Icons.refresh_rounded,
                     onTap: () => _run(analysis: result != null),
@@ -135,7 +136,7 @@ class _GradingSheetState extends State<GradingSheet> {
               ),
             ),
             ActionButton(
-              'Huỷ',
+              context.t.cancel,
               key: const ValueKey('grading-cancel'),
               outlined: true,
               onTap: _cancel,
@@ -215,7 +216,7 @@ class _GradingPlaceholder extends StatelessWidget {
               const CupertinoActivityIndicator(radius: 12),
               const SizedBox(width: 12),
               Text(
-                'Đang chấm điểm...',
+                context.t.grading,
                 style: D.text(22, weight: FontWeight.w800, color: D.muted),
               ),
             ],
@@ -229,7 +230,7 @@ class _GradingPlaceholder extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '✦  SỬA LỖI',
+                  context.t.fixCapsStar,
                   style: D.text(
                     10,
                     weight: FontWeight.w700,
@@ -243,21 +244,21 @@ class _GradingPlaceholder extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          const Padding(
-            padding: EdgeInsets.only(top: 4, bottom: 6),
-            child: CapsLabel('GIẢI THÍCH', small: true),
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 6),
+            child: CapsLabel(context.t.explanationCaps, small: true),
           ),
           bar(1),
           bar(.6),
-          const Padding(
-            padding: EdgeInsets.only(top: 4, bottom: 6),
-            child: CapsLabel('MẸO', small: true),
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 6),
+            child: CapsLabel(context.t.tipsCaps, small: true),
           ),
           bar(.72),
           bar(.6),
           const Spacer(),
           ActionButton(
-            'Huỷ',
+            context.t.cancel,
             key: const ValueKey('grading-cancel'),
             outlined: true,
             onTap: onCancel,

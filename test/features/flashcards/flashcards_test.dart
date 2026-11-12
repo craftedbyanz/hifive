@@ -7,7 +7,7 @@ import '../../helpers.dart';
 void main() {
   setUpAll(loadAppFonts);
 
-  testWidgets('a new deck needs a name, then appears with words', (
+  testWidgets('generating a deck is coming soon and adds nothing', (
     tester,
   ) async {
     final state = fresh();
@@ -15,17 +15,19 @@ void main() {
     await mount(tester, state, const DeckListScreen());
     await tester.tap(find.byTooltip('Thêm bộ thẻ'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('deck-generate')));
-    await tester.pump();
-    expect(state.decks, hasLength(count));
     await tester.enterText(find.byKey(const ValueKey('deck-topic')), 'Du lịch');
     await tester.pump();
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('deck-generate')),
+        matching: find.text('Sắp ra mắt'),
+      ),
+      findsOneWidget,
+    );
     await tester.tap(find.byKey(const ValueKey('deck-generate')));
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
-    expect(state.decks, hasLength(count + 1));
-    expect(state.decks.last.title, 'Du lịch');
-    expect(state.decks.last.words, isNotEmpty);
+    expect(state.decks, hasLength(count));
   });
 
   testWidgets('resetting a deck schedule asks first', (tester) async {

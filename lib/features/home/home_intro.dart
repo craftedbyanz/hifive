@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
-import '../learning/learning.dart';
 import 'home_design.dart';
 import 'home_painters.dart';
 
@@ -15,14 +15,14 @@ class HomeIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
-    final hour = state.now().hour;
+    final hour = state.now().hour, t = context.t;
     final greeting = hour < 5 || hour >= 22
-        ? 'Chúc ngủ ngon,'
+        ? t.greetingNight
         : hour < 12
-        ? 'Chào buổi sáng,'
+        ? t.greetingMorning
         : hour < 18
-        ? 'Chào buổi chiều,'
-        : 'Chào buổi tối,';
+        ? t.greetingAfternoon
+        : t.greetingEvening;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -31,10 +31,11 @@ class HomeIntro extends StatelessWidget {
           Text(greeting, style: HomeDesign.greeting),
           Text(state.name, style: HomeDesign.name),
           const SizedBox(height: 18),
-          Text('Bạn chưa biết học gì hôm nay?', style: HomeDesign.body),
+          Text(t.homeWhatToLearn, style: HomeDesign.body),
           const SizedBox(height: 4),
-          GestureDetector(
-            onTap: () => go<void>(context, const GeneratorScreen()),
+          // AI lessons come later; the link shows what is coming.
+          Semantics(
+            label: '${t.homeAiLesson}, ${t.comingSoon}',
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -52,23 +53,25 @@ class HomeIntro extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text('Tạo bài học với AI', style: HomeDesign.aiLink),
+                    Opacity(
+                      opacity: .5,
+                      child: Text(t.homeAiLesson, style: HomeDesign.aiLink),
+                    ),
                   ],
                 ),
                 const SizedBox(width: 12),
                 AiOrb(size: 30, animation: ambient),
+                const SizedBox(width: 8),
+                const SoonBadge(),
               ],
             ),
           ),
           const SizedBox(height: 39),
           PlusBanner(onTap: () => go<void>(context, const PlusScreen())),
           const SizedBox(height: 23),
-          Text('Chế độ học tập', style: HomeDesign.section),
+          Text(t.homeModesTitle, style: HomeDesign.section),
           const SizedBox(height: 3),
-          Text(
-            'Nâng cao kỹ năng viết, ngữ pháp và giao tiếp cùng AI.',
-            style: HomeDesign.body,
-          ),
+          Text(t.homeModesSubtitle, style: HomeDesign.body),
         ],
       ),
     );

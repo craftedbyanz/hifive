@@ -70,7 +70,10 @@ class AppState extends ChangeNotifier {
       inputColor = 'Default',
       voice = 'Aaron',
       difficulty = 'Dễ',
-      chatTone = 'Thoải mái';
+      chatTone = 'Thoải mái',
+          // The interface language code, or empty to follow the device.
+          appLanguage =
+          '';
   bool showHints = false, chatFree = true, sound = true, haptic = true;
 
   /// The language being studied. Only languages whose course has content
@@ -197,6 +200,7 @@ class AppState extends ChangeNotifier {
     voice = s['voice'] as String? ?? voice;
     difficulty = s['difficulty'] as String? ?? difficulty;
     chatTone = s['chatTone'] as String? ?? chatTone;
+    appLanguage = s['appLanguage'] as String? ?? appLanguage;
     chatFree = s['chatFree'] as bool? ?? chatFree;
     showHints = s['showHints'] as bool? ?? showHints;
     chatTipSeen = s['chatTipSeen'] as bool? ?? chatTipSeen;
@@ -444,6 +448,7 @@ class AppState extends ChangeNotifier {
     voice = 'Aaron';
     difficulty = 'Dễ';
     chatTone = 'Thoải mái';
+    appLanguage = '';
     showHints = false;
     chatFree = true;
     sound = true;
@@ -519,6 +524,14 @@ class AppState extends ChangeNotifier {
       _put(RecordKind.word, card.id, wordData(card, deck.id, now()));
       commit();
     }
+  }
+
+  /// Sets the interface language: a code from `appLanguages`, or empty to
+  /// follow the device.
+  void setAppLanguage(String code) {
+    appLanguage = code;
+    _setting('appLanguage', code);
+    commit();
   }
 
   void setVoice(String value) {

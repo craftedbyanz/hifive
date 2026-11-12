@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../learning/learning.dart';
@@ -29,13 +30,13 @@ class _LevelPickerScreenState extends State<LevelPickerScreen> {
     final s = AppScope.of(context);
     selected ??= s.level;
     return SettingsPage(
-      title: 'Chọn cấp độ',
+      title: context.t.chooseLevel,
       background: Colors.white,
       padding: const EdgeInsets.fromLTRB(24, 129, 24, 140),
       footer: Padding(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 50),
         child: SettingsCta(
-          'Xác nhận',
+          context.t.confirm,
           color: Palette.ctaGreen,
           onTap: () {
             s.setLevel(selected!);
@@ -47,25 +48,25 @@ class _LevelPickerScreenState extends State<LevelPickerScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Khung tham chiếu ngôn ngữ chung châu Âu (CEFR) chia trình độ thành 6 cấp, từ người mới bắt đầu đến thành thạo.',
+            context.t.cefrBody,
             style: D.text(14.7, color: Palette.iconGrey, height: 21.5 / 14.7),
           ),
           const SizedBox(height: 11),
           Text(
-            'AI sẽ tạo ra các bài viết dựa theo trình độ của bạn, hãy chọn mức độ phù hợp nhất.',
+            context.t.levelAiNote,
             style: D.text(13.6, color: Palette.levelNote, height: 20.7 / 13.6),
           ),
           const SizedBox(height: 19),
           Text(
-            'Trình độ của bạn',
+            context.t.yourLevel,
             style: D.text(19, weight: FontWeight.w700, height: 24 / 19),
           ),
           const SizedBox(height: 32),
           for (var i = 0; i < levels.length; i++) ...[
             _LevelRow(
               key: ValueKey('level-${levels[i].substring(0, 2)}'),
-              title: levels[i],
-              description: levelDescriptions[i],
+              title: levelTitle(context.t, i),
+              description: levelDescription(context.t, i),
               color: _colors[i],
               selected: selected == levels[i].substring(0, 2),
               onTap: () => setState(() => selected = levels[i].substring(0, 2)),

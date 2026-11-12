@@ -256,7 +256,7 @@ class _RefreshPill extends StatelessWidget {
             ),
             const SizedBox(width: 4.5),
             Text(
-              'Làm mới',
+              context.t.refresh,
               style: D.text(10, color: D.secondary, weight: FontWeight.w600),
             ),
           ],
@@ -364,7 +364,7 @@ class _EndlessTile extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              'Chế độ Vô tận',
+              context.t.endlessMode,
               style: D.text(
                 13,
                 weight: FontWeight.w800,
@@ -374,7 +374,7 @@ class _EndlessTile extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              'Học tập không ngừng',
+              context.t.endlessBody,
               style: D.text(11, color: D.secondary, weight: FontWeight.w500),
             ),
           ],

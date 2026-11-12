@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
 import '../domain/models/models.dart';
+import '../l10n/l10n.dart';
+import 'ambient.dart';
 
 class FlagPainter extends CustomPainter {
   const FlagPainter();
@@ -468,6 +470,148 @@ class ChinaFlagPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(ChinaFlagPainter oldDelegate) => false;
+}
+
+/// Vietnam's flag drawn as cloth in a breeze: red with soft folds of light
+/// and shade, and a gold star that rides the wave. It ripples while
+/// [AmbientMotion] allows, and otherwise holds one graceful fold.
+class VietnamFlag extends StatefulWidget {
+  final double width;
+  const VietnamFlag({super.key, this.width = 18});
+  @override
+  State<VietnamFlag> createState() => _VietnamFlagState();
+}
+
+class _VietnamFlagState extends State<VietnamFlag>
+    with SingleTickerProviderStateMixin {
+  static const _rest = .15;
+  late final _wave = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 2400),
+    value: _rest,
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (AmbientMotion.of(context)) {
+      if (!_wave.isAnimating) _wave.repeat();
+    } else {
+      _wave
+        ..stop()
+        ..value = _rest;
+    }
+  }
+
+  @override
+  void dispose() {
+    _wave.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: context.t.vietnamFlag,
+    child: CustomPaint(
+      size: Size(widget.width, widget.width * 13 / 18),
+      painter: VietnamFlagPainter(_wave),
+    ),
+  );
+}
+
+class VietnamFlagPainter extends CustomPainter {
+  final Animation<double> wave;
+  VietnamFlagPainter(this.wave) : super(repaint: wave);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width, h = size.height;
+    final phase = wave.value * 2 * math.pi;
+    final amp = h * .07;
+    // The hoist (left edge) stays put; the fly ripples more toward the end.
+    double lift(double x) =>
+        amp * math.sin(x / w * 1.6 * math.pi - phase) * (.25 + .75 * x / w);
+
+    const steps = 24;
+    final cloth = Path()..moveTo(0, amp + lift(0));
+    for (var i = 1; i <= steps; i++) {
+      final x = w * i / steps;
+      cloth.lineTo(x, amp + lift(x));
+    }
+    for (var i = steps; i >= 0; i--) {
+      final x = w * i / steps;
+      cloth.lineTo(x, h - amp + lift(x));
+    }
+    cloth.close();
+
+    final body = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Palette.flagVietnamLight, Palette.flagVietnamRed],
+      ).createShader(Offset.zero & size);
+    canvas.drawPath(cloth, body);
+    canvas.drawPath(
+      cloth,
+      Paint()
+        ..shader = body.shader
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1
+        ..strokeJoin = StrokeJoin.round,
+    );
+
+    // Folds: light where the cloth faces up, shade where it turns away.
+    final shades = <Color>[], stops = <double>[];
+    for (var i = 0; i <= 8; i++) {
+      final x = i / 8;
+      final slope = math.cos(x * 1.6 * math.pi - phase) * (.25 + .75 * x);
+      shades.add(
+        slope >= 0
+            ? Colors.white.withValues(alpha: .22 * slope)
+            : Colors.black.withValues(alpha: -.2 * slope),
+      );
+      stops.add(x);
+    }
+    canvas.drawPath(
+      cloth,
+      Paint()
+        ..shader = LinearGradient(
+          colors: shades,
+          stops: stops,
+        ).createShader(Offset.zero & size),
+    );
+
+    // The star sits at the centre of the cloth and rides its wave.
+    final c = Offset(w * .5, h * .5 + lift(w * .5));
+    final r = h * .29;
+    final star = Path();
+    for (var i = 0; i < 10; i++) {
+      final radius = i.isEven ? r : r * .382;
+      final a = -math.pi / 2 + i * math.pi / 5;
+      final p = c + Offset(math.cos(a), math.sin(a)) * radius;
+      i == 0 ? star.moveTo(p.dx, p.dy) : star.lineTo(p.dx, p.dy);
+    }
+    star.close();
+    canvas.drawPath(
+      star.shift(const Offset(0, .5)),
+      Paint()
+        ..color = Palette.flagVietnamShadow.withValues(alpha: .35)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, .6),
+    );
+    canvas.drawPath(
+      star,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Palette.flagVietnamStarLight, Palette.flagVietnamStar],
+        ).createShader(star.getBounds()),
+    );
+  }
+
+  @override
+  bool shouldRepaint(VietnamFlagPainter oldDelegate) =>
+      wave != oldDelegate.wave;
 }
 
 class JapanFlagPainter extends CustomPainter {

@@ -29,7 +29,7 @@ void main() {
     for (final (seconds, remaining) in opening) {
       test('rows at $seconds s', () {
         final m = MenuMotion.at(
-          (seconds + MenuMotion.rowDelay) / .45,
+          (seconds + MenuMotion.rowDelay) / MenuMotion.openSeconds,
           closing: false,
         );
         expect(1 - m.spread, closeTo(remaining, .012));
@@ -56,15 +56,49 @@ void main() {
       }
     });
 
-    test('closing hides rows before the backdrop clears', () {
-      double at(double seconds) => 1 - seconds / .45;
-      final rowsGone = MenuMotion.at(at(.12), closing: true);
-      expect(rowsGone.rowOpacity, 0);
-      expect(rowsGone.backdropOpacity, greaterThan(.3));
-      expect(
-        MenuMotion.at(at(.25), closing: true).backdropOpacity,
-        lessThan(.1),
+    test('opening ends without a last-frame jump', () {
+      // The rows' settle used to be cut off at 0.45 s, a 3 pt jump at the end.
+      final last = MenuMotion.at(
+        1 - 1 / 60 / MenuMotion.openSeconds,
+        closing: false,
       );
+      expect((1 - last.spread) * 4 * MenuMotion.rowSpacing, lessThan(.5));
+    });
+
+    test('opening blurs the screen behind gradually', () {
+      double backdrop(double seconds) => MenuMotion.at(
+        (seconds + MenuMotion.rowDelay) / MenuMotion.openSeconds,
+        closing: false,
+      ).backdropOpacity;
+      // A faint ghost of the screen still shows a tenth of a second in.
+      expect(backdrop(.1), inInclusiveRange(.6, .8));
+      expect(backdrop(.2), 1);
+    });
+
+    test('closing folds the rows away as smoothly as they open', () {
+      double at(double seconds) => 1 - seconds / MenuMotion.closeSeconds;
+      // Half way the rows have drawn half together and still show clearly.
+      final mid = MenuMotion.at(at(.15), closing: true);
+      expect(mid.spread, closeTo(.5, .03));
+      expect(mid.rowOpacity, greaterThan(.8));
+      // The screen behind is half way back on the same curve.
+      expect(mid.backdropOpacity, inInclusiveRange(.5, .9));
+      // No step between frames is large: the fold eases in and out.
+      var previous = MenuMotion.at(at(0), closing: true).spread;
+      for (var ms = 16.7; ms <= 300; ms += 16.7) {
+        final next = MenuMotion.at(at(ms / 1000), closing: true).spread;
+        expect(previous - next, lessThan(.16));
+        previous = next;
+      }
+      expect(MenuMotion.at(at(.3), closing: true).rowOpacity, 0);
+    });
+
+    test('closing ends with the rows gone and the screen clear', () {
+      double at(double seconds) => 1 - seconds / MenuMotion.closeSeconds;
+      final end = MenuMotion.at(at(.4), closing: true);
+      expect(end.rowOpacity, 0);
+      expect(end.backdropOpacity, lessThan(.01));
+      expect(end.barOpacity, 1);
     });
   });
 

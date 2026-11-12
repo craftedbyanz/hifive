@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 
 /// The reference's policy text, kept as its visible copy. Its statements describe
@@ -28,31 +29,13 @@ class PrivacyScreen extends StatelessWidget {
         ),
       );
 
-  static const _sections = [
-    (
-      'Huấn luyện viên AI',
-      'Hifive đồng bộ dữ liệu học tập của bạn lên cơ sở dữ liệu riêng tư để bạn có thể truy cập từ mọi nơi. Khi bạn sử dụng Huấn luyện viên AI, hệ thống sẽ xử lý các yêu cầu một cách bảo mật để đưa ra gợi ý, hoàn toàn không chia sẻ hay lưu trữ dữ liệu này cho mục đích khác.',
-    ),
-    (
-      '1. Thông tin chúng tôi thu thập',
-      'Chúng tôi thu thập thông tin để cung cấp dịch vụ tốt hơn cho tất cả người dùng. Bao gồm:\n• Dữ liệu cá nhân: Khi bạn đăng ký, chúng tôi có thể thu thập tên, địa chỉ email và ảnh đại diện của bạn.\n• Dữ liệu sử dụng: Chúng tôi thu thập thông tin về cách Dịch vụ được truy cập và sử dụng, chẳng hạn như loại thiết bị của bạn, phiên bản hệ điều hành và thời gian dành cho các trang.',
-    ),
-    (
-      '2. Cách chúng tôi sử dụng thông tin của bạn',
-      'Chúng tôi sử dụng dữ liệu đã thu thập cho nhiều mục đích khác nhau:\n• Để cung cấp và duy trì Dịch vụ của chúng tôi\n• Để thông báo cho bạn về những thay đổi đối với Dịch vụ của chúng tôi\n• Để cho phép bạn tham gia vào các tính năng tương tác khi bạn chọn làm như vậy\n• Để cung cấp hỗ trợ khách hàng\n• Để thu thập phân tích hoặc thông tin có giá trị để chúng tôi có thể cải thiện Dịch vụ của mình',
-    ),
-    (
-      '3. Lưu giữ dữ liệu',
-      'Hifive sẽ chỉ lưu giữ Dữ liệu cá nhân của bạn trong khoảng thời gian cần thiết cho các mục đích được nêu trong Chính sách quyền riêng tư này. Chúng tôi sẽ lưu giữ và sử dụng Dữ liệu cá nhân của bạn trong phạm vi cần thiết để tuân thủ các nghĩa vụ pháp lý của chúng tôi, giải quyết tranh chấp và thực thi các thỏa thuận và chính sách pháp lý của chúng tôi.',
-    ),
-    (
-      '4. Bảo mật dữ liệu của bạn',
-      'Bảo mật dữ liệu của bạn rất quan trọng đối với chúng tôi, nhưng hãy nhớ rằng không có phương thức truyền qua Internet hoặc phương thức lưu trữ điện tử nào là an toàn 100%. Mặc dù chúng tôi cố gắng sử dụng các phương tiện thương mại có thể chấp nhận được để bảo vệ Dữ liệu cá nhân của bạn, chúng tôi không thể đảm bảo tính bảo mật tuyệt đối của nó.',
-    ),
-    (
-      '5. Quyền riêng tư của trẻ em',
-      'Dịch vụ của chúng tôi không giải quyết bất kỳ ai dưới 13 tuổi. Chúng tôi không cố ý thu thập thông tin nhận dạng cá nhân từ bất kỳ ai dưới 13 tuổi. Nếu bạn là cha mẹ hoặc người giám hộ và bạn biết rằng Con bạn đã cung cấp cho chúng tôi Dữ liệu cá nhân, vui lòng liên hệ với chúng tôi.',
-    ),
+  static List<(String, String)> _sections(AppLocalizations t) => [
+    (t.privacyAiCoach, t.privacyAiCoachBody),
+    (t.privacyCollectTitle, t.privacyCollectBody),
+    (t.privacyUseTitle, t.privacyUseBody),
+    (t.privacyKeepTitle, t.privacyKeepBody),
+    (t.privacySecurityTitle, t.privacySecurityBody),
+    (t.privacyChildrenTitle, t.privacyChildrenBody),
   ];
 
   @override
@@ -76,14 +59,14 @@ class PrivacyScreen extends StatelessWidget {
         ),
         const SizedBox(height: 27),
         Text(
-          'Hiểu những gì bạn cần,',
+          context.t.privacyHeadline1,
           style: D.text(31, weight: FontWeight.w800, height: 40 / 31),
         ),
         const SizedBox(height: 3),
         Padding(
           padding: const EdgeInsets.only(right: 44),
           child: Text(
-            'chứ không phải bạn là ai',
+            context.t.privacyHeadline2,
             style: D.text(
               31,
               weight: FontWeight.w800,
@@ -94,15 +77,12 @@ class PrivacyScreen extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Text(
-          'Cập nhật lần cuối: 07/01/2026',
+          context.t.privacyUpdated,
           style: D.text(13.5, color: Palette.settingsMuted, height: 17 / 13.5),
         ),
         const SizedBox(height: 31),
-        Text(
-          'Quyền riêng tư của bạn là ưu tiên hàng đầu. Chúng tôi kinh doanh dựa trên sự ủng hộ (đăng ký) của bạn, không phải dữ liệu của bạn. Thông tin của bạn được lưu trữ an toàn trong cơ sở dữ liệu được mã hóa của chúng tôi. Chúng tôi tuyệt đối không chia sẻ dữ liệu cá nhân hay nội dung bạn sử dụng với AI cho bất kỳ bên thứ ba nào, và không sử dụng chúng để huấn luyện các mô hình AI công cộng.',
-          style: body,
-        ),
-        for (final (title, text) in _sections) ...[
+        Text(context.t.privacyIntro, style: body),
+        for (final (title, text) in _sections(context.t)) ...[
           const SizedBox(height: 24),
           Text(
             title,
@@ -113,19 +93,19 @@ class PrivacyScreen extends StatelessWidget {
         ],
         const SizedBox(height: 23),
         Text(
-          'Liên hệ với chúng tôi',
+          context.t.contactUs,
           style: D.text(23.2, weight: FontWeight.w700, height: 30 / 23.2),
         ),
         const SizedBox(height: 15),
         Text(
-          'Chúng mình luôn sẵn sàng lắng nghe bạn.',
+          context.t.alwaysListening,
           style: D.text(15.1, color: Palette.settingsMuted, height: 20 / 15.1),
         ),
         const SizedBox(height: 15),
         PressFade(
           key: const ValueKey('privacy-support'),
           // Never routes to the original app's developer.
-          onTap: () => toast(context, 'Bản cục bộ không có email hỗ trợ.'),
+          onTap: () => toast(context, context.t.noSupportEmailLocal),
           child: Container(
             height: 69,
             padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -150,7 +130,7 @@ class PrivacyScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Email Hỗ trợ',
+                        context.t.supportEmail,
                         style: D.text(
                           13,
                           weight: FontWeight.w600,
@@ -158,7 +138,7 @@ class PrivacyScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Không có ở bản cục bộ',
+                        context.t.notInLocalBuild,
                         style: D.text(
                           13.5,
                           color: Palette.policyLink,
@@ -181,7 +161,7 @@ class PrivacyScreen extends StatelessWidget {
     );
     if (!asSheet) {
       return HeaderScrollPage(
-        title: 'Chính sách quyền riêng tư',
+        title: context.t.profilePrivacy,
         titleSize: 16.5,
         padding: const EdgeInsets.fromLTRB(24, 161, 24, 121),
         child: content,
@@ -199,7 +179,7 @@ class PrivacyScreen extends StatelessWidget {
             left: 16,
             top: 27,
             child: Text(
-              'Chính sách quyền riêng tư',
+              context.t.profilePrivacy,
               style: D.text(16.5, weight: FontWeight.w700, height: 24 / 16.5),
             ),
           ),
@@ -219,7 +199,7 @@ class PrivacyScreen extends StatelessWidget {
                   border: Border.all(color: Palette.sheetEdge),
                 ),
                 child: Text(
-                  'Done',
+                  context.t.done,
                   style: D.text(15, weight: FontWeight.w600, height: 1),
                 ),
               ),

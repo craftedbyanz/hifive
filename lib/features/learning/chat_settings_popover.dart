@@ -7,7 +7,7 @@ class _SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     button: true,
-    label: 'Tùy chỉnh bài học',
+    label: context.t.customizeLesson,
     child: PressFade(
       key: const ValueKey('chat-settings'),
       onTap: onTap,
@@ -109,7 +109,7 @@ class _ChatSettingsTip extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Tùy chỉnh Bài học',
+                          context.t.customizeLessonTitle,
                           style: _system(
                             context,
                             17,
@@ -119,7 +119,7 @@ class _ChatSettingsTip extends StatelessWidget {
                         ),
                         const SizedBox(height: 1.5),
                         Text(
-                          'Chuyển đổi giữa Trò chuyện Tự do và Kịch bản. Điều chỉnh độ khó, giọng và số câu hỏi.',
+                          context.t.customizeLessonBody,
                           // Flutter sets this body about 5% wider than iOS,
                           // which moved "do" to the next line; a little
                           // extra tracking keeps the reference's breaks.
@@ -139,7 +139,7 @@ class _ChatSettingsTip extends StatelessWidget {
               top: 14.7,
               child: Semantics(
                 button: true,
-                label: 'Đóng gợi ý',
+                label: context.t.closeTip,
                 child: GestureDetector(
                   key: const ValueKey('chat-tip-close'),
                   behavior: HitTestBehavior.opaque,
@@ -269,7 +269,7 @@ class _ChatSettingsPopover extends StatelessWidget {
               key: const ValueKey('chat-mode'),
               onTap: () => state.setChatFree(!state.chatFree),
               child: labelled(
-                state.chatFree ? 'Trò chuyện Tự do' : 'Chế độ Kịch bản',
+                state.chatFree ? context.t.freeChat : context.t.scriptMode,
                 state.chatFree ? Icons.forum_outlined : Icons.article_outlined,
               ),
             ),
@@ -280,7 +280,7 @@ class _ChatSettingsPopover extends StatelessWidget {
                 tones[(tones.indexOf(state.chatTone) + 1) % tones.length],
               ),
               child: labelled(
-                'Giọng: ${state.chatTone}',
+                context.t.toneLabel(toneName(context.t, state.chatTone)),
                 Icons.person_outline_rounded,
               ),
             ),

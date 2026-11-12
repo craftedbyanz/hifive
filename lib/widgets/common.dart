@@ -18,5 +18,7 @@ export 'plus_banner.dart';
 export 'press.dart';
 export 'sheets.dart';
 export 'speech.dart';
+export 'streak_flame.dart';
 export 'surfaces.dart';
+export 'tap_feedback.dart';
 export 'text_grow.dart';

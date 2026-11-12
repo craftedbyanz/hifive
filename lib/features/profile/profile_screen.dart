@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
 import 'account_forms.dart';
+import 'app_language_screen.dart';
 import 'appearance_screen.dart';
 import 'edit_profile_screen.dart';
 import 'language_screen.dart';
@@ -24,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
     final s = AppScope.of(context);
     void open(Widget page) => go<void>(context, page);
     return HeaderScrollPage(
-      title: 'Profile',
+      title: context.t.profileTitle,
       titleSize: 16.5,
       scrollKey: const ValueKey('profile-scroll'),
       padding: const EdgeInsets.fromLTRB(24, 127, 24, 105),
@@ -54,7 +56,7 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 15.5),
           _TrialBanner(onTap: () => open(const PlusScreen())),
           const SizedBox(height: 49),
-          const _Label('Đang học'),
+          _Label(context.t.profileStudying),
           _Card(
             children: [
               _LanguageRow(
@@ -65,16 +67,16 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 30),
-          const _Label('Cài đặt chung'),
+          _Label(context.t.profileGeneral),
           _Card(
             children: [
               _Row(
-                'Chỉnh sửa hồ sơ',
+                context.t.profileEdit,
                 const _RowIcon(CupertinoIcons.person_crop_circle_fill),
                 () => open(const EditProfileScreen()),
               ),
               _Row(
-                'Cài đặt bài học',
+                context.t.profileLessonSettings,
                 const CustomPaint(
                   size: Size.square(20),
                   painter: _ShapesGlyphPainter(),
@@ -82,7 +84,7 @@ class ProfileScreen extends StatelessWidget {
                 () => open(const LessonSettingsScreen()),
               ),
               _Row(
-                'Giọng đọc',
+                context.t.profileVoice,
                 const CustomPaint(
                   size: Size.square(20),
                   painter: _WaveGlyphPainter(),
@@ -90,7 +92,7 @@ class ProfileScreen extends StatelessWidget {
                 () => open(const VoiceScreen()),
               ),
               _Row(
-                'Giao diện',
+                context.t.profileAppearance,
                 const CustomPaint(
                   size: Size.square(22),
                   painter: GearGlyphPainter(color: Palette.iconGrey),
@@ -98,12 +100,17 @@ class ProfileScreen extends StatelessWidget {
                 () => open(const AppearanceScreen()),
               ),
               _Row(
-                'Thông báo',
+                context.t.appLanguageTitle,
+                const _RowIcon(CupertinoIcons.globe),
+                () => open(const AppLanguageScreen()),
+              ),
+              _Row(
+                context.t.profileNotifications,
                 const _RowIcon(CupertinoIcons.bell_fill),
                 () => open(const NotificationScreen()),
               ),
               _Row(
-                'Gói đăng ký',
+                context.t.profileSubscription,
                 const CustomPaint(
                   size: Size.square(20),
                   painter: _CardsGlyphPainter(),
@@ -111,33 +118,33 @@ class ProfileScreen extends StatelessWidget {
                 () => open(const PlusScreen()),
               ),
               _Row(
-                'Nhập mã ưu đãi',
+                context.t.profileRedeem,
                 const _RowIcon(CupertinoIcons.gift_fill),
                 () => pageSheet<void>(context, const RedemptionForm()),
               ),
               _Row(
-                'Mời bạn bè',
+                context.t.profileInvite,
                 const _RowIcon(Icons.share_rounded, size: 19),
                 () => _system(context, s.system.shareInvite),
               ),
               _Row(
-                'Đánh giá ứng dụng',
+                context.t.profileRate,
                 const _RowIcon(CupertinoIcons.star_circle_fill, size: 21),
                 () => pageSheet<void>(context, const ReviewForm()),
               ),
             ],
           ),
           const SizedBox(height: 23),
-          const _Label('Khác'),
+          _Label(context.t.profileOther),
           _Card(
             children: [
               _Row(
-                'Gửi phản hồi',
+                context.t.profileFeedback,
                 const _RowIcon(Icons.email_rounded, size: 20),
                 () => _system(context, s.system.composeFeedback),
               ),
               _Row(
-                'Điều khoản dịch vụ',
+                context.t.profileTerms,
                 const CustomPaint(
                   size: Size(16, 19),
                   painter: _DocGlyphPainter(),
@@ -145,7 +152,7 @@ class ProfileScreen extends StatelessWidget {
                 () => _system(context, s.system.openTerms),
               ),
               _Row(
-                'Chính sách quyền riêng tư',
+                context.t.profilePrivacy,
                 const CustomPaint(
                   size: Size(19, 21),
                   painter: ShieldPainter(color: Palette.iconGrey),
@@ -167,18 +174,17 @@ class ProfileScreen extends StatelessWidget {
   /// first and the device's copy is deleted; a failed push asks again.
   static Future<void> _signOut(BuildContext context, AppState s) async {
     if (s.user == null) {
-      toast(context, 'Bạn chưa đăng nhập.');
+      toast(context, context.t.notSignedIn);
       return;
     }
     final synced = s.syncService != null;
+    final t = context.t;
     final ok = await confirm(
       context,
-      'Đăng xuất?',
-      synced
-          ? 'Dữ liệu học đã được lưu vào tài khoản và sẽ bị xoá khỏi máy này.'
-          : 'Dữ liệu học trên máy này vẫn được giữ lại.',
-      action: 'Đăng xuất',
-      cancel: 'Huỷ',
+      t.signOutTitle,
+      synced ? t.signOutSynced : t.signOutLocal,
+      action: t.signOut,
+      cancel: t.cancel,
       destructive: true,
     );
     if (!ok || !context.mounted) return;
@@ -186,10 +192,10 @@ class ProfileScreen extends StatelessWidget {
       if (!context.mounted) return;
       final anyway = await confirm(
         context,
-        'Chưa đồng bộ xong',
-        'Một số thay đổi chưa được lưu vào tài khoản và sẽ bị mất. Vẫn đăng xuất?',
-        action: 'Vẫn đăng xuất',
-        cancel: 'Huỷ',
+        t.syncUnfinishedTitle,
+        t.syncUnfinishedBody,
+        action: t.signOutAnyway,
+        cancel: t.cancel,
         destructive: true,
       );
       if (!anyway) return;
@@ -205,7 +211,7 @@ class ProfileScreen extends StatelessWidget {
   ) async {
     final shown = await action();
     if (!shown && context.mounted) {
-      toast(context, 'Thiết bị này chưa mở được mục này.');
+      toast(context, context.t.cannotOpenHere);
     }
   }
 }
@@ -250,7 +256,7 @@ class _Avatar extends StatelessWidget {
               borderRadius: BorderRadius.circular(11),
             ),
             child: Text(
-              'Free',
+              context.t.planFree,
               style: D.text(
                 11,
                 weight: FontWeight.w700,
@@ -270,10 +276,11 @@ class _Avatar extends StatelessWidget {
 class _TrialBanner extends StatefulWidget {
   final VoidCallback onTap;
   const _TrialBanner({required this.onTap});
-  static const lines = [
-    'Nâng cấp để có giới hạn cao hơn',
-    'Truy cập sớm các tính năng mới',
-    'Mở khóa toàn bộ sức mạnh AI',
+  static const lineCount = 3;
+  static List<String> lines(AppLocalizations t) => [
+    t.trialLine1,
+    t.trialLine2,
+    t.trialLine3,
   ];
   static const interval = Duration(seconds: 3);
   @override
@@ -289,7 +296,7 @@ class _TrialBannerState extends State<_TrialBanner>
   );
   late final Timer _timer = Timer.periodic(_TrialBanner.interval, (_) {
     if (!mounted) return;
-    setState(() => _line = (_line + 1) % _TrialBanner.lines.length);
+    setState(() => _line = (_line + 1) % _TrialBanner.lineCount);
     _swap.forward(from: 0);
   });
   int _line = 0;
@@ -314,7 +321,7 @@ class _TrialBannerState extends State<_TrialBanner>
       child: SizedBox(
         width: 152,
         child: Text(
-          _TrialBanner.lines[line],
+          _TrialBanner.lines(context.t)[line],
           style: D.text(12.5, color: Colors.white, height: 16 / 12.5),
         ),
       ),
@@ -339,7 +346,7 @@ class _TrialBannerState extends State<_TrialBanner>
             left: 80,
             top: 19,
             child: Text(
-              'Dùng thử Hifive Plus',
+              context.t.trialTitle,
               style: D.text(
                 14.3,
                 weight: FontWeight.w700,
@@ -355,7 +362,7 @@ class _TrialBannerState extends State<_TrialBanner>
               animation: _swap,
               builder: (context, _) {
                 final t = Curves.easeInOutSine.transform(_swap.value);
-                final count = _TrialBanner.lines.length;
+                const count = _TrialBanner.lineCount;
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -386,7 +393,7 @@ class _TrialBannerState extends State<_TrialBanner>
                   ),
                 ),
                 child: Text(
-                  'Upgrade',
+                  context.t.upgrade,
                   style: D.text(
                     13,
                     weight: FontWeight.w700,
@@ -602,7 +609,7 @@ class _LogoutRow extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             Text(
-              'Đăng xuất',
+              context.t.signOut,
               style: D.text(
                 13,
                 weight: FontWeight.w700,
@@ -635,11 +642,34 @@ class _Footer extends StatelessWidget {
             height: 14 / 10.5,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 10),
         Text(
-          'Bản sao cục bộ, không kết nối tài khoản.',
-          style: D.text(10, color: Palette.profileMuted, height: 13 / 10),
+          context.t.footerMotto,
+          style: D.text(
+            12,
+            weight: FontWeight.w700,
+            color: Palette.profileMuted,
+            height: 16 / 12,
+          ),
         ),
+        const SizedBox(height: 4),
+        Row(
+          key: const ValueKey('profile-credit'),
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              context.t.footerCredit,
+              style: D.text(
+                10.5,
+                color: Palette.profileMuted,
+                height: 14 / 10.5,
+              ),
+            ),
+            const SizedBox(width: 6),
+            const VietnamFlag(),
+          ],
+        ),
+        const SizedBox(height: 10),
       ],
     ),
   );

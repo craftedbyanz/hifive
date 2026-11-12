@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../core/design/design.dart';
 import '../features/home/home.dart';
 import '../features/welcome/welcome.dart';
+import '../l10n/l10n.dart';
 import '../state/state.dart';
 import '../widgets/ambient.dart';
 import '../widgets/app_scroll.dart';
+import '../widgets/tap_feedback.dart';
 
 class HifiveApp extends StatelessWidget {
   final AppState state;
@@ -17,17 +18,27 @@ class HifiveApp extends StatelessWidget {
     state: state,
     child: AppScope(
       state: state,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'hifive',
-        theme: D.theme,
-        locale: const Locale('vi'),
-        supportedLocales: const [Locale('vi'), Locale('en')],
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        scrollBehavior: const AppScrollBehavior(),
-        builder: (context, child) =>
-            AmbientMotion(enabled: animateAmbient, child: textScaling(child!)),
-        home: AuthGate(child: HomeScreen(animateAmbient: animateAmbient)),
+      child: ListenableBuilder(
+        listenable: state,
+        builder: (context, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'hifive',
+          theme: D.theme,
+          // Empty follows the device, falling back to Vietnamese.
+          locale: appLocale(state.appLanguage),
+          localeListResolutionCallback: (device, _) => resolveAppLocale(device),
+          supportedLocales: supportedAppLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          scrollBehavior: const AppScrollBehavior(),
+          builder: (context, child) => TapFeedback(
+            onTap: state.feedback.buttonTap,
+            child: AmbientMotion(
+              enabled: animateAmbient,
+              child: textScaling(child!),
+            ),
+          ),
+          home: AuthGate(child: HomeScreen(animateAmbient: animateAmbient)),
+        ),
       ),
     ),
   );

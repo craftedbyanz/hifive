@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../learning/learning.dart';
@@ -42,9 +43,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 }),
               )
             : courses!.isEmpty
-            ? const EmptyView(
-                title: 'Chưa có khoá học',
-                subtitle: 'Hãy quay lại sau.',
+            ? EmptyView(
+                title: context.t.noCourses,
+                subtitle: context.t.comeBackLater,
               )
             : null,
       );
@@ -58,7 +59,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
     final soon =
         ready && !courses!.any((c) => c.language == _selected && c.available);
     return SettingsPage(
-      title: 'Ngôn ngữ học',
+      title: context.t.studyLanguage,
       padding: const EdgeInsets.fromLTRB(24, 133, 24, 215),
       footer: !ready
           ? null
@@ -75,18 +76,18 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     const SizedBox(height: 12),
                   ],
                   soon
-                      ? const SettingsCta(
-                          'Sắp ra mắt',
+                      ? SettingsCta(
+                          context.t.comingSoon,
                           color: Palette.ctaDisabled,
                           onTap: null,
-                          icon: Icon(
+                          icon: const Icon(
                             CupertinoIcons.clock_fill,
                             size: 17,
                             color: Colors.white,
                           ),
                         )
                       : SettingsCta(
-                          'Xác nhận',
+                          context.t.confirm,
                           color: Palette.ctaCyan,
                           onTap: () {
                             if (_selected != s.language) {
@@ -101,18 +102,18 @@ class _LanguageScreenState extends State<LanguageScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SettingsHero(
-            art: Center(
+          SettingsHero(
+            art: const Center(
               child: CustomPaint(
                 size: Size(75, 55),
                 painter: TranslateBubblesPainter(),
               ),
             ),
-            title: 'Chọn ngôn ngữ học',
-            subtitle: 'Hifive hiện hỗ trợ lên tới 4 ngôn ngữ và sẽ mở rộng thêm trong tương lai.',
+            title: context.t.chooseStudyLanguage,
+            subtitle: context.t.studyLanguageBody,
           ),
           const SizedBox(height: 31),
-          const SettingsSectionTitle('Ngôn ngữ'),
+          SettingsSectionTitle(context.t.languagesSection),
           const SizedBox(height: 14),
           ?list,
           for (final course in courses ?? const <Course>[])
@@ -202,7 +203,7 @@ class _LanguageText extends StatelessWidget {
                 borderRadius: BorderRadius.circular(9),
               ),
               child: Text(
-                'Coming soon',
+                context.t.languageSoonTag,
                 style: D.text(
                   10.5,
                   weight: FontWeight.w600,
@@ -254,7 +255,7 @@ class _LevelBox extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'TRÌNH ĐỘ HIỆN TẠI',
+                  context.t.currentLevel,
                   style: D.text(
                     11,
                     weight: FontWeight.w700,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 
 /// Opens a full-height sheet like the system ones the reference presents.
@@ -136,7 +137,7 @@ class _RedemptionFormState extends State<RedemptionForm> {
               _GlassButton(
                 icon: Icons.close_rounded,
                 color: Colors.black,
-                label: 'Close',
+                label: context.t.close,
                 onTap: () => Navigator.pop(context),
               ),
             ],
@@ -157,7 +158,7 @@ class _RedemptionFormState extends State<RedemptionForm> {
         ),
         const SizedBox(height: 4),
         Text(
-          'Redeem Offer',
+          context.t.redeemOffer,
           style: D.text(
             25,
             weight: FontWeight.w800,
@@ -174,7 +175,7 @@ class _RedemptionFormState extends State<RedemptionForm> {
             onChanged: (_) => setState(() {}),
             style: D.text(15, color: Colors.black, height: 20 / 15),
             decoration: InputDecoration(
-              hintText: 'Code',
+              hintText: context.t.redeemCodeHint,
               hintStyle: D.text(
                 15,
                 color: Palette.ctaDisabled,
@@ -206,11 +207,7 @@ class _RedemptionFormState extends State<RedemptionForm> {
                     final messenger = ScaffoldMessenger.of(context);
                     Navigator.pop(context);
                     messenger.showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Bản cục bộ không kết nối App Store hoặc đổi mã.',
-                        ),
-                      ),
+                      SnackBar(content: Text(context.t.redeemLocalNote)),
                     );
                   }
                 : null,
@@ -223,7 +220,7 @@ class _RedemptionFormState extends State<RedemptionForm> {
                 border: Border.all(color: Palette.sheetEdge),
               ),
               child: Text(
-                'Continue',
+                context.t.continueAction,
                 style: D.text(
                   15,
                   weight: FontWeight.w600,
@@ -280,7 +277,7 @@ class _ReviewFormState extends State<ReviewForm> {
               decoration: InputDecoration(
                 isCollapsed: true,
                 contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                hintText: 'Optional',
+                hintText: context.t.optionalHint,
                 hintStyle: D.text(
                   15,
                   color: Palette.ctaDisabled,
@@ -307,24 +304,20 @@ class _ReviewFormState extends State<ReviewForm> {
               _GlassButton(
                 icon: CupertinoIcons.xmark,
                 color: Palette.storeAction,
-                label: 'Close',
+                label: context.t.close,
                 onTap: () => Navigator.pop(context),
               ),
               _GlassButton(
                 key: const ValueKey('review-send'),
                 icon: CupertinoIcons.arrow_up,
                 color: _stars > 0 ? Palette.storeAction : Palette.ctaDisabled,
-                label: 'Send',
+                label: context.t.send,
                 onTap: _stars > 0
                     ? () {
                         final messenger = ScaffoldMessenger.of(context);
                         Navigator.pop(context);
                         messenger.showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Bản cục bộ không gửi đánh giá đi đâu cả.',
-                            ),
-                          ),
+                          SnackBar(content: Text(context.t.reviewLocalNote)),
                         );
                       }
                     : null,
@@ -333,7 +326,7 @@ class _ReviewFormState extends State<ReviewForm> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Write a Review',
+            context.t.writeReview,
             style: D.text(
               20,
               weight: FontWeight.w800,
@@ -359,7 +352,7 @@ class _ReviewFormState extends State<ReviewForm> {
                     ),
                   ),
                   Text(
-                    'Education',
+                    context.t.appCategoryEducation,
                     style: D.text(
                       12.5,
                       color: Palette.storeInk,
@@ -376,7 +369,7 @@ class _ReviewFormState extends State<ReviewForm> {
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
-                  'Tap to Rate:',
+                  context.t.tapToRate,
                   style: D.text(
                     12.5,
                     color: Palette.ctaDisabled,
@@ -412,13 +405,16 @@ class _ReviewFormState extends State<ReviewForm> {
             ),
             child: Column(
               children: [
-                field('Title', const ValueKey('review-title')),
+                field(
+                  context.t.reviewTitleField,
+                  const ValueKey('review-title'),
+                ),
                 const Divider(
                   height: 1,
                   indent: 12,
                   color: Palette.ctaDisabled,
                 ),
-                field('Review', const ValueKey('review-body')),
+                field(context.t.reviewBodyField, const ValueKey('review-body')),
               ],
             ),
           ),
@@ -434,7 +430,7 @@ class _ReviewFormState extends State<ReviewForm> {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Add Nickname',
+                  context.t.addNickname,
                   style: D.text(
                     13.5,
                     weight: FontWeight.w500,

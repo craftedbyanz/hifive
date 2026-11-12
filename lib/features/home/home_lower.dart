@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 import '../flashcards/flashcards.dart';
 import '../game/game.dart';
 import '../information/information.dart';
-import '../learning/learning.dart';
 import 'home_design.dart';
 import 'home_mini_art.dart';
 
@@ -14,141 +14,153 @@ import 'home_mini_art.dart';
 class HomeLowerContent extends StatelessWidget {
   const HomeLowerContent({super.key});
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hifive đề xuất',
-              style: D.text(
-                20,
-                weight: FontWeight.w700,
-                spacing: -.4,
-                height: 1.2,
-              ),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              'Các chủ đề được chọn lọc để giúp bạn học nhanh hơn.',
-              style: HomeDesign.body,
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 16),
-      const RecommendationRow(
-        items: [
-          ('Làm tôi bất ngờ', CupertinoIcons.sparkles, 149.0, 38.0),
-          ('Du lịch', CupertinoIcons.airplane, 97.0, 41.0),
-          ('Kinh doanh', CupertinoIcons.briefcase_fill, 126.0, 42.0),
-          ('Ẩm thực', Icons.restaurant_rounded, 103.0, 40.0),
-          ('Mua sắm', Icons.shopping_bag_rounded, 111.0, 40.0),
-        ],
-      ),
-      const SizedBox(height: 12),
-      const RecommendationRow(
-        items: [
-          ('Sức khỏe', CupertinoIcons.heart_fill, 112.0, 40.0),
-          ('Xã hội', CupertinoIcons.bubble_left_bubble_right_fill, 98.0, 46.0),
-          ('IELTS', Icons.school_rounded, 91.0, 44.0),
-          ('Đời sống', CupertinoIcons.sun_max_fill, 109.0, 42.0),
-          ('Giải trí', Icons.movie_rounded, 97.0, 40.0),
-        ],
-      ),
-      const SizedBox(height: 23.5),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: HomeFlashcardPromo(
-          onTap: () => go<void>(context, const DeckListScreen()),
-        ),
-      ),
-      const Padding(
-        padding: EdgeInsets.fromLTRB(24, 23, 24, 24),
-        child: Divider(height: 1, color: Palette.homeDivider),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: HomeGamePromo(
-          onTap: () => go<void>(context, const GameHomeScreen()),
-        ),
-      ),
-      const SizedBox(height: 23),
-      Padding(
-        padding: const EdgeInsets.only(left: 16, right: 26),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hifive 101',
-              style: D.text(
-                20,
-                weight: FontWeight.w700,
-                spacing: -.4,
-                height: 1.25,
-              ),
-            ),
-            const SizedBox(height: 7),
-            Text(
-              'Tất cả những gì bạn cần biết về Hifive và cách ứng dụng giúp bạn học tập hiệu quả.',
-              style: D.text(13, color: D.secondary, height: 17 / 13),
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 15),
-      SizedBox(
-        height: 191,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
+  Widget build(BuildContext context) {
+    final t = context.t;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          itemCount: helpTitles.length,
-          separatorBuilder: (_, _) => const SizedBox(width: 16),
-          itemBuilder: (_, i) => HomeHelpCard(index: i),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    t.homeSuggestTitle,
+                    style: D.text(
+                      20,
+                      weight: FontWeight.w700,
+                      spacing: -.4,
+                      height: 1.2,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const SoonBadge(),
+                ],
+              ),
+              const SizedBox(height: 3),
+              Text(t.homeSuggestSubtitle, style: HomeDesign.body),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
+        const SizedBox(height: 16),
+        RecommendationRow(
+          items: [
+            (t.topicSurprise, CupertinoIcons.sparkles, 38.0, true),
+            (t.topicTravel, CupertinoIcons.airplane, 41.0, false),
+            (t.topicBusiness, CupertinoIcons.briefcase_fill, 42.0, false),
+            (t.topicFood, Icons.restaurant_rounded, 40.0, false),
+            (t.topicShopping, Icons.shopping_bag_rounded, 40.0, false),
+          ],
+        ),
+        const SizedBox(height: 12),
+        RecommendationRow(
+          items: [
+            (t.topicHealth, CupertinoIcons.heart_fill, 40.0, false),
+            (
+              t.topicSocial,
+              CupertinoIcons.bubble_left_bubble_right_fill,
+              46.0,
+              false,
+            ),
+            ('IELTS', Icons.school_rounded, 44.0, false),
+            (t.topicLife, CupertinoIcons.sun_max_fill, 42.0, false),
+            (t.topicEntertainment, Icons.movie_rounded, 40.0, false),
+          ],
+        ),
+        const SizedBox(height: 23.5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: HomeFlashcardPromo(
+            onTap: () => go<void>(context, const DeckListScreen()),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(24, 23, 24, 24),
+          child: Divider(height: 1, color: Palette.homeDivider),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: HomeGamePromo(
+            onTap: () => go<void>(context, const GameHomeScreen()),
+          ),
+        ),
+        const SizedBox(height: 23),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 26),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Hifive 101',
+                style: D.text(
+                  20,
+                  weight: FontWeight.w700,
+                  spacing: -.4,
+                  height: 1.25,
+                ),
+              ),
+              const SizedBox(height: 7),
+              Text(
+                context.t.home101Body,
+                style: D.text(13, color: D.secondary, height: 17 / 13),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 15),
+        SizedBox(
+          height: 191,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: helpCount,
+            separatorBuilder: (_, _) => const SizedBox(width: 16),
+            itemBuilder: (_, i) => HomeHelpCard(index: i),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class RecommendationRow extends StatelessWidget {
-  /// Label, icon, chip width, and where the label starts inside the chip.
-  final List<(String, IconData, double, double)> items;
+  /// Label, icon, where the label starts inside the chip, and whether it is
+  /// the highlighted "surprise me" chip. Chips size to their label, so every
+  /// language fits.
+  final List<(String, IconData, double, bool)> items;
   const RecommendationRow({super.key, required this.items});
   @override
   Widget build(BuildContext context) => SizedBox(
     height: 38,
-    child: ListView.separated(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: items.length,
-      separatorBuilder: (_, _) => const SizedBox(width: 9),
-      itemBuilder: (_, i) {
-        final item = items[i], special = item.$1 == 'Làm tôi bất ngờ';
-        // The measured width; the label's share grows with the text size.
-        final label = item.$3 - item.$4 - 14;
-        return SizedBox(
-          width: item.$3 + context.grow(label) - label,
-          child: Material(
+    child: Opacity(
+      opacity: .5,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: items.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 9),
+        itemBuilder: (_, i) {
+          final item = items[i], special = item.$4;
+          return Material(
             color: special ? Palette.chipSpecial : Colors.white,
             borderRadius: BorderRadius.circular(24),
             child: InkWell(
               borderRadius: BorderRadius.circular(24),
-              onTap: () =>
-                  go<void>(context, GeneratorScreen(initialTopic: item.$1)),
+              // The topics open AI lessons, which come later.
+              onTap: null,
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(width: 14),
                   SizedBox(
-                    width: item.$4 - 14 - 4,
+                    width: item.$3 - 14 - 4,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Icon(
                         item.$2,
-                        size: item.$4 > 44 ? 22 : 19,
+                        size: item.$3 > 44 ? 22 : 19,
                         color: special ? Palette.chipSpecialIcon : D.secondary,
                       ),
                     ),
@@ -169,9 +181,9 @@ class RecommendationRow extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     ),
   );
 }
@@ -182,7 +194,7 @@ class HomeFlashcardPromo extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     button: true,
-    label: 'Mở Flashcard',
+    label: context.t.openFlashcards,
     child: GestureDetector(
       onTap: onTap,
       child: AspectRatio(
@@ -227,7 +239,7 @@ class HomeFlashcardPromo extends StatelessWidget {
                       top: 29,
                       width: 155,
                       child: Text(
-                        'VOCABULARY\nFLASHCARD',
+                        context.t.flashPromoTitle,
                         style: D.text(
                           19.2,
                           weight: FontWeight.w700,
@@ -241,7 +253,7 @@ class HomeFlashcardPromo extends StatelessWidget {
                       top: 89,
                       width: 175,
                       child: Text(
-                        'Lưu từ mới, ôn tập theo\nSRS và theo dõi tiến bộ mỗi\nngày.',
+                        context.t.flashPromoBody,
                         style: D.text(
                           13,
                           color: Colors.white.withValues(alpha: .86),
@@ -263,7 +275,7 @@ class HomeFlashcardPromo extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              'Mở Flashcard',
+                              context.t.openFlashcards,
                               style: D.text(
                                 12.1,
                                 weight: FontWeight.w700,
@@ -280,21 +292,21 @@ class HomeFlashcardPromo extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Positioned(
+                    Positioned(
                       right: 19,
                       top: 23,
                       child: PromoWordCard(
                         word: 'Resilient',
-                        meaning: 'Kiên cường',
+                        meaning: context.t.sampleResilientMeaning,
                         angle: .1,
                       ),
                     ),
-                    const Positioned(
+                    Positioned(
                       right: 19,
                       top: 108,
                       child: PromoWordCard(
                         word: 'Acquire',
-                        meaning: 'Tiếp thu',
+                        meaning: context.t.sampleAcquireMeaning,
                         angle: -.03,
                       ),
                     ),
@@ -334,7 +346,12 @@ class PromoWordCard extends StatelessWidget {
         children: [
           Text(word, style: D.text(12, weight: FontWeight.w700)),
           const SizedBox(height: 2),
-          Text(meaning, style: D.text(11, color: D.secondary)),
+          Text(
+            meaning,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: D.text(11, color: D.secondary),
+          ),
           const SizedBox(height: 3),
           Container(
             width: 55,
@@ -356,7 +373,7 @@ class HomeGamePromo extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     button: true,
-    label: 'Flow Letter — Thử ngay',
+    label: 'Flow Letter — ${context.t.tryNow}',
     child: GestureDetector(
       onTap: onTap,
       child: AspectRatio(
@@ -395,7 +412,7 @@ class HomeGamePromo extends StatelessWidget {
                       left: 16,
                       top: 32,
                       child: Text(
-                        'Xếp chữ cái thành từ vựng',
+                        context.t.flowTagline,
                         style: D.text(
                           11.15,
                           color: Colors.white.withValues(alpha: .7),
@@ -416,7 +433,7 @@ class HomeGamePromo extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          'Thử ngay',
+                          context.t.tryNow,
                           style: D.text(
                             10,
                             weight: FontWeight.w700,
@@ -488,13 +505,31 @@ class HomeHelpCard extends StatelessWidget {
               height: 120,
               child: CustomPaint(painter: HomeMiniArtwork(index)),
             ),
+            if (index == 4)
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                height: 120,
+                child: LayoutBuilder(
+                  builder: (_, box) => Stack(
+                    children: [
+                      Positioned(
+                        left: homeMiniFlameCenter.dx * box.maxWidth / 160 - 10,
+                        top: homeMiniFlameCenter.dy - 10,
+                        child: const StreakFlame(size: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             Positioned(
               left: 16,
               right: 16,
               top: 131,
               child: Text(
                 // The reference breaks this title after the colon.
-                helpTitles[index].replaceFirst('Game: ', 'Game:\n'),
+                helpTitle(context.t, index).replaceFirst('Game: ', 'Game:\n'),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: D.text(

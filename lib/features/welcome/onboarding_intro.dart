@@ -67,10 +67,10 @@ class _WelcomeStep extends StatelessWidget {
   Widget build(BuildContext context) => _StepPage(
     active: active,
     fill: true,
-    title: 'Chào mừng',
-    accent: 'đến với Hifive',
+    title: context.t.welcomeStepTitle,
+    accent: context.t.welcomeStepAccent,
     accentColor: D.blue,
-    body: 'Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Bốn cách luyện tập giúp bạn tiến bộ tự nhiên, từng chút một.',
+    body: context.t.welcomeStepBody,
     gap: 22,
     children: [
       Expanded(
@@ -91,33 +91,35 @@ class _Practice {
 
 enum _Preview { writing, grammar, chat, cards }
 
-final _practices = [
+const _practiceCount = 4;
+
+List<_Practice> _practicesOf(AppLocalizations t) => [
   _Practice(
     StudyMode.writing.color,
     StudyMode.writing.icon,
-    'Viết đoạn văn',
-    'Dịch và viết lại từng câu theo chủ đề bạn thích.',
+    t.practiceWriting,
+    t.practiceWritingBody,
     _Preview.writing,
   ),
   _Practice(
     StudyMode.grammar.color,
     StudyMode.grammar.icon,
-    'Sửa câu',
-    'Câu ngắn, sửa nhanh, hiểu vì sao sai.',
+    t.practiceGrammar,
+    t.practiceGrammarBody,
     _Preview.grammar,
   ),
   _Practice(
     Palette.chatBlue,
     StudyMode.conversation.icon,
-    'Hội thoại',
-    'Đóng vai trong những tình huống thật.',
+    t.practiceChat,
+    t.practiceChatBody,
     _Preview.chat,
   ),
-  const _Practice(
+  _Practice(
     D.purple,
     CupertinoIcons.square_stack_3d_up_fill,
-    'Thẻ từ vựng',
-    'Lưu từ mới, ôn đúng lúc sắp quên.',
+    t.practiceCards,
+    t.practiceCardsBody,
     _Preview.cards,
   ),
 ];
@@ -165,7 +167,7 @@ class _PracticeStackState extends State<_PracticeStack>
     if (deal.isAnimating) return;
     await _drive(context, deal, 1);
     if (!mounted) return;
-    setState(() => front = (front + 1) % _practices.length);
+    setState(() => front = (front + 1) % _practiceCount);
     deal.value = 0;
   }
 
@@ -182,8 +184,8 @@ class _PracticeStackState extends State<_PracticeStack>
       final size = _cardSize(box);
       return Semantics(
         button: true,
-        label: _practices[front].title,
-        hint: 'Chạm để xem cách học tiếp theo',
+        label: _practicesOf(context.t)[front].title,
+        hint: context.t.tapForNextWay,
         child: GestureDetector(
           key: const ValueKey('onboarding-practice-stack'),
           behavior: HitTestBehavior.opaque,
@@ -209,7 +211,7 @@ class _PracticeStackState extends State<_PracticeStack>
                           child: Opacity(
                             opacity: 1 - t,
                             child: _PracticeCard(
-                              _practices[front],
+                              _practicesOf(context.t)[front],
                               size: size,
                               number: front + 1,
                             ),
@@ -220,9 +222,9 @@ class _PracticeStackState extends State<_PracticeStack>
                       _atDepth(
                         k - t,
                         _PracticeCard(
-                          _practices[(front + k) % _practices.length],
+                          _practicesOf(context.t)[(front + k) % _practiceCount],
                           size: size,
-                          number: (front + k) % _practices.length + 1,
+                          number: (front + k) % _practiceCount + 1,
                         ),
                       ),
                 ],
@@ -282,7 +284,7 @@ class _PracticeCard extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '$number/${_practices.length}',
+                '$number/$_practiceCount',
                 style: D.text(
                   13,
                   weight: FontWeight.w700,
@@ -440,10 +442,10 @@ class _FlashcardDemo extends StatelessWidget {
   Widget build(BuildContext context) => _StepPage(
     active: active,
     fill: true,
-    title: 'Lưu từ mới mọi lúc,',
-    accent: 'ôn đúng lúc sắp quên',
+    title: context.t.cardsStepTitle,
+    accent: context.t.cardsStepAccent,
     accentColor: D.purple,
-    body: 'Lưu từ ngay khi học và ôn lại bằng bộ thẻ. Chạm vào thẻ để lật, rồi cho Hifive biết bạn đã nhớ chưa.',
+    body: context.t.cardsStepBody,
     gap: 22,
     children: [
       Expanded(
@@ -467,36 +469,38 @@ class _Word {
   );
 }
 
-final _words = [
-  const _Word(
+const _wordCount = 4;
+
+List<_Word> _wordsOf(AppLocalizations t) => [
+  _Word(
     'curious',
     '/ˈkjʊriəs/',
-    'TÍNH TỪ',
-    'tò mò',
+    t.posAdjective,
+    t.meaningCurious,
     'Kids are curious about everything.',
     D.purple,
   ),
-  const _Word(
+  _Word(
     'journey',
     '/ˈdʒɜːrni/',
-    'DANH TỪ',
-    'chuyến đi',
+    t.posNoun,
+    t.meaningJourney,
     'The journey took two days.',
     D.blue,
   ),
-  const _Word(
+  _Word(
     'improve',
     '/ɪmˈpruːv/',
-    'ĐỘNG TỪ',
-    'cải thiện',
+    t.posVerb,
+    t.meaningImprove,
     'A little practice every day helps you improve.',
     D.green,
   ),
-  const _Word(
+  _Word(
     'brave',
     '/breɪv/',
-    'TÍNH TỪ',
-    'dũng cảm',
+    t.posAdjective,
+    t.meaningBrave,
     'It was brave of her to speak first.',
     D.orange,
   ),
@@ -549,14 +553,14 @@ class _WordStackState extends State<_WordStack> with TickerProviderStateMixin {
     _clearNote?.cancel();
     setState(() {
       direction = remembered ? 1 : -1;
-      note = remembered ? 'Ôn lại sau 4 ngày' : 'Ôn lại vào ngày mai';
+      note = remembered ? context.t.reviewInDays(4) : context.t.reviewTomorrow;
     });
     _clearNote = Timer(const Duration(milliseconds: 1800), () {
       if (mounted) setState(() => note = null);
     });
     await _drive(context, fly, 1);
     if (!mounted) return;
-    setState(() => front = (front + 1) % _words.length);
+    setState(() => front = (front + 1) % _wordCount);
     flip.value = 0;
     fly.value = 0;
   }
@@ -580,7 +584,7 @@ class _WordStackState extends State<_WordStack> with TickerProviderStateMixin {
                       _atDepth(
                         k - Curves.easeOutCubic.transform(fly.value),
                         _WordFace(
-                          _words[(front + k) % _words.length],
+                          _wordsOf(context.t)[(front + k) % _wordCount],
                           size: size,
                         ),
                       ),
@@ -599,8 +603,11 @@ class _WordStackState extends State<_WordStack> with TickerProviderStateMixin {
                                   onTap: _flip,
                                   child: Semantics(
                                     button: true,
-                                    hint: 'Chạm để lật',
-                                    child: _WordFace(_words[front], size: size),
+                                    hint: context.t.tapToFlip,
+                                    child: _WordFace(
+                                      _wordsOf(context.t)[front],
+                                      size: size,
+                                    ),
                                   ),
                                 )
                               : Transform(
@@ -610,7 +617,7 @@ class _WordStackState extends State<_WordStack> with TickerProviderStateMixin {
                                     key: const ValueKey('onboarding-card-back'),
                                     onTap: _flip,
                                     child: _WordBack(
-                                      _words[front],
+                                      _wordsOf(context.t)[front],
                                       size: size,
                                       onRate: (r) => _rate(remembered: r),
                                     ),
@@ -702,7 +709,7 @@ class _WordFace extends StatelessWidget {
               const Spacer(),
               Semantics(
                 button: true,
-                label: 'Nghe "${word.word}"',
+                label: context.t.listenTo(word.word),
                 child: PressFade(
                   key: ValueKey('onboarding-speak-${word.word}'),
                   onTap: () => AppScope.read(context).speak(word.word),
@@ -737,7 +744,7 @@ class _WordFace extends StatelessWidget {
               Icon(CupertinoIcons.arrow_2_circlepath, size: 14, color: ink),
               const SizedBox(width: 6),
               Text(
-                'CHẠM ĐỂ LẬT',
+                context.t.tapToFlipCaps,
                 style: CapsLabel.smallStyle.copyWith(color: ink),
               ),
             ],
@@ -799,7 +806,7 @@ class _WordBack extends StatelessWidget {
           children: [
             Expanded(
               child: ActionButton(
-                'Chưa nhớ',
+                context.t.notRemembered,
                 key: const ValueKey('onboarding-again'),
                 outlined: true,
                 color: D.ink,
@@ -810,7 +817,7 @@ class _WordBack extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: ActionButton(
-                'Đã nhớ',
+                context.t.remembered,
                 key: const ValueKey('onboarding-remembered'),
                 onTap: () => onRate(true),
               ),

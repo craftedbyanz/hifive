@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 
 /// The end of a session. Measured from video: the content fades in over about
@@ -82,7 +83,7 @@ class _ReviewCompleteState extends State<ReviewComplete>
                 child: Column(
                   children: [
                     Text(
-                      'Xuất sắc!',
+                      context.t.excellent,
                       style: D.text(
                         24,
                         weight: FontWeight.w800,
@@ -91,7 +92,7 @@ class _ReviewCompleteState extends State<ReviewComplete>
                     ),
                     const SizedBox(height: 7),
                     Text(
-                      'Bạn đã nắm vững hầu hết các thẻ!',
+                      context.t.masteredMost,
                       style: D.text(
                         13.5,
                         color: Palette.settingsMuted,
@@ -113,21 +114,21 @@ class _ReviewCompleteState extends State<ReviewComplete>
                             CupertinoIcons.square_stack_3d_up_fill,
                             Palette.statSeen,
                             widget.seen,
-                            'Đã xem',
+                            context.t.seen,
                           ),
                           _rule,
                           _Stat(
                             CupertinoIcons.checkmark_circle_fill,
                             Palette.statKnown,
                             widget.known,
-                            'Thuộc',
+                            context.t.known,
                           ),
                           _rule,
                           _Stat(
                             CupertinoIcons.arrow_counterclockwise,
                             Palette.medalOrange,
                             widget.again,
-                            'Học lại',
+                            context.t.relearn,
                           ),
                         ],
                       ),
@@ -174,7 +175,7 @@ class _ReviewCompleteState extends State<ReviewComplete>
                       borderRadius: BorderRadius.circular(26),
                     ),
                     child: Text(
-                      'Tiếp tục',
+                      context.t.continueStep,
                       style: D.text(
                         15.5,
                         weight: FontWeight.w700,

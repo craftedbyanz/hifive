@@ -19,6 +19,7 @@ const stringSettings = {
   'voice',
   'difficulty',
   'chatTone',
+  'appLanguage',
 };
 const boolSettings = {'chatFree', 'showHints', 'chatTipSeen', 'onboarded'};
 

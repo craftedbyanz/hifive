@@ -27,13 +27,13 @@ class _Hero extends StatelessWidget {
             const SizedBox(width: 6),
             const Padding(
               padding: EdgeInsets.only(top: 18),
-              child: Icon(CupertinoIcons.flame_fill, size: 33, color: D.orange),
+              child: StreakFlame(size: 33),
             ),
             const SizedBox(width: 8),
             Padding(
               padding: const EdgeInsets.only(top: 29),
               child: Text(
-                'DAYS',
+                context.t.daysCaps,
                 style: D.text(
                   61,
                   weight: FontWeight.w800,
@@ -95,7 +95,7 @@ class _SessionSummary extends StatelessWidget {
             top: 29,
             width: 200,
             child: Text(
-              'Bạn đã hoàn thành $count buổi tập trong $monthName, và $yearCount buổi trong năm nay.',
+              context.t.monthSummary(count, monthName, yearCount),
               style: D.text(14, color: D.secondary, height: 21.5 / 14),
             ),
           ),
@@ -338,27 +338,31 @@ class _MistakeSummary extends StatelessWidget {
     children: [
       _InlineWords(
         children: [
-          Text('Bạn đã mắc', style: _bigText),
+          if (context.t.mistakesPrefix.isNotEmpty)
+            Text(context.t.mistakesPrefix, style: _bigText),
           const SizedBox(width: 5),
           const CustomPaint(
             size: Size(21, 19),
             painter: WarningPainter(color: Palette.wrong),
           ),
           const SizedBox(width: 4),
-          Text('$count lỗi ngữ pháp', style: _bigStrong),
+          Text(context.t.mistakesCount(count), style: _bigStrong),
         ],
       ),
       const SizedBox(height: 11),
       _InlineWords(
         children: [
-          Text('trong tháng này, chủ yếu là', style: _bigText),
+          Text(context.t.mistakesMiddle, style: _bigText),
           const SizedBox(width: 5),
           const _BookGlyph(color: Palette.wrong),
         ],
       ),
       const SizedBox(height: 11),
       // Grading here has no error categories, and only this one was observed.
-      Text('từ vựng', style: _bigStrong.copyWith(color: Palette.wrong)),
+      Text(
+        context.t.mistakesTopic,
+        style: _bigStrong.copyWith(color: Palette.wrong),
+      ),
     ],
   );
 }
@@ -373,32 +377,39 @@ class _InlineWords extends StatelessWidget {
 }
 
 class _SuggestButton extends StatelessWidget {
-  final VoidCallback onTap;
-  const _SuggestButton({required this.onTap});
+  const _SuggestButton();
   @override
-  Widget build(BuildContext context) => GestureDetector(
-    onTap: onTap,
-    child: Container(
-      key: const ValueKey('insight-suggest'),
-      width: 179,
-      height: 38,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(19),
-        gradient: const LinearGradient(
-          colors: [Palette.artOrange, Palette.insightPeople],
+  Widget build(BuildContext context) => Semantics(
+    label: '${context.t.seeSuggestions}, ${context.t.comingSoon}',
+    child: Column(
+      children: [
+        Opacity(opacity: .45, child: _face(context)),
+        const SizedBox(height: 8),
+        const SoonBadge(),
+      ],
+    ),
+  );
+
+  Widget _face(BuildContext context) => Container(
+    key: const ValueKey('insight-suggest'),
+    width: 179,
+    height: 38,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(19),
+      gradient: const LinearGradient(
+        colors: [Palette.artOrange, Palette.insightPeople],
+      ),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(CupertinoIcons.sparkles, size: 16, color: Colors.white),
+        const SizedBox(width: 8),
+        Text(
+          context.t.seeSuggestions,
+          style: D.text(13, weight: FontWeight.w600, color: Colors.white),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(CupertinoIcons.sparkles, size: 16, color: Colors.white),
-          const SizedBox(width: 8),
-          Text(
-            'Xem gợi ý cải thiện',
-            style: D.text(13, weight: FontWeight.w600, color: Colors.white),
-          ),
-        ],
-      ),
+      ],
     ),
   );
 }
@@ -426,7 +437,7 @@ class _TipsCard extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              'Gợi ý cải thiện',
+              context.t.suggestionsTitle,
               style: D.text(13, weight: FontWeight.w600, color: D.secondary),
             ),
           ],
@@ -480,25 +491,25 @@ class _GeneratedByAi extends StatelessWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SheetTitle('Tạo bởi AI'),
+          SheetTitle(context.t.madeByAi),
           Text(
-            'Phần thống kê và gợi ý cải thiện được AI tổng hợp từ các buổi học trong tháng của bạn. Nội dung có thể chưa chính xác hoàn toàn; hãy dùng như lời khuyên tham khảo.',
+            context.t.madeByAiBody,
             style: D.text(15, color: D.secondary, height: 1.55),
           ),
         ],
       ),
     ),
-    child: _attribution(),
+    child: _attribution(context),
   );
 
-  Widget _attribution() => Row(
+  Widget _attribution(BuildContext context) => Row(
     children: [
       const Expanded(child: Divider(height: 1, color: Palette.insightDot)),
       const SizedBox(width: 13),
       const CustomPaint(size: Size.square(19), painter: _AiRosettePainter()),
       const SizedBox(width: 8),
       Text(
-        'Tạo bởi AI',
+        context.t.madeByAi,
         style: D.text(
           11,
           weight: FontWeight.w600,

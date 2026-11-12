@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 import 'article_screen.dart';
 import 'help_content.dart';
@@ -10,7 +11,7 @@ class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key, required this.index});
   @override
   Widget build(BuildContext context) => AppPage(
-    title: helpTitles[index],
+    title: helpTitle(context.t, index),
     child: SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
       child: Column(
@@ -22,7 +23,7 @@ class HelpScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            helpTitles[index],
+            helpTitle(context.t, index),
             style: D.text(
               25,
               weight: FontWeight.w800,
@@ -33,7 +34,7 @@ class HelpScreen extends StatelessWidget {
           const SizedBox(height: 12),
           // Darker grey and 23.5 pt lines (survey 93).
           Text(
-            helpBodies[index],
+            helpBody(context.t, index),
             style: D.text(15, color: Palette.helpBody, height: 1.57),
           ),
         ],

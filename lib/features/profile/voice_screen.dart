@@ -4,39 +4,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'settings_kit.dart';
 
 class VoiceScreen extends StatelessWidget {
   const VoiceScreen({super.key});
-  static const _voices = [
-    ('Aaron', 'United States'),
-    ('Arthur', 'United Kingdom'),
-    ('Catherine', 'Australia'),
-    ('Gordon', 'Australia'),
-    ('Martha', 'United Kingdom'),
-    ('Nicky', 'United States'),
+  static List<(String, String)> _voices(AppLocalizations t) => [
+    ('Aaron', t.countryUS),
+    ('Arthur', t.countryUK),
+    ('Catherine', t.countryAU),
+    ('Gordon', t.countryAU),
+    ('Martha', t.countryUK),
+    ('Nicky', t.countryUS),
   ];
 
   @override
   Widget build(BuildContext context) {
     final s = AppScope.of(context);
     return SettingsPage(
-      title: 'Giọng đọc',
+      title: context.t.profileVoice,
       padding: const EdgeInsets.fromLTRB(24, 157, 24, 130),
       trailing: HeaderRoundButton(
         icon: CupertinoIcons.question_circle,
         iconSize: 26,
-        label: 'Cách cài đặt giọng đọc',
+        label: context.t.voiceHowTo,
         width: 48,
         onTap: () => _showHelp(context),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SettingsHero(
-            art: Center(
+          SettingsHero(
+            art: const Center(
               child: CustomPaint(
                 size: Size(44, 50),
                 painter: VoiceBarsPainter(),
@@ -45,12 +46,12 @@ class VoiceScreen extends StatelessWidget {
             gap: 11,
             subtitleInset: 19,
             title: 'Neural Voice Engine',
-            subtitle: 'Hifive sử dụng công nghệ Neural Audio của Apple để mang lại trải nghiệm nghe tự nhiên và sống động nhất.',
+            subtitle: context.t.voiceEngineBody,
           ),
           const SizedBox(height: 31),
-          const SettingsSectionTitle('Voice Models'),
+          SettingsSectionTitle(context.t.voiceModels),
           const SizedBox(height: 15),
-          for (final (name, region) in _voices)
+          for (final (name, region) in _voices(context.t))
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: SelectCard(
@@ -113,7 +114,7 @@ class VoiceScreen extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Normal',
+                                context.t.voiceNormal,
                                 style: D.text(
                                   11,
                                   weight: FontWeight.w700,
@@ -151,25 +152,13 @@ class VoiceScreen extends StatelessWidget {
 /// all close it.
 class _VoiceHelpSheet extends StatelessWidget {
   const _VoiceHelpSheet();
-  static const _steps = [
+  static List<(String, String, IconData)> _steps(AppLocalizations t) => [
+    (t.voiceStep1Title, t.voiceStep1Body, CupertinoIcons.gear_alt),
+    (t.voiceStep2Title, t.voiceStep2Body, Icons.accessibility_new_rounded),
+    (t.voiceStep3Title, t.voiceStep3Body, CupertinoIcons.chat_bubble_2_fill),
     (
-      'Mở Cài đặt (Settings)',
-      'Truy cập ứng dụng Cài đặt trên màn hình chính của iPhone.',
-      CupertinoIcons.gear_alt,
-    ),
-    (
-      'Vào Trợ năng (Accessibility)',
-      'Tìm và chọn mục Trợ năng trong danh sách\ncài đặt.',
-      Icons.accessibility_new_rounded,
-    ),
-    (
-      'Mở Nội dung được đọc',
-      "Chọn 'Đọc & Nói' (Read & Speak) -> 'Giọng nói' (Voices).",
-      CupertinoIcons.chat_bubble_2_fill,
-    ),
-    (
-      'Tải giọng Premium hoặc Enhanced',
-      "Chọn 'Tiếng Anh' (English) -> Chọn 1 giọng (ví dụ: Ava, Tom) -> Tải về bản 'Cao cấp' (Premium) hoặc 'Nâng cao' (Enhanced).",
+      t.voiceStep4Title,
+      t.voiceStep4Body,
       CupertinoIcons.arrow_down_circle_fill,
     ),
   ];
@@ -220,7 +209,7 @@ class _VoiceHelpSheet extends StatelessWidget {
                       border: Border.all(color: Palette.sheetEdge),
                     ),
                     child: Text(
-                      'Đóng',
+                      context.t.close,
                       style: D.text(15.5, weight: FontWeight.w600, height: 1),
                     ),
                   ),
@@ -228,14 +217,14 @@ class _VoiceHelpSheet extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Text(
-                'Cách cài đặt giọng đọc',
+                context.t.voiceHowTo,
                 style: D.text(24, weight: FontWeight.w800, height: 34 / 24),
               ),
               const SizedBox(height: 11),
               Padding(
                 padding: const EdgeInsets.only(right: 20),
                 child: Text(
-                  'Để có trải nghiệm nghe tốt nhất, hãy tải về các gói giọng đọc Neural chất lượng cao từ Apple trên chính Iphone của bạn.',
+                  context.t.voiceHelpIntro,
                   style: D.text(
                     14.6,
                     color: Palette.iconGrey,
@@ -244,7 +233,7 @@ class _VoiceHelpSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 31),
-              for (final (i, step) in _steps.indexed)
+              for (final (i, step) in _steps(context.t).indexed)
                 Padding(
                   padding: EdgeInsets.only(bottom: i == 3 ? 0 : 30),
                   child: _Step(

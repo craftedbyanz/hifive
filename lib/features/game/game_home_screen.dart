@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'game_glass_button.dart';
@@ -67,12 +68,12 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
     context,
     Column(
       children: [
-        const SheetTitle('Chọn bộ từ vựng'),
+        SheetTitle(context.t.chooseDeck),
         for (final deck in state.decks)
           ListTile(
             leading: const Icon(Icons.style_rounded),
             title: Text(deck.title),
-            subtitle: Text('${deck.words.length} từ'),
+            subtitle: Text(context.t.wordsCount(deck.words.length)),
             onTap: () {
               Navigator.pop(context);
               _play(
@@ -115,13 +116,13 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   children: [
                     GameGlassButton(
                       icon: CupertinoIcons.xmark,
-                      label: 'Đóng',
+                      label: context.t.close,
                       onTap: () => Navigator.maybePop(context),
                     ),
                     const Spacer(),
                     GameGlassButton(
                       icon: CupertinoIcons.question,
-                      label: 'Hướng dẫn Flow Letter',
+                      label: context.t.flowGuideLabel,
                       onTap: () => go<void>(context, const GameHelpScreen()),
                     ),
                   ],
@@ -130,7 +131,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                 const _TitleTiles(),
                 const SizedBox(height: 19),
                 Text(
-                  'Xếp chữ cái thành từ vựng',
+                  context.t.flowTagline,
                   style: D.text(
                     16,
                     weight: FontWeight.w500,
@@ -149,7 +150,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                     const SizedBox(width: 7),
                     Flexible(
                       child: Text(
-                        'Trải nghiệm tốt hơn khi xoay điện thoại',
+                        context.t.rotateForBetter,
                         style: D.text(14, color: white),
                       ),
                     ),
@@ -167,7 +168,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Level 1',
+                              context.t.levelOne,
                               style: D.text(
                                 15,
                                 weight: FontWeight.w700,
@@ -175,7 +176,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                               ),
                             ),
                             Text(
-                              'Best ${state.bestScore}',
+                              context.t.bestScore(state.bestScore),
                               style: D.text(
                                 13,
                                 weight: FontWeight.w700,
@@ -189,10 +190,13 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'XP tổng: ${state.totalXp}',
+                              context.t.totalXp(state.totalXp),
                               style: D.text(12, color: white),
                             ),
-                            Text('Combo x0', style: D.text(12, color: white)),
+                            Text(
+                              context.t.comboZero,
+                              style: D.text(12, color: white),
+                            ),
                           ],
                         ),
                         Padding(
@@ -209,12 +213,12 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Lần chơi: ${state.gamesPlayed}',
+                              context.t.gamesPlayed(state.gamesPlayed),
                               style: D.text(12, color: white),
                             ),
                             if (state.gamesPlayed == 0)
                               Text(
-                                'Bắt đầu session đầu tiên',
+                                context.t.startFirstSession,
                                 style: D.text(12, color: white),
                               ),
                           ],
@@ -244,7 +248,9 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    'Tiếp tục ${resume['title']}',
+                                    context.t.continueTitle(
+                                      resume['title'] as String,
+                                    ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: D.text(
@@ -272,19 +278,19 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                 _GameButton(
                   key: const ValueKey('play-flowletter'),
                   icon: CupertinoIcons.play_fill,
-                  label: 'Chơi',
+                  label: context.t.play,
                   onTap: () => _choose(state),
                 ),
                 const SizedBox(height: 16),
                 _GameButton(
                   icon: Icons.speed_rounded,
-                  label: 'Độ khó',
+                  label: context.t.difficulty,
                   onTap: () => go<void>(context, const GameDifficultyScreen()),
                 ),
                 const SizedBox(height: 16),
                 _GameButton(
                   icon: CupertinoIcons.gear_solid,
-                  label: 'Cài đặt',
+                  label: context.t.settingsAction,
                   onTap: () => go<void>(context, const GameSettingsScreen()),
                 ),
                 const SizedBox(height: 24),
@@ -311,7 +317,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                         ),
                         const SizedBox(width: 9),
                         Text(
-                          'Xoay',
+                          context.t.rotate,
                           style: D.text(
                             15,
                             weight: FontWeight.w700,
@@ -498,7 +504,7 @@ class _GamePage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: GameGlassButton(
                         icon: CupertinoIcons.back,
-                        label: 'Quay lại',
+                        label: context.t.back,
                         square: true,
                         onTap: () => Navigator.maybePop(context),
                       ),
@@ -542,7 +548,7 @@ class GameDifficultyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
     return _GamePage(
-      title: 'Độ khó',
+      title: context.t.difficulty,
       colors: const [Palette.difficultyTop, Palette.difficultyBottom],
       rows: [
         for (final level in ['Dễ', 'Vừa', 'Khó'])
@@ -553,7 +559,7 @@ class GameDifficultyScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    level,
+                    _difficultyName(context.t, level),
                     style: D.text(
                       17,
                       weight: FontWeight.w700,
@@ -608,13 +614,18 @@ class GameSettingsScreen extends StatelessWidget {
       ),
     );
     return _GamePage(
-      title: 'Cài đặt',
+      title: context.t.settingsAction,
       colors: const [Palette.settingsTop, Palette.settingsBottom],
       rows: [
-        toggle(CupertinoIcons.speaker_2_fill, 'Âm thanh', s.sound, s.setSound),
+        toggle(
+          CupertinoIcons.speaker_2_fill,
+          context.t.sound,
+          s.sound,
+          s.setSound,
+        ),
         toggle(
           CupertinoIcons.device_phone_portrait,
-          'Rung phản hồi',
+          context.t.hapticFeedback,
           s.haptic,
           s.setHaptic,
         ),
@@ -622,3 +633,10 @@ class GameSettingsScreen extends StatelessWidget {
     );
   }
 }
+
+/// A difficulty's name; the stored value stays the Vietnamese word.
+String _difficultyName(AppLocalizations t, String level) => switch (level) {
+  'Vừa' => t.difficultyMedium,
+  'Khó' => t.difficultyHard,
+  _ => t.difficultyEasy,
+};

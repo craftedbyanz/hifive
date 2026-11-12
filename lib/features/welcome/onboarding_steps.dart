@@ -18,10 +18,10 @@ class _NameStep extends StatelessWidget {
     final valid = name.isNotEmpty && name.characters.length <= _maxName;
     return _StepPage(
       active: active,
-      title: 'Chào bạn!',
-      accent: 'Bạn tên là gì?',
+      title: context.t.nameStepTitle,
+      accent: context.t.nameStepAccent,
       accentColor: D.blue,
-      body: 'Hifive sẽ gọi bạn bằng tên này. Bạn có thể đổi trong Hồ sơ.',
+      body: context.t.nameStepBody,
       gap: 28,
       children: [
         _After(
@@ -40,7 +40,7 @@ class _NameStep extends StatelessWidget {
                 onSubmitted: (_) => onSubmitted(),
                 style: D.text(22, weight: FontWeight.w700, height: 28 / 22),
                 decoration: InputDecoration(
-                  hintText: 'Tên của bạn',
+                  hintText: context.t.yourName,
                   hintStyle: D.text(
                     22,
                     weight: FontWeight.w700,
@@ -95,22 +95,22 @@ class _LevelStep extends StatelessWidget {
 
   /// One line each, short enough to compare at a glance; the full
   /// descriptions are on the level information sheet.
-  static const _lines = [
-    'Biết vài từ và câu chào hỏi.',
-    'Viết được câu đơn giản về bản thân.',
-    'Viết được đoạn ngắn về chủ đề quen thuộc.',
-    'Nêu quan điểm khá tự nhiên, có lập luận.',
-    'Viết mạch lạc cho học tập và công việc.',
-    'Gần như người bản ngữ.',
+  static List<String> _lines(AppLocalizations t) => [
+    t.levelLineA1,
+    t.levelLineA2,
+    t.levelLineB1,
+    t.levelLineB2,
+    t.levelLineC1,
+    t.levelLineC2,
   ];
 
   @override
   Widget build(BuildContext context) => _StepPage(
     active: active,
-    title: 'Trình độ hiện tại',
-    accent: 'của bạn là gì?',
+    title: context.t.levelStepTitle,
+    accent: context.t.levelStepAccent,
     accentColor: StudyMode.grammar.color,
-    body: 'Bài học bắt đầu từ mức này. Chưa chắc thì chọn thấp hơn một bậc.',
+    body: context.t.levelStepBody,
     gap: 20,
     children: [
       for (final (i, title) in levels.indexed) ...[
@@ -137,7 +137,7 @@ class _LevelStep extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        levelTitle(context.t, i),
                         style: D.text(
                           15,
                           weight: FontWeight.w800,
@@ -146,7 +146,7 @@ class _LevelStep extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        _lines[i],
+                        _lines(context.t)[i],
                         style: D.text(13, color: D.secondary, height: 18 / 13),
                       ),
                     ],
@@ -174,35 +174,15 @@ class _GoalStep extends StatelessWidget {
     required this.onToggle,
   });
 
-  static const _goals = {
-    'daily': (
-      CupertinoIcons.chat_bubble_2_fill,
-      'Giao tiếp',
-      'Trò chuyện hằng ngày',
-    ),
-    'travel': (CupertinoIcons.airplane, 'Du lịch', 'Hỏi đường, gọi món'),
-    'work': (
-      CupertinoIcons.briefcase_fill,
-      'Công việc',
-      'Email, họp, thuyết trình',
-    ),
-    'exam': (
-      CupertinoIcons.doc_text_fill,
-      'Thi chứng chỉ',
-      'IELTS, TOEIC, TOEFL',
-    ),
-    'study': (CupertinoIcons.book_fill, 'Du học', 'Bài giảng, bài luận'),
-    'writing': (CupertinoIcons.pencil, 'Viết tốt hơn', 'Câu rõ ý, ít lỗi'),
-    'media': (
-      CupertinoIcons.film_fill,
-      'Phim và nhạc',
-      'Hiểu không cần phụ đề',
-    ),
-    'family': (
-      CupertinoIcons.heart_fill,
-      'Cùng gia đình',
-      'Học cùng con, người thân',
-    ),
+  static Map<String, (IconData, String, String)> _goals(AppLocalizations t) => {
+    'daily': (CupertinoIcons.chat_bubble_2_fill, t.goalDaily, t.goalDailyBody),
+    'travel': (CupertinoIcons.airplane, t.goalTravel, t.goalTravelBody),
+    'work': (CupertinoIcons.briefcase_fill, t.goalWork, t.goalWorkBody),
+    'exam': (CupertinoIcons.doc_text_fill, t.goalExam, t.goalExamBody),
+    'study': (CupertinoIcons.book_fill, t.goalStudy, t.goalStudyBody),
+    'writing': (CupertinoIcons.pencil, t.goalWriting, t.goalWritingBody),
+    'media': (CupertinoIcons.film_fill, t.goalMedia, t.goalMediaBody),
+    'family': (CupertinoIcons.heart_fill, t.goalFamily, t.goalFamilyBody),
   };
 
   @override
@@ -210,12 +190,12 @@ class _GoalStep extends StatelessWidget {
     final full = selected.length >= _maxGoals;
     return _StepPage(
       active: active,
-      title: 'Bạn học',
-      accent: 'để làm gì?',
+      title: context.t.goalStepTitle,
+      accent: context.t.goalStepAccent,
       accentColor: Palette.chatBlue,
       body: selected.isEmpty
-          ? 'Chọn tối đa $_maxGoals mục tiêu.'
-          : 'Đã chọn ${selected.length}/$_maxGoals mục tiêu.',
+          ? context.t.goalPickUpTo(_maxGoals)
+          : context.t.goalPicked(selected.length, _maxGoals),
       gap: 20,
       children: [
         _After(
@@ -228,7 +208,11 @@ class _GoalStep extends StatelessWidget {
             childAspectRatio: 1.45,
             children: [
               for (final id in learningGoals)
-                if (_goals[id] case (final icon, final title, final line))
+                if (_goals(context.t)[id] case (
+                  final icon,
+                  final title,
+                  final line,
+                ))
                   _OptionCard(
                     key: ValueKey('onboarding-goal-$id'),
                     selected: selected.contains(id),

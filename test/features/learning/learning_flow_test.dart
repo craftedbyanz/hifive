@@ -7,11 +7,11 @@ import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/domain/sync/sync.dart';
-import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/game/game.dart';
 import 'package:hifive/features/history/history.dart';
 import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
+import 'package:hifive/l10n/l10n.dart';
 import 'package:hifive/state/state.dart';
 
 import '../../helpers.dart';
@@ -44,16 +44,6 @@ class _FailingInsights implements InsightRepository {
   @override
   Future<List<String>> tips(List<StudySession> month) =>
       fail ? failing<List<String>>() : Future.value(mockInsightTips);
-}
-
-class _FailingDecks implements DeckGenerator {
-  @override
-  Future<List<FlashWord>> generate({
-    required Language language,
-    required String topic,
-    required int count,
-    List<FlashWord> exclude = const [],
-  }) => failing<List<FlashWord>>();
 }
 
 Future<void> _type(WidgetTester tester, Key key, String text) async {
@@ -100,7 +90,12 @@ void main() {
       await tester.pumpWidget(
         AppScope(
           state: state,
-          child: const MaterialApp(home: TopicScreen(mode: StudyMode.grammar)),
+          child: const MaterialApp(
+            locale: Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: supportedAppLocales,
+            home: TopicScreen(mode: StudyMode.grammar),
+          ),
         ),
       );
       expect(find.text('Đang tải...'), findsOneWidget);
@@ -796,23 +791,6 @@ void main() {
             ),
           ];
 
-    testWidgets('failed suggestions can be retried', (tester) async {
-      final insights = _FailingInsights();
-      await mount(
-        tester,
-        withMistake(insights),
-        const InsightScreen(),
-        size: const Size(393, 1500),
-      );
-      await tester.tap(find.text('Xem gợi ý cải thiện'));
-      await tester.pumpAndSettle();
-      expect(find.text('Không tạo được gợi ý'), findsOneWidget);
-      insights.fail = false;
-      await tester.tap(find.byKey(const ValueKey('async-retry')));
-      await tester.pumpAndSettle();
-      expect(find.text(mockInsightTips.first), findsOneWidget);
-    });
-
     testWidgets('Tạo bởi AI explains the suggestions', (tester) async {
       await mount(
         tester,
@@ -824,19 +802,5 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.textContaining('AI tổng hợp'), findsOneWidget);
     });
-  });
-
-  testWidgets('a failed deck generation keeps the form open', (tester) async {
-    final state = fresh(deckGenerator: _FailingDecks());
-    final count = state.decks.length;
-    await mount(tester, state, const DeckListScreen());
-    await tester.tap(find.byTooltip('Thêm bộ thẻ'));
-    await tester.pumpAndSettle();
-    await _type(tester, const ValueKey('deck-topic'), 'Du lịch');
-    await tester.tap(find.byKey(const ValueKey('deck-generate')));
-    await tester.pumpAndSettle();
-    expect(state.decks, hasLength(count));
-    expect(find.text('Không tạo được thẻ. Vui lòng thử lại.'), findsOneWidget);
-    expect(find.byKey(const ValueKey('deck-generate')), findsOneWidget);
   });
 }

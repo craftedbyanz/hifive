@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../learning/learning.dart';
@@ -117,11 +118,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ? PreparingView(
               key: const ValueKey('onboarding-preparing'),
               steps: [
-                'Đang lưu hồ sơ của $_name',
-                'Chọn bài học trình độ $level',
-                'Sắp xếp theo mục tiêu của bạn',
+                context.t.preparingSavingProfile(_name),
+                context.t.preparingChoosingLessons(level ?? ''),
+                context.t.preparingSorting,
               ],
-              detail: 'Chỉ một chút nữa thôi.',
+              detail: context.t.preparingDetail,
               duration: _preparing,
               onDone: _finish,
             )
@@ -188,7 +189,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: SizedBox(
               height: 56,
               child: ActionButton(
-                step == _stepCount - 1 ? 'Hoàn tất' : 'Tiếp tục',
+                step == _stepCount - 1
+                    ? context.t.finish
+                    : context.t.continueStep,
                 key: const ValueKey('onboarding-next'),
                 trailing: step == _stepCount - 1
                     ? null
@@ -209,7 +212,7 @@ class _BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     button: true,
-    label: 'Quay lại',
+    label: context.t.back,
     child: PressFade(
       key: const ValueKey('onboarding-back'),
       onTap: onTap,
@@ -232,7 +235,7 @@ class _Progress extends StatelessWidget {
   const _Progress({required this.step, required this.count});
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Bước ${step + 1} trên $count',
+    label: context.t.stepOf(step + 1, count),
     child: Row(
       children: [
         for (var i = 0; i < count; i++) ...[

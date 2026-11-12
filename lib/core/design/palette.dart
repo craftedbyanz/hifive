@@ -49,6 +49,11 @@ abstract final class Palette {
     Color(0xffa34ef5),
   ];
   static const flagChinaRed = Color(0xffee3124);
+  static const flagVietnamRed = Color(0xffda251d);
+  static const flagVietnamLight = Color(0xffff4a3d);
+  static const flagVietnamShadow = Color(0xff7a0d08);
+  static const flagVietnamStar = Color(0xffffd400);
+  static const flagVietnamStarLight = Color(0xffffff7a);
   static const settingsPanel = Color(0xfff2f5f6);
   static const settingsPanelClear = Color(0x00f2f5f6);
   static const settingsEdge = Color(0xffe5e7eb);
@@ -156,7 +161,6 @@ abstract final class Palette {
   static const logoutEdge = Color(0xfff9d6d6);
   static const menuVeil = Color(0xffe2e7ed);
   static const menuLabelInk = Color(0xff32363a);
-  static const menuGlyph = Color(0xfff3f6ff);
   static const footerIcon = Color(0xff8b8b8b);
   static const statusBand = Color(0xfff3f3f4);
   static const footerNeutral = Color(0xfff2f2f3);
@@ -268,13 +272,10 @@ abstract final class Palette {
   static const monoInk = Color(0xff374151);
   static const regularDark = Color(0xff111111);
   static const helpBody = Color(0xff4b5564);
-  static const flameGreyTop = Color(0xff8a8a8a);
-  static const flameGreyBottom = Color(0xffe6e6e6);
+  static const flameGrey = Color(0xff8a8a8a);
   static const historyYellow = Color(0xfffacc15);
   static const resultPage = Color(0xfffafafa);
   static const streakOrange = Color(0xfff97316);
-  static const flameTop = Color(0xffef4423);
-  static const flameBottom = Color(0xfffcb827);
   static const alertRed = Color(0xffd8232e);
   static const hintWord = Color(0xff713f12);
   static const alertBlue = Color(0xff0a7aff);
@@ -330,4 +331,64 @@ abstract final class Palette {
     'Học tập & Nghiên cứu': Color(0xff707f95),
     'Vui chơi & Giải trí': Color(0xfff9b01b),
   };
+}
+
+/// One hue drawn the way the streak flame is: a body that is [deep] at the top,
+/// [mid] most of the way down and [light] at the base, and a pale core that
+/// runs [core0]…[core2] with a [core3] band at its foot.
+class ArtTone {
+  final Color deep, mid, light, core0, core1, core2, core3;
+  const ArtTone(
+    this.deep,
+    this.mid,
+    this.light,
+    this.core0,
+    this.core1,
+    this.core2,
+    this.core3,
+  );
+
+  static const body = [0.0, .79, 1.0];
+  static const coreStops = [0.0, .45, .86, .94, 1.0];
+  List<Color> get bodyColors => [deep, mid, light];
+  List<Color> get coreColors => [core0, core1, core2, core3, light];
+
+  // The Home menu's animated icons, one per row color.
+  static const insight = ArtTone(
+    Color(0xff1768d2),
+    Color(0xff2499e8),
+    Color(0xff45c6f3),
+    Color(0xffd4f5ff),
+    Color(0xffeffbff),
+    Color(0xffffffff),
+    Color(0xffa6e3f8),
+  );
+  static const plus = ArtTone(
+    Color(0xffee6f1d),
+    Color(0xfff9a420),
+    Color(0xffffc93b),
+    Color(0xffffe680),
+    Color(0xfffff2b4),
+    Color(0xfffffbe6),
+    Color(0xffffd06c),
+  );
+  static const flashcard = ArtTone(
+    Color(0xff5733d3),
+    Color(0xff7b52ef),
+    Color(0xffa183ff),
+    Color(0xffe6dcff),
+    Color(0xfff2edff),
+    Color(0xfffdfcff),
+    Color(0xffcbb9ff),
+  );
+  static const game = ArtTone(
+    Color(0xff0a855c),
+    Color(0xff17ad78),
+    Color(0xff40d59c),
+    Color(0xffcdf7e3),
+    Color(0xffe5fcf0),
+    Color(0xfffbfffd),
+    Color(0xffa6ebcb),
+  );
+  static const gameShadow = Color(0xff04563b);
 }

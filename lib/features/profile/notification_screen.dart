@@ -1,34 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'settings_kit.dart';
-
-const _months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-const _days = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -37,15 +15,14 @@ class NotificationScreen extends StatelessWidget {
     final s = AppScope.of(context);
     final today = s.now();
     return SettingsPage(
-      title: 'Thông báo',
+      title: context.t.profileNotifications,
       background: Colors.white,
       padding: const EdgeInsets.fromLTRB(24, 132, 24, 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _LockScreenArt(
-            date:
-                '${_days[today.weekday - 1]}, ${_months[today.month - 1]} ${today.day}',
+            date: DateFormat.MMMMEEEEd(context.t.localeName).format(today),
           ),
           const SizedBox(height: 24),
           Container(
@@ -74,7 +51,7 @@ class NotificationScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Thông báo đẩy',
+                        context.t.pushNotifications,
                         style: D.text(
                           14.8,
                           weight: FontWeight.w700,
@@ -84,7 +61,7 @@ class NotificationScreen extends StatelessWidget {
                       const SizedBox(height: 3),
                       Text(
                         // This app never asks for notification permission.
-                        'Chưa bật trong Cài đặt',
+                        context.t.notEnabledInSettings,
                         style: D.text(
                           12.5,
                           color: Palette.settingsMuted,
@@ -99,7 +76,7 @@ class NotificationScreen extends StatelessWidget {
                   onTap: () async {
                     final shown = await s.system.openAppSettings();
                     if (!shown && context.mounted) {
-                      toast(context, 'Không mở được Cài đặt.');
+                      toast(context, context.t.cannotOpenSettings);
                     }
                   },
                   child: Container(
@@ -111,7 +88,7 @@ class NotificationScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
-                      'Cài đặt',
+                      context.t.settingsAction,
                       style: D.text(
                         12.5,
                         weight: FontWeight.w600,
@@ -140,7 +117,7 @@ class NotificationScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 9),
                     Text(
-                      'Lịch nhắc thông minh',
+                      context.t.smartReminders,
                       style: D.text(
                         14.8,
                         weight: FontWeight.w700,
@@ -151,7 +128,7 @@ class NotificationScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 11),
                 Text(
-                  'Hifive tự động học thói quen của bạn. Chúng tôi sẽ nhắc bạn vào thời gian bạn thường học nhất.',
+                  context.t.smartRemindersBody,
                   style: D.text(
                     13,
                     color: Palette.settingsMuted,

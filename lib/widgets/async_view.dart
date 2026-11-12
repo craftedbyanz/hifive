@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
+import '../l10n/l10n.dart';
 import 'common.dart';
 
 /// Centered spinner with an optional caption, for content still loading.
 class LoadingView extends StatelessWidget {
-  final String label;
-  const LoadingView({super.key, this.label = 'Đang tải...'});
+  final String? label;
+  const LoadingView({super.key, this.label});
   @override
   Widget build(BuildContext context) => Center(
     child: Padding(
@@ -17,7 +18,7 @@ class LoadingView extends StatelessWidget {
         children: [
           const CupertinoActivityIndicator(radius: 9),
           const SizedBox(width: 10),
-          Text(label, style: D.text(14, color: D.muted)),
+          Text(label ?? context.t.loading, style: D.text(14, color: D.muted)),
         ],
       ),
     ),
@@ -26,23 +27,23 @@ class LoadingView extends StatelessWidget {
 
 /// A failed request, with a retry button. Shown for network and AI errors.
 class ErrorView extends StatelessWidget {
-  final String title, subtitle;
+  final String? title, subtitle;
   final VoidCallback onRetry;
   const ErrorView({
     super.key,
     required this.onRetry,
-    this.title = 'Không tải được nội dung',
-    this.subtitle = 'Kiểm tra kết nối mạng rồi thử lại.',
+    this.title,
+    this.subtitle,
   });
   @override
   Widget build(BuildContext context) => EmptyView(
-    title: title,
-    subtitle: subtitle,
+    title: title ?? context.t.loadFailedTitle,
+    subtitle: subtitle ?? context.t.loadFailedSubtitle,
     icon: Icons.wifi_off_rounded,
     action: SizedBox(
       width: 180,
       child: ActionButton(
-        'Thử lại',
+        context.t.retry,
         key: const ValueKey('async-retry'),
         onTap: onRetry,
         icon: Icons.refresh_rounded,
@@ -59,7 +60,7 @@ class AsyncView<T> extends StatefulWidget {
   final bool Function(T data)? isEmpty;
   final Widget? empty;
   final Object? loadKey;
-  final String loadingLabel;
+  final String? loadingLabel;
 
   /// Shown while loading instead of the spinner, such as a skeleton.
   final Widget? loading;
@@ -70,7 +71,7 @@ class AsyncView<T> extends StatefulWidget {
     this.isEmpty,
     this.empty,
     this.loadKey,
-    this.loadingLabel = 'Đang tải...',
+    this.loadingLabel,
     this.loading,
   });
   @override
@@ -105,9 +106,9 @@ class _AsyncViewState<T> extends State<AsyncView<T>> {
       final data = snapshot.data as T;
       if (widget.isEmpty?.call(data) ?? false) {
         return widget.empty ??
-            const EmptyView(
-              title: 'Chưa có nội dung',
-              subtitle: 'Hãy thử danh mục khác hoặc làm mới.',
+            EmptyView(
+              title: context.t.emptyTitle,
+              subtitle: context.t.emptySubtitle,
             );
       }
       return widget.builder(context, data);

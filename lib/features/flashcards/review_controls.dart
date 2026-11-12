@@ -2,11 +2,14 @@ part of 'review_screen.dart';
 
 /// The ratings, each tied to the direction its card leaves in.
 const _ratings = [
-  ('Học lại', Palette.rateAgain, Offset(-1, 0)),
-  ('Khó', Palette.rateHard, Offset(0, 1)),
-  ('Tốt', Palette.rateGood, Offset(0, -1)),
-  ('Dễ', Palette.rateEasy, Offset(1, 0)),
+  (Palette.rateAgain, Offset(-1, 0)),
+  (Palette.rateHard, Offset(0, 1)),
+  (Palette.rateGood, Offset(0, -1)),
+  (Palette.rateEasy, Offset(1, 0)),
 ];
+
+String _ratingName(AppLocalizations t, int index) =>
+    [t.rateAgain, t.rateHardCard, t.rateGood, t.rateEasyCard][index];
 
 String _intervalLabel(Duration d) =>
     d.inDays > 0 ? '${d.inDays}d' : '${d.inMinutes}m';
@@ -29,9 +32,9 @@ class _TopBar extends StatelessWidget {
           left: 16,
           top: 0,
           child: Semantics(
-            label: 'Đóng ôn tập',
+            label: context.t.closeReview,
             child: Tooltip(
-              message: 'Đóng ôn tập',
+              message: context.t.closeReview,
               triggerMode: TooltipTriggerMode.manual,
               child: PressFade(
                 onTap: onClose,
@@ -82,9 +85,9 @@ class _TopBar extends StatelessWidget {
           top: 0,
           child: Builder(
             builder: (anchor) => Semantics(
-              label: 'Tùy chọn ôn tập',
+              label: context.t.reviewOptions,
               child: Tooltip(
-                message: 'Tùy chọn ôn tập',
+                message: context.t.reviewOptions,
                 triggerMode: TooltipTriggerMode.manual,
                 child: PressFade(
                   onTap: () => onMenu(anchor),
@@ -218,7 +221,8 @@ class _RatingButton extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final (label, color, _) = _ratings[index];
+    final (color, _) = _ratings[index];
+    final label = _ratingName(context.t, index);
     return Semantics(
       button: true,
       label: '$interval, $label',

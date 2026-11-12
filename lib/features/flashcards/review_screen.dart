@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'review_complete.dart';
@@ -141,7 +142,7 @@ class _ReviewScreenState extends State<ReviewScreen>
     state.feedback.tap();
     state.rate(word, value);
     activeRating = value;
-    final direction = _ratings[value].$3;
+    final direction = _ratings[value].$2;
     final size = MediaQuery.sizeOf(context);
     setState(() {
       flyFrom = drag;
@@ -198,20 +199,20 @@ class _ReviewScreenState extends State<ReviewScreen>
     final choice = await showGlassMenu<String>(anchor, [
       GlassMenuItem(
         'auto',
-        'Tự động phát',
+        context.t.autoPlay,
         icon: autoplay
             ? CupertinoIcons.speaker_2
             : CupertinoIcons.speaker_slash,
       ),
-      const GlassMenuItem(
+      GlassMenuItem(
         'color',
-        'Màu thẻ',
+        context.t.cardColor,
         icon: Icons.brush_outlined,
         trailing: CupertinoIcons.chevron_forward,
       ),
-      const GlassMenuItem(
+      GlassMenuItem(
         'guide',
-        'Hướng dẫn',
+        context.t.guide,
         icon: CupertinoIcons.question_circle,
       ),
     ]);
@@ -221,14 +222,18 @@ class _ReviewScreenState extends State<ReviewScreen>
     if (choice == 'color') {
       final tint = await showGlassMenu<bool>(
         anchor,
-        const [
-          GlassMenuItem(true, 'Màu sắc', icon: Icons.palette_outlined),
-          GlassMenuItem(false, 'Đơn sắc', icon: CupertinoIcons.square),
+        [
+          GlassMenuItem(true, context.t.colorful, icon: Icons.palette_outlined),
+          GlassMenuItem(
+            false,
+            context.t.monochrome,
+            icon: CupertinoIcons.square,
+          ),
         ],
-        title: 'Màu thẻ',
+        title: context.t.cardColor,
         behind: GlassMenuItem(
           false,
-          'Tự động phát',
+          context.t.autoPlay,
           icon: autoplay
               ? CupertinoIcons.speaker_2
               : CupertinoIcons.speaker_slash,

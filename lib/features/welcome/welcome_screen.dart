@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
@@ -48,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _next?.cancel();
     if (!welcomeAutoplay(context)) return;
     _next = Timer(_sceneHold, () {
-      if (mounted) _show((scene + 1) % _scenes.length);
+      if (mounted) _show((scene + 1) % _sceneCount);
     });
   }
 
@@ -66,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final s = AppScope.of(context);
-    final current = _scenes[scene];
+    final current = _scenesOf(context.t)[scene];
     final still = MediaQuery.disableAnimationsOf(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -96,7 +97,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     final v = d.primaryVelocity ?? 0;
                     if (v.abs() < 200) return;
                     final step = v < 0 ? 1 : -1;
-                    _show((scene + step) % _scenes.length);
+                    _show((scene + step) % _sceneCount);
                   },
                   child: _Stage(scene: scene),
                 ),
@@ -105,11 +106,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 padding: const EdgeInsets.fromLTRB(24, 4, 24, 12),
                 child: Column(
                   children: [
-                    _Dots(count: _scenes.length, current: scene, onTap: _show),
+                    _Dots(count: _sceneCount, current: scene, onTap: _show),
                     const SizedBox(height: 18),
                     if (s.auth.supportsApple) ...[
                       ActionButton(
-                        'Tiếp tục với Apple',
+                        context.t.continueWithApple,
                         key: const ValueKey('sign-in-apple'),
                         icon: Icons.apple,
                         onTap: busy ? null : () => _signIn(s.signInWithApple),
@@ -117,7 +118,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       const SizedBox(height: 12),
                     ],
                     ActionButton(
-                      'Tiếp tục với Google',
+                      context.t.continueWithGoogle,
                       key: const ValueKey('sign-in-google'),
                       icon: Icons.g_mobiledata_rounded,
                       color: s.auth.supportsApple ? Colors.white : D.ink,
@@ -127,7 +128,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     const SizedBox(height: 12),
                     ActionButton(
-                      'Tiếp tục với email',
+                      context.t.continueWithEmail,
                       key: const ValueKey('sign-in-email-open'),
                       icon: CupertinoIcons.mail,
                       outlined: true,
@@ -155,7 +156,7 @@ class _Stage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final still = MediaQuery.disableAnimationsOf(context);
-    final current = _scenes[scene];
+    final current = _scenesOf(context.t)[scene];
     return LayoutBuilder(
       builder: (context, box) {
         // The art gives up height first on short screens and large text.
@@ -269,7 +270,7 @@ class _Dots extends StatelessWidget {
         Semantics(
           button: true,
           selected: i == current,
-          label: 'Giới thiệu ${i + 1} trên $count',
+          label: context.t.introPage(i + 1, count),
           child: GestureDetector(
             key: ValueKey('welcome-dot-$i'),
             behavior: HitTestBehavior.opaque,
@@ -302,7 +303,7 @@ class _Terms extends StatelessWidget {
   const _Terms();
   @override
   Widget build(BuildContext context) {
-    final s = AppScope.read(context);
+    final s = AppScope.read(context), t = context.t;
     final base = D.text(12, color: D.secondary, height: 17 / 12);
     final link = D.text(
       12,
@@ -314,24 +315,25 @@ class _Terms extends StatelessWidget {
       alignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Text('Khi tiếp tục, bạn đồng ý với ', style: base),
+        Text(t.agreePrefix, style: base),
         _TermsLink(
-          'Điều khoản',
+          t.agreeTerms,
           key: const ValueKey('welcome-terms'),
           style: link,
           onTap: () async {
             if (!await s.system.openTerms() && context.mounted) {
-              toast(context, 'Không mở được điều khoản dịch vụ.');
+              toast(context, t.cannotOpenTerms);
             }
           },
         ),
-        Text(' và ', style: base),
+        Text(t.agreeAnd, style: base),
         _TermsLink(
-          'Chính sách quyền riêng tư',
+          t.profilePrivacy,
           key: const ValueKey('welcome-privacy'),
           style: link,
           onTap: () => go<void>(context, const PrivacyScreen()),
         ),
+        if (t.agreeSuffix.isNotEmpty) Text(t.agreeSuffix, style: base),
       ],
     );
   }

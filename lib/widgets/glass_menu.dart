@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
+import '../l10n/l10n.dart';
 import 'press.dart';
 
 class GlassMenuItem<T> {
@@ -46,7 +47,7 @@ Future<T?> showGlassMenu<T>(
   return showGeneralDialog<T>(
     context: anchor,
     barrierDismissible: true,
-    barrierLabel: 'Đóng',
+    barrierLabel: anchor.t.close,
     barrierColor: Colors.transparent,
     transitionDuration: const Duration(milliseconds: 240),
     pageBuilder: (context, _, _) => Material(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../game/game.dart';
@@ -54,11 +55,11 @@ class _DeckScreenState extends State<DeckScreen> {
   ];
 
   Future<void> _openOptions(BuildContext anchor) async {
-    final choice = await showGlassMenu<String>(anchor, const [
-      GlassMenuItem('add', 'Add Cards', icon: CupertinoIcons.plus),
+    final choice = await showGlassMenu<String>(anchor, [
+      GlassMenuItem('add', context.t.addCards, icon: CupertinoIcons.plus),
       GlassMenuItem(
         'reset',
-        'Học lại từ đầu',
+        context.t.restartDeck,
         icon: CupertinoIcons.arrow_counterclockwise,
       ),
     ]);
@@ -67,10 +68,10 @@ class _DeckScreenState extends State<DeckScreen> {
       await deckForm(context, deck: widget.deck);
     } else if (await confirm(
       context,
-      'Học lại từ đầu?',
-      'Đặt lại lịch ôn của bộ thẻ cục bộ này?',
-      action: 'Đặt lại',
-      cancel: 'Huỷ',
+      context.t.restartDeckTitle,
+      context.t.restartDeckBody,
+      action: context.t.resetAction,
+      cancel: context.t.cancel,
       destructive: true,
     )) {
       if (mounted) AppScope.read(context).resetSchedule(widget.deck);
@@ -95,7 +96,7 @@ class _DeckScreenState extends State<DeckScreen> {
                 icon: CupertinoIcons.ellipsis,
                 iconSize: 24,
                 width: 48,
-                label: 'Tùy chọn bộ thẻ',
+                label: context.t.deckOptions,
                 onTap: () => _openOptions(anchor),
               ),
             ),
@@ -120,8 +121,8 @@ class _DeckScreenState extends State<DeckScreen> {
                       : _Summary(
                           deck: deck,
                           reviewLabel: reviewAll
-                              ? 'Ôn tập tất cả'
-                              : 'Ôn tập (${due.length})',
+                              ? context.t.reviewAll
+                              : context.t.reviewDue(due.length),
                           onReview: review.isEmpty
                               ? null
                               : () => go<void>(
@@ -158,7 +159,7 @@ class _DeckScreenState extends State<DeckScreen> {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Đã hoàn thành bài học hôm nay!',
+                          context.t.doneForToday,
                           style: D.text(
                             14,
                             color: Palette.settingsHint,
@@ -184,9 +185,9 @@ class _DeckScreenState extends State<DeckScreen> {
             duration: const Duration(milliseconds: 220),
             offset: searching ? const Offset(0, 2) : Offset.zero,
             child: Semantics(
-              label: 'Tìm kiếm thẻ',
+              label: context.t.searchCards,
               child: Tooltip(
-                message: 'Tìm kiếm thẻ',
+                message: context.t.searchCards,
                 triggerMode: TooltipTriggerMode.manual,
                 child: PressFade(
                   key: const ValueKey('deck-search-open'),
@@ -278,7 +279,7 @@ class _SearchBar extends StatelessWidget {
                     onChanged: onChanged,
                     style: D.text(14.5, height: 20 / 14.5),
                     decoration: InputDecoration(
-                      hintText: 'Tìm kiếm từ vựng...',
+                      hintText: context.t.searchWordsHint,
                       hintStyle: D.text(
                         14.5,
                         color: Palette.settingsHint,
@@ -303,7 +304,10 @@ class _SearchBar extends StatelessWidget {
                 PressFade(
                   key: const ValueKey('deck-search-cancel'),
                   onTap: onCancel,
-                  child: Text('Cancel', style: D.text(14.5, height: 19 / 14.5)),
+                  child: Text(
+                    context.t.cancelEn,
+                    style: D.text(14.5, height: 19 / 14.5),
+                  ),
                 ),
               ],
             ),
@@ -384,11 +388,19 @@ class _Summary extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _Stat(CupertinoIcons.sparkles, '${_count('new')}', 'Mới'),
+          _Stat(CupertinoIcons.sparkles, '${_count('new')}', context.t.statNew),
           const SizedBox(width: 34),
-          _Stat(CupertinoIcons.book_fill, '${_count('learning')}', 'Đang học'),
+          _Stat(
+            CupertinoIcons.book_fill,
+            '${_count('learning')}',
+            context.t.statLearning,
+          ),
           const SizedBox(width: 34),
-          _Stat(Icons.history_rounded, '${_count('review')}', 'Ôn tập'),
+          _Stat(
+            Icons.history_rounded,
+            '${_count('review')}',
+            context.t.statReview,
+          ),
         ],
       ),
       const SizedBox(height: 32),
@@ -411,7 +423,7 @@ class _Summary extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Deck Progress',
+            context.t.deckProgress,
             style: D.text(
               13.5,
               weight: FontWeight.w500,
@@ -420,7 +432,7 @@ class _Summary extends StatelessWidget {
             ),
           ),
           Text(
-            '${deck.words.length} cards',
+            context.t.cardsCount(deck.words.length),
             style: D.text(13.5, weight: FontWeight.w700, height: 18 / 13.5),
           ),
         ],
@@ -432,13 +444,13 @@ class _Summary extends StatelessWidget {
         review: _count('review'),
       ),
       const SizedBox(height: 12),
-      const Row(
+      Row(
         children: [
-          _Legend('Mới', Palette.previewDefault),
-          SizedBox(width: 15),
-          _Legend('Đang học', Palette.progressLearning),
-          SizedBox(width: 15),
-          _Legend('Ôn tập', Palette.progressReview),
+          _Legend(context.t.statNew, Palette.previewDefault),
+          const SizedBox(width: 15),
+          _Legend(context.t.statLearning, Palette.progressLearning),
+          const SizedBox(width: 15),
+          _Legend(context.t.statReview, Palette.progressReview),
         ],
       ),
       const SizedBox(height: 11),
@@ -449,12 +461,16 @@ class _Summary extends StatelessWidget {
             builder: (anchor) => _Chip(
               key: const ValueKey('deck-sort'),
               icon: CupertinoIcons.arrow_up_arrow_down,
-              label: sort,
+              label: _sortName(context.t, sort),
               active: false,
               onTap: () async {
                 final v = await showGlassMenu<String>(anchor, [
                   for (final s in const ['Newest', 'Oldest', 'A-Z'])
-                    GlassMenuItem(s, s, checked: s == sort),
+                    GlassMenuItem(
+                      s,
+                      _sortName(context.t, s),
+                      checked: s == sort,
+                    ),
                 ]);
                 if (v != null) onSort(v);
               },
@@ -464,7 +480,9 @@ class _Summary extends StatelessWidget {
             builder: (anchor) => _Chip(
               key: const ValueKey('deck-filter'),
               icon: CupertinoIcons.line_horizontal_3_decrease_circle,
-              label: filter == 'All' ? 'Filters' : filter,
+              label: filter == 'All'
+                  ? context.t.filters
+                  : _filterName(context.t, filter),
               active: filter != 'All',
               onTap: () async {
                 final v = await showGlassMenu<String>(anchor, [
@@ -474,7 +492,11 @@ class _Summary extends StatelessWidget {
                     'Learning',
                     'Mastered',
                   ])
-                    GlassMenuItem(f, f, checked: f == filter),
+                    GlassMenuItem(
+                      f,
+                      _filterName(context.t, f),
+                      checked: f == filter,
+                    ),
                 ]);
                 if (v != null) onFilter(v);
               },
@@ -660,9 +682,13 @@ class _WordRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, fill, ink) = switch (word.status) {
-      'new' => ('MỚI', Palette.newPill, Palette.newPillInk),
-      'learning' => ('ĐANG HỌC', Palette.learningPill, Palette.learningPillInk),
-      _ => ('ÔN TẬP', Palette.reviewPill, Palette.reviewPillInk),
+      'new' => (context.t.pillNew, Palette.newPill, Palette.newPillInk),
+      'learning' => (
+        context.t.pillLearning,
+        Palette.learningPill,
+        Palette.learningPillInk,
+      ),
+      _ => (context.t.pillReview, Palette.reviewPill, Palette.reviewPillInk),
     };
     return Container(
       // The reference has no phonetic for some words, and those rows are shorter.
@@ -695,9 +721,9 @@ class _WordRow extends StatelessWidget {
                     ),
                   ),
                   Semantics(
-                    label: 'Phát âm ${word.word}',
+                    label: context.t.pronounceWord(word.word),
                     child: Tooltip(
-                      message: 'Phát âm ${word.word}',
+                      message: context.t.pronounceWord(word.word),
                       triggerMode: TooltipTriggerMode.manual,
                       child: PressFade(
                         onTap: () => playWord(context, word.word),
@@ -774,3 +800,18 @@ class _WordRow extends StatelessWidget {
     );
   }
 }
+
+/// A sort id's name; the ids stay the English words.
+String _sortName(AppLocalizations t, String sort) => switch (sort) {
+  'Oldest' => t.sortOldest,
+  'A-Z' => t.sortAZ,
+  _ => t.sortNewest,
+};
+
+/// A filter id's name; the ids stay the English words.
+String _filterName(AppLocalizations t, String filter) => switch (filter) {
+  'Not studied' => t.filterNotStudied,
+  'Learning' => t.filterLearning,
+  'Mastered' => t.filterMastered,
+  _ => t.filterAll,
+};

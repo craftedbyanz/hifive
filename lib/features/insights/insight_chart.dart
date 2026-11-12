@@ -18,7 +18,7 @@ class _WeekChart extends StatelessWidget {
             .length,
     ];
     final highest = counts.fold(1, (a, b) => a > b ? a : b);
-    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final names = context.t.weekdaysMonFirst.split(',');
     return Container(
       key: const ValueKey('insight-week'),
       height: 193.5,
@@ -38,7 +38,7 @@ class _WeekChart extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                'Hoạt động tuần này',
+                context.t.thisWeekActivity,
                 style: D.text(
                   13,
                   weight: FontWeight.w500,
@@ -131,7 +131,7 @@ class _Together extends StatelessWidget {
           ),
           const SizedBox(width: 5),
           Text(
-            'Cùng Hifive',
+            context.t.withHifive,
             style: D.text(
               13,
               weight: FontWeight.w500,
@@ -144,7 +144,8 @@ class _Together extends StatelessWidget {
       const SizedBox(height: 9),
       _InlineWords(
         children: [
-          Text('Bạn đã ở cùng', style: _bigText),
+          if (context.t.withPrefix.isNotEmpty)
+            Text(context.t.withPrefix, style: _bigText),
           const SizedBox(width: 5),
           const Icon(
             CupertinoIcons.sparkles,
@@ -157,18 +158,20 @@ class _Together extends StatelessWidget {
             style: _bigStrong.copyWith(color: Palette.insightPeople),
           ),
           const SizedBox(width: 4),
-          Text('được', style: _bigText),
+          if (context.t.withMiddle.isNotEmpty)
+            Text(context.t.withMiddle, style: _bigText),
         ],
       ),
       const SizedBox(height: 11),
       Text.rich(
         // The reference lets this line run past the side margin.
-        softWrap: false,
+        // Other languages wrap, since their line can be longer.
+        softWrap: context.t.localeName != 'vi',
         overflow: TextOverflow.visible,
         TextSpan(
           children: [
-            TextSpan(text: '$days ngày. ', style: _bigStrong),
-            TextSpan(text: 'Cảm ơn bạn đã đồng hành!', style: _bigText),
+            TextSpan(text: context.t.withDays(days), style: _bigStrong),
+            TextSpan(text: context.t.thanksForJourney, style: _bigText),
           ],
         ),
       ),

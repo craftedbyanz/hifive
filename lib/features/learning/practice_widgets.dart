@@ -34,8 +34,8 @@ class _OpinionRow extends StatelessWidget {
     );
     return Row(
       children: [
-        choice('like', CupertinoIcons.hand_thumbsup, 'Thích'),
-        choice('dislike', CupertinoIcons.hand_thumbsdown, 'Không thích'),
+        choice('like', CupertinoIcons.hand_thumbsup, context.t.like),
+        choice('dislike', CupertinoIcons.hand_thumbsdown, context.t.dislike),
       ],
     );
   }
@@ -138,9 +138,9 @@ class _NextButton extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     button: true,
     enabled: onTap != null,
-    label: 'Chuyển tiếp',
+    label: context.t.next,
     child: Tooltip(
-      message: 'Chuyển tiếp',
+      message: context.t.next,
       triggerMode: TooltipTriggerMode.manual,
       child: GestureDetector(
         onTap: onTap,
@@ -192,7 +192,7 @@ class _DictionaryCard extends StatelessWidget {
         ),
       ),
     );
-    final where = 'Câu ${entry.sentences.join(', ')}';
+    final where = context.t.sentencesList(entry.sentences.join(', '));
     return Container(
       margin: const EdgeInsets.only(bottom: 9),
       padding: const EdgeInsets.fromLTRB(9, 16, 9, 15),
@@ -221,14 +221,19 @@ class _DictionaryCard extends StatelessWidget {
               round(
                 CupertinoIcons.speaker_2_fill,
                 D.muted,
-                'Phát âm ${entry.word}',
+                context.t.pronounceWord(entry.word),
                 () => playWord(context, entry.word),
               ),
               const SizedBox(width: 8),
-              round(CupertinoIcons.add, D.green, 'Lưu ${entry.word}', () {
-                AppScope.read(context).saveWord(entry.word, entry.meaning);
-                toast(context, 'Đã lưu ${entry.word}');
-              }),
+              round(
+                CupertinoIcons.add,
+                D.green,
+                context.t.saveItem(entry.word),
+                () {
+                  AppScope.read(context).saveWord(entry.word, entry.meaning);
+                  toast(context, context.t.savedWord(entry.word));
+                },
+              ),
             ],
           ),
           const SizedBox(height: 8),

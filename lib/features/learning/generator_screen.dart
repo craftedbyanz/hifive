@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'chat_screen.dart';
@@ -27,7 +28,6 @@ class GeneratorScreen extends StatefulWidget {
 }
 
 /// The custom row is first; presets follow.
-const _custom = 'TÙY CHỈNH';
 
 class _GeneratorScreenState extends State<GeneratorScreen> {
   /// A typed topic; presets come from the wheel.
@@ -71,7 +71,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() => generating = false);
-      toast(context, 'Không tạo được bài luyện tập. Vui lòng thử lại.');
+      toast(context, context.t.practiceFailed);
     }
   }
 
@@ -124,9 +124,9 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
       child: AsyncView<GeneratorCatalog>(
         load: load,
         isEmpty: (c) => c.presets.isEmpty,
-        empty: const EmptyView(
-          title: 'Chưa có gợi ý',
-          subtitle: 'Hãy tự mô tả chủ đề bạn muốn luyện tập.',
+        empty: EmptyView(
+          title: context.t.noSuggestions,
+          subtitle: context.t.describeOwnTopic,
         ),
         builder: (context, catalog) => _body(catalog.presets),
       ),
@@ -136,7 +136,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
   Widget _body(List<GeneratorPreset> presets) {
     final topic = chosen(presets);
     final line = selected == 0
-        ? (typed.isEmpty ? 'Tạo chủ đề độc đáo của riêng bạn.' : typed)
+        ? (typed.isEmpty ? context.t.createOwnTopic : typed)
         : presets[selected - 1].description;
     final bottom = MediaQuery.paddingOf(context).bottom;
     return Column(
@@ -153,7 +153,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'TẠO BẰNG AI',
+                        context.t.createWithAiCaps,
                         style: D.text(
                           10,
                           weight: FontWeight.w700,
@@ -163,7 +163,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                         ),
                       ),
                       Text(
-                        'CHỌN CHỦ ĐỀ',
+                        context.t.chooseTopicCaps,
                         style: D.text(
                           10,
                           weight: FontWeight.w800,
@@ -176,7 +176,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                 ),
                 Semantics(
                   button: true,
-                  label: 'Đóng',
+                  label: context.t.close,
                   child: PressFade(
                     onTap: () => Navigator.pop(context),
                     child: Container(
@@ -215,7 +215,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
               childDelegate: ListWheelChildBuilderDelegate(
                 childCount: presets.length + 1,
                 builder: (context, i) => _Row(
-                  text: i == 0 ? _custom : presets[i - 1].title,
+                  text: i == 0 ? context.t.customCaps : presets[i - 1].title,
                   custom: i == 0,
                   selected: i == selected,
                   onTap: () {
@@ -248,7 +248,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'MÔ TẢ CHỦ ĐỀ',
+                        context.t.describeTopicCaps,
                         style: D.text(
                           10,
                           color: D.muted,
@@ -270,7 +270,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
               const SizedBox(width: 12),
               Semantics(
                 button: true,
-                label: 'Bắt đầu luyện tập',
+                label: context.t.startPractice,
                 child: PressFade(
                   key: const ValueKey('generator-go'),
                   onTap: generating ? null : () => start(topic),
@@ -408,15 +408,15 @@ class _TopicEditorState extends State<_TopicEditor> {
               children: [
                 Text(
                   widget.mode == StudyMode.conversation
-                      ? 'Tạo tình huống'
-                      : 'Tạo Câu Luyện Tập',
+                      ? context.t.createScenario
+                      : context.t.createSentences,
                   style: D.text(15.3, weight: FontWeight.w700),
                 ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Semantics(
                     button: true,
-                    label: 'Đóng',
+                    label: context.t.close,
                     child: PressFade(
                       onTap: () => Navigator.pop(context),
                       child: Container(
@@ -462,7 +462,7 @@ class _TopicEditorState extends State<_TopicEditor> {
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                hintText: "VD: 'Phrasal Verbs với Get', 'Câu hỏi phỏng vấn'...",
+                hintText: context.t.customTopicHint,
                 hintStyle: D.text(14.6, color: D.muted),
               ),
             ),
@@ -507,7 +507,7 @@ class _TopicEditorState extends State<_TopicEditor> {
                 borderRadius: BorderRadius.circular(27),
               ),
               child: Text(
-                'Bắt Đầu Luyện Tập',
+                context.t.startPracticeCaps,
                 style: D.text(16, weight: FontWeight.w700, color: Colors.white),
               ),
             ),

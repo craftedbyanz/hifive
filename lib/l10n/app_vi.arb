@@ -1,0 +1,1034 @@
+{
+  "@@locale": "vi",
+  "appLanguageTitle": "Ngôn ngữ ứng dụng",
+  "appLanguageSystem": "Theo ngôn ngữ máy",
+  "appLanguageHint": "Áp dụng cho chữ trong ứng dụng. Nội dung bài học vẫn giữ nguyên.",
+  "comingSoon": "Sắp ra mắt",
+  "loading": "Đang tải...",
+  "loadFailedTitle": "Không tải được nội dung",
+  "loadFailedSubtitle": "Kiểm tra kết nối mạng rồi thử lại.",
+  "retry": "Thử lại",
+  "emptyTitle": "Chưa có nội dung",
+  "emptySubtitle": "Hãy thử danh mục khác hoặc làm mới.",
+  "leave": "Thoát",
+  "stay": "Ở lại",
+  "close": "Đóng",
+  "back": "Quay lại",
+  "exitGame": "Thoát game",
+  "plusBannerTitle": "Đăng ký Hifive Plus",
+  "plusBannerBody": "Mở khóa mức sử dụng cao hơn và làm chủ kỹ năng ngôn ngữ của bạn.",
+  "vietnamFlag": "Cờ Việt Nam",
+  "greetingNight": "Chúc ngủ ngon,",
+  "greetingMorning": "Chào buổi sáng,",
+  "greetingAfternoon": "Chào buổi chiều,",
+  "greetingEvening": "Chào buổi tối,",
+  "homeWhatToLearn": "Bạn chưa biết học gì hôm nay?",
+  "homeAiLesson": "Tạo bài học với AI",
+  "homeModesTitle": "Chế độ học tập",
+  "homeModesSubtitle": "Nâng cao kỹ năng viết, ngữ pháp và giao tiếp cùng AI.",
+  "homeSuggestTitle": "Hifive đề xuất",
+  "homeSuggestSubtitle": "Các chủ đề được chọn lọc để giúp bạn học nhanh hơn.",
+  "topicSurprise": "Làm tôi bất ngờ",
+  "topicTravel": "Du lịch",
+  "topicBusiness": "Kinh doanh",
+  "topicFood": "Ẩm thực",
+  "topicShopping": "Mua sắm",
+  "topicHealth": "Sức khỏe",
+  "topicSocial": "Xã hội",
+  "topicLife": "Đời sống",
+  "topicEntertainment": "Giải trí",
+  "home101Body": "Tất cả những gì bạn cần biết về Hifive và cách ứng dụng giúp bạn học tập hiệu quả.",
+  "openFlashcards": "Mở Flashcard",
+  "flashPromoTitle": "VOCABULARY\nFLASHCARD",
+  "flashPromoBody": "Lưu từ mới, ôn tập theo\nSRS và theo dõi tiến bộ mỗi\nngày.",
+  "sampleResilientMeaning": "Kiên cường",
+  "sampleAcquireMeaning": "Tiếp thu",
+  "tryNow": "Thử ngay",
+  "flowTagline": "Xếp chữ cái thành từ vựng",
+  "modeGrammarBlurb": "Sửa lỗi nhanh với các câu ngắn.",
+  "modeWritingBlurb": "Rèn luyện dịch và viết các\nđoạn văn.",
+  "modeChatBlurb": "Mô phỏng đa dạng các\ntình huống.",
+  "explore": "KHÁM PHÁ",
+  "modeWritingTitle": "Đoạn văn",
+  "modeGrammarTitle": "Sửa câu",
+  "modeChatTitle": "Hội thoại",
+  "modeWritingCategory": "LUYỆN VIẾT",
+  "modeGrammarCategory": "NGỮ PHÁP",
+  "modeChatCategory": "GIAO TIẾP",
+  "modeWritingHeadline": "Viết nên",
+  "modeGrammarHeadline": "Hoàn thiện",
+  "modeChatHeadline": "Thực hành",
+  "modeWritingAccent": "câu chuyện",
+  "modeGrammarAccent": "ngữ pháp",
+  "modeChatAccent": "giao tiếp",
+  "modeWritingAction": "Bắt đầu",
+  "modeGrammarAction": "Sửa nhanh",
+  "modeChatAction": "Bắt đầu chat",
+  "menuInsight": "Insight",
+  "menuPlus": "Nâng cấp Hifive Plus",
+  "menuFlashcards": "Học flashcard",
+  "menuStreak": "Chuỗi của tôi",
+  "menuGame": "Chơi FlowLetter",
+  "streakLabel": "Chuỗi:",
+  "streakDays": "{count} ngày",
+  "@streakDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "menu": "Menu",
+  "profileTitle": "Profile",
+  "profileStudying": "Đang học",
+  "profileGeneral": "Cài đặt chung",
+  "profileEdit": "Chỉnh sửa hồ sơ",
+  "profileLessonSettings": "Cài đặt bài học",
+  "profileVoice": "Giọng đọc",
+  "profileAppearance": "Giao diện",
+  "profileNotifications": "Thông báo",
+  "profileSubscription": "Gói đăng ký",
+  "profileRedeem": "Nhập mã ưu đãi",
+  "profileInvite": "Mời bạn bè",
+  "profileRate": "Đánh giá ứng dụng",
+  "profileOther": "Khác",
+  "profileFeedback": "Gửi phản hồi",
+  "profileTerms": "Điều khoản dịch vụ",
+  "profilePrivacy": "Chính sách quyền riêng tư",
+  "notSignedIn": "Bạn chưa đăng nhập.",
+  "signOutTitle": "Đăng xuất?",
+  "signOutSynced": "Dữ liệu học đã được lưu vào tài khoản và sẽ bị xoá khỏi máy này.",
+  "signOutLocal": "Dữ liệu học trên máy này vẫn được giữ lại.",
+  "signOut": "Đăng xuất",
+  "cancel": "Huỷ",
+  "syncUnfinishedTitle": "Chưa đồng bộ xong",
+  "syncUnfinishedBody": "Một số thay đổi chưa được lưu vào tài khoản và sẽ bị mất. Vẫn đăng xuất?",
+  "signOutAnyway": "Vẫn đăng xuất",
+  "cannotOpenHere": "Thiết bị này chưa mở được mục này.",
+  "planFree": "Free",
+  "trialLine1": "Nâng cấp để có giới hạn cao hơn",
+  "trialLine2": "Truy cập sớm các tính năng mới",
+  "trialLine3": "Mở khóa toàn bộ sức mạnh AI",
+  "trialTitle": "Dùng thử Hifive Plus",
+  "upgrade": "Upgrade",
+  "footerMotto": "Học một chút mỗi ngày",
+  "footerCredit": "Develop and Design by Anz in VietNam",
+  "redeemOffer": "Redeem Offer",
+  "redeemCodeHint": "Code",
+  "redeemLocalNote": "Bản cục bộ không kết nối App Store hoặc đổi mã.",
+  "continueAction": "Continue",
+  "optionalHint": "Optional",
+  "send": "Send",
+  "reviewLocalNote": "Bản cục bộ không gửi đánh giá đi đâu cả.",
+  "writeReview": "Write a Review",
+  "appCategoryEducation": "Education",
+  "tapToRate": "Tap to Rate:",
+  "reviewTitleField": "Title",
+  "reviewBodyField": "Review",
+  "addNickname": "Add Nickname",
+  "saveChanges": "Lưu thay đổi",
+  "displayName": "Tên hiển thị",
+  "emailAddress": "Địa chỉ Email",
+  "noEmail": "Tài khoản không có email",
+  "signedInWith": "Kết nối qua",
+  "notSignedInShort": "Chưa đăng nhập",
+  "connected": "Đã kết nối",
+  "syncLabel": "Đồng bộ",
+  "syncNow": "Đồng bộ ngay",
+  "dangerZone": "Vùng nguy hiểm",
+  "deleteAccountLater": "Xóa tài khoản sẽ có trong bản phát hành chính thức.",
+  "deleteAccount": "Xóa tài khoản",
+  "deleteAccountBody": "Xóa vĩnh viễn tất cả dữ liệu của bạn",
+  "syncing": "Đang đồng bộ...",
+  "syncFailed": "Chưa đồng bộ được",
+  "neverSynced": "Chưa đồng bộ",
+  "syncedAtTime": "Đã đồng bộ lúc {time}",
+  "@syncedAtTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "syncedOnDate": "Đã đồng bộ {date}",
+  "@syncedOnDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "countryUS": "United States",
+  "countryUK": "United Kingdom",
+  "countryAU": "Australia",
+  "voiceHowTo": "Cách cài đặt giọng đọc",
+  "voiceEngineBody": "Hifive sử dụng công nghệ Neural Audio của Apple để mang lại trải nghiệm nghe tự nhiên và sống động nhất.",
+  "voiceModels": "Voice Models",
+  "voiceNormal": "Normal",
+  "voiceStep1Title": "Mở Cài đặt (Settings)",
+  "voiceStep1Body": "Truy cập ứng dụng Cài đặt trên màn hình chính của iPhone.",
+  "voiceStep2Title": "Vào Trợ năng (Accessibility)",
+  "voiceStep2Body": "Tìm và chọn mục Trợ năng trong danh sách\ncài đặt.",
+  "voiceStep3Title": "Mở Nội dung được đọc",
+  "voiceStep3Body": "Chọn 'Đọc & Nói' (Read & Speak) -> 'Giọng nói' (Voices).",
+  "voiceStep4Title": "Tải giọng Premium hoặc Enhanced",
+  "voiceStep4Body": "Chọn 'Tiếng Anh' (English) -> Chọn 1 giọng (ví dụ: Ava, Tom) -> Tải về bản 'Cao cấp' (Premium) hoặc 'Nâng cao' (Enhanced).",
+  "voiceHelpIntro": "Để có trải nghiệm nghe tốt nhất, hãy tải về các gói giọng đọc Neural chất lượng cao từ Apple trên chính Iphone của bạn.",
+  "appearanceTitle": "Appearance",
+  "styleRegular": "Regular",
+  "styleMono": "Mono",
+  "styleMinimal": "Minimal",
+  "styleGlass": "Glass",
+  "cardOrder": "Card Order",
+  "reset": "Reset",
+  "reorderItem": "Reorder {name}",
+  "@reorderItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "previewWritingTag": "TRANSLATION",
+  "previewWritingTitle": "Paragraph",
+  "previewWritingName": "Translation",
+  "previewWritingBlurb": "Master sentence structure & flow.",
+  "previewGrammarTag": "GRAMMAR",
+  "previewGrammarTitle": "Quick Fix",
+  "previewGrammarName": "Grammar",
+  "previewGrammarBlurb": "Fix common mistakes instantly.",
+  "previewChatTag": "DIALOGUE",
+  "previewChatTitle": "Speaking",
+  "previewChatName": "Dialogue",
+  "previewChatBlurb": "Simulate real-life chats.",
+  "pushNotifications": "Thông báo đẩy",
+  "notEnabledInSettings": "Chưa bật trong Cài đặt",
+  "cannotOpenSettings": "Không mở được Cài đặt.",
+  "settingsAction": "Cài đặt",
+  "smartReminders": "Lịch nhắc thông minh",
+  "smartRemindersBody": "Hifive tự động học thói quen của bạn. Chúng tôi sẽ nhắc bạn vào thời gian bạn thường học nhất.",
+  "lessonSettingsTitle": "Lesson Settings",
+  "inputColor": "Màu ô nhập",
+  "hintSettings": "Cài đặt gợi ý",
+  "alwaysShowHints": "Luôn hiển thị gợi ý",
+  "showHintsWithoutTap": "Hiển thị từ gợi ý mà\nkhông cần chạm",
+  "typeTranslation": "Nhập bản dịch của bạn...",
+  "chooseLevel": "Chọn cấp độ",
+  "confirm": "Xác nhận",
+  "cefrBody": "Khung tham chiếu ngôn ngữ chung châu Âu (CEFR) chia trình độ thành 6 cấp, từ người mới bắt đầu đến thành thạo.",
+  "levelAiNote": "AI sẽ tạo ra các bài viết dựa theo trình độ của bạn, hãy chọn mức độ phù hợp nhất.",
+  "yourLevel": "Trình độ của bạn",
+  "noCourses": "Chưa có khoá học",
+  "comeBackLater": "Hãy quay lại sau.",
+  "studyLanguage": "Ngôn ngữ học",
+  "chooseStudyLanguage": "Chọn ngôn ngữ học",
+  "studyLanguageBody": "Hifive hiện hỗ trợ lên tới 4 ngôn ngữ và sẽ mở rộng thêm trong tương lai.",
+  "languagesSection": "Ngôn ngữ",
+  "currentLevel": "TRÌNH ĐỘ HIỆN TẠI",
+  "languageSoonTag": "Coming soon",
+  "continueWithApple": "Tiếp tục với Apple",
+  "continueWithGoogle": "Tiếp tục với Google",
+  "continueWithEmail": "Tiếp tục với email",
+  "introPage": "Giới thiệu {index} trên {count}",
+  "@introPage": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agreePrefix": "Khi tiếp tục, bạn đồng ý với ",
+  "agreeTerms": "Điều khoản",
+  "agreeAnd": " và ",
+  "agreeSuffix": "",
+  "cannotOpenTerms": "Không mở được điều khoản dịch vụ.",
+  "loadingYourData": "Đang tải dữ liệu của bạn",
+  "loadingYourDataDetail": "Lấy tiến độ từ tài khoản về thiết bị này.",
+  "signingIn": "Đang đăng nhập",
+  "authWrongCredentials": "Email hoặc mật khẩu không đúng.",
+  "authEmailInUse": "Email này đã có tài khoản. Hãy đăng nhập.",
+  "authWeakPassword": "Mật khẩu cần ít nhất 6 ký tự.",
+  "authInvalidEmail": "Email không hợp lệ.",
+  "authTooManyRequests": "Bạn thử quá nhiều lần. Vui lòng đợi một lát.",
+  "authNetwork": "Không có kết nối mạng. Vui lòng thử lại.",
+  "authUnavailable": "Cách đăng nhập này chưa được bật.",
+  "authUnknown": "Không đăng nhập được. Vui lòng thử lại.",
+  "resetNeedsEmail": "Nhập email để nhận liên kết đặt lại mật khẩu.",
+  "resetSent": "Đã gửi email đặt lại mật khẩu.",
+  "createAccountTitle": "Tạo tài khoản Hifive",
+  "emailSignInTitle": "Đăng nhập bằng email",
+  "emailSignInBody": "Lưu tiến độ và học tiếp trên mọi thiết bị.",
+  "emailHint": "Email",
+  "passwordHint": "Mật khẩu",
+  "working": "Đang xử lý...",
+  "createAccount": "Tạo tài khoản",
+  "signIn": "Đăng nhập",
+  "haveAccountSignIn": "Đã có tài khoản? Đăng nhập",
+  "createNewAccount": "Tạo tài khoản mới",
+  "forgotPassword": "Quên mật khẩu?",
+  "sceneWritingTitle": "Viết thật nhiều,\nsửa từng câu",
+  "sceneWritingBody": "Viết bằng ngôn ngữ bạn học, nhận góp ý ngay cho từng câu.",
+  "sceneChatTitle": "Trò chuyện\nkhông sợ sai",
+  "sceneChatBody": "Luyện hội thoại theo tình huống, lỗi được chỉ ra nhẹ nhàng.",
+  "sceneWordsTitle": "Nhớ từ mới\nlâu hơn",
+  "sceneWordsBody": "Bộ thẻ nhắc bạn ôn lại đúng lúc sắp quên.",
+  "demoSourceLanguage": "TIẾNG VIỆT",
+  "demoSourceSentence": "Cuối tuần này mình đi biển nhé!",
+  "demoYouWrote": "BẠN VIẾT",
+  "demoNatural": "Tự nhiên · 96",
+  "demoPastTense": "Quá khứ: go → went",
+  "demoRememberMeaning": "ghi nhớ",
+  "rateHard": "Khó",
+  "rateOkay": "Ổn",
+  "rateEasy": "Dễ",
+  "reviewInDays": "Ôn lại sau {count} ngày",
+  "@reviewInDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "preparingSavingProfile": "Đang lưu hồ sơ của {name}",
+  "@preparingSavingProfile": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "preparingChoosingLessons": "Chọn bài học trình độ {level}",
+  "@preparingChoosingLessons": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "preparingSorting": "Sắp xếp theo mục tiêu của bạn",
+  "preparingDetail": "Chỉ một chút nữa thôi.",
+  "finish": "Hoàn tất",
+  "continueStep": "Tiếp tục",
+  "stepOf": "Bước {step} trên {count}",
+  "@stepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nameStepTitle": "Chào bạn!",
+  "nameStepAccent": "Bạn tên là gì?",
+  "nameStepBody": "Hifive sẽ gọi bạn bằng tên này. Bạn có thể đổi trong Hồ sơ.",
+  "yourName": "Tên của bạn",
+  "levelLineA1": "Biết vài từ và câu chào hỏi.",
+  "levelLineA2": "Viết được câu đơn giản về bản thân.",
+  "levelLineB1": "Viết được đoạn ngắn về chủ đề quen thuộc.",
+  "levelLineB2": "Nêu quan điểm khá tự nhiên, có lập luận.",
+  "levelLineC1": "Viết mạch lạc cho học tập và công việc.",
+  "levelLineC2": "Gần như người bản ngữ.",
+  "levelStepTitle": "Trình độ hiện tại",
+  "levelStepAccent": "của bạn là gì?",
+  "levelStepBody": "Bài học bắt đầu từ mức này. Chưa chắc thì chọn thấp hơn một bậc.",
+  "goalDaily": "Giao tiếp",
+  "goalDailyBody": "Trò chuyện hằng ngày",
+  "goalTravel": "Du lịch",
+  "goalTravelBody": "Hỏi đường, gọi món",
+  "goalWork": "Công việc",
+  "goalWorkBody": "Email, họp, thuyết trình",
+  "goalExam": "Thi chứng chỉ",
+  "goalExamBody": "IELTS, TOEIC, TOEFL",
+  "goalStudy": "Du học",
+  "goalStudyBody": "Bài giảng, bài luận",
+  "goalWriting": "Viết tốt hơn",
+  "goalWritingBody": "Câu rõ ý, ít lỗi",
+  "goalMedia": "Phim và nhạc",
+  "goalMediaBody": "Hiểu không cần phụ đề",
+  "goalFamily": "Cùng gia đình",
+  "goalFamilyBody": "Học cùng con, người thân",
+  "goalStepTitle": "Bạn học",
+  "goalStepAccent": "để làm gì?",
+  "goalPickUpTo": "Chọn tối đa {max} mục tiêu.",
+  "@goalPickUpTo": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "goalPicked": "Đã chọn {count}/{max} mục tiêu.",
+  "@goalPicked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "welcomeStepTitle": "Chào mừng",
+  "welcomeStepAccent": "đến với Hifive",
+  "welcomeStepBody": "Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Bốn cách luyện tập giúp bạn tiến bộ tự nhiên, từng chút một.",
+  "practiceWriting": "Viết đoạn văn",
+  "practiceWritingBody": "Dịch và viết lại từng câu theo chủ đề bạn thích.",
+  "practiceGrammar": "Sửa câu",
+  "practiceGrammarBody": "Câu ngắn, sửa nhanh, hiểu vì sao sai.",
+  "practiceChat": "Hội thoại",
+  "practiceChatBody": "Đóng vai trong những tình huống thật.",
+  "practiceCards": "Thẻ từ vựng",
+  "practiceCardsBody": "Lưu từ mới, ôn đúng lúc sắp quên.",
+  "tapForNextWay": "Chạm để xem cách học tiếp theo",
+  "cardsStepTitle": "Lưu từ mới mọi lúc,",
+  "cardsStepAccent": "ôn đúng lúc sắp quên",
+  "cardsStepBody": "Lưu từ ngay khi học và ôn lại bằng bộ thẻ. Chạm vào thẻ để lật, rồi cho Hifive biết bạn đã nhớ chưa.",
+  "posAdjective": "TÍNH TỪ",
+  "posNoun": "DANH TỪ",
+  "posVerb": "ĐỘNG TỪ",
+  "meaningCurious": "tò mò",
+  "meaningJourney": "chuyến đi",
+  "meaningImprove": "cải thiện",
+  "meaningBrave": "dũng cảm",
+  "reviewTomorrow": "Ôn lại vào ngày mai",
+  "tapToFlip": "Chạm để lật",
+  "tapToFlipCaps": "CHẠM ĐỂ LẬT",
+  "listenTo": "Nghe \"{word}\"",
+  "@listenTo": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "notRemembered": "Chưa nhớ",
+  "remembered": "Đã nhớ",
+  "demoWriteTitle": "Viết một câu,",
+  "demoWriteAccent": "nhận góp ý ngay",
+  "demoWriteBody": "Hifive chấm từng câu bạn viết và chỉ cách nói tự nhiên hơn. Thử chấm câu dưới đây.",
+  "demoTranslateToEnglish": "DỊCH SANG TIẾNG ANH",
+  "demoWriteSource": "Tôi đã sống ở Đà Nẵng ba năm.",
+  "scoreIt": "Chấm điểm",
+  "scored": "Đã chấm",
+  "scoring": "Đang chấm",
+  "scoringEllipsis": "Đang chấm...",
+  "almostRight": "Gần đúng",
+  "correctSentenceCaps": "CÂU ĐÚNG",
+  "explanationCaps": "GIẢI THÍCH",
+  "demoWriteExplanation": "Việc bắt đầu trong quá khứ và vẫn còn tiếp diễn nên dùng thì hiện tại hoàn thành.",
+  "demoGrammarTitle": "Sửa lỗi ngữ pháp",
+  "demoGrammarAccent": "trong từng câu",
+  "demoGrammarBody": "Câu ngắn, giải thích rõ, để lỗi quen không lặp lại. Chọn từ đúng cho chỗ trống.",
+  "fillTheBlankCaps": "ĐIỀN VÀO CHỖ TRỐNG",
+  "correctExclaim": "Chính xác!",
+  "notQuiteTryAgain": "Chưa đúng, thử lại nhé",
+  "demoGrammarRule": "Chủ ngữ số ít (she) ở thì hiện tại đơn thì động từ thêm -s hoặc -es.",
+  "demoGrammarHint": "Gợi ý: \"every day\" là thói quen, và chủ ngữ là \"she\".",
+  "demoChatPolite": "Lịch sự hơn: \"Could I have a coffee, please?\"",
+  "demoChatTitle": "Luyện nói",
+  "demoChatAccent": "như ngoài đời",
+  "demoChatBody": "Luyện nói theo tình huống thật. Chọn một câu để trả lời.",
+  "hint": "Gợi ý",
+  "noDecks": "Chưa có bộ thẻ",
+  "noDecksBody": "Thêm bộ từ vựng đầu tiên của bạn.",
+  "addDeck": "Thêm bộ thẻ",
+  "addedSampleWords": "Đã thêm {count} từ mẫu",
+  "@addedSampleWords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sampleDeckDescription": "Bộ từ vựng mẫu của bạn",
+  "cardsFailed": "Không tạo được thẻ. Vui lòng thử lại.",
+  "addCards": "Add Cards",
+  "newDeck": "New Deck",
+  "topicNameCaps": "TOPIC NAME",
+  "topicNameHint": "Space, Cooking, Travel...",
+  "wordsUnit": "words",
+  "wordsToGenerateCaps": "WORDS TO GENERATE",
+  "slotsLeft": "Còn {count} slot",
+  "@slotsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "generateDeck": "Generate Deck",
+  "sortNewest": "Newest",
+  "sortOldest": "Oldest",
+  "sortAZ": "A-Z",
+  "filterAll": "All",
+  "filters": "Filters",
+  "filterNotStudied": "Not studied",
+  "filterLearning": "Learning",
+  "filterMastered": "Mastered",
+  "restartDeck": "Học lại từ đầu",
+  "restartDeckTitle": "Học lại từ đầu?",
+  "restartDeckBody": "Đặt lại lịch ôn của bộ thẻ cục bộ này?",
+  "resetAction": "Đặt lại",
+  "deckOptions": "Tùy chọn bộ thẻ",
+  "reviewAll": "Ôn tập tất cả",
+  "reviewDue": "Ôn tập ({count})",
+  "@reviewDue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "doneForToday": "Đã hoàn thành bài học hôm nay!",
+  "searchCards": "Tìm kiếm thẻ",
+  "searchWordsHint": "Tìm kiếm từ vựng...",
+  "cancelEn": "Cancel",
+  "statNew": "Mới",
+  "statLearning": "Đang học",
+  "statReview": "Ôn tập",
+  "deckProgress": "Deck Progress",
+  "cardsCount": "{count} cards",
+  "@cardsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pillNew": "MỚI",
+  "pillLearning": "ĐANG HỌC",
+  "pillReview": "ÔN TẬP",
+  "pronounceWord": "Phát âm {word}",
+  "@pronounceWord": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "pronounce": "Phát âm",
+  "example": "Ví dụ",
+  "excellent": "Xuất sắc!",
+  "masteredMost": "Bạn đã nắm vững hầu hết các thẻ!",
+  "seen": "Đã xem",
+  "known": "Thuộc",
+  "relearn": "Học lại",
+  "rateAgain": "Học lại",
+  "rateHardCard": "Khó",
+  "rateGood": "Tốt",
+  "rateEasyCard": "Dễ",
+  "closeReview": "Đóng ôn tập",
+  "reviewOptions": "Tùy chọn ôn tập",
+  "guideForgot": "Quên bài",
+  "guideForgotBody": "Vuốt trái để Hifive sắp xếp học lại ngay",
+  "guideHard": "Hơi khó nhớ",
+  "guideHardBody": "Vuốt xuống nếu bạn thấy từ này còn lạ lẫm",
+  "guideKnown": "Đã nhớ",
+  "guideKnownBody": "Vuốt lên khi bạn trả lời đúng nghĩa và phát âm",
+  "guideEasy": "Quá dễ",
+  "guideEasyBody": "Vuốt phải để ít gặp lại từ này hơn",
+  "smartLearning": "Cơ chế học thông minh",
+  "swipeToRate": "Vuốt thẻ bài để đánh giá mức độ ghi nhớ của bạn",
+  "gotItStart": "Đã hiểu, bắt đầu học",
+  "autoPlay": "Tự động phát",
+  "cardColor": "Màu thẻ",
+  "guide": "Hướng dẫn",
+  "colorful": "Màu sắc",
+  "monochrome": "Đơn sắc",
+  "gameHowToTitle": "Cách chơi Flow Letter",
+  "gameGoal": "Mục tiêu",
+  "gameGoalBody": "Sắp xếp các chữ cái thành từ vựng đúng.",
+  "gameMove": "Cách di chuyển",
+  "gameMoveBody": "Giữ và kéo một chữ cái để đổi vị trí.",
+  "gameDone": "Hoàn thành",
+  "gameDoneBody": "Đúng từ sẽ tự động chuyển sang từ tiếp theo.",
+  "tapToSee": "Nhấn để xem",
+  "chooseDeck": "Chọn bộ từ vựng",
+  "wordsCount": "{count} từ",
+  "@wordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "flowGuideLabel": "Hướng dẫn Flow Letter",
+  "rotateForBetter": "Trải nghiệm tốt hơn khi xoay điện thoại",
+  "levelOne": "Level 1",
+  "bestScore": "Best {score}",
+  "@bestScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "totalXp": "XP tổng: {xp}",
+  "@totalXp": {
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "comboZero": "Combo x0",
+  "gamesPlayed": "Lần chơi: {count}",
+  "@gamesPlayed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startFirstSession": "Bắt đầu session đầu tiên",
+  "continueTitle": "Tiếp tục {title}",
+  "@continueTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "play": "Chơi",
+  "difficulty": "Độ khó",
+  "rotate": "Xoay",
+  "difficultyEasy": "Dễ",
+  "difficultyMedium": "Vừa",
+  "difficultyHard": "Khó",
+  "sound": "Âm thanh",
+  "hapticFeedback": "Rung phản hồi",
+  "resumeLater": "Bạn có thể tiếp tục từ trang Flow Letter.",
+  "progressLost": "Tiến độ chơi hiện tại sẽ bị mất.",
+  "exitGameTitle": "Thoát game?",
+  "levelCaps": "LEVEL {level}",
+  "@levelCaps": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "swipeToSeeLetters": "← Vuốt ngang để xem các chữ →",
+  "arrangeLetters": "Sắp xếp các chữ cái",
+  "firstLetter": "Chữ đầu tiên: {letter}",
+  "@firstLetter": {
+    "placeholders": {
+      "letter": {
+        "type": "String"
+      }
+    }
+  },
+  "skip": "Bỏ qua",
+  "completed": "Hoàn thành!",
+  "points": "Điểm",
+  "accuracy": "Accuracy",
+  "combo": "Combo",
+  "hintStat": "Hint",
+  "levelNumber": "Level {level}",
+  "@levelNumber": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "backHome": "Về trang chủ",
+  "daysCaps": "DAYS",
+  "monthSummary": "Bạn đã hoàn thành {count} buổi tập trong {month}, và {yearCount} buổi trong năm nay.",
+  "@monthSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "month": {
+        "type": "String"
+      },
+      "yearCount": {
+        "type": "int"
+      }
+    }
+  },
+  "mistakesPrefix": "Bạn đã mắc",
+  "mistakesCount": "{count} lỗi ngữ pháp",
+  "@mistakesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mistakesMiddle": "trong tháng này, chủ yếu là",
+  "mistakesTopic": "từ vựng",
+  "seeSuggestions": "Xem gợi ý cải thiện",
+  "suggestionsTitle": "Gợi ý cải thiện",
+  "madeByAi": "Tạo bởi AI",
+  "madeByAiBody": "Phần thống kê và gợi ý cải thiện được AI tổng hợp từ các buổi học trong tháng của bạn. Nội dung có thể chưa chính xác hoàn toàn; hãy dùng như lời khuyên tham khảo.",
+  "weekdaysMonFirst": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+  "weekdaysSunFirst": "CN,T2,T3,T4,T5,T6,T7",
+  "thisWeekActivity": "Hoạt động tuần này",
+  "withHifive": "Cùng Hifive",
+  "withPrefix": "Bạn đã ở cùng",
+  "withMiddle": "được",
+  "withDays": "{days} ngày. ",
+  "@withDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "thanksForJourney": "Cảm ơn bạn đã đồng hành!",
+  "monthYearShort": "Tháng {month}, {year}",
+  "@monthYearShort": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "currentStreak": "Streak hiện tại",
+  "updatedToday": "Cập nhật lúc {time} hôm nay",
+  "@updatedToday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "unitWords": "TỪ",
+  "vocabularyLearned": "Từ vựng học",
+  "unitHours": "GIỜ",
+  "studyTime": "Thời lượng",
+  "unitSessions": "BUỔI",
+  "sessionsDone": "Buổi hoàn thành",
+  "unitSentences": "CÂU",
+  "sentencesPractised": "Câu luyện tập",
+  "unitParagraphs": "ĐOẠN",
+  "noMistakesMonth": "Bạn chưa có lỗi ngữ pháp nào trong tháng này. Tuyệt vời!",
+  "makingSuggestions": "Đang tạo gợi ý...",
+  "suggestionsFailed": "Không tạo được gợi ý",
+  "aiServiceDown": "Dịch vụ AI đang gặp sự cố. Vui lòng thử lại.",
+  "streakTitle": "Chuỗi Streak",
+  "onFire": "ON FIRE",
+  "daysInARow": "ngày liên tiếp",
+  "startStreakToday": "Bắt đầu chuỗi học tập ngay hôm nay!",
+  "keepHabit": "Tiếp tục duy trì thói quen tuyệt vời này!",
+  "previousMonth": "Tháng trước",
+  "nextMonth": "Tháng sau",
+  "studiedDays": "Đã học {count} ngày",
+  "@studiedDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "currentCaps": "HIỆN TẠI",
+  "longestCaps": "DÀI NHẤT",
+  "sectionParagraph": "Đoạn văn",
+  "sectionSentence": "Câu",
+  "sectionChat": "Hội thoại",
+  "clearAll": "Xóa tất cả",
+  "clearHistoryTitle": "Xóa lịch sử cục bộ?",
+  "clearHistoryBody": "Chỉ xóa kết quả trên bản ứng dụng này. Hành động không thể hoàn tác.",
+  "newPractice": "Luyện tập mới",
+  "noReviewsYet": "Chưa có bài ôn tập",
+  "noResultsFound": "Không tìm thấy kết quả",
+  "finishLessonToSave": "Hoàn thành một bài học để lưu lại tiến bộ của bạn.",
+  "tryAnotherKeyword": "Thử một từ khóa khác.",
+  "reviewSection": "Ôn tập",
+  "sessionsCount": "{count} sessions",
+  "@sessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "historyOptions": "Tùy chọn lịch sử",
+  "searchHistoryHint": "Tìm kiếm tiêu đề, mô tả...",
+  "closeSearch": "Đóng tìm kiếm",
+  "newPracticeLabel": "Tạo bài luyện tập mới",
+  "seeMore": "Xem thêm",
+  "helpTitle1": "3 Chế Độ Luyện Tập Chính",
+  "helpTitle2": "Trợ Lý AI & Hệ Thống Phản Hồi",
+  "helpTitle3": "AI Magic Generator",
+  "helpTitle4": "Hệ thống Flashcard & SRS",
+  "helpTitle5": "Hệ Thống Theo Dõi Tiến Độ",
+  "helpTitle6": "Chức Năng Ôn Tập Thông Minh",
+  "helpTitle7": "Mini Game: Flow Letter",
+  "helpBody1": "Ứng dụng cung cấp 3 phương thức thực hành riêng biệt nhằm phát triển toàn diện các kỹ năng:\n\n• Đoạn văn (Paragraph): Tập trung kỹ năng viết và dịch thuật văn bản dài. Người dùng viết đoạn văn theo gợi ý, sau đó AI sẽ chấm điểm và chỉnh sửa văn phong tự nhiên.\n\n• Luyện câu (Sentence): Giải quyết các lỗi ngữ pháp và cấu trúc trong câu đơn. Phù hợp cho việc ôn tập nhanh các quy tắc ngữ pháp cơ bản.\n\n• Hội thoại (Conversation): Thực hành phản xạ giao tiếp. Bao gồm chế độ 'Kịch bản' (tình huống giả định như đi du lịch, phỏng vấn) và 'Tự do' (trò chuyện mở với AI).",
+  "helpBody2": "Sau mỗi bài tập, AI sẽ cung cấp phân tích chi tiết để người dùng hiểu rõ các lỗi đã mắc phải:\n\n1. Nhận diện lỗi: Màu đỏ đánh dấu các lỗi sai về ngữ pháp hoặc từ vựng cần sửa đổi.\n2. Gợi ý nâng cao: Màu xanh lá hiển thị các cách diễn đạt tự nhiên hơn hoặc chính xác hơn về mặt ngữ cảnh.\n3. Giải thích chi tiết: Chạm vào vùng được đánh dấu lỗi hoặc gợi ý để xem giải thích sâu về quy tắc ngôn ngữ hoặc lý do tại sao gợi ý đó lại tốt hơn.",
+  "helpBody3": "AI Magic Generator cho phép người dùng tự thiết kế lộ trình học tập dựa trên nhu cầu thực tế thay vì các bài học cố định:\n\n1. Cách sử dụng: Nhập bất kỳ chủ đề hoặc tình huống cụ thể (Ví dụ: 'Phỏng vấn xin việc', 'Email phàn nàn về dịch vụ', 'Hội thoại đi mua sắm').\n2. Tùy chỉnh: Lựa chọn độ khó từ Cơ bản đến Nâng cao để nội dung bài tập được tối ưu theo trình độ của bạn.\n3. Kết quả: AI sẽ phân tích yêu cầu và tạo ra các bài tập cụ thể (Viết hoặc Hội thoại) liên quan trực tiếp đến chủ đề đã nhập.",
+  "helpBody4": "Hệ thống tích hợp giúp bạn lưu trữ và ôn tập từ vựng hiệu quả thông qua phương pháp lặp lại ngắt quãng (Spaced Repetition):\n\n1. Thu thập từ: Trong quá trình luyện tập, chạm vào bất kỳ từ nào bạn chưa biết để xem định nghĩa và nhấn nút 'Lưu' để thêm vào bộ sưu tập cá nhân.\n2. Cơ chế ôn tập: Ứng dụng tự động tính toán và nhắc nhở ôn tập các từ đã lưu dựa trên mức độ ghi nhớ của bạn (Sử dụng các mức: Luyện lại, Tốt, Dễ).\n3. Thư viện: Quản lý các bộ từ vựng theo chủ đề để tập trung ôn luyện vào các nhóm từ vựng cụ thể.",
+  "helpBody5": "Các công cụ giúp người dùng đánh giá quá trình học tập theo thời gian:\n\n1. Lịch (Calendar): Ghi nhận chi tiết các ngày có tham gia học tập trong tháng dưới dạng giao diện lịch trực quan.\n2. Chuỗi (Streak): Đếm số ngày liên tiếp luyện tập nhằm khuyến khích thói quen học tập hàng ngày.\n3. Huy hiệu: Các mốc thành tựu ghi nhận sự nỗ lực khi người dùng đạt được các mục tiêu học tập nhất định.",
+  "helpBody6": "Mục Ôn tập là nơi lưu trữ toàn bộ lịch sử học tập để bạn củng cố kiến thức:\n\n1. Xem lại lịch sử: Truy cập và xem lại nội dung bài làm bất cứ lúc nào, bao gồm các sửa lỗi và nhận xét chi tiết của AI.\n2. Chức năng Làm lại (Redo): Cho phép thực hiện lại các bài tập đã hoàn thành để kiểm tra mức độ cải thiện kỹ năng so với lần làm trước.",
+  "helpBody7": "Đây là phương thức học tập bổ trợ thông qua mô hình trò chơi giải đố:\n\n1. Cách chơi: Hệ thống hiển thị các chữ cái bị xáo trộn, nhiệm vụ của bạn là sắp xếp lại thành từ vựng hoàn chỉnh dựa trên định nghĩa hoặc ví dụ.\n2. Hỗ trợ Offline: Đây là tính năng duy nhất trong ứng dụng có thể sử dụng khi thiết bị không có kết nối internet.\n3. Giới hạn: Hiện tại tính năng này chỉ được thiết kế dành riêng cho ngôn ngữ học tập là Tiếng Anh.",
+  "privacyAiCoach": "Huấn luyện viên AI",
+  "privacyAiCoachBody": "Hifive đồng bộ dữ liệu học tập của bạn lên cơ sở dữ liệu riêng tư để bạn có thể truy cập từ mọi nơi. Khi bạn sử dụng Huấn luyện viên AI, hệ thống sẽ xử lý các yêu cầu một cách bảo mật để đưa ra gợi ý, hoàn toàn không chia sẻ hay lưu trữ dữ liệu này cho mục đích khác.",
+  "privacyCollectTitle": "1. Thông tin chúng tôi thu thập",
+  "privacyCollectBody": "Chúng tôi thu thập thông tin để cung cấp dịch vụ tốt hơn cho tất cả người dùng. Bao gồm:\n• Dữ liệu cá nhân: Khi bạn đăng ký, chúng tôi có thể thu thập tên, địa chỉ email và ảnh đại diện của bạn.\n• Dữ liệu sử dụng: Chúng tôi thu thập thông tin về cách Dịch vụ được truy cập và sử dụng, chẳng hạn như loại thiết bị của bạn, phiên bản hệ điều hành và thời gian dành cho các trang.",
+  "privacyUseTitle": "2. Cách chúng tôi sử dụng thông tin của bạn",
+  "privacyUseBody": "Chúng tôi sử dụng dữ liệu đã thu thập cho nhiều mục đích khác nhau:\n• Để cung cấp và duy trì Dịch vụ của chúng tôi\n• Để thông báo cho bạn về những thay đổi đối với Dịch vụ của chúng tôi\n• Để cho phép bạn tham gia vào các tính năng tương tác khi bạn chọn làm như vậy\n• Để cung cấp hỗ trợ khách hàng\n• Để thu thập phân tích hoặc thông tin có giá trị để chúng tôi có thể cải thiện Dịch vụ của mình",
+  "privacyKeepTitle": "3. Lưu giữ dữ liệu",
+  "privacyKeepBody": "Hifive sẽ chỉ lưu giữ Dữ liệu cá nhân của bạn trong khoảng thời gian cần thiết cho các mục đích được nêu trong Chính sách quyền riêng tư này. Chúng tôi sẽ lưu giữ và sử dụng Dữ liệu cá nhân của bạn trong phạm vi cần thiết để tuân thủ các nghĩa vụ pháp lý của chúng tôi, giải quyết tranh chấp và thực thi các thỏa thuận và chính sách pháp lý của chúng tôi.",
+  "privacySecurityTitle": "4. Bảo mật dữ liệu của bạn",
+  "privacySecurityBody": "Bảo mật dữ liệu của bạn rất quan trọng đối với chúng tôi, nhưng hãy nhớ rằng không có phương thức truyền qua Internet hoặc phương thức lưu trữ điện tử nào là an toàn 100%. Mặc dù chúng tôi cố gắng sử dụng các phương tiện thương mại có thể chấp nhận được để bảo vệ Dữ liệu cá nhân của bạn, chúng tôi không thể đảm bảo tính bảo mật tuyệt đối của nó.",
+  "privacyChildrenTitle": "5. Quyền riêng tư của trẻ em",
+  "privacyChildrenBody": "Dịch vụ của chúng tôi không giải quyết bất kỳ ai dưới 13 tuổi. Chúng tôi không cố ý thu thập thông tin nhận dạng cá nhân từ bất kỳ ai dưới 13 tuổi. Nếu bạn là cha mẹ hoặc người giám hộ và bạn biết rằng Con bạn đã cung cấp cho chúng tôi Dữ liệu cá nhân, vui lòng liên hệ với chúng tôi.",
+  "privacyHeadline1": "Hiểu những gì bạn cần,",
+  "privacyHeadline2": "chứ không phải bạn là ai",
+  "privacyUpdated": "Cập nhật lần cuối: 07/01/2026",
+  "privacyIntro": "Quyền riêng tư của bạn là ưu tiên hàng đầu. Chúng tôi kinh doanh dựa trên sự ủng hộ (đăng ký) của bạn, không phải dữ liệu của bạn. Thông tin của bạn được lưu trữ an toàn trong cơ sở dữ liệu được mã hóa của chúng tôi. Chúng tôi tuyệt đối không chia sẻ dữ liệu cá nhân hay nội dung bạn sử dụng với AI cho bất kỳ bên thứ ba nào, và không sử dụng chúng để huấn luyện các mô hình AI công cộng.",
+  "contactUs": "Liên hệ với chúng tôi",
+  "alwaysListening": "Chúng mình luôn sẵn sàng lắng nghe bạn.",
+  "noSupportEmailLocal": "Bản cục bộ không có email hỗ trợ.",
+  "supportEmail": "Email Hỗ trợ",
+  "notInLocalBuild": "Không có ở bản cục bộ",
+  "done": "Done",
+  "plusNoTransaction": "Bản cục bộ này không có giao dịch hoặc đăng ký.",
+  "plusYearlyNote": "Dùng thử miễn phí 7 ngày. Sau đó tự động gia hạn với giá 349.000đ/năm. Hủy bất cứ lúc nào.",
+  "plusMonthlyNote": "Dùng thử miễn phí 3 ngày. Sau đó tự động gia hạn với giá 49.000đ/tháng. Hủy bất cứ lúc nào.",
+  "plusTitle": "Nâng cấp Hifive+",
+  "plusYearlyCta": "Dùng thử 7 ngày • sau đó 349.000đ/năm",
+  "plusMonthlyCta": "Dùng thử 3 ngày • sau đó 49.000đ/tháng",
+  "planYearly": "Hàng năm",
+  "planYearlyPerMonth": "₫29.083 / tháng",
+  "perYear": " / năm",
+  "planYearlyTrial": "7 ngày miễn phí, sau\nđó 349.000đ",
+  "save40": "Giảm 40%",
+  "planMonthly": "Hàng tháng",
+  "planMonthlyPerMonth": "₫49.000 / tháng",
+  "perMonth": " / tháng",
+  "planMonthlyTrial": "3 ngày miễn phí, sau đó 49.000đ",
+  "priceYearly": "349.000đ",
+  "priceMonthly": "49.000đ",
+  "plusPerksTitle": "Đặc quyền gói Hifive Plus",
+  "plusPerksBody": "Mở khóa toàn bộ tính năng cao cấp để học ngoại ngữ hiệu quả hơn, nhanh hơn và thú vị hơn.",
+  "plusRenewalNote": "Sau khi mua, bạn có thể quản lý và tắt tính năng tự động gia hạn trong cài đặt tài khoản iTunes & App Store của mình.",
+  "cannotOpenTermsPage": "Không mở được trang điều khoản.",
+  "privacyShort": "Quyền riêng tư",
+  "restore": "Khôi phục",
+  "perkLimitsTitle": "Hạn mức cao hơn",
+  "perkLimitsBody": "Mức sử dụng AI cao hơn mỗi ngày so với gói Miễn phí. Học từ vựng, ngữ pháp và giao tiếp theo phong cách riêng của bạn.",
+  "perkDecksTitle": "Kho Flashcard mở rộng",
+  "perkDecksBody": "Tạo và quản lý bộ từ vựng với số lượng cực lớn. Học thông minh với flashcard được cá nhân hóa theo tiến độ của bạn.",
+  "perkChatTitle": "Chat AI nhiều hơn",
+  "perkChatBody": "Luyện tập hội thoại thực tế với mức sử dụng cao hơn. Nhận phản hồi chi tiết để cải thiện kỹ năng giao tiếp nhanh chóng.",
+  "perkInfiniteTitle": "Chế độ Vô cực",
+  "perkInfiniteBody": "Truy cập chế độ luyện câu nâng cao với độ khó tăng dần. Thử thách bản thân và đạt điểm số cao nhất.",
+  "perkEarlyTitle": "Truy cập sớm các tính năng",
+  "perkEarlyBody": "Trải nghiệm trước những tính năng mới nhất cùng các nội dung độc quyền.",
+  "perkLanguagesTitle": "Tất cả ngôn ngữ",
+  "perkLanguagesBody": "Mở khóa toàn bộ ngôn ngữ hỗ trợ. Học bất kỳ ngôn ngữ nào bạn muốn với cùng một tài khoản.",
+  "comingSoonLower": "coming soon",
+  "heroSlide1Top": "hifive",
+  "heroSlide1Bottom": "plus",
+  "heroSlide1Body": "Mở khóa toàn bộ tính năng AI cao cấp với mức sử dụng cao hơn.",
+  "heroSlide2Top": "hạn mức",
+  "heroSlide2Bottom": "cao hơn",
+  "heroSlide2Body": "Mức sử dụng AI cao hơn so với gói Miễn phí. Tạo flashcard và học mọi chủ đề.",
+  "heroSlide3Top": "chinh phục",
+  "heroSlide3Bottom": "ngoại ngữ",
+  "heroSlide3Body": "Sửa lỗi ngữ pháp và dịch thuật tức thì với AI, giúp bạn tự tin giao tiếp mọi lúc.",
+  "more": "Thêm",
+  "accuracyLabel": "Độ chính xác",
+  "timeLabel": "Thời gian",
+  "correctAnswers": "Câu đúng",
+  "originalTextCaps": "VĂN BẢN GỐC",
+  "yourAnswerCaps": "CÂU TRẢ LỜI CỦA BẠN",
+  "redoExercise": "Làm lại bài tập",
+  "excellentEn": "Excellent!",
+  "keepGoing": "Tiếp tục cố gắng!",
+  "masteredLesson": "You have mastered this lesson",
+  "everySessionStep": "Mỗi buổi học là một bước tiến.",
+  "timeEn": "Time",
+  "correctEn": "Correct",
+  "newStreakStarted": "Khởi động chuỗi mới!",
+  "greatStart": "Một khởi đầu tuyệt vời. Hãy duy trì thói quen học tập mỗi ngày nhé!",
+  "levelA1Title": "A1 - Beginner",
+  "levelA2Title": "A2 - Elementary",
+  "levelB1Title": "B1 - Intermediate",
+  "levelB2Title": "B2 - Upper Intermediate",
+  "levelC1Title": "C1 - Advanced",
+  "levelC2Title": "C2 - Proficient",
+  "levelA1Body": "Có thể viết lại và hoàn thành các câu rất ngắn với từ vựng quen thuộc. Phù hợp để luyện mẫu câu cơ bản và diễn đạt ý đơn giản.",
+  "levelA2Body": "Có thể viết và chỉnh sửa các câu đơn giản về chủ đề quen thuộc. Bắt đầu nối ý ngắn thành đoạn và giảm lỗi ngữ pháp cơ bản.",
+  "levelB1Body": "Có thể viết đoạn văn rõ ý về chủ đề quen thuộc, diễn đạt trải nghiệm, kế hoạch và quan điểm ngắn. Phù hợp để luyện mở rộng câu và liên kết ý.",
+  "levelB2Body": "Có thể viết câu và đoạn văn khá tự nhiên, có cấu trúc rõ ràng, diễn đạt quan điểm và lập luận chi tiết hơn. Phù hợp để luyện paraphrase và kiểm soát ngữ pháp tốt hơn.",
+  "levelC1Body": "Có thể viết mạch lạc, linh hoạt theo nhiều mục đích học thuật, công việc và cá nhân. Có thể chọn từ ngữ và cấu trúc câu phù hợp với ngữ cảnh.",
+  "levelC2Body": "Có thể viết chính xác, tinh tế và tự nhiên gần như người thành thạo. Có thể diễn đạt ý phức tạp rõ ràng và kiểm soát sắc thái ngôn ngữ tốt.",
+  "levelInfoTitle": "Thông tin cấp độ",
+  "changeLevelInSettings": "Bạn có thể thay đổi cấp độ trong Cài đặt",
+  "currentLabel": "Hiện tại",
+  "noCategories": "Chưa có danh mục",
+  "createModeCaps": "CHẾ ĐỘ TẠO",
+  "categoriesCaps": "DANH MỤC",
+  "yourTopicsCaps": "CHỦ ĐỀ CỦA BẠN",
+  "relatedTopicsCaps": "CHỦ ĐỀ LIÊN QUAN",
+  "topicsCount": "{count} chủ đề",
+  "@topicsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noTopics": "Chưa có chủ đề",
+  "noTopicsBody": "Hãy thử danh mục khác hoặc tạo chủ đề bằng AI.",
+  "questionsShort": "Qs",
+  "setsShort": "Sets",
+  "lessonsTitle": "Bài học",
+  "collectionCaps": "BỘ SƯU TẬP",
+  "noLessons": "Chưa có bài học",
+  "noLessonsBody": "Chủ đề này chưa có bộ bài nào.",
+  "levelCapsLabel": "CẤP ĐỘ",
+  "createScenarioQ": "Tạo tình huống?",
+  "topicNotListed": "Chủ đề không có trong danh sách?",
+  "roleplayAnything": "Nhập vai mọi tình huống với AI",
+  "customGrammar": "Tạo bài tập ngữ pháp tùy chỉnh",
+  "createCustom": "Tạo tùy chỉnh",
+  "pronounceTooltip": "Phát âm",
+  "saveWord": "Lưu từ",
+  "savedWord": "Đã lưu {word}",
+  "@savedWord": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "refresh": "Làm mới",
+  "endlessMode": "Chế độ Vô tận",
+  "endlessBody": "Học tập không ngừng",
+  "leaveExerciseTitle": "Thoát bài tập?",
+  "leaveExerciseBody": "Bạn chưa hoàn thành bài tập. Tiến độ sẽ không được lưu nếu bạn thoát bây giờ.",
+  "aiHint": "Gợi ý AI",
+  "analysingDraft": "Đang phân tích bản nháp...",
+  "backgroundColor": "Màu nền",
+  "lessonDictionary": "Từ điển bài",
+  "doneVi": "Xong",
+  "hideHints": "Ẩn gợi ý",
+  "showHints": "Hiển thị gợi ý",
+  "feedbackNoted": "Đã ghi nhận đánh giá trong phiên học này",
+  "leaveExercise": "Thoát bài tập",
+  "lessonOptions": "Tùy chọn bài học",
+  "typeAnswer": "Nhập câu trả lời...",
+  "previousSentence": "Câu trước",
+  "hiddenHint": "Gợi ý ẩn",
+  "like": "Thích",
+  "dislike": "Không thích",
+  "next": "Chuyển tiếp",
+  "sentencesList": "Câu {list}",
+  "@sentencesList": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "saveItem": "Lưu {word}",
+  "@saveItem": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "excellentShort": "Xuất sắc",
+  "fixCaps": "SỬA LỖI",
+  "tapWordToLookUp": "Chạm từ để tra cứu",
+  "keyImprovementsCaps": "KEY IMPROVEMENTS",
+  "tipsCaps": "MẸO",
+  "tipKeepMeaning": "Giữ đúng ý và thời gian của câu gốc.",
+  "tipSubjectVerb": "Đối chiếu chủ ngữ và động từ.",
+  "tipTapReference": "Chạm từ trong câu tham khảo để tra nghĩa.",
+  "seeAiAnalysisBody": "Xem phân tích chi tiết từ AI cho câu trả lời của bạn.",
+  "seeAiAnalysis": "Xem phân tích AI",
+  "editEn": "Edit",
+  "editVi": "Sửa",
+  "nextSentence": "Câu tiếp theo",
+  "nextEn": "Next",
+  "nextVi": "Tiếp theo",
+  "helpful": "Hữu ích",
+  "notHelpful": "Chưa hữu ích",
+  "gradingFailed": "Không chấm được câu trả lời",
+  "gradingFailedBody": "Kết nối hoặc dịch vụ AI đang gặp sự cố.",
+  "grading": "Đang chấm điểm...",
+  "fixCapsStar": "✦  SỬA LỖI",
+  "gradeCorrect": "Chính xác",
+  "gradeNear": "Gần đúng",
+  "gradeIncorrect": "Chưa đúng",
+  "leaveChatTitle": "Thoát hội thoại?",
+  "leaveChatBody": "Bạn chưa hoàn thành hội thoại. Tiến độ của phiên này sẽ không được lưu nếu bạn thoát bây giờ.",
+  "leaveChat": "Thoát hội thoại",
+  "freeChat": "Trò chuyện Tự do",
+  "scriptMode": "Chế độ Kịch bản",
+  "toneLabel": "Giọng: {tone}",
+  "@toneLabel": {
+    "placeholders": {
+      "tone": {
+        "type": "String"
+      }
+    }
+  },
+  "sayThis": "Hãy nói: {prompt}",
+  "@sayThis": {
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "answerFreelyEnglish": "Trả lời tự do bằng tiếng Anh",
+  "sendAction": "Gửi",
+  "listenToLine": "Nghe câu này",
+  "hideTranslation": "Ẩn bản dịch",
+  "showTranslation": "Xem bản dịch",
+  "hintWith": "Gợi ý: {answer}",
+  "@hintWith": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "sendFailed": "Không gửi được câu trả lời.",
+  "customCaps": "TÙY CHỈNH",
+  "practiceFailed": "Không tạo được bài luyện tập. Vui lòng thử lại.",
+  "noSuggestions": "Chưa có gợi ý",
+  "describeOwnTopic": "Hãy tự mô tả chủ đề bạn muốn luyện tập.",
+  "createOwnTopic": "Tạo chủ đề độc đáo của riêng bạn.",
+  "createWithAiCaps": "TẠO BẰNG AI",
+  "chooseTopicCaps": "CHỌN CHỦ ĐỀ",
+  "describeTopicCaps": "MÔ TẢ CHỦ ĐỀ",
+  "startPractice": "Bắt đầu luyện tập",
+  "createScenario": "Tạo tình huống",
+  "createSentences": "Tạo Câu Luyện Tập",
+  "customTopicHint": "VD: 'Phrasal Verbs với Get', 'Câu hỏi phỏng vấn'...",
+  "startPracticeCaps": "Bắt Đầu Luyện Tập",
+  "settingsGuideTitle": "Hướng dẫn Cài đặt",
+  "settingsGuideBody": "Hiểu rõ các cài đặt giúp bạn tối ưu hóa việc luyện tập hội thoại.",
+  "learningModeCaps": "CHẾ ĐỘ HỌC",
+  "freeChatBody": "Hội thoại mở. AI thích ứng với câu trả lời của bạn. Phù hợp cho luyện tập nâng cao.",
+  "scriptModeBody": "Tuân theo kịch bản cụ thể. Phù hợp cho người mới bắt đầu cần hướng dẫn rõ ràng.",
+  "tonePersonalityCaps": "GIỌNG & TÍNH CÁCH",
+  "toneFormal": "Trang trọng",
+  "toneFormalBody": "Chuyên nghiệp và lịch sự. Phù hợp cho công việc và các tình huống trang trọng.",
+  "toneCasual": "Thoải mái",
+  "toneCasualBody": "Tự nhiên như trò chuyện với bạn bè, dùng nhiều cách nói đời thường.",
+  "toneFriendly": "Thân thiện",
+  "toneFriendlyBody": "Nhẹ nhàng, khích lệ và kiên nhẫn khi bạn cần thêm thời gian.",
+  "customizeLesson": "Tùy chỉnh bài học",
+  "customizeLessonTitle": "Tùy chỉnh Bài học",
+  "customizeLessonBody": "Chuyển đổi giữa Trò chuyện Tự do và Kịch bản. Điều chỉnh độ khó, giọng và số câu hỏi.",
+  "closeTip": "Đóng gợi ý"
+}

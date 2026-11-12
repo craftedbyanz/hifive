@@ -112,7 +112,7 @@ class _CardFront extends StatelessWidget {
         ),
         const Spacer(flex: 109),
         Text(
-          'CHẠM ĐỂ LẬT',
+          context.t.tapToFlipCaps,
           style: D.text(
             10.5,
             weight: FontWeight.w700,
@@ -161,9 +161,9 @@ class _CardBack extends StatelessWidget {
                 ),
               ),
               Semantics(
-                label: 'Phát âm',
+                label: context.t.pronounce,
                 child: Tooltip(
-                  message: 'Phát âm',
+                  message: context.t.pronounce,
                   triggerMode: TooltipTriggerMode.manual,
                   child: PressFade(
                     onTap: () => playWord(context, word.word),
@@ -231,7 +231,7 @@ class _CardBack extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Ví dụ',
+                  context.t.example,
                   style: D.text(
                     11,
                     weight: FontWeight.w600,

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
+import '../l10n/l10n.dart';
 import 'app_scroll.dart';
 import 'press.dart';
 
@@ -21,7 +22,9 @@ class HeaderScrollPage extends StatefulWidget {
   final Color background;
   final IconData leadingIcon;
   final double leadingIconSize, leadingWidth;
-  final String leadingLabel;
+
+  /// Defaults to "back" in the interface language.
+  final String? leadingLabel;
   final Widget? trailing;
   final Widget? footer;
   const HeaderScrollPage({
@@ -36,7 +39,7 @@ class HeaderScrollPage extends StatefulWidget {
     this.leadingIcon = CupertinoIcons.back,
     this.leadingIconSize = 28,
     this.leadingWidth = 44,
-    this.leadingLabel = 'Quay lại',
+    this.leadingLabel,
     this.trailing,
     this.footer,
   });
@@ -89,7 +92,7 @@ class _HeaderScrollPageState extends State<HeaderScrollPage> {
             leadingIcon: widget.leadingIcon,
             leadingIconSize: widget.leadingIconSize,
             leadingWidth: widget.leadingWidth,
-            leadingLabel: widget.leadingLabel,
+            leadingLabel: widget.leadingLabel ?? context.t.back,
             trailing: widget.trailing,
           ),
         ),

@@ -6,6 +6,7 @@ import 'package:hifive/core/design/design.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
+import 'package:hifive/l10n/l10n.dart';
 import 'package:hifive/state/state.dart';
 
 /// Loads the bundled font, so layout in tests matches the app.
@@ -31,21 +32,27 @@ AppState fresh({
   DeckGenerator? deckGenerator,
   InsightRepository? insights,
   bool onboarded = true,
-}) => createAppState(
-  store: store ?? MemoryRecordStore(),
-  legacy: legacy,
-  auth: auth,
-  feedback: feedback ?? SilentFeedback(),
-  system: system ?? RecordingSystemActions(),
-  includeExamples: includeExamples,
-  lessons: lessons ?? MockLessonRepository(latency: Duration.zero),
-  grading: grading,
-  conversation:
-      conversation ?? const MockConversationRepository(latency: Duration.zero),
-  deckGenerator: deckGenerator,
-  insights: insights,
-  now: () => DateTime(2026, 11, 1, 1, 43),
-)..onboarded = onboarded;
+  // Tests read the Vietnamese copy (see flutter_test_config.dart).
+  String appLanguage = 'vi',
+}) =>
+    createAppState(
+        store: store ?? MemoryRecordStore(),
+        legacy: legacy,
+        auth: auth,
+        feedback: feedback ?? SilentFeedback(),
+        system: system ?? RecordingSystemActions(),
+        includeExamples: includeExamples,
+        lessons: lessons ?? MockLessonRepository(latency: Duration.zero),
+        grading: grading,
+        conversation:
+            conversation ??
+            const MockConversationRepository(latency: Duration.zero),
+        deckGenerator: deckGenerator,
+        insights: insights,
+        now: () => DateTime(2026, 11, 1, 1, 43),
+      )
+      ..onboarded = onboarded
+      ..appLanguage = appLanguage;
 
 /// A grammar, writing or conversation lesson built from the bundled banks.
 Lesson sampleLesson(StudyMode mode, {String title = 'Test'}) => Lesson(
@@ -137,6 +144,10 @@ Future<void> mount(
       child: MaterialApp(
         key: UniqueKey(),
         theme: D.theme,
+        locale: appLocale(state.appLanguage),
+        localeListResolutionCallback: (device, _) => resolveAppLocale(device),
+        supportedLocales: supportedAppLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         builder: (context, child) => textScaling(child!),
         home: page,
       ),

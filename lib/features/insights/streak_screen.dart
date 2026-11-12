@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 
@@ -21,7 +23,7 @@ class _StreakScreenState extends State<StreakScreen> {
         first = DateTime(m.year, m.month).weekday % 7,
         total = DateTime(m.year, m.month + 1, 0).day;
     return AppPage(
-      title: 'Chuỗi Streak',
+      title: context.t.streakTitle,
       background: Colors.white,
       child: SingleChildScrollView(
         // Spacing measured from survey 113 (iPhone).
@@ -36,7 +38,7 @@ class _StreakScreenState extends State<StreakScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                'ON FIRE',
+                context.t.onFire,
                 style: D.text(
                   11,
                   weight: FontWeight.w800,
@@ -57,7 +59,7 @@ class _StreakScreenState extends State<StreakScreen> {
                         style: D.text(72, weight: FontWeight.w800, height: 1),
                       ),
                       Text(
-                        'ngày liên tiếp',
+                        context.t.daysInARow,
                         style: D.text(
                           17,
                           weight: FontWeight.w700,
@@ -67,28 +69,15 @@ class _StreakScreenState extends State<StreakScreen> {
                       const SizedBox(height: 8),
                       Text(
                         s.streak == 0
-                            ? 'Bắt đầu chuỗi học tập ngay hôm nay!'
-                            : 'Tiếp tục duy trì thói quen tuyệt vời này!',
+                            ? context.t.startStreakToday
+                            : context.t.keepHabit,
                         style: D.text(14, color: D.muted, height: 1.3),
                       ),
                     ],
                   ),
                 ),
-                // Grey until the streak starts, then the flame gradient.
-                ShaderMask(
-                  shaderCallback: (rect) => LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: s.streak == 0
-                        ? const [Palette.flameGreyTop, Palette.flameGreyBottom]
-                        : const [Palette.flameTop, Palette.flameBottom],
-                  ).createShader(rect),
-                  child: const Icon(
-                    Icons.local_fire_department_rounded,
-                    size: 150,
-                    color: Colors.white,
-                  ),
-                ),
+                // Grey until the streak starts, then the lit flame.
+                StreakFlame(size: 150, active: s.streak > 0),
               ],
             ),
             const SizedBox(height: 29),
@@ -102,7 +91,7 @@ class _StreakScreenState extends State<StreakScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          'tháng ${m.month} năm ${m.year}',
+                          DateFormat.yMMMM(context.t.localeName).format(m),
                           style: D.text(
                             20,
                             weight: FontWeight.w800,
@@ -111,7 +100,7 @@ class _StreakScreenState extends State<StreakScreen> {
                         ),
                       ),
                       IconButton(
-                        tooltip: 'Tháng trước',
+                        tooltip: context.t.previousMonth,
                         visualDensity: VisualDensity.compact,
                         constraints: const BoxConstraints.tightFor(
                           width: 30,
@@ -128,7 +117,7 @@ class _StreakScreenState extends State<StreakScreen> {
                         ),
                       ),
                       IconButton(
-                        tooltip: 'Tháng sau',
+                        tooltip: context.t.nextMonth,
                         visualDensity: VisualDensity.compact,
                         constraints: const BoxConstraints.tightFor(
                           width: 30,
@@ -147,22 +136,22 @@ class _StreakScreenState extends State<StreakScreen> {
                     ],
                   ),
                   Text(
-                    'Đã học ${s.studyDays.where((d) => DateTime.parse(d).year == m.year && DateTime.parse(d).month == m.month).length} ngày',
+                    context.t.studiedDays(
+                      s.studyDays
+                          .where(
+                            (d) =>
+                                DateTime.parse(d).year == m.year &&
+                                DateTime.parse(d).month == m.month,
+                          )
+                          .length,
+                    ),
                     style: D.text(13, color: D.muted),
                   ),
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      for (final day in [
-                        'CN',
-                        'T2',
-                        'T3',
-                        'T4',
-                        'T5',
-                        'T6',
-                        'T7',
-                      ])
+                      for (final day in context.t.weekdaysSunFirst.split(','))
                         Text(
                           day,
                           style: D.text(
@@ -222,15 +211,19 @@ class _StreakScreenState extends State<StreakScreen> {
             Row(
               children: [
                 _StreakStat(
-                  icon: Icons.local_fire_department_rounded,
-                  label: 'HIỆN TẠI',
+                  icon: StreakFlame(size: 17, active: s.streak > 0),
+                  label: context.t.currentCaps,
                   color: Palette.streakOrange,
                   value: s.streak,
                 ),
                 const SizedBox(width: 16),
                 _StreakStat(
-                  icon: CupertinoIcons.bolt_fill,
-                  label: 'DÀI NHẤT',
+                  icon: const Icon(
+                    CupertinoIcons.bolt_fill,
+                    size: 15,
+                    color: Palette.yellow,
+                  ),
+                  label: context.t.longestCaps,
                   color: Palette.yellow,
                   value: s.longestStreak,
                 ),
@@ -246,7 +239,7 @@ class _StreakScreenState extends State<StreakScreen> {
 
 /// "HIỆN TẠI" / "DÀI NHẤT": a flat tinted card, 81 pt tall (survey 113).
 class _StreakStat extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final String label;
   final Color color;
   final int value;
@@ -271,7 +264,7 @@ class _StreakStat extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 15, color: color),
+              icon,
               const SizedBox(width: 5),
               Text(
                 label,

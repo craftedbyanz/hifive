@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'chat_screen.dart';
@@ -58,13 +59,16 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Text('Bài học', style: D.text(16, weight: FontWeight.w600)),
+                    Text(
+                      context.t.lessonsTitle,
+                      style: D.text(16, weight: FontWeight.w600),
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: HeaderRoundButton(
                         icon: CupertinoIcons.back,
                         iconSize: 31,
-                        label: 'Quay lại',
+                        label: context.t.back,
                         onTap: () => Navigator.maybePop(context),
                       ),
                     ),
@@ -77,7 +81,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
               child: Column(
                 children: [
                   Text(
-                    'BỘ SƯU TẬP',
+                    context.t.collectionCaps,
                     style: D.text(
                       10,
                       weight: FontWeight.w700,
@@ -129,9 +133,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 load: load,
                 isEmpty: (l) =>
                     l.isEmpty && topic.mode != StudyMode.conversation,
-                empty: const EmptyView(
-                  title: 'Chưa có bài học',
-                  subtitle: 'Chủ đề này chưa có bộ bài nào.',
+                empty: EmptyView(
+                  title: context.t.noLessons,
+                  subtitle: context.t.noLessonsBody,
                 ),
                 loading: _carousel(topic, const [], loading: true),
                 builder: (context, lessons) => _carousel(topic, lessons),
@@ -197,7 +201,7 @@ class _LevelPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'CẤP ĐỘ',
+            context.t.levelCapsLabel,
             style: D.text(10, weight: FontWeight.w700, color: D.muted),
           ),
           const SizedBox(width: 8.6),
@@ -348,7 +352,7 @@ class _SetCard extends StatelessWidget {
                     child: Center(
                       widthFactor: 1,
                       child: Text(
-                        mode.action,
+                        mode.action(context),
                         style: D.text(13, weight: FontWeight.w600, color: ink),
                       ),
                     ),
@@ -393,7 +397,7 @@ class _CreateCard extends StatelessWidget {
           ),
           const SizedBox(height: 25),
           Text(
-            chat ? 'Tạo tình huống?' : 'Chủ đề không có trong danh sách?',
+            chat ? context.t.createScenarioQ : context.t.topicNotListed,
             textAlign: TextAlign.center,
             style: D.text(
               21,
@@ -404,9 +408,7 @@ class _CreateCard extends StatelessWidget {
           ),
           const SizedBox(height: 4.9),
           Text(
-            chat
-                ? 'Nhập vai mọi tình huống với AI'
-                : 'Tạo bài tập ngữ pháp tùy chỉnh',
+            chat ? context.t.roleplayAnything : context.t.customGrammar,
             textAlign: TextAlign.center,
             style: D.text(13, color: D.ink.withValues(alpha: .7)),
           ),
@@ -429,7 +431,7 @@ class _CreateCard extends StatelessWidget {
                 ],
               ),
               child: Text(
-                'Tạo tùy chỉnh',
+                context.t.createCustom,
                 style: D.text(13, weight: FontWeight.w600),
               ),
             ),

@@ -272,7 +272,7 @@ void main() {
       expect(find.text('Blitz'), findsOneWidget);
     });
 
-    testWidgets('add cards shows the slots left and locks the topic', (
+    testWidgets('add cards shows the slots left; generating is coming soon', (
       tester,
     ) async {
       final state = fresh();
@@ -283,10 +283,12 @@ void main() {
       await tester.tap(find.text('Add Cards'));
       await tester.pumpAndSettle();
       expect(find.text('Còn 90 slot'), findsOneWidget);
+      // Generating is coming soon: tapping adds no words.
+      final before = deck.words.length;
       await tester.tap(find.byKey(const ValueKey('deck-generate')));
       await tester.pump(const Duration(seconds: 1));
       await tester.pumpAndSettle();
-      expect(deck.words.length, greaterThan(10));
+      expect(deck.words, hasLength(before));
     });
 
     testWidgets('the slot pill hugs its text and Cancel stays on screen', (

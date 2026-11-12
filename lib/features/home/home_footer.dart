@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 import '../history/history.dart';
 import '../insights/insights.dart';
@@ -102,7 +102,7 @@ class StreakPill extends StatelessWidget {
               ),
               const SizedBox(width: 9),
               Text(
-                'Chuỗi:',
+                context.t.streakLabel,
                 style: D.text(
                   12,
                   weight: FontWeight.w600,
@@ -113,7 +113,7 @@ class StreakPill extends StatelessWidget {
               ),
               const SizedBox(width: 3),
               Text(
-                '$streak ngày',
+                context.t.streakDays(streak),
                 style: D.text(
                   12,
                   weight: FontWeight.w700,
@@ -123,7 +123,7 @@ class StreakPill extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 5),
-              const Icon(CupertinoIcons.flame_fill, size: 12, color: D.orange),
+              const StreakFlame(size: 14),
             ],
           ),
         ),
@@ -178,7 +178,7 @@ class HomeBottomBar extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Menu',
+                  context.t.menu,
                   style: D.text(
                     15,
                     weight: FontWeight.w700,

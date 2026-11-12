@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 
@@ -125,17 +126,17 @@ Future<void> showWord(BuildContext context, String word) => showDialog(
                 child: Text(word, style: D.text(27, weight: FontWeight.w800)),
               ),
               IconButton(
-                tooltip: 'Phát âm',
+                tooltip: context.t.pronounceTooltip,
                 onPressed: () => playWord(context, word),
                 icon: const Icon(Icons.volume_up_rounded, color: D.purple),
               ),
               IconButton(
-                tooltip: 'Lưu từ',
+                tooltip: context.t.saveWord,
                 onPressed: () {
                   AppScope.read(context)
                       .saveWord(word, dictionaryMeaning(word));
                   Navigator.pop(ctx);
-                  toast(context, 'Đã lưu $word');
+                  toast(context, context.t.savedWord(word));
                 },
                 icon: const Icon(Icons.add_circle_rounded, color: D.green),
               ),

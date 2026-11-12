@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/grading.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 import 'dictionary.dart';
 
@@ -113,7 +114,9 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                   Text(
                     // The analysis titled the same correct answer "Xuất sắc"
                     // where the first grade said "Chính xác" (survey 144).
-                    correct && expanded ? 'Xuất sắc' : g.title,
+                    correct && expanded
+                        ? context.t.excellentShort
+                        : gradeTitle(context.t, g.kind),
                     style: D.text(22, weight: FontWeight.w800, color: color),
                   ),
                 ],
@@ -142,7 +145,9 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  plain ? 'CÂU TRẢ LỜI CỦA BẠN' : 'SỬA LỖI',
+                                  plain
+                                      ? context.t.yourAnswerCaps
+                                      : context.t.fixCaps,
                                   style: D.text(
                                     10,
                                     weight: FontWeight.w700,
@@ -153,7 +158,7 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                                 if (!plain) ...[
                                   const Spacer(),
                                   Text(
-                                    'Chạm từ để tra cứu',
+                                    context.t.tapWordToLookUp,
                                     style: D.text(9, color: D.muted),
                                   ),
                                 ],
@@ -229,9 +234,12 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                       ),
                       if (expanded) ...[
                         const SizedBox(height: 18),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 4, bottom: 6),
-                          child: CapsLabel('GIẢI THÍCH', small: true),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4, bottom: 6),
+                          child: CapsLabel(
+                            context.t.explanationCaps,
+                            small: true,
+                          ),
                         ),
                         Text(
                           g.explanation,
@@ -247,15 +255,15 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                           padding: const EdgeInsets.only(top: 4, bottom: 6),
                           child: CapsLabel(
                             widget.mode == StudyMode.writing
-                                ? 'KEY IMPROVEMENTS'
-                                : 'MẸO',
+                                ? context.t.keyImprovementsCaps
+                                : context.t.tipsCaps,
                             small: true,
                           ),
                         ),
                         for (final tip in [
-                          'Giữ đúng ý và thời gian của câu gốc.',
-                          'Đối chiếu chủ ngữ và động từ.',
-                          'Chạm từ trong câu tham khảo để tra nghĩa.',
+                          context.t.tipKeepMeaning,
+                          context.t.tipSubjectVerb,
+                          context.t.tipTapReference,
                         ])
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8),
@@ -296,7 +304,7 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                         const SizedBox(height: 12),
                         Center(
                           child: Text(
-                            'Xem phân tích chi tiết từ AI cho câu trả lời của bạn.',
+                            context.t.seeAiAnalysisBody,
                             textAlign: TextAlign.center,
                             style: D.text(11, color: D.muted),
                           ),
@@ -321,7 +329,7 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
-                                    'Xem phân tích AI',
+                                    context.t.seeAiAnalysis,
                                     style: D.text(
                                       12,
                                       weight: FontWeight.w700,
@@ -345,8 +353,8 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                     Expanded(
                       child: _SheetButton(
                         label: widget.mode == StudyMode.writing
-                            ? 'Edit'
-                            : 'Sửa',
+                            ? context.t.editEn
+                            : context.t.editVi,
                         leading: CupertinoIcons.pencil,
                         onTap: () => Navigator.pop(context, false),
                       ),
@@ -359,10 +367,10 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                       // Survey 186: a correct paragraph answer also reads
                       // "Câu tiếp theo"; Edit/Next appear with the analysis.
                       label: correct && !expanded
-                          ? 'Câu tiếp theo'
+                          ? context.t.nextSentence
                           : widget.mode == StudyMode.writing
-                          ? 'Next'
-                          : 'Tiếp theo',
+                          ? context.t.nextEn
+                          : context.t.nextVi,
                       trailing: correct && !expanded
                           ? CupertinoIcons.arrow_right
                           : CupertinoIcons.chevron_right,
@@ -380,7 +388,7 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _Rate(
-                      label: 'Hữu ích',
+                      label: context.t.helpful,
                       icon: rating == 1
                           ? CupertinoIcons.hand_thumbsup_fill
                           : CupertinoIcons.hand_thumbsup,
@@ -388,7 +396,7 @@ class _FeedbackPanelState extends State<FeedbackPanel>
                     ),
                     const SizedBox(width: 18),
                     _Rate(
-                      label: 'Chưa hữu ích',
+                      label: context.t.notHelpful,
                       icon: rating == -1
                           ? CupertinoIcons.hand_thumbsdown_fill
                           : CupertinoIcons.hand_thumbsdown,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
 import '../domain/models/models.dart';
+import '../l10n/l10n.dart';
 
 /// How each study mode looks. It sits in widgets, not in the design tokens,
 /// so `lib/core` doesn't depend on the domain models.
@@ -48,3 +49,74 @@ extension StudyModeLook on StudyMode {
       }[name] ??
       (this == StudyMode.writing ? D.purple : D.answerBlue);
 }
+
+/// Each study mode's names in the interface language.
+extension StudyModeText on StudyMode {
+  String title(BuildContext context) {
+    final t = context.t;
+    return switch (this) {
+      StudyMode.writing => t.modeWritingTitle,
+      StudyMode.grammar => t.modeGrammarTitle,
+      StudyMode.conversation => t.modeChatTitle,
+    };
+  }
+
+  String category(BuildContext context) {
+    final t = context.t;
+    return switch (this) {
+      StudyMode.writing => t.modeWritingCategory,
+      StudyMode.grammar => t.modeGrammarCategory,
+      StudyMode.conversation => t.modeChatCategory,
+    };
+  }
+
+  String headline(BuildContext context) {
+    final t = context.t;
+    return switch (this) {
+      StudyMode.writing => t.modeWritingHeadline,
+      StudyMode.grammar => t.modeGrammarHeadline,
+      StudyMode.conversation => t.modeChatHeadline,
+    };
+  }
+
+  String accentTitle(BuildContext context) {
+    final t = context.t;
+    return switch (this) {
+      StudyMode.writing => t.modeWritingAccent,
+      StudyMode.grammar => t.modeGrammarAccent,
+      StudyMode.conversation => t.modeChatAccent,
+    };
+  }
+
+  String action(BuildContext context) {
+    final t = context.t;
+    return switch (this) {
+      StudyMode.writing => t.modeWritingAction,
+      StudyMode.grammar => t.modeGrammarAction,
+      StudyMode.conversation => t.modeChatAction,
+    };
+  }
+
+  String blurb(BuildContext context) {
+    final t = context.t;
+    return switch (this) {
+      StudyMode.writing => t.modeWritingBlurb,
+      StudyMode.grammar => t.modeGrammarBlurb,
+      StudyMode.conversation => t.modeChatBlurb,
+    };
+  }
+}
+
+/// A conversation tone's name; the stored value stays the Vietnamese word.
+String toneName(AppLocalizations t, String tone) => switch (tone) {
+  'Trang trọng' => t.toneFormal,
+  'Thân thiện' => t.toneFriendly,
+  _ => t.toneCasual,
+};
+
+/// A grade's name in the interface language.
+String gradeTitle(AppLocalizations t, GradeKind kind) => switch (kind) {
+  GradeKind.correct => t.gradeCorrect,
+  GradeKind.near => t.gradeNear,
+  GradeKind.incorrect => t.gradeIncorrect,
+};

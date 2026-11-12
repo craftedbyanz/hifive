@@ -45,10 +45,10 @@ class _WritingDemoState extends State<_WritingDemo> {
     final content = D.system(17, weight: FontWeight.w500, height: 24 / 17);
     return _StepPage(
       active: widget.active,
-      title: 'Viết một câu,',
-      accent: 'nhận góp ý ngay',
+      title: context.t.demoWriteTitle,
+      accent: context.t.demoWriteAccent,
       accentColor: StudyMode.writing.color,
-      body: 'Hifive chấm từng câu bạn viết và chỉ cách nói tự nhiên hơn. Thử chấm câu dưới đây.',
+      body: context.t.demoWriteBody,
       children: [
         _After(
           child: Container(
@@ -57,9 +57,9 @@ class _WritingDemoState extends State<_WritingDemo> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CapsLabel('DỊCH SANG TIẾNG ANH'),
+                CapsLabel(context.t.demoTranslateToEnglish),
                 const SizedBox(height: 8),
-                Text('Tôi đã sống ở Đà Nẵng ba năm.', style: content),
+                Text(context.t.demoWriteSource, style: content),
                 const SizedBox(height: 14),
                 Container(
                   width: double.infinity,
@@ -77,7 +77,7 @@ class _WritingDemoState extends State<_WritingDemo> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: _SmallButton(
-                    grade == _Grade.idle ? 'Chấm điểm' : 'Đã chấm',
+                    grade == _Grade.idle ? context.t.scoreIt : context.t.scored,
                     key: const ValueKey('onboarding-grade'),
                     icon: CupertinoIcons.sparkles,
                     color: blue,
@@ -132,7 +132,7 @@ class _SkeletonState extends State<_Skeleton>
 
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Đang chấm',
+    label: context.t.scoring,
     child: FadeTransition(
       opacity: Tween(begin: 1.0, end: .45).animate(pulse),
       child: Container(
@@ -146,7 +146,7 @@ class _SkeletonState extends State<_Skeleton>
                 const CupertinoActivityIndicator(radius: 8),
                 const SizedBox(width: 10),
                 Text(
-                  'Đang chấm...',
+                  context.t.scoringEllipsis,
                   style: D.text(
                     15,
                     weight: FontWeight.w600,
@@ -197,7 +197,7 @@ class _WritingResult extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Gần đúng',
+                  context.t.almostRight,
                   style: D.text(16, weight: FontWeight.w800),
                 ),
               ),
@@ -209,7 +209,7 @@ class _WritingResult extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          const CapsLabel('CÂU ĐÚNG', small: true),
+          CapsLabel(context.t.correctSentenceCaps, small: true),
           const SizedBox(height: 6),
           Text.rich(
             TextSpan(
@@ -233,10 +233,10 @@ class _WritingResult extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          const CapsLabel('GIẢI THÍCH', small: true),
+          CapsLabel(context.t.explanationCaps, small: true),
           const SizedBox(height: 6),
           Text(
-            'Việc bắt đầu trong quá khứ và vẫn còn tiếp diễn nên dùng thì hiện tại hoàn thành.',
+            context.t.demoWriteExplanation,
             style: D.system(14, color: D.secondary, height: 20 / 14),
           ),
         ],
@@ -271,10 +271,10 @@ class _GrammarDemoState extends State<_GrammarDemo> {
     final blank = solved ? _options[_answer] : '____';
     return _StepPage(
       active: widget.active,
-      title: 'Sửa lỗi ngữ pháp',
-      accent: 'trong từng câu',
+      title: context.t.demoGrammarTitle,
+      accent: context.t.demoGrammarAccent,
       accentColor: StudyMode.grammar.color,
-      body: 'Câu ngắn, giải thích rõ, để lỗi quen không lặp lại. Chọn từ đúng cho chỗ trống.',
+      body: context.t.demoGrammarBody,
       children: [
         _After(
           child: Container(
@@ -283,7 +283,7 @@ class _GrammarDemoState extends State<_GrammarDemo> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CapsLabel('ĐIỀN VÀO CHỖ TRỐNG'),
+                CapsLabel(context.t.fillTheBlankCaps),
                 const SizedBox(height: 10),
                 Text(
                   'She $blank to work by bus every day.',
@@ -325,10 +325,12 @@ class _GrammarDemoState extends State<_GrammarDemo> {
                       ? CupertinoIcons.checkmark_circle_fill
                       : CupertinoIcons.xmark_circle_fill,
                   color: solved ? D.green : Palette.wrong,
-                  title: solved ? 'Chính xác!' : 'Chưa đúng, thử lại nhé',
+                  title: solved
+                      ? context.t.correctExclaim
+                      : context.t.notQuiteTryAgain,
                   body: solved
-                      ? 'Chủ ngữ số ít (she) ở thì hiện tại đơn thì động từ thêm -s hoặc -es.'
-                      : 'Gợi ý: "every day" là thói quen, và chủ ngữ là "she".',
+                      ? context.t.demoGrammarRule
+                      : context.t.demoGrammarHint,
                 ),
         ),
       ],
@@ -440,13 +442,9 @@ class _ChatDemo extends StatefulWidget {
 }
 
 class _ChatDemoState extends State<_ChatDemo> {
-  static const _replies = [
+  static List<(String, String, String?)> _replies(AppLocalizations t) => [
     ('A latte, please.', 'Great choice! Hot or iced?', null),
-    (
-      'I want coffee.',
-      'Sure! What kind of coffee?',
-      'Lịch sự hơn: "Could I have a coffee, please?"',
-    ),
+    ('I want coffee.', 'Sure! What kind of coffee?', t.demoChatPolite),
   ];
   int? reply;
   bool answered = false;
@@ -470,13 +468,13 @@ class _ChatDemoState extends State<_ChatDemo> {
   Widget build(BuildContext context) {
     final cyan = StudyMode.conversation.color;
     final base = D.system(16, weight: FontWeight.w500, height: 22 / 16);
-    final picked = reply == null ? null : _replies[reply!];
+    final picked = reply == null ? null : _replies(context.t)[reply!];
     return _StepPage(
       active: widget.active,
-      title: 'Luyện nói',
-      accent: 'như ngoài đời',
+      title: context.t.demoChatTitle,
+      accent: context.t.demoChatAccent,
       accentColor: Palette.chatBlue,
-      body: 'Luyện nói theo tình huống thật. Chọn một câu để trả lời.',
+      body: context.t.demoChatBody,
       children: [
         _After(
           child: _ChatLine(
@@ -494,7 +492,7 @@ class _ChatDemoState extends State<_ChatDemo> {
               spacing: 10,
               runSpacing: 10,
               children: [
-                for (final (i, r) in _replies.indexed)
+                for (final (i, r) in _replies(context.t).indexed)
                   _SmallButton(
                     r.$1,
                     key: ValueKey('onboarding-reply-$i'),
@@ -529,7 +527,7 @@ class _ChatDemoState extends State<_ChatDemo> {
                 child: _Note(
                   icon: CupertinoIcons.lightbulb_fill,
                   color: D.purple,
-                  title: 'Gợi ý',
+                  title: context.t.hint,
                   body: tip,
                 ),
               ),

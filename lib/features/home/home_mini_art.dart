@@ -7,6 +7,9 @@ import '../../core/design/design.dart';
 
 /// The small artwork on the seven Hifive 101 cards, traced from zoomed
 /// reference captures on a 160 × 120 canvas.
+/// Where the progress card's animated flame sits on the 160 × 120 canvas.
+const homeMiniFlameCenter = Offset(103.3, 45);
+
 class HomeMiniArtwork extends CustomPainter {
   final int index;
   const HomeMiniArtwork(this.index);
@@ -244,13 +247,8 @@ class HomeMiniArtwork extends CustomPainter {
     ]) {
       _box(c, Rect.fromLTRB(left, top, left + 6, 82.3), 2, color);
     }
-    _icon(
-      c,
-      CupertinoIcons.flame_fill,
-      const Offset(103.3, 45),
-      16,
-      Palette.artOrange,
-    );
+    // The flame above the bars is the animated StreakFlame, laid over this
+    // canvas by the card (see homeMiniFlameCenter).
   }
 
   void _review(Canvas c) {

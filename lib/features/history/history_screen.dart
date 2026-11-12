@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../learning/learning.dart';
@@ -22,10 +23,10 @@ class HistoryScreen extends StatefulWidget {
 }
 
 /// Section names on the reference: grammar results are "Câu".
-String _section(StudyMode mode) => switch (mode) {
-  StudyMode.writing => 'Đoạn văn',
-  StudyMode.grammar => 'Câu',
-  StudyMode.conversation => 'Hội thoại',
+String _section(AppLocalizations t, StudyMode mode) => switch (mode) {
+  StudyMode.writing => t.sectionParagraph,
+  StudyMode.grammar => t.sectionSentence,
+  StudyMode.conversation => t.sectionChat,
 };
 
 /// The ring and badge colour of each kind of result.
@@ -55,10 +56,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Future<void> menu(BuildContext anchor) async {
     final state = AppScope.read(context);
-    final choice = await showGlassMenu<String>(anchor, const [
+    final choice = await showGlassMenu<String>(anchor, [
       GlassMenuItem(
         'clear',
-        'Xóa tất cả',
+        context.t.clearAll,
         icon: CupertinoIcons.trash,
         danger: true,
       ),
@@ -66,10 +67,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
     if (choice != 'clear' || !mounted) return;
     if (await confirm(
       context,
-      'Xóa lịch sử cục bộ?',
-      'Chỉ xóa kết quả trên bản ứng dụng này. Hành động không thể hoàn tác.',
-      action: 'Xóa tất cả',
-      cancel: 'Huỷ',
+      context.t.clearHistoryTitle,
+      context.t.clearHistoryBody,
+      action: context.t.clearAll,
+      cancel: context.t.cancel,
       destructive: true,
     )) {
       state.clearHistory();
@@ -80,13 +81,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
     context,
     Column(
       children: [
-        const SheetTitle('Luyện tập mới'),
+        SheetTitle(context.t.newPractice),
         for (final mode in StudyMode.values)
           ListTile(
             key: ValueKey('history-new-${mode.name}'),
             leading: Icon(mode.icon),
-            title: Text(mode.title),
-            subtitle: Text(mode.category),
+            title: Text(mode.title(context)),
+            subtitle: Text(mode.category(context)),
             onTap: () {
               Navigator.pop(context);
               go<void>(context, TopicScreen(mode: mode));
@@ -121,11 +122,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         padding: EdgeInsets.only(top: top + 54),
         child: EmptyView(
           title: query.isEmpty
-              ? 'Chưa có bài ôn tập'
-              : 'Không tìm thấy kết quả',
+              ? context.t.noReviewsYet
+              : context.t.noResultsFound,
           subtitle: query.isEmpty
-              ? 'Hoàn thành một bài học để lưu lại tiến bộ của bạn.'
-              : 'Thử một từ khóa khác.',
+              ? context.t.finishLessonToSave
+              : context.t.tryAnotherKeyword,
           icon: Icons.search_rounded,
         ),
       );
@@ -188,7 +189,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          mode == null ? 'Ôn tập' : _section(mode),
+                          mode == null
+                              ? context.t.reviewSection
+                              : _section(context.t, mode),
                           style: D.text(
                             mode == null ? 20 : 18,
                             weight: FontWeight.w600,
@@ -196,7 +199,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                         if (mode != null)
                           Text(
-                            '$count sessions',
+                            context.t.sessionsCount(count),
                             style: D.text(11, color: D.secondary),
                           ),
                       ],
@@ -206,7 +209,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: HeaderRoundButton(
                         icon: CupertinoIcons.back,
                         iconSize: 31,
-                        label: 'Quay lại',
+                        label: context.t.back,
                         onTap: () => Navigator.maybePop(context),
                       ),
                     ),
@@ -216,7 +219,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         builder: (anchor) => HeaderRoundButton(
                           icon: CupertinoIcons.ellipsis,
                           iconSize: 20,
-                          label: 'Tùy chọn lịch sử',
+                          label: context.t.historyOptions,
                           onTap: () => menu(anchor),
                         ),
                       ),
@@ -261,7 +264,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               contentPadding: EdgeInsets.zero,
-                              hintText: 'Tìm kiếm tiêu đề, mô tả...',
+                              hintText: context.t.searchHistoryHint,
                               hintStyle: D.text(17, color: D.muted),
                             ),
                           ),
@@ -293,7 +296,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 // searching it becomes ✕, which ends the search (survey 124).
                 Semantics(
                   button: true,
-                  label: searching ? 'Đóng tìm kiếm' : 'Tạo bài luyện tập mới',
+                  label: searching
+                      ? context.t.closeSearch
+                      : context.t.newPracticeLabel,
                   child: GestureDetector(
                     key: ValueKey(searching ? 'history-close' : 'history-new'),
                     onTap: searching
@@ -382,7 +387,10 @@ class _Section extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 15),
           child: Row(
             children: [
-              Text(_section(mode), style: D.text(17, weight: FontWeight.w700)),
+              Text(
+                _section(context.t, mode),
+                style: D.text(17, weight: FontWeight.w700),
+              ),
               // While searching, a badge counts the matches (survey 125).
               if (count != null) ...[
                 const SizedBox(width: 8),
@@ -415,7 +423,7 @@ class _Section extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Xem thêm',
+                        context.t.seeMore,
                         style: D.text(
                           11,
                           weight: FontWeight.w700,

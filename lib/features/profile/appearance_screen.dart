@@ -2,37 +2,55 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'settings_kit.dart';
 
-/// English names used on this screen, as the reference shows them.
-const _modeCopy = {
-  StudyMode.writing: (
-    'TRANSLATION',
-    'Paragraph',
-    'Translation',
-    '01',
-    'Master sentence structure & flow.',
-    Palette.previewBlue,
-  ),
-  StudyMode.grammar: (
-    'GRAMMAR',
-    'Quick Fix',
-    'Grammar',
-    '02',
-    'Fix common mistakes instantly.',
-    Palette.previewPurple,
-  ),
-  StudyMode.conversation: (
-    'DIALOGUE',
-    'Speaking',
-    'Dialogue',
-    '03',
-    'Simulate real-life chats.',
-    Palette.previewCyan,
-  ),
-};
+/// Each mode's preview copy (tag, title, name, number, blurb, Glass tint).
+(String, String, String, String, String, Color) _modeCopy(
+  BuildContext context,
+  StudyMode mode,
+) {
+  final t = context.t;
+  return switch (mode) {
+    StudyMode.writing => (
+      t.previewWritingTag,
+      t.previewWritingTitle,
+      t.previewWritingName,
+      '01',
+      t.previewWritingBlurb,
+      Palette.previewBlue,
+    ),
+    StudyMode.grammar => (
+      t.previewGrammarTag,
+      t.previewGrammarTitle,
+      t.previewGrammarName,
+      '02',
+      t.previewGrammarBlurb,
+      Palette.previewPurple,
+    ),
+    StudyMode.conversation => (
+      t.previewChatTag,
+      t.previewChatTitle,
+      t.previewChatName,
+      '03',
+      t.previewChatBlurb,
+      Palette.previewCyan,
+    ),
+  };
+}
+
+/// A card style's name; the stored id stays the English word.
+String _styleName(BuildContext context, String style) {
+  final t = context.t;
+  return switch (style) {
+    'Regular' => t.styleRegular,
+    'Mono' => t.styleMono,
+    'Minimal' => t.styleMinimal,
+    _ => t.styleGlass,
+  };
+}
 
 class AppearanceScreen extends StatefulWidget {
   const AppearanceScreen({super.key});
@@ -53,7 +71,7 @@ class _AppearanceScreenState extends State<AppearanceScreen> {
   Widget build(BuildContext context) {
     final s = AppScope.of(context);
     return SettingsPage(
-      title: 'Appearance',
+      title: context.t.appearanceTitle,
       padding: const EdgeInsets.fromLTRB(16, 121, 16, 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -107,7 +125,7 @@ class _AppearanceScreenState extends State<AppearanceScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Card Order',
+                  context.t.cardOrder,
                   style: D.text(16, weight: FontWeight.w700, height: 20 / 16),
                 ),
                 PressFade(
@@ -122,7 +140,7 @@ class _AppearanceScreenState extends State<AppearanceScreen> {
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Text(
-                      'Reset',
+                      context.t.reset,
                       style: D.text(
                         12,
                         weight: FontWeight.w600,
@@ -169,7 +187,7 @@ class _OrderRow extends StatelessWidget {
   const _OrderRow({super.key, required this.mode, required this.index});
   @override
   Widget build(BuildContext context) {
-    final copy = _modeCopy[mode]!;
+    final copy = _modeCopy(context, mode);
     return SizedBox(
       height: 76,
       child: Row(
@@ -209,7 +227,7 @@ class _OrderRow extends StatelessWidget {
           ReorderableDragStartListener(
             index: index,
             child: Semantics(
-              label: 'Reorder ${copy.$2}',
+              label: context.t.reorderItem(copy.$2),
               child: const SizedBox(
                 width: 53,
                 height: 45,
@@ -288,7 +306,7 @@ class _StyleTile extends StatelessWidget {
           ),
           const SizedBox(height: 11),
           Text(
-            style,
+            _styleName(context, style),
             style: D.text(
               12.5,
               weight: FontWeight.w700,
@@ -342,7 +360,7 @@ class _PreviewCard extends StatelessWidget {
   const _PreviewCard({required this.mode, required this.style});
   @override
   Widget build(BuildContext context) {
-    final copy = _modeCopy[mode]!;
+    final copy = _modeCopy(context, mode);
     final look = mode.cardLook(style);
     final fill = style == 'Glass' ? copy.$6 : look.$1;
     final ink = look.$2;

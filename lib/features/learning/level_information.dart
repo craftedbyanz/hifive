@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 
+/// The CEFR levels; the first two letters are the stored id.
 const levels = [
   'A1 - Beginner',
   'A2 - Elementary',
@@ -11,14 +13,25 @@ const levels = [
   'C1 - Advanced',
   'C2 - Proficient',
 ];
-const levelDescriptions = [
-  'Có thể viết lại và hoàn thành các câu rất ngắn với từ vựng quen thuộc. Phù hợp để luyện mẫu câu cơ bản và diễn đạt ý đơn giản.',
-  'Có thể viết và chỉnh sửa các câu đơn giản về chủ đề quen thuộc. Bắt đầu nối ý ngắn thành đoạn và giảm lỗi ngữ pháp cơ bản.',
-  'Có thể viết đoạn văn rõ ý về chủ đề quen thuộc, diễn đạt trải nghiệm, kế hoạch và quan điểm ngắn. Phù hợp để luyện mở rộng câu và liên kết ý.',
-  'Có thể viết câu và đoạn văn khá tự nhiên, có cấu trúc rõ ràng, diễn đạt quan điểm và lập luận chi tiết hơn. Phù hợp để luyện paraphrase và kiểm soát ngữ pháp tốt hơn.',
-  'Có thể viết mạch lạc, linh hoạt theo nhiều mục đích học thuật, công việc và cá nhân. Có thể chọn từ ngữ và cấu trúc câu phù hợp với ngữ cảnh.',
-  'Có thể viết chính xác, tinh tế và tự nhiên gần như người thành thạo. Có thể diễn đạt ý phức tạp rõ ràng và kiểm soát sắc thái ngôn ngữ tốt.',
-];
+
+/// A level's name in the interface language; [levels] keeps the ids.
+String levelTitle(AppLocalizations t, int index) => [
+  t.levelA1Title,
+  t.levelA2Title,
+  t.levelB1Title,
+  t.levelB2Title,
+  t.levelC1Title,
+  t.levelC2Title,
+][index];
+
+String levelDescription(AppLocalizations t, int index) => [
+  t.levelA1Body,
+  t.levelA2Body,
+  t.levelB1Body,
+  t.levelB2Body,
+  t.levelC1Body,
+  t.levelC2Body,
+][index];
 
 /// Bar colour for each level on the information sheet, sampled on the iPhone.
 const levelColors = [
@@ -87,19 +100,19 @@ class LevelInformation extends StatelessWidget {
         ),
         const SizedBox(height: 18),
         Text(
-          'Thông tin cấp độ',
+          context.t.levelInfoTitle,
           textAlign: TextAlign.center,
           style: D.text(17, weight: FontWeight.w700),
         ),
         const SizedBox(height: 10),
         Text(
-          'Khung tham chiếu ngôn ngữ chung châu Âu (CEFR) chia trình độ thành 6 cấp, từ người mới bắt đầu đến thành thạo.',
+          context.t.cefrBody,
           textAlign: TextAlign.center,
           style: D.text(14, color: D.secondary, height: 1.38),
         ),
         const SizedBox(height: 14),
         Text(
-          'Bạn có thể thay đổi cấp độ trong Cài đặt',
+          context.t.changeLevelInSettings,
           textAlign: TextAlign.center,
           style: D.text(12, color: D.muted),
         ),
@@ -111,8 +124,8 @@ class LevelInformation extends StatelessWidget {
               child: Divider(height: 1, thickness: .5, color: D.line),
             ),
           _LevelRow(
-            title: levels[i],
-            description: levelDescriptions[i],
+            title: levelTitle(context.t, i),
+            description: levelDescription(context.t, i),
             color: levelColors[i],
             current: levels[i].startsWith(current),
           ),
@@ -169,7 +182,7 @@ class _LevelRow extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            'Hiện tại',
+                            context.t.currentLabel,
                             style: D.text(
                               9,
                               weight: FontWeight.w700,

@@ -7,22 +7,12 @@ class _Scene {
   const _Scene(this.color, this.title, this.body);
 }
 
-final _scenes = [
-  _Scene(
-    StudyMode.writing.color,
-    'Viết thật nhiều,\nsửa từng câu',
-    'Viết bằng ngôn ngữ bạn học, nhận góp ý ngay cho từng câu.',
-  ),
-  _Scene(
-    StudyMode.conversation.color,
-    'Trò chuyện\nkhông sợ sai',
-    'Luyện hội thoại theo tình huống, lỗi được chỉ ra nhẹ nhàng.',
-  ),
-  const _Scene(
-    D.purple,
-    'Nhớ từ mới\nlâu hơn',
-    'Bộ thẻ nhắc bạn ôn lại đúng lúc sắp quên.',
-  ),
+const _sceneCount = 3;
+
+List<_Scene> _scenesOf(AppLocalizations t) => [
+  _Scene(StudyMode.writing.color, t.sceneWritingTitle, t.sceneWritingBody),
+  _Scene(StudyMode.conversation.color, t.sceneChatTitle, t.sceneChatBody),
+  _Scene(D.purple, t.sceneWordsTitle, t.sceneWordsBody),
 ];
 
 /// One demo's timeline; the screen then holds the last frame until
@@ -94,7 +84,6 @@ String _typed(String text, double progress, {bool caret = true}) {
 class _WritingScene extends StatelessWidget {
   final double t;
   const _WritingScene(this.t);
-  static const _source = 'Cuối tuần này mình đi biển nhé!';
   static const _answer = "Let's go to the beach this weekend!";
   static final _answerStyle = D.text(
     17,
@@ -121,10 +110,10 @@ class _WritingScene extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CapsLabel('TIẾNG VIỆT'),
+                  CapsLabel(context.t.demoSourceLanguage),
                   const SizedBox(height: 8),
                   Text(
-                    _source,
+                    context.t.demoSourceSentence,
                     style: D.text(17, weight: FontWeight.w600, height: 23 / 17),
                   ),
                 ],
@@ -157,7 +146,7 @@ class _WritingScene extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CapsLabel('BẠN VIẾT', color: blue),
+                  CapsLabel(context.t.demoYouWrote, color: blue),
                   const SizedBox(height: 8),
                   // The whole sentence with its caret, hidden, sizes the
                   // card while the line types over it, so neither the card
@@ -186,9 +175,9 @@ class _WritingScene extends StatelessWidget {
             scale: badge,
             child: Opacity(
               opacity: badge.clamp(0.0, 1.0),
-              child: const _Pill(
+              child: _Pill(
                 icon: CupertinoIcons.checkmark_alt,
-                text: 'Tự nhiên · 96',
+                text: context.t.demoNatural,
                 color: D.green,
               ),
             ),
@@ -263,9 +252,9 @@ class _ChatScene extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: appear(
             phase(t, .6, .7),
-            const _Pill(
+            _Pill(
               icon: CupertinoIcons.lightbulb,
-              text: 'Quá khứ: go → went',
+              text: context.t.demoPastTense,
               color: D.purple,
             ),
           ),
@@ -380,7 +369,7 @@ class _CardsScene extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'ghi nhớ',
+                              context.t.demoRememberMeaning,
                               style: D.text(
                                 26,
                                 weight: FontWeight.w800,
@@ -429,7 +418,11 @@ class _CardsScene extends StatelessWidget {
           top: 190,
           child: Row(
             children: [
-              for (final (i, label) in ['Khó', 'Ổn', 'Dễ'].indexed) ...[
+              for (final (i, label) in [
+                context.t.rateHard,
+                context.t.rateOkay,
+                context.t.rateEasy,
+              ].indexed) ...[
                 if (i > 0) const SizedBox(width: 10),
                 appear(
                   phase(t, .42 + i * .04, .52 + i * .04),
@@ -465,9 +458,9 @@ class _CardsScene extends StatelessWidget {
           top: 246,
           child: appear(
             phase(t, .74, .84),
-            const _Pill(
+            _Pill(
               icon: CupertinoIcons.calendar,
-              text: 'Ôn lại sau 4 ngày',
+              text: context.t.reviewInDays(4),
               color: D.purple,
             ),
           ),
@@ -477,11 +470,10 @@ class _CardsScene extends StatelessWidget {
           right: 20,
           child: Transform.scale(
             scale: phase(t, .84, .94, Curves.easeOutBack),
-            child: const _Pill(
-              icon: Icons.local_fire_department_rounded,
-              text: '7 ngày',
+            child: _Pill(
+              leading: const StreakFlame(size: 18),
+              text: context.t.streakDays(7),
               color: D.orange,
-              filled: true,
             ),
           ),
         ),
@@ -490,38 +482,42 @@ class _CardsScene extends StatelessWidget {
   }
 }
 
-/// A short status pill: a tinted fill with the color's icon and words, or
-/// [filled] with white ink.
+/// A short status pill: a white fill with the color's icon, or [leading]
+/// in its place, and dark words.
 class _Pill extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
+  final Widget? leading;
   final String text;
   final Color color;
-  final bool filled;
   const _Pill({
-    required this.icon,
+    this.icon,
+    this.leading,
     required this.text,
     required this.color,
-    this.filled = false,
   });
   @override
   Widget build(BuildContext context) {
-    final ink = filled ? Colors.white : D.ink;
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 7, 12, 7),
       decoration: BoxDecoration(
-        color: filled ? color : Colors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(17),
-        border: filled ? null : Border.all(color: color.withValues(alpha: .35)),
+        border: Border.all(color: color.withValues(alpha: .35)),
         boxShadow: D.shadow,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: filled ? Colors.white : color),
+          leading ?? Icon(icon, size: 16, color: color),
           const SizedBox(width: 6),
           Text(
             text,
-            style: D.text(13, weight: FontWeight.w700, color: ink, height: 1.2),
+            style: D.text(
+              13,
+              weight: FontWeight.w700,
+              color: D.ink,
+              height: 1.2,
+            ),
           ),
         ],
       ),

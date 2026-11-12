@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../core/design/design.dart';
+import '../l10n/l10n.dart';
 import 'common.dart';
 
 class PlusBanner extends StatelessWidget {
@@ -41,7 +42,7 @@ class PlusBanner extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Đăng ký Hifive Plus',
+                          context.t.plusBannerTitle,
                           style: D.text(
                             15,
                             weight: FontWeight.w700,
@@ -53,7 +54,7 @@ class PlusBanner extends StatelessWidget {
                         SizedBox(
                           width: 231,
                           child: Text(
-                            'Mở khóa mức sử dụng cao hơn và làm chủ kỹ năng ngôn ngữ của bạn.',
+                            context.t.plusBannerBody,
                             style: D.text(
                               11.5,
                               spacing: -.17,

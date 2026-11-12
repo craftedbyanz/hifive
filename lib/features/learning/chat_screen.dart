@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'completion_screen.dart';
@@ -152,8 +153,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> exit() async {
     if (await confirm(
       context,
-      'Thoát hội thoại?',
-      'Bạn chưa hoàn thành hội thoại. Tiến độ của phiên này sẽ không được lưu nếu bạn thoát bây giờ.',
+      context.t.leaveChatTitle,
+      context.t.leaveChatBody,
     )) {
       if (!mounted) return;
       setState(() => allowExit = true);
@@ -185,7 +186,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      tooltip: 'Thoát hội thoại',
+                      tooltip: context.t.leaveChat,
                       onPressed: exit,
                       icon: const Icon(
                         Icons.close_rounded,
@@ -204,7 +205,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            '${settings.freeChat ? 'Trò chuyện Tự do' : 'Chế độ Kịch bản'} · Giọng: ${settings.tone}',
+                            '${settings.freeChat ? context.t.freeChat : context.t.scriptMode} · ${context.t.toneLabel(toneName(context.t, settings.tone))}',
                             style: D.text(11, color: D.muted),
                           ),
                         ],
@@ -264,8 +265,8 @@ class _ChatScreenState extends State<ChatScreen> {
               Expanded(
                 child: Text(
                   showPrompt
-                      ? 'Hãy nói: ${line.prompt}'
-                      : 'Trả lời tự do bằng tiếng Anh',
+                      ? context.t.sayThis(line.prompt)
+                      : context.t.answerFreelyEnglish,
                   key: const ValueKey('chat-prompt'),
                   style: D.text(
                     13,
@@ -278,7 +279,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 TextButton(
                   key: const ValueKey('chat-hint'),
                   onPressed: () => setState(() => hintShown = true),
-                  child: const Text('Gợi ý'),
+                  child: Text(context.t.hint),
                 ),
             ],
           ),
@@ -296,7 +297,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onChanged: (_) => setState(() {}),
                   onSubmitted: (_) => send(),
                   decoration: InputDecoration(
-                    hintText: 'Nhập câu trả lời...',
+                    hintText: context.t.typeAnswer,
                     filled: true,
                     fillColor: D.background,
                     contentPadding: const EdgeInsets.symmetric(
@@ -314,7 +315,7 @@ class _ChatScreenState extends State<ChatScreen> {
               RoundButton(
                 key: const ValueKey('chat-send'),
                 icon: Icons.arrow_upward_rounded,
-                label: 'Gửi',
+                label: context.t.sendAction,
                 size: 46,
                 color: text.text.trim().isEmpty || waiting ? D.line : D.ink,
                 onTap: text.text.trim().isEmpty || waiting ? null : send,
@@ -360,13 +361,15 @@ class _PartnerBubbleState extends State<_PartnerBubble> {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                tooltip: 'Nghe câu này',
+                tooltip: context.t.listenToLine,
                 visualDensity: VisualDensity.compact,
                 onPressed: () => playWord(context, widget.line.answer),
                 icon: const Icon(Icons.volume_up_rounded, size: 18),
               ),
               IconButton(
-                tooltip: translated ? 'Ẩn bản dịch' : 'Xem bản dịch',
+                tooltip: translated
+                    ? context.t.hideTranslation
+                    : context.t.showTranslation,
                 visualDensity: VisualDensity.compact,
                 onPressed: () => setState(() => translated = !translated),
                 icon: const Icon(Icons.translate_rounded, size: 18),
@@ -423,14 +426,14 @@ class _LearnerBubbleState extends State<_LearnerBubble> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  grade.title,
+                  gradeTitle(context.t, grade.kind),
                   style: D.text(11, weight: FontWeight.w700, color: color),
                 ),
               ),
               if (open && grade.kind != GradeKind.correct) ...[
                 const SizedBox(height: 8),
                 Text(
-                  'Gợi ý: ${widget.message.line.answer}',
+                  context.t.hintWith(widget.message.line.answer),
                   style: D.text(13, color: Colors.white),
                 ),
               ],
@@ -474,14 +477,14 @@ class _FailureBar extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           child: Text(
-            'Không gửi được câu trả lời.',
+            context.t.sendFailed,
             style: D.text(13, color: Palette.wrong),
           ),
         ),
         TextButton(
           key: const ValueKey('chat-retry'),
           onPressed: onRetry,
-          child: const Text('Thử lại'),
+          child: Text(context.t.retry),
         ),
       ],
     ),

@@ -2,21 +2,28 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'home_design.dart';
 
 class ModeCard extends StatelessWidget {
   final StudyMode mode;
-  final VoidCallback onTap;
+
+  /// Null while the mode's content is still simulated: the card is dimmed,
+  /// marked "Sắp ra mắt" and can't be opened.
+  final VoidCallback? onTap;
   const ModeCard({super.key, required this.mode, required this.onTap});
   @override
   Widget build(BuildContext context) {
     final appearance = AppScope.of(context).appearance;
     final (tint, foreground) = mode.cardLook(appearance);
-    return Semantics(
-      button: true,
-      label: mode.title,
+    final soon = onTap == null;
+    final card = Semantics(
+      button: !soon,
+      label: soon
+          ? '${mode.title(context)}, ${context.t.comingSoon}'
+          : mode.title(context),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
@@ -108,11 +115,7 @@ class ModeCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      mode == StudyMode.grammar
-                          ? 'Sửa lỗi nhanh với các câu ngắn.'
-                          : mode == StudyMode.writing
-                          ? 'Rèn luyện dịch và viết các\nđoạn văn.'
-                          : 'Mô phỏng đa dạng các\ntình huống.',
+                      mode.blurb(context),
                       style: D.text(
                         13,
                         weight: FontWeight.w600,
@@ -131,7 +134,7 @@ class ModeCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'KHÁM PHÁ',
+                          context.t.explore,
                           style: D.text(
                             11,
                             color: foreground.withValues(alpha: .7),
@@ -173,7 +176,7 @@ class ModeCard extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                mode.category,
+                                mode.category(context),
                                 style: D.text(
                                   10,
                                   color: foreground.withValues(alpha: .72),
@@ -213,7 +216,7 @@ class ModeCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      mode.title,
+                      mode.title(context),
                       style: HomeDesign.modeTitle.copyWith(color: foreground),
                     ),
                   ],
@@ -223,6 +226,14 @@ class ModeCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+    if (!soon) return card;
+    return Stack(
+      children: [
+        Opacity(opacity: .55, child: card),
+        // Below the mode icon, beside the title.
+        const Positioned(top: 100, right: 22, child: SoonBadge(light: true)),
+      ],
     );
   }
 }

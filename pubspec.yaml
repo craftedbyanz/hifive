@@ -21,12 +21,17 @@ dependencies:
   firebase_auth: ^7.0.1
   google_sign_in: ^7.2.0
   http: ^1.6.0
+  lottie: ^3.8.2
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
 flutter:
+  generate: true
   uses-material-design: true
+  assets:
+    - assets/lottie/
   fonts:
     - family: PlusJakartaSans
       fonts:

@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final _menuMotion = AnimationController(
     vsync: this,
     duration: MenuMotion.duration,
+    reverseDuration: MenuMotion.reverseDuration,
   );
   @override
   void didChangeDependencies() {

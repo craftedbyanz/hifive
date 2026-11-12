@@ -252,9 +252,10 @@ Borderless by default: `isCollapsed`, no fill, `InputBorder.none`, placed inside
 | Onboarding steps | step change 350 ms `easeOutCubic`; the title writes itself at 45 ms a character with a `feedback.tap()` each, pauses 160 ms, then the line under it at 12 ms a character (a tick every third); the step's content then fades and lifts 8% in 300 ms (`Reveal`); progress bars 300 ms; demos "think" 900 ms |
 | Onboarding card stacks | the welcome stack deals its front card up and left every 2.8 s or on a tap, 600 ms `easeInOutCubic`, as the cards behind (20 pt lower, 6% smaller each) move up; a rated word card flies out sideways in 450 ms `easeInCubic` after a 0.33 s flip |
 | Preparing wait | dots on three tilted rings in the mode colours, one turn per 6 s; they gather into the logo over the 2.8 s wait |
+| Streak flame and Home menu icons | the flame is a Lottie loop (`StreakFlame`, raised 6.5% so its body is centered); the menu's other icons (`MenuArt`) share its look, one hue from dark top to light base around a pale core (`ArtTone`), and its easing `Cubic(.333, 0, .667, 1)`; each makes one movement per 2.8–3.6 s loop, then rests |
 | Auth gate (welcome to Home and back) | on sign-in a frosted white veil (blur σ 22) with an arched top rises over sign-in in 900 ms `easeInOutCubic` with ten light knocks closing in and a heavy one as it covers, the logo fades in and breathes for 300 ms; then pages fade through white and scale from 0.98, 350 ms `easeOutCubic` in, `easeIn` out |
 
-Ambient motion (Home orb, banner stars) runs even under Reduce Motion, as on the reference. New motion (sign-in demos, onboarding, auth gate) stops under Reduce Motion and shows each demo's finished frame (`welcomeAutoplay()`); tests turn it off with `animateAmbient: false`.
+Ambient motion (Home orb, banner stars, streak flame, menu icons) runs even under Reduce Motion, as on the reference. New motion (sign-in demos, onboarding, auth gate) stops under Reduce Motion and shows each demo's finished frame (`welcomeAutoplay()`); tests turn it off with `animateAmbient: false`.
 
 Durations and curves for new motion, taken from what the code already uses:
 
@@ -273,6 +274,7 @@ Through `FeedbackService` only, never `HapticFeedback` in a feature, so the Prof
 
 | Event | Call | Effect |
 | --- | --- | --- |
+| Tap on any button, card, row or chip | automatic: `TapFeedback` at the app root calls `feedback.buttonTap()` | light impact; skipped for back ("Quay lại", "Thoát game"), text fields, drags, and when the control just gave its own haptic |
 | Choice or step (check an answer, flip, pick a letter) | `feedback.tap()` | selection click |
 | Completed (lesson, chat, Flow Letter word) | `feedback.success()` | medium impact and the system click |
 | Something physical moving or landing (sign-in veil) | `feedback.impact()`, `impact(heavy: true)` | light or heavy impact, no sound |

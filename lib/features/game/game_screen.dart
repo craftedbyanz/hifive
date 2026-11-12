@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'game_glass_button.dart';
@@ -89,10 +90,13 @@ class _GameScreenState extends State<GameScreen>
   }
 
   Future<void> exit() async {
-    final text = widget.resume
-        ? 'Bạn có thể tiếp tục từ trang Flow Letter.'
-        : 'Tiến độ chơi hiện tại sẽ bị mất.';
-    if (await confirm(context, 'Thoát game?', text, cancel: 'Huỷ')) {
+    final text = widget.resume ? context.t.resumeLater : context.t.progressLost;
+    if (await confirm(
+      context,
+      context.t.exitGameTitle,
+      text,
+      cancel: context.t.cancel,
+    )) {
       if (!mounted) return;
       setState(() => allowExit = true);
       await Future<void>.delayed(Duration.zero);
@@ -226,7 +230,7 @@ class _GameScreenState extends State<GameScreen>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'LEVEL $level',
+                            context.t.levelCaps(level),
                             style: D.text(
                               15,
                               color: Colors.white.withValues(alpha: .85),
@@ -247,7 +251,7 @@ class _GameScreenState extends State<GameScreen>
                         alignment: Alignment.centerLeft,
                         child: GameGlassButton(
                           icon: Icons.chevron_left_rounded,
-                          label: 'Thoát game',
+                          label: context.t.exitGame,
                           // Round in a session from the game's home, square
                           // in one from a deck (survey 35, reference resume).
                           square: !widget.resume,
@@ -405,8 +409,8 @@ class _GameScreenState extends State<GameScreen>
                   const SizedBox(height: 22),
                   Text(
                     moved
-                        ? '← Vuốt ngang để xem các chữ →'
-                        : 'Sắp xếp các chữ cái',
+                        ? context.t.swipeToSeeLetters
+                        : context.t.arrangeLetters,
                     style: D.text(
                       13,
                       color: Colors.white.withValues(alpha: .5),
@@ -418,7 +422,7 @@ class _GameScreenState extends State<GameScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     gameButton(
-                      'Gợi ý',
+                      context.t.hint,
                       CupertinoIcons.lightbulb_fill,
                       solved
                           ? null
@@ -429,12 +433,14 @@ class _GameScreenState extends State<GameScreen>
                               });
                               toast(
                                 context,
-                                'Chữ đầu tiên: ${word.word[0].toUpperCase()}',
+                                context.t.firstLetter(
+                                  word.word[0].toUpperCase(),
+                                ),
                               );
                             },
                     ),
                     const SizedBox(width: 11),
-                    gameButton('Xoay', Icons.crop_rotate_rounded, () {
+                    gameButton(context.t.rotate, Icons.crop_rotate_rounded, () {
                       landscape = !landscape;
                       SystemChrome.setPreferredOrientations(
                         landscape
@@ -444,7 +450,7 @@ class _GameScreenState extends State<GameScreen>
                     }),
                     const SizedBox(width: 11),
                     gameButton(
-                      'Bỏ qua',
+                      context.t.skip,
                       CupertinoIcons.arrow_right,
                       solved ? null : () => next(skipped: true),
                     ),
@@ -603,7 +609,7 @@ class _GameScreenState extends State<GameScreen>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'LEVEL $level',
+                            context.t.levelCaps(level),
                             style: D.text(
                               15,
                               color: Colors.white.withValues(alpha: .85),
@@ -624,7 +630,7 @@ class _GameScreenState extends State<GameScreen>
                         alignment: Alignment.centerLeft,
                         child: GameGlassButton(
                           icon: Icons.chevron_left_rounded,
-                          label: 'Quay lại',
+                          label: context.t.back,
                           onTap: () => Navigator.pop(context),
                         ),
                       ),
@@ -675,7 +681,7 @@ class _GameScreenState extends State<GameScreen>
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  'Hoàn thành!',
+                  context.t.completed,
                   style: D.text(
                     32,
                     weight: FontWeight.w800,
@@ -685,17 +691,17 @@ class _GameScreenState extends State<GameScreen>
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    stat('Điểm', '$score'),
+                    stat(context.t.points, '$score'),
                     const SizedBox(width: 12),
-                    stat('Accuracy', '$accuracy%'),
+                    stat(context.t.accuracy, '$accuracy%'),
                   ],
                 ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    stat('Combo', 'x$bestCombo'),
+                    stat(context.t.combo, 'x$bestCombo'),
                     const SizedBox(width: 12),
-                    stat('Hint', '$hints'),
+                    stat(context.t.hintStat, '$hints'),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -708,7 +714,7 @@ class _GameScreenState extends State<GameScreen>
                         children: [
                           Expanded(
                             child: Text(
-                              'Level ${1 + state.totalXp ~/ 500}',
+                              context.t.levelNumber(1 + state.totalXp ~/ 500),
                               style: D.text(
                                 14,
                                 weight: FontWeight.w700,
@@ -750,7 +756,7 @@ class _GameScreenState extends State<GameScreen>
                       height: 55,
                       child: Center(
                         child: Text(
-                          'Về trang chủ',
+                          context.t.backHome,
                           style: D.text(
                             18,
                             weight: FontWeight.w700,

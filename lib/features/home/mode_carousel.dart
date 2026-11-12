@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
-import '../../widgets/common.dart';
-import '../learning/learning.dart';
 import 'home_design.dart';
 import 'mode_card.dart';
 
@@ -67,7 +65,9 @@ class ModeCarousel extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 7.5),
               child: ModeCard(
                 mode: modes[i],
-                onTap: () => go<void>(context, TopicScreen(mode: modes[i])),
+                // Writing, grammar and conversation still run on simulated
+                // content, so they are shown as coming soon.
+                onTap: null,
               ),
             ),
           ),

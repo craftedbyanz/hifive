@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
+import '../l10n/l10n.dart';
 
 Future<T?> sheet<T>(BuildContext context, Widget child, {bool scroll = true}) =>
     showModalBottomSheet<T>(
@@ -34,8 +35,8 @@ Future<bool> confirm(
   BuildContext context,
   String title,
   String text, {
-  String action = 'Thoát',
-  String cancel = 'Ở lại',
+  String? action,
+  String? cancel,
   bool destructive = false,
 }) async =>
     await showGeneralDialog<bool>(
@@ -43,8 +44,13 @@ Future<bool> confirm(
       barrierDismissible: false,
       barrierColor: Palette.sheetBarrier,
       transitionDuration: const Duration(milliseconds: 220),
-      pageBuilder: (ctx, _, _) =>
-          _SystemAlert(title, text, action, cancel, destructive),
+      pageBuilder: (ctx, _, _) => _SystemAlert(
+        title,
+        text,
+        action ?? ctx.t.leave,
+        cancel ?? ctx.t.stay,
+        destructive,
+      ),
       transitionBuilder: (ctx, animation, _, child) => FadeTransition(
         opacity: animation,
         child: ScaleTransition(
@@ -163,7 +169,7 @@ class SheetTitle extends StatelessWidget {
           child: Text(title, style: D.text(19, weight: FontWeight.w700)),
         ),
         IconButton(
-          tooltip: 'Đóng',
+          tooltip: context.t.close,
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close_rounded),
         ),

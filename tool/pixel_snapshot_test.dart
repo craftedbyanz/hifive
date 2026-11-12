@@ -1,5 +1,6 @@
 // Renders every screen to PNG, to prove a refactor changes no pixels:
 //   flutter test tool/pixel_snapshot_test.dart --dart-define=PIX_OUT=<dir>
+// Add --dart-define=PIX_LANG=en (or zh, ko) to render another language.
 // Run it before and after the change with separate empty directories, then
 // compare them with `diff -rq`. PIX_OUT must exist and sit outside the repo.
 import 'dart:convert';
@@ -23,9 +24,13 @@ import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/features/profile/profile.dart';
 import 'package:hifive/features/welcome/welcome.dart';
+import 'package:hifive/l10n/l10n.dart';
 import 'package:hifive/state/state.dart';
 
 const out = String.fromEnvironment('PIX_OUT');
+
+/// The interface language to render, `vi` unless PIX_LANG names another.
+const lang = String.fromEnvironment('PIX_LANG', defaultValue: 'vi');
 AppState make() => createAppState(
   store: MemoryRecordStore(),
   feedback: SilentFeedback(),
@@ -119,6 +124,9 @@ void main() {
           child: MaterialApp(
             theme: D.theme,
             debugShowCheckedModeBanner: false,
+            locale: const Locale(lang),
+            supportedLocales: supportedAppLocales,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
             home: f(s),
           ),
         ),
@@ -136,7 +144,7 @@ void main() {
   });
   testWidgets('home_menu', (t) async {
     await mount(t, scenes['home']!);
-    await t.tap(find.text('Menu'));
+    await t.tap(find.text(lookupAppLocalizations(const Locale(lang)).menu));
     await settle(t);
     await shot(t, 'home_menu');
   });
@@ -163,10 +171,12 @@ void main() {
     await mount(t, scenes['practice_grammar']!);
     await t.enterText(find.byKey(const ValueKey('answer-input')), 'zzz qqq');
     await t.pump();
-    await t.tap(find.byTooltip('Chuyển tiếp'));
+    await t.tap(
+      find.byTooltip(lookupAppLocalizations(const Locale(lang)).next),
+    );
     await settle(t);
     await shot(t, 'practice_wrong');
-    await t.tap(find.text('Sửa'));
+    await t.tap(find.text(lookupAppLocalizations(const Locale(lang)).editVi));
     await settle(t);
     await t.enterText(
       find.byKey(const ValueKey('answer-input')),
@@ -176,7 +186,9 @@ void main() {
       ).questions.first.answer,
     );
     await t.pump();
-    await t.tap(find.byTooltip('Chuyển tiếp'));
+    await t.tap(
+      find.byTooltip(lookupAppLocalizations(const Locale(lang)).next),
+    );
     await settle(t);
     await shot(t, 'practice_correct');
   });

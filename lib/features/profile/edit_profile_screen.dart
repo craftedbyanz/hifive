@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../welcome/welcome.dart';
@@ -33,13 +34,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final value = name!.text.trim();
     final canSave = value.isNotEmpty && value != s.name;
     return SettingsPage(
-      title: 'Chỉnh sửa hồ sơ',
+      title: context.t.profileEdit,
       background: Colors.white,
       padding: const EdgeInsets.fromLTRB(24, 135, 24, 140),
       footer: Padding(
         padding: settingsFooterPadding,
         child: SettingsCta(
-          'Lưu thay đổi',
+          context.t.saveChanges,
           key: const ValueKey('profile-save'),
           color: canSave ? D.ink : Palette.saveDisabled,
           onTap: canSave
@@ -57,7 +58,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const SizedBox(height: 35),
           Row(
             children: [
-              const Expanded(child: _FieldLabel('Tên hiển thị')),
+              Expanded(child: _FieldLabel(context.t.displayName)),
               Text(
                 '${name!.text.characters.length}/$_maxName',
                 style: D.text(
@@ -89,7 +90,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          const _FieldLabel('Địa chỉ Email'),
+          _FieldLabel(context.t.emailAddress),
           const SizedBox(height: 8),
           _Box(
             height: 51,
@@ -97,7 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    s.user?.email ?? 'Tài khoản không có email',
+                    s.user?.email ?? context.t.noEmail,
                     style: D.text(
                       15.5,
                       color: Palette.settingsMuted,
@@ -114,7 +115,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          const _FieldLabel('Kết nối qua'),
+          _FieldLabel(context.t.signedInWith),
           const SizedBox(height: 11),
           _Box(
             height: 61,
@@ -125,17 +126,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Expanded(
                   child: Text(switch (s.user) {
                     final AuthUser u => accountMethod(u),
-                    null => 'Chưa đăng nhập',
+                    null => context.t.notSignedInShort,
                   }, style: D.text(15.5, height: 20 / 15.5)),
                 ),
                 if (s.user != null)
-                  const _Badge('Đã kết nối', key: ValueKey('profile-linked')),
+                  _Badge(
+                    context.t.connected,
+                    key: const ValueKey('profile-linked'),
+                  ),
               ],
             ),
           ),
-          if (syncStatus(s) case final String status) ...[
+          if (syncStatus(s, context.t) case final String status) ...[
             const SizedBox(height: 24),
-            const _FieldLabel('Đồng bộ'),
+            _FieldLabel(context.t.syncLabel),
             const SizedBox(height: 11),
             _Box(
               height: 61,
@@ -163,7 +167,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: Center(
                           widthFactor: 1,
                           child: Text(
-                            'Đồng bộ ngay',
+                            context.t.syncNow,
                             style: D.text(
                               13,
                               weight: FontWeight.w700,
@@ -179,7 +183,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ],
           const SizedBox(height: 48),
           Text(
-            'Vùng nguy hiểm',
+            context.t.dangerZone,
             style: D.text(
               13,
               weight: FontWeight.w600,
@@ -191,10 +195,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           PressFade(
             key: const ValueKey('profile-delete'),
             // Deletion comes before release (docs/backend-plan.md).
-            onTap: () => toast(
-              context,
-              'Xóa tài khoản sẽ có trong bản phát hành chính thức.',
-            ),
+            onTap: () => toast(context, context.t.deleteAccountLater),
             child: Container(
               height: 68,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -219,7 +220,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Xóa tài khoản',
+                          context.t.deleteAccount,
                           style: D.text(
                             15,
                             weight: FontWeight.w600,
@@ -228,7 +229,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                         Text(
-                          'Xóa vĩnh viễn tất cả dữ liệu của bạn',
+                          context.t.deleteAccountBody,
                           style: D.text(
                             11.5,
                             color: Palette.dangerInk.withValues(alpha: .75),
@@ -346,7 +347,7 @@ class _BigAvatar extends StatelessWidget {
               borderRadius: BorderRadius.circular(11),
             ),
             child: Text(
-              'Free',
+              context.t.planFree,
               style: D.text(
                 11,
                 weight: FontWeight.w700,

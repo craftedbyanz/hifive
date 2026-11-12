@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 
 /// The swipe guide over a dark, heavily blurred copy of the session.
@@ -19,27 +20,11 @@ Future<void> showReviewGuide(BuildContext context) => showGeneralDialog<void>(
 
 class _Guide extends StatelessWidget {
   const _Guide();
-  static const _rows = [
-    (
-      CupertinoIcons.arrow_left,
-      'Quên bài',
-      'Vuốt trái để Hifive sắp xếp học lại ngay',
-    ),
-    (
-      CupertinoIcons.arrow_down,
-      'Hơi khó nhớ',
-      'Vuốt xuống nếu bạn thấy từ này còn lạ lẫm',
-    ),
-    (
-      CupertinoIcons.arrow_up,
-      'Đã nhớ',
-      'Vuốt lên khi bạn trả lời đúng nghĩa và phát âm',
-    ),
-    (
-      CupertinoIcons.arrow_right,
-      'Quá dễ',
-      'Vuốt phải để ít gặp lại từ này hơn',
-    ),
+  static List<(IconData, String, String)> _rows(AppLocalizations t) => [
+    (CupertinoIcons.arrow_left, t.guideForgot, t.guideForgotBody),
+    (CupertinoIcons.arrow_down, t.guideHard, t.guideHardBody),
+    (CupertinoIcons.arrow_up, t.guideKnown, t.guideKnownBody),
+    (CupertinoIcons.arrow_right, t.guideEasy, t.guideEasyBody),
   ];
 
   @override
@@ -58,7 +43,7 @@ class _Guide extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Cơ chế học thông minh',
+                    context.t.smartLearning,
                     style: D.text(
                       20.5,
                       weight: FontWeight.w700,
@@ -70,7 +55,7 @@ class _Guide extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 70),
                     child: Text(
-                      'Vuốt thẻ bài để đánh giá mức độ ghi nhớ của bạn',
+                      context.t.swipeToRate,
                       textAlign: TextAlign.center,
                       style: D.text(
                         13.5,
@@ -80,7 +65,7 @@ class _Guide extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 39),
-                  for (final (icon, title, text) in _rows)
+                  for (final (icon, title, text) in _rows(context.t))
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 38,
@@ -160,7 +145,7 @@ class _Guide extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Đã hiểu, bắt đầu học',
+                      context.t.gotItStart,
                       style: D.text(
                         14.5,
                         weight: FontWeight.w700,

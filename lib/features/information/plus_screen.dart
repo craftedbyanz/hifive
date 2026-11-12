@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'privacy_screen.dart';
@@ -16,8 +17,6 @@ class PlusScreen extends StatefulWidget with CoverPage {
   State<PlusScreen> createState() => _PlusScreenState();
 }
 
-const _noTransaction = 'Bản cục bộ này không có giao dịch hoặc đăng ký.';
-
 class _PlusScreenState extends State<PlusScreen> {
   // Only the yearly state was observed. The monthly button and note follow its
   // pattern, using the numbers on the monthly plan's row.
@@ -25,16 +24,14 @@ class _PlusScreenState extends State<PlusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final note = _yearly
-        ? 'Dùng thử miễn phí 7 ngày. Sau đó tự động gia hạn với giá 349.000đ/năm. Hủy bất cứ lúc nào.'
-        : 'Dùng thử miễn phí 3 ngày. Sau đó tự động gia hạn với giá 49.000đ/tháng. Hủy bất cứ lúc nào.';
+    final note = _yearly ? context.t.plusYearlyNote : context.t.plusMonthlyNote;
     return HeaderScrollPage(
-      title: 'Nâng cấp Hifive+',
+      title: context.t.plusTitle,
       titleSize: 16.5,
       leadingIcon: Icons.close_rounded,
       leadingIconSize: 30,
       leadingWidth: 48,
-      leadingLabel: 'Đóng',
+      leadingLabel: context.t.close,
       padding: const EdgeInsets.only(top: 133, bottom: 254),
       footer: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 42),
@@ -43,7 +40,7 @@ class _PlusScreenState extends State<PlusScreen> {
           children: [
             PressFade(
               key: const ValueKey('plus-cta'),
-              onTap: () => toast(context, _noTransaction),
+              onTap: () => toast(context, context.t.plusNoTransaction),
               child: Container(
                 height: 56,
                 alignment: Alignment.center,
@@ -52,9 +49,7 @@ class _PlusScreenState extends State<PlusScreen> {
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Text(
-                  _yearly
-                      ? 'Dùng thử 7 ngày • sau đó 349.000đ/năm'
-                      : 'Dùng thử 3 ngày • sau đó 49.000đ/tháng',
+                  _yearly ? context.t.plusYearlyCta : context.t.plusMonthlyCta,
                   style: D.text(
                     15,
                     weight: FontWeight.w700,
@@ -86,23 +81,23 @@ class _PlusScreenState extends State<PlusScreen> {
             child: Column(
               children: [
                 _Plan(
-                  title: 'Hàng năm',
-                  monthly: '₫29.083 / tháng',
-                  price: '349.000đ',
-                  unit: ' / năm',
-                  trial: '7 ngày miễn phí, sau\nđó 349.000đ',
-                  badge: 'Giảm 40%',
+                  title: context.t.planYearly,
+                  monthly: context.t.planYearlyPerMonth,
+                  price: context.t.priceYearly,
+                  unit: context.t.perYear,
+                  trial: context.t.planYearlyTrial,
+                  badge: context.t.save40,
                   height: 90.5,
                   selected: _yearly,
                   onTap: () => setState(() => _yearly = true),
                 ),
                 const SizedBox(height: 11.5),
                 _Plan(
-                  title: 'Hàng tháng',
-                  monthly: '₫49.000 / tháng',
-                  price: '49.000đ',
-                  unit: ' / tháng',
-                  trial: '3 ngày miễn phí, sau đó 49.000đ',
+                  title: context.t.planMonthly,
+                  monthly: context.t.planMonthlyPerMonth,
+                  price: context.t.priceMonthly,
+                  unit: context.t.perMonth,
+                  trial: context.t.planMonthlyTrial,
                   height: 74,
                   selected: !_yearly,
                   onTap: () => setState(() => _yearly = false),
@@ -117,16 +112,16 @@ class _PlusScreenState extends State<PlusScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Đặc quyền gói Hifive Plus',
+                  context.t.plusPerksTitle,
                   style: D.text(19, weight: FontWeight.w700, height: 25 / 19),
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'Mở khóa toàn bộ tính năng cao cấp để học ngoại ngữ hiệu quả hơn, nhanh hơn và thú vị hơn.',
+                  context.t.plusPerksBody,
                   style: D.text(13, color: Palette.plusBody, height: 18 / 13),
                 ),
                 const SizedBox(height: 39),
-                ..._perks,
+                ..._perks(context.t),
                 const SizedBox(height: 36),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -143,7 +138,7 @@ class _PlusScreenState extends State<PlusScreen> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'Sau khi mua, bạn có thể quản lý và tắt tính năng tự động gia hạn trong cài đặt tài khoản iTunes & App Store của mình.',
+                        context.t.plusRenewalNote,
                         style: D.text(
                           12,
                           color: Palette.plusBody,
@@ -158,24 +153,24 @@ class _PlusScreenState extends State<PlusScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _Link(
-                      'Điều khoản',
+                      context.t.agreeTerms,
                       onTap: () async {
                         final shown = await AppScope.read(context).system
                             .openTerms();
                         if (!shown && context.mounted) {
-                          toast(context, 'Không mở được trang điều khoản.');
+                          toast(context, context.t.cannotOpenTermsPage);
                         }
                       },
                     ),
                     const SizedBox(width: 16),
                     _Link(
-                      'Quyền riêng tư',
+                      context.t.privacyShort,
                       onTap: () => PrivacyScreen.showSheet(context),
                     ),
                     const SizedBox(width: 16),
                     _Link(
-                      'Khôi phục',
-                      onTap: () => toast(context, _noTransaction),
+                      context.t.restore,
+                      onTap: () => toast(context, context.t.plusNoTransaction),
                     ),
                   ],
                 ),
@@ -187,39 +182,39 @@ class _PlusScreenState extends State<PlusScreen> {
     );
   }
 
-  static const _perks = [
+  static List<_Perk> _perks(AppLocalizations t) => [
     _Perk(
       icon: CupertinoIcons.chart_bar_alt_fill,
-      title: 'Hạn mức cao hơn',
-      body: 'Mức sử dụng AI cao hơn mỗi ngày so với gói Miễn phí. Học từ vựng, ngữ pháp và giao tiếp theo phong cách riêng của bạn.',
+      title: t.perkLimitsTitle,
+      body: t.perkLimitsBody,
     ),
     _Perk(
       icon: CupertinoIcons.rectangle_stack_fill,
-      title: 'Kho Flashcard mở rộng',
-      body: 'Tạo và quản lý bộ từ vựng với số lượng cực lớn. Học thông minh với flashcard được cá nhân hóa theo tiến độ của bạn.',
+      title: t.perkDecksTitle,
+      body: t.perkDecksBody,
     ),
     _Perk(
       icon: CupertinoIcons.bubble_left_fill,
-      title: 'Chat AI nhiều hơn',
-      body: 'Luyện tập hội thoại thực tế với mức sử dụng cao hơn. Nhận phản hồi chi tiết để cải thiện kỹ năng giao tiếp nhanh chóng.',
+      title: t.perkChatTitle,
+      body: t.perkChatBody,
     ),
     _Perk(
       icon: CupertinoIcons.infinite,
       disc: true,
-      title: 'Chế độ Vô cực',
-      body: 'Truy cập chế độ luyện câu nâng cao với độ khó tăng dần. Thử thách bản thân và đạt điểm số cao nhất.',
+      title: t.perkInfiniteTitle,
+      body: t.perkInfiniteBody,
     ),
     _Perk(
       icon: CupertinoIcons.arrow_2_circlepath,
-      title: 'Truy cập sớm các tính năng',
-      body: 'Trải nghiệm trước những tính năng mới nhất cùng các nội dung độc quyền.',
+      title: t.perkEarlyTitle,
+      body: t.perkEarlyBody,
     ),
     _Perk(
       icon: CupertinoIcons.globe,
       disc: true,
-      title: 'Tất cả ngôn ngữ',
+      title: t.perkLanguagesTitle,
       soon: true,
-      body: 'Mở khóa toàn bộ ngôn ngữ hỗ trợ. Học bất kỳ ngôn ngữ nào bạn muốn với cùng một tài khoản.',
+      body: t.perkLanguagesBody,
     ),
   ];
 }
@@ -291,7 +286,7 @@ class _Perk extends StatelessWidget {
                         borderRadius: BorderRadius.circular(9),
                       ),
                       child: Text(
-                        'coming soon',
+                        context.t.comingSoonLower,
                         style: D.text(
                           10.5,
                           weight: FontWeight.w600,
@@ -513,22 +508,11 @@ class _Radio extends StatelessWidget {
 class _Hero extends StatefulWidget {
   const _Hero();
   static const interval = Duration(seconds: 3);
-  static const slides = [
-    (
-      'hifive',
-      'plus',
-      'Mở khóa toàn bộ tính năng AI cao cấp với mức sử dụng cao hơn.',
-    ),
-    (
-      'hạn mức',
-      'cao hơn',
-      'Mức sử dụng AI cao hơn so với gói Miễn phí. Tạo flashcard và học mọi chủ đề.',
-    ),
-    (
-      'chinh phục',
-      'ngoại ngữ',
-      'Sửa lỗi ngữ pháp và dịch thuật tức thì với AI, giúp bạn tự tin giao tiếp mọi lúc.',
-    ),
+  static const slideCount = 3;
+  static List<(String, String, String)> slides(AppLocalizations t) => [
+    (t.heroSlide1Top, t.heroSlide1Bottom, t.heroSlide1Body),
+    (t.heroSlide2Top, t.heroSlide2Bottom, t.heroSlide2Body),
+    (t.heroSlide3Top, t.heroSlide3Bottom, t.heroSlide3Body),
   ];
   @override
   State<_Hero> createState() => _HeroState();
@@ -569,12 +553,11 @@ class _HeroState extends State<_Hero> {
         child: PageView.builder(
           key: const ValueKey('plus-hero'),
           controller: _pages,
-          onPageChanged: (page) => setState(
-            () => _slide = (page - _firstPage) % _Hero.slides.length,
-          ),
+          onPageChanged: (page) =>
+              setState(() => _slide = (page - _firstPage) % _Hero.slideCount),
           itemBuilder: (_, page) {
-            final index = (page - _firstPage) % _Hero.slides.length;
-            final (top, bottom, text) = _Hero.slides[index];
+            final index = (page - _firstPage) % _Hero.slideCount;
+            final (top, bottom, text) = _Hero.slides(context.t)[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -608,7 +591,7 @@ class _HeroState extends State<_Hero> {
         padding: const EdgeInsets.only(left: 20),
         child: Row(
           children: [
-            for (var i = 0; i < _Hero.slides.length; i++)
+            for (var i = 0; i < _Hero.slideCount; i++)
               AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
                 margin: const EdgeInsets.only(right: 6),

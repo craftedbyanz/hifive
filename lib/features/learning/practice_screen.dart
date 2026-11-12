@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'completion_screen.dart';
@@ -72,8 +73,8 @@ class _PracticeScreenState extends State<PracticeScreen> {
   Future<void> exit() async {
     if (await confirm(
       context,
-      'Thoát bài tập?',
-      'Bạn chưa hoàn thành bài tập. Tiến độ sẽ không được lưu nếu bạn thoát bây giờ.',
+      context.t.leaveExerciseTitle,
+      context.t.leaveExerciseBody,
       destructive: true,
     )) {
       if (!mounted) return;
@@ -139,12 +140,12 @@ class _PracticeScreenState extends State<PracticeScreen> {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SheetTitle('Gợi ý AI'),
+          SheetTitle(context.t.aiHint),
           SizedBox(
             height: 220,
             child: AsyncView<List<String>>(
               load: () => state.grading.assist(state.language, current, draft),
-              loadingLabel: 'Đang phân tích bản nháp...',
+              loadingLabel: context.t.analysingDraft,
               builder: (context, tips) => ListView(
                 children: [
                   for (final tip in tips)
@@ -192,7 +193,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
             dot: StudyMode.grammar.inputColor(c),
           ),
       ],
-      title: 'Màu nền',
+      title: context.t.backgroundColor,
       titleIcon: Icons.palette_outlined,
       titleValue: '..',
       behind: const GlassMenuItem('..', ''),
@@ -289,7 +290,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                       alignment: Alignment.center,
                       children: [
                         Text(
-                          'Từ điển bài',
+                          context.t.lessonDictionary,
                           style: D.text(17, weight: FontWeight.w700),
                         ),
                         Align(
@@ -308,7 +309,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                                 border: Border.all(color: D.line),
                               ),
                               child: Text(
-                                'Xong',
+                                context.t.doneVi,
                                 style: D.text(17, weight: FontWeight.w600),
                               ),
                             ),
@@ -333,20 +334,20 @@ class _PracticeScreenState extends State<PracticeScreen> {
     final choice = await showGlassMenu<String>(
       anchor,
       [
-        const GlassMenuItem(
+        GlassMenuItem(
           'color',
-          'Màu nền',
+          context.t.backgroundColor,
           icon: Icons.palette_outlined,
           trailing: CupertinoIcons.chevron_right,
         ),
         GlassMenuItem(
           'hints',
-          state.showHints ? 'Ẩn gợi ý' : 'Hiển thị gợi ý',
+          state.showHints ? context.t.hideHints : context.t.showHints,
           icon: CupertinoIcons.lightbulb,
         ),
-        const GlassMenuItem(
+        GlassMenuItem(
           'dictionary',
-          'Từ điển bài',
+          context.t.lessonDictionary,
           icon: Icons.book_rounded,
         ),
       ],
@@ -363,7 +364,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
         dictionary();
       case 'like' || 'dislike':
         setState(() => opinion = choice);
-        toast(context, 'Đã ghi nhận đánh giá trong phiên học này');
+        toast(context, context.t.feedbackNoted);
     }
   }
 
@@ -390,7 +391,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                   child: Row(
                     children: [
                       IconButton(
-                        tooltip: 'Thoát bài tập',
+                        tooltip: context.t.leaveExercise,
                         constraints: const BoxConstraints.tightFor(
                           width: 44,
                           height: 44,
@@ -430,7 +431,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                       // The frosted system menu (survey 145).
                       Builder(
                         builder: (anchor) => IconButton(
-                          tooltip: 'Tùy chọn bài học',
+                          tooltip: context.t.lessonOptions,
                           constraints: const BoxConstraints.tightFor(
                             width: 44,
                             height: 44,
@@ -580,8 +581,8 @@ class _PracticeScreenState extends State<PracticeScreen> {
                                         setState(() => lastGrade = null),
                                     decoration: InputDecoration(
                                       hintText: mode == StudyMode.writing
-                                          ? 'Nhập bản dịch của bạn...'
-                                          : 'Nhập câu trả lời...',
+                                          ? context.t.typeTranslation
+                                          : context.t.typeAnswer,
                                       hintStyle: TextStyle(
                                         fontFamily: 'CupertinoSystemDisplay',
                                         fontSize: 21,
@@ -639,7 +640,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                   child: Row(
                     children: [
                       _BarKey(
-                        label: 'Câu trước',
+                        label: context.t.previousSentence,
                         width: 44,
                         onTap: index == 0 ? null : previous,
                         child: Icon(
@@ -652,7 +653,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                         const SizedBox(width: 12),
                         _BarKey(
                           key: const ValueKey('ai-assist'),
-                          label: 'Gợi ý AI',
+                          label: context.t.aiHint,
                           width: 43,
                           onTap: assist,
                           child: const Icon(
@@ -674,7 +675,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                                     state.showHints || revealed.contains(key);
                             final word = question.hints[i];
                             return _BarKey(
-                              label: show ? word : 'Gợi ý ẩn',
+                              label: show ? word : context.t.hiddenHint,
                               onTap: () => setState(() => revealed.add(key)),
                               padding: 15,
                               child: show

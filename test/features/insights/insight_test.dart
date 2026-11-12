@@ -92,16 +92,13 @@ void main() {
     expect(find.byKey(const ValueKey('insight-day-31')), findsNothing);
   });
 
-  testWidgets('suggestion button loads, then shows the tips', (tester) async {
+  testWidgets('suggestions are coming soon and do not load', (tester) async {
     await mount(tester, _state(), const InsightScreen(), size: _tall);
+    expect(find.text('Sắp ra mắt'), findsOneWidget);
     await tester.tap(find.text('Xem gợi ý cải thiện'));
-    await tester.pump();
-    expect(find.text('Đang tạo gợi ý...'), findsOneWidget);
-    expect(find.text('Gợi ý cải thiện'), findsNothing);
     await tester.pump(const Duration(seconds: 2));
-    expect(find.text('Gợi ý cải thiện'), findsOneWidget);
-    expect(find.text(mockInsightTips.first), findsOneWidget);
-    expect(find.text('Xem gợi ý cải thiện'), findsNothing);
+    expect(find.text('Đang tạo gợi ý...'), findsNothing);
+    expect(find.text('Gợi ý cải thiện'), findsNothing);
   });
 
   testWidgets('hides the suggestion button when there are no mistakes', (

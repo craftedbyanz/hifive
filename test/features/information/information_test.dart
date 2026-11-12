@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/features/game/game.dart';
 import 'package:hifive/features/information/information.dart';
+import 'package:hifive/l10n/l10n.dart';
 
 import '../../helpers.dart';
 
@@ -10,10 +11,11 @@ const tall = Size(393, 2200);
 void main() {
   setUpAll(loadAppFonts);
 
-  for (var i = 0; i < helpTitles.length; i++) {
+  final vi = lookupAppLocalizations(const Locale('vi'));
+  for (var i = 0; i < helpCount; i++) {
     testWidgets('help page $i shows its title and body', (tester) async {
       await mount(tester, fresh(), HelpScreen(index: i), size: tall);
-      expect(find.text(helpTitles[i]), findsWidgets);
+      expect(find.text(helpTitle(vi, i)), findsWidgets);
       expect(tester.takeException(), isNull);
     });
   }

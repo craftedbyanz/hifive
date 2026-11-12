@@ -4,11 +4,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../flashcards/flashcards.dart';
 import '../game/game.dart';
 import '../information/information.dart';
 import '../insights/insights.dart';
 import 'home_design.dart';
+import 'home_menu_art.dart';
 import 'home_menu_motion.dart';
 import 'home_painters.dart';
 
@@ -27,12 +29,13 @@ class HomeMenuOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.t;
     final items = [
-      ('Insight', Palette.menuInsight, const InsightScreen()),
-      ('Nâng cấp Hifive Plus', Palette.menuPlus, const PlusScreen()),
-      ('Học flashcard', Palette.menuFlashcard, const DeckListScreen()),
-      ('Chuỗi của tôi', Palette.menuStreak, const StreakScreen()),
-      ('Chơi FlowLetter', Palette.menuGame, const GameHomeScreen()),
+      (t.menuInsight, Palette.menuInsight, const InsightScreen()),
+      (t.menuPlus, Palette.menuPlus, const PlusScreen()),
+      (t.menuFlashcards, Palette.menuFlashcard, const DeckListScreen()),
+      (t.menuStreak, Palette.menuStreak, const StreakScreen()),
+      (t.menuGame, Palette.menuGame, const GameHomeScreen()),
     ];
     return AnimatedBuilder(
       animation: motion,
@@ -105,7 +108,8 @@ class HomeMenuOverlay extends StatelessWidget {
                                                   radius: 20,
                                                   backgroundColor: items[i].$2,
                                                   child: HomeMenuGlyph(
-                                                    label: items[i].$1,
+                                                    item:
+                                                        HomeMenuItem.values[i],
                                                   ),
                                                 ),
                                                 const SizedBox(width: 20),

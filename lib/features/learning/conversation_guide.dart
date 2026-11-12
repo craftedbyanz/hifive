@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 
 /// "Hướng dẫn Cài đặt", opened from ⓘ in the conversation settings popover
@@ -12,44 +13,47 @@ class ConversationGuide extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      const SheetTitle('Hướng dẫn Cài đặt'),
+      SheetTitle(context.t.settingsGuideTitle),
       Text(
-        'Hiểu rõ các cài đặt giúp bạn tối ưu hóa việc luyện tập hội thoại.',
+        context.t.settingsGuideBody,
         style: D.text(15, color: D.secondary, height: 1.5),
       ),
       const SizedBox(height: 26),
-      const _Heading(Icons.call_split_rounded, 'CHẾ ĐỘ HỌC'),
-      const _Item(
+      _Heading(Icons.call_split_rounded, context.t.learningModeCaps),
+      _Item(
         Icons.forum_outlined,
         D.purple,
-        'Trò chuyện Tự do',
-        'Hội thoại mở. AI thích ứng với câu trả lời của bạn. Phù hợp cho luyện tập nâng cao.',
+        context.t.freeChat,
+        context.t.freeChatBody,
       ),
-      const _Item(
+      _Item(
         Icons.article_outlined,
         D.blue,
-        'Chế độ Kịch bản',
-        'Tuân theo kịch bản cụ thể. Phù hợp cho người mới bắt đầu cần hướng dẫn rõ ràng.',
+        context.t.scriptMode,
+        context.t.scriptModeBody,
       ),
       const SizedBox(height: 18),
-      const _Heading(Icons.sentiment_satisfied_rounded, 'GIỌNG & TÍNH CÁCH'),
-      const _Item(
+      _Heading(
+        Icons.sentiment_satisfied_rounded,
+        context.t.tonePersonalityCaps,
+      ),
+      _Item(
         Icons.work_outline_rounded,
         D.blue,
-        'Trang trọng',
-        'Chuyên nghiệp và lịch sự. Phù hợp cho công việc và các tình huống trang trọng.',
+        context.t.toneFormal,
+        context.t.toneFormalBody,
       ),
-      const _Item(
+      _Item(
         Icons.local_cafe_outlined,
         D.orange,
-        'Thoải mái',
-        'Tự nhiên như trò chuyện với bạn bè, dùng nhiều cách nói đời thường.',
+        context.t.toneCasual,
+        context.t.toneCasualBody,
       ),
-      const _Item(
+      _Item(
         Icons.favorite_border_rounded,
         D.green,
-        'Thân thiện',
-        'Nhẹ nhàng, khích lệ và kiên nhẫn khi bạn cần thêm thời gian.',
+        context.t.toneFriendly,
+        context.t.toneFriendlyBody,
       ),
     ],
   );

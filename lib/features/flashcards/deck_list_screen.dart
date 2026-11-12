@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'deck_screen.dart';
@@ -23,16 +24,16 @@ class DeckListScreen extends StatelessWidget {
       children: [
         Positioned.fill(
           child: HeaderScrollPage(
-            title: 'Học flashcard',
+            title: context.t.menuFlashcards,
             titleSize: 16.5,
             background: Palette.settingsPage,
             padding: const EdgeInsets.fromLTRB(24, 137, 24, 120),
             child: state.decks.isEmpty
-                ? const SizedBox(
+                ? SizedBox(
                     height: 500,
                     child: EmptyView(
-                      title: 'Chưa có bộ thẻ',
-                      subtitle: 'Thêm bộ từ vựng đầu tiên của bạn.',
+                      title: context.t.noDecks,
+                      subtitle: context.t.noDecksBody,
                     ),
                   )
                 : LayoutBuilder(
@@ -54,9 +55,9 @@ class DeckListScreen extends StatelessWidget {
           right: 24,
           bottom: 66,
           child: Semantics(
-            label: 'Thêm bộ thẻ',
+            label: context.t.addDeck,
             child: Tooltip(
-              message: 'Thêm bộ thẻ',
+              message: context.t.addDeck,
               triggerMode: TooltipTriggerMode.manual,
               child: PressFade(
                 onTap: () => deckForm(context),
@@ -194,7 +195,7 @@ Future<void> deckForm(BuildContext context, {Deck? deck}) =>
         ),
         child: _DeckForm(
           deck: deck,
-          onAdded: (count) => toast(context, 'Đã thêm $count từ mẫu'),
+          onAdded: (count) => toast(context, context.t.addedSampleWords(count)),
         ),
       ),
     );
@@ -241,7 +242,7 @@ class _DeckFormState extends State<_DeckForm> {
           Deck(
             id: state.newId(),
             title: title.text.trim(),
-            description: 'Bộ từ vựng mẫu của bạn',
+            description: context.t.sampleDeckDescription,
             words: words,
           ),
         );
@@ -253,14 +254,13 @@ class _DeckFormState extends State<_DeckForm> {
     } catch (_) {
       if (!mounted) return;
       setState(() => generating = false);
-      toast(context, 'Không tạo được thẻ. Vui lòng thử lại.');
+      toast(context, context.t.cardsFailed);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final locked = widget.deck != null;
-    final ready = title.text.trim().isNotEmpty && !generating && remaining >= 5;
     return ClipRSuperellipse(
       borderRadius: BorderRadius.circular(38),
       child: ColoredBox(
@@ -288,7 +288,7 @@ class _DeckFormState extends State<_DeckForm> {
                   alignment: Alignment.center,
                   children: [
                     Text(
-                      locked ? 'Add Cards' : 'New Deck',
+                      locked ? context.t.addCards : context.t.newDeck,
                       style: D.text(
                         15,
                         weight: FontWeight.w700,
@@ -298,7 +298,7 @@ class _DeckFormState extends State<_DeckForm> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Semantics(
-                        label: 'Đóng',
+                        label: context.t.close,
                         child: PressFade(
                           key: const ValueKey('deck-form-close'),
                           onTap: () => Navigator.pop(context),
@@ -323,7 +323,7 @@ class _DeckFormState extends State<_DeckForm> {
               ),
               const SizedBox(height: 22),
               Text(
-                'TOPIC NAME',
+                context.t.topicNameCaps,
                 style: D.text(
                   10.5,
                   weight: FontWeight.w600,
@@ -344,7 +344,7 @@ class _DeckFormState extends State<_DeckForm> {
                   height: 20 / 14.7,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Space, Cooking, Travel...',
+                  hintText: context.t.topicNameHint,
                   hintStyle: D.text(
                     15,
                     color: Palette.settingsHint,
@@ -388,7 +388,7 @@ class _DeckFormState extends State<_DeckForm> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'words',
+                    context.t.wordsUnit,
                     style: D.text(
                       17,
                       weight: FontWeight.w500,
@@ -413,7 +413,7 @@ class _DeckFormState extends State<_DeckForm> {
               const SizedBox(height: 3),
               Center(
                 child: Text(
-                  'WORDS TO GENERATE',
+                  context.t.wordsToGenerateCaps,
                   style: D.text(
                     10.5,
                     weight: FontWeight.w600,
@@ -436,7 +436,7 @@ class _DeckFormState extends State<_DeckForm> {
                       borderRadius: BorderRadius.circular(13),
                     ),
                     child: Text(
-                      'Còn $remaining slot',
+                      context.t.slotsLeft(remaining),
                       style: D.text(
                         12,
                         weight: FontWeight.w600,
@@ -449,43 +449,33 @@ class _DeckFormState extends State<_DeckForm> {
                 const SizedBox(height: 24),
               ] else
                 const SizedBox(height: 32),
-              PressFade(
+              // Words come from samples, not AI yet, so generating is shown as
+              // coming soon.
+              Semantics(
                 key: const ValueKey('deck-generate'),
-                onTap: ready ? generate : null,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
+                label: '${context.t.generateDeck}, ${context.t.comingSoon}',
+                child: Container(
                   height: 50,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: ready || generating ? D.ink : Palette.generateOff,
+                    color: Palette.generateOff,
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  child: generating
-                      ? const CupertinoActivityIndicator(color: Colors.white)
-                      : Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              CupertinoIcons.sparkles,
-                              size: 17,
-                              color: Colors.white.withValues(
-                                alpha: ready ? 1 : .6,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Generate Deck',
-                              style: D.text(
-                                14.5,
-                                weight: FontWeight.w600,
-                                color: Colors.white.withValues(
-                                  alpha: ready ? 1 : .6,
-                                ),
-                                height: 1,
-                              ),
-                            ),
-                          ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        context.t.generateDeck,
+                        style: D.text(
+                          14.5,
+                          weight: FontWeight.w600,
+                          color: Colors.white,
                         ),
+                      ),
+                      const SizedBox(width: 10),
+                      const SoonBadge(light: true),
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'settings_kit.dart';
@@ -20,7 +21,7 @@ class LessonSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = AppScope.of(context);
     return SettingsPage(
-      title: 'Lesson Settings',
+      title: context.t.lessonSettingsTitle,
       padding: const EdgeInsets.fromLTRB(16, 121, 16, 69),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -28,7 +29,7 @@ class LessonSettingsScreen extends StatelessWidget {
           _Preview(color: _swatch(s.inputColor)),
           const SizedBox(height: 32),
           _Card(
-            title: 'Màu ô nhập',
+            title: context.t.inputColor,
             bottom: 9,
             child: Column(
               children: [
@@ -49,7 +50,7 @@ class LessonSettingsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           _Card(
-            title: 'Cài đặt gợi ý',
+            title: context.t.hintSettings,
             child: Container(
               height: 88,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -83,7 +84,7 @@ class LessonSettingsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Luôn hiển thị gợi ý',
+                          context.t.alwaysShowHints,
                           style: D.text(
                             14,
                             weight: FontWeight.w600,
@@ -92,7 +93,7 @@ class LessonSettingsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Hiển thị từ gợi ý mà\nkhông cần chạm',
+                          context.t.showHintsWithoutTap,
                           style: D.text(
                             12,
                             color: Palette.settingsMuted,
@@ -219,7 +220,7 @@ class _HintToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     toggled: value,
-    label: 'Luôn hiển thị gợi ý',
+    label: context.t.alwaysShowHints,
     child: GestureDetector(
       key: const ValueKey('hints-toggle'),
       behavior: HitTestBehavior.opaque,
@@ -290,7 +291,7 @@ class _Preview extends StatelessWidget {
             ),
           ),
           child: Text(
-            'Nhập bản dịch của bạn...',
+            context.t.typeTranslation,
             style: D.text(
               17.3,
               color: Colors.white.withValues(alpha: .6),

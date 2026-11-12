@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 import 'chat_screen.dart';
 import 'practice_screen.dart';
@@ -56,11 +57,11 @@ class ResultScreen extends StatelessWidget {
                 children: [
                   glassButton(
                     CupertinoIcons.back,
-                    'Quay lại',
+                    context.t.back,
                     () => Navigator.of(context, rootNavigator: true).maybePop(),
                   ),
                   const Spacer(),
-                  glassButton(CupertinoIcons.ellipsis, 'Thêm', () {}),
+                  glassButton(CupertinoIcons.ellipsis, context.t.more, () {}),
                 ],
               ),
               const SizedBox(height: 14),
@@ -88,7 +89,7 @@ class ResultScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      lesson.mode.title.toUpperCase(),
+                      lesson.mode.title(context).toUpperCase(),
                       style: D.text(
                         10,
                         weight: FontWeight.w700,
@@ -118,7 +119,7 @@ class ResultScreen extends StatelessWidget {
                   children: [
                     stat(
                       '${session.accuracy}%',
-                      'Độ chính xác',
+                      context.t.accuracyLabel,
                       color: session.accuracy >= 65 ? D.green : Palette.wrong,
                     ),
                     rule,
@@ -126,12 +127,12 @@ class ResultScreen extends StatelessWidget {
                       session.seconds == 0
                           ? '--:--'
                           : timeLabel(session.seconds),
-                      'Thời gian',
+                      context.t.timeLabel,
                     ),
                     rule,
                     stat(
                       '${session.correct}/${session.scored.length}',
-                      'Câu đúng',
+                      context.t.correctAnswers,
                     ),
                   ],
                 ),
@@ -156,7 +157,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 9),
                           Text(
-                            'VĂN BẢN GỐC',
+                            context.t.originalTextCaps,
                             style: D.text(
                               11,
                               weight: FontWeight.w700,
@@ -179,7 +180,7 @@ class ResultScreen extends StatelessWidget {
                 const SizedBox(height: 26),
               ],
               Text(
-                'CÂU TRẢ LỜI CỦA BẠN',
+                context.t.yourAnswerCaps,
                 style: D.text(
                   10,
                   weight: FontWeight.w700,
@@ -219,7 +220,7 @@ class ResultScreen extends StatelessWidget {
               child: SizedBox(
                 height: 55,
                 child: ActionButton(
-                  'Làm lại bài tập',
+                  context.t.redoExercise,
                   icon: CupertinoIcons.star_fill,
                   color: Palette.grammarAccent,
                   foreground: D.ink,
@@ -421,15 +422,15 @@ class _FreshResult extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        great ? 'Excellent!' : 'Tiếp tục cố gắng!',
+                        great ? context.t.excellentEn : context.t.keepGoing,
                         textAlign: TextAlign.center,
                         style: D.text(20, weight: FontWeight.w800),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         great
-                            ? 'You have mastered this lesson'
-                            : 'Mỗi buổi học là một bước tiến.',
+                            ? context.t.masteredLesson
+                            : context.t.everySessionStep,
                         textAlign: TextAlign.center,
                         style: D.text(14, color: D.secondary),
                       ),
@@ -444,7 +445,7 @@ class _FreshResult extends StatelessWidget {
                           children: [
                             stat(
                               '${session.accuracy}%',
-                              'Độ chính xác',
+                              context.t.accuracyLabel,
                               color: D.green,
                             ),
                             rule,
@@ -452,19 +453,19 @@ class _FreshResult extends StatelessWidget {
                               session.seconds == 0
                                   ? '--:--'
                                   : timeLabel(session.seconds),
-                              'Time',
+                              context.t.timeEn,
                             ),
                             rule,
                             stat(
                               '${session.correct}/${session.scored.length}',
-                              'Correct',
+                              context.t.correctEn,
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 28),
                       Text(
-                        'CÂU TRẢ LỜI CỦA BẠN',
+                        context.t.yourAnswerCaps,
                         style: D.text(
                           10,
                           weight: FontWeight.w700,
@@ -509,7 +510,7 @@ class _FreshResult extends StatelessWidget {
               child: SizedBox(
                 height: 52,
                 child: ActionButton(
-                  'Tiếp tục',
+                  context.t.continueStep,
                   onTap: () => Navigator.pop(context),
                 ),
               ),

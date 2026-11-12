@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/features/information/information.dart';
 import 'package:hifive/features/profile/profile.dart';
+import 'package:hifive/widgets/common.dart';
 
 import '../../helpers.dart';
 
@@ -91,5 +92,31 @@ void main() {
     final ys = [for (final row in rows) tester.getTopLeft(find.text(row)).dy];
     expect(ys, orderedEquals([...ys]..sort()));
     expect(ys[1] - ys[0], closeTo(81, .5));
+  });
+
+  testWidgets('footer signs off under the version with the Vietnam flag', (
+    tester,
+  ) async {
+    await mount(tester, fresh(), const ProfileScreen(), size: _tall);
+    final version = tester.getTopLeft(find.text('Hifive v1.0.0 (2)')).dy;
+    expect(
+      tester.getTopLeft(find.text('Học một chút mỗi ngày')).dy,
+      greaterThan(version),
+    );
+    final credit = find.byKey(const ValueKey('profile-credit'));
+    expect(
+      find.descendant(
+        of: credit,
+        matching: find.text('Develop and Design by Anz in VietNam'),
+      ),
+      findsOneWidget,
+    );
+    final flag = find.descendant(
+      of: credit,
+      matching: find.byType(VietnamFlag),
+    );
+    expect(tester.getSize(flag), const Size(18, 13));
+    // The old local-copy note is gone.
+    expect(find.textContaining('Bản sao cục bộ'), findsNothing);
   });
 }

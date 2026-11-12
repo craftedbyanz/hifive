@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Language
 
-Reply to the user in Vietnamese in chat. Write everything recorded in files (docs, code comments, notes, logs) in English. Exception: the app's Vietnamese UI strings stay Vietnamese.
+Reply to the user in Vietnamese in chat. Write everything recorded in files (docs, code comments, notes, logs) in English. Exception: the app's UI strings, which live in the ARB files in each of their languages.
 
 ## Project
 
@@ -67,7 +67,7 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 - Text styles use `D.text(...)` from `lib/core/design/tokens.dart`, and `D.system(...)` (SF Pro with its tracking) for lesson content (import the `lib/core/design/design.dart` barrel). `HomeDesign` (`lib/features/home/home_design.dart`) holds values for Home only. Per-mode color, icon, card look and answer color come from the `StudyModeLook` extension (`lib/widgets/mode_look.dart`), because `lib/core` must not import `lib/domain`.
 - Features contain no color literals: use `D` for shared colors and `Palette` for screen-specific ones. `Colors.white`, `black` and `transparent` are fine.
 - Widgets used by more than one feature go in `lib/widgets`. Features must not import each other in a cycle; `tool/feature_cycles.dart`, run by `scripts/check.sh`, enforces it. Home is the root and may import any area; a screen two areas both open belongs to the area that owns its data (session results live in `learning`).
-- UI strings are inline Vietnamese; there are no ARB files. Illustrations are widgets and vector geometry.
+- UI strings live in `lib/l10n/app_<code>.arb`: Vietnamese is the template (`app_vi.arb`), with English, Simplified Chinese and Korean beside it. Read them with `context.t.<key>` (`lib/l10n/l10n.dart`); add a key to all four files, then `flutter gen-l10n` (builds and tests also run it) refreshes `lib/l10n/gen`. `AppState.appLanguage` holds the chosen code, or empty to follow the device (falling back to Vietnamese); Profile → "Ngôn ngữ ứng dụng" sets it. Values that are stored or synced (card styles, difficulty, chat tone, level ids) keep their old words and are named for display by a helper. Lesson content, the dictionary and grading explanations stay in their own language. Tests read Vietnamese: `test/flutter_test_config.dart` makes the test device Vietnamese. Illustrations are widgets and vector geometry.
 - Give interaction targets a `ValueKey('kebab-case')` or tooltip, which is how tests find them.
 - Tests use `fresh()` and `mount()` from `test/helpers.dart`, which give `MemoryRecordStore`, `SilentFeedback`, a pinned clock and the 393 × 852 viewport. Widget test files need `setUpAll(loadAppFonts)`; without it, the test font causes false overflow errors.
 - Pass `animateAmbient: false` when a test must settle, because the Home orb loops.

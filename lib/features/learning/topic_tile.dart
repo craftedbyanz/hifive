@@ -88,7 +88,7 @@ class TopicTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 8.4),
                 Text(
-                  '${topic.sets} ${topic.mode == StudyMode.grammar ? 'Qs' : 'Sets'}',
+                  '${topic.sets} ${topic.mode == StudyMode.grammar ? context.t.questionsShort : context.t.setsShort}',
                   style: D.text(11, color: D.muted, weight: FontWeight.w600),
                 ),
               ],

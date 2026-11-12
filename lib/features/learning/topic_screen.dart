@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
@@ -97,7 +98,7 @@ class _TopicScreenState extends State<TopicScreen> {
                 }
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.data!.isEmpty) {
-                  return below(const EmptyView(title: 'Chưa có danh mục'));
+                  return below(EmptyView(title: context.t.noCategories));
                 }
                 if (snapshot.connectionState != ConnectionState.done ||
                     topics == null) {
@@ -123,7 +124,7 @@ class _TopicScreenState extends State<TopicScreen> {
                 HeaderRoundButton(
                   icon: CupertinoIcons.back,
                   iconSize: 31,
-                  label: 'Quay lại',
+                  label: context.t.back,
                   onTap: () => Navigator.maybePop(context),
                 ),
                 const Spacer(),
@@ -205,13 +206,13 @@ class _TopicScreenState extends State<TopicScreen> {
                     ),
                   ),
                   const SizedBox(width: 8.7),
-                  Text('CHẾ ĐỘ TẠO', style: CapsLabel.style),
+                  Text(context.t.createModeCaps, style: CapsLabel.style),
                 ],
               ),
               const SizedBox(height: 11.2),
-              Text(mode.headline, style: title),
+              Text(mode.headline(context), style: title),
               Text(
-                mode.accentTitle,
+                mode.accentTitle(context),
                 style: title.copyWith(
                   color: mode == StudyMode.grammar
                       ? Palette.grammarAccent
@@ -221,7 +222,7 @@ class _TopicScreenState extends State<TopicScreen> {
                 ),
               ),
               const SizedBox(height: 27),
-              const CapsLabel('DANH MỤC'),
+              CapsLabel(context.t.categoriesCaps),
               const SizedBox(height: 19.1),
             ],
           ),
@@ -261,13 +262,15 @@ class _TopicScreenState extends State<TopicScreen> {
                         children: [
                           Expanded(
                             child: CapsLabel(
-                              suggested ? 'CHỦ ĐỀ CỦA BẠN' : 'CHỦ ĐỀ LIÊN QUAN',
+                              suggested
+                                  ? context.t.yourTopicsCaps
+                                  : context.t.relatedTopicsCaps,
                             ),
                           ),
                           if (!suggested)
                             _RefreshPill(onTap: loaded ? _refresh : null)
                           else if (loaded && !snapshot.hasError)
-                            _CountPill('$count chủ đề'),
+                            _CountPill(context.t.topicsCount(count)),
                         ],
                       ),
                     ),
@@ -284,11 +287,10 @@ class _TopicScreenState extends State<TopicScreen> {
                     ),
                   )
                 else if (count == 0)
-                  const SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: EmptyView(
-                      title: 'Chưa có chủ đề',
-                      subtitle:
-                          'Hãy thử danh mục khác hoặc tạo chủ đề bằng AI.',
+                      title: context.t.noTopics,
+                      subtitle: context.t.noTopicsBody,
                       icon: Icons.auto_awesome_rounded,
                     ),
                   )

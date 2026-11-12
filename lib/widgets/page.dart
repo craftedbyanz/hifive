@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../core/design/design.dart';
+import '../l10n/l10n.dart';
 import 'buttons.dart';
 
 class Header extends StatelessWidget {
@@ -30,7 +31,7 @@ class Header extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: RoundButton(
               icon: CupertinoIcons.back,
-              label: 'Quay lại',
+              label: context.t.back,
               onTap: onBack ?? () => Navigator.maybePop(context),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../l10n/l10n.dart';
 import '../../widgets/common.dart';
 
 class GameHelpScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _GameHelpScreenState extends State<GameHelpScreen> {
   bool demo = false;
   @override
   Widget build(BuildContext context) => AppPage(
-    title: 'Hướng dẫn',
+    title: context.t.guide,
     child: SingleChildScrollView(
       padding: const EdgeInsets.all(28),
       child: Column(
@@ -22,14 +23,14 @@ class _GameHelpScreenState extends State<GameHelpScreen> {
           Text('F L O W', style: D.text(26, weight: FontWeight.w800)),
           const SizedBox(height: 20),
           Text(
-            'Cách chơi Flow Letter',
+            context.t.gameHowToTitle,
             style: D.text(21, weight: FontWeight.w700),
           ),
           const SizedBox(height: 32),
           for (final item in [
-            ('1', 'Mục tiêu', 'Sắp xếp các chữ cái thành từ vựng đúng.'),
-            ('2', 'Cách di chuyển', 'Giữ và kéo một chữ cái để đổi vị trí.'),
-            ('3', 'Hoàn thành', 'Đúng từ sẽ tự động chuyển sang từ tiếp theo.'),
+            ('1', context.t.gameGoal, context.t.gameGoalBody),
+            ('2', context.t.gameMove, context.t.gameMoveBody),
+            ('3', context.t.gameDone, context.t.gameDoneBody),
           ])
             Padding(
               padding: const EdgeInsets.only(bottom: 26),
@@ -55,7 +56,7 @@ class _GameHelpScreenState extends State<GameHelpScreen> {
                       ),
                       TextButton(
                         onPressed: () => setState(() => demo = !demo),
-                        child: const Text('Nhấn để xem'),
+                        child: Text(context.t.tapToSee),
                       ),
                     ],
                   ],
