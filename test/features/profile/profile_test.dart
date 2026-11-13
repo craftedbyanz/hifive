@@ -61,6 +61,20 @@ void main() {
     expect(state.inputColor, 'Blue');
   });
 
+  testWidgets('lesson settings set new words a day and exercise types', (
+    tester,
+  ) async {
+    final state = fresh();
+    await mount(tester, state, const LessonSettingsScreen(), size: tall);
+    await tester.tap(find.byKey(const ValueKey('new-per-day-more')));
+    await tester.pump();
+    expect(state.newPerDay, 15);
+    await tester.tap(find.byKey(const ValueKey('setting-listening')));
+    await tester.pump();
+    expect(state.exListening, isFalse);
+    expect(state.exTyping, isTrue);
+  });
+
   testWidgets('appearance changes style and resets card order', (tester) async {
     final state = fresh();
     state.modeOrder = StudyMode.values.reversed.toList();

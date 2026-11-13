@@ -9,6 +9,7 @@ import '../../widgets/common.dart';
 import '../game/game.dart';
 import 'deck_list_screen.dart';
 import 'review_screen.dart';
+import 'word_screen.dart';
 
 class DeckScreen extends StatefulWidget {
   final Deck deck;
@@ -172,7 +173,11 @@ class _DeckScreenState extends State<DeckScreen> {
                 for (final w in list)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 11.5),
-                    child: _WordRow(word: w, due: w.isDue(state.now())),
+                    child: PressFade(
+                      key: ValueKey('deck-word-${w.id}'),
+                      onTap: () => go<void>(context, WordScreen(word: w)),
+                      child: _WordRow(word: w, due: w.isDue(state.now())),
+                    ),
                   ),
               ],
             ),

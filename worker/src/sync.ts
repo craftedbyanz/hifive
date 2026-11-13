@@ -7,6 +7,7 @@ export const syncedKinds = new Set([
   "word",
   "review",
   "game",
+  "focus",
   "legacyStats",
   "firstUse",
 ]);

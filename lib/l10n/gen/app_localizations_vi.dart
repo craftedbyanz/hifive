@@ -56,13 +56,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get exitGame => 'Thoát game';
 
   @override
-  String get plusBannerTitle => 'Đăng ký Hifive Plus';
-
-  @override
-  String get plusBannerBody =>
-      'Mở khóa mức sử dụng cao hơn và làm chủ kỹ năng ngôn ngữ của bạn.';
-
-  @override
   String get vietnamFlag => 'Cờ Việt Nam';
 
   @override
@@ -569,7 +562,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get smartRemindersBody =>
-      'Hifive tự động học thói quen của bạn. Chúng tôi sẽ nhắc bạn vào thời gian bạn thường học nhất.';
+      'hifive tính trước từ nào sắp quên. Đến giờ nhắc, bạn chỉ nhận thông báo nếu hôm đó có từ cần ôn, kèm số từ và thời gian ôn ước tính.';
 
   @override
   String get lessonSettingsTitle => 'Lesson Settings';
@@ -2394,4 +2387,694 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get closeTip => 'Đóng gợi ý';
+
+  @override
+  String get menuFocus => 'Vườn';
+
+  @override
+  String get focusStart => 'Bắt đầu tập trung';
+
+  @override
+  String get focusChangeTree => 'Đổi cây';
+
+  @override
+  String focusMinutes(int count) {
+    return '$count phút';
+  }
+
+  @override
+  String get focusRunningHint =>
+      'Đặt máy xuống. Cây lớn dần theo thời gian bạn tập trung.';
+
+  @override
+  String focusCancel(int seconds) {
+    return 'Huỷ ($seconds)';
+  }
+
+  @override
+  String get focusGiveUp => 'Bỏ cuộc';
+
+  @override
+  String get focusGiveUpTitle => 'Bỏ phiên này?';
+
+  @override
+  String get focusGiveUpBody =>
+      'Cây của phiên này sẽ héo và nằm lại trong vườn.';
+
+  @override
+  String get focusKeepGoing => 'Tiếp tục';
+
+  @override
+  String focusDoneTitle(int count) {
+    return 'Hoàn thành $count phút';
+  }
+
+  @override
+  String focusDoneReview(int count) {
+    return 'Nghỉ 5 phút. Ôn $count từ sắp quên để cây nở hoa?';
+  }
+
+  @override
+  String get focusDoneRest => 'Nghỉ 5 phút rồi quay lại nhé.';
+
+  @override
+  String focusReviewWords(int count) {
+    return 'Ôn $count từ';
+  }
+
+  @override
+  String get focusRest => 'Nghỉ thôi';
+
+  @override
+  String get focusBloomed => 'Cây đã nở hoa';
+
+  @override
+  String get focusBreakDeck => 'Ôn trong giờ nghỉ';
+
+  @override
+  String get focusWitheredTitle => 'Không sao, thử lại nhé';
+
+  @override
+  String focusWitheredBody(int count) {
+    return 'Cây này đã héo sau $count phút. Một mầm mới đang chờ bạn.';
+  }
+
+  @override
+  String get focusReplant => 'Trồng lại';
+
+  @override
+  String get focusFinish => 'Xong';
+
+  @override
+  String get focusPickTree => 'Chọn cây';
+
+  @override
+  String get focusLocked => 'Chưa mở';
+
+  @override
+  String get focusTagEnglish => 'Học tiếng Anh';
+
+  @override
+  String get focusTagWriting => 'Viết';
+
+  @override
+  String get focusTagWork => 'Làm việc';
+
+  @override
+  String get focusTagOther => 'Khác';
+
+  @override
+  String get speciesOak => 'Sồi';
+
+  @override
+  String get speciesPine => 'Thông';
+
+  @override
+  String get speciesSunflower => 'Hướng dương';
+
+  @override
+  String get speciesTulip => 'Tulip';
+
+  @override
+  String get speciesCherry => 'Anh đào';
+
+  @override
+  String get speciesApple => 'Táo';
+
+  @override
+  String get speciesOrange => 'Cam';
+
+  @override
+  String get speciesMaple => 'Phong đỏ';
+
+  @override
+  String get speciesBirch => 'Bạch dương';
+
+  @override
+  String get speciesGinkgo => 'Rẻ quạt';
+
+  @override
+  String get speciesWillow => 'Liễu';
+
+  @override
+  String get speciesLavender => 'Oải hương';
+
+  @override
+  String get speciesMushroom => 'Nấm';
+
+  @override
+  String get speciesCactus => 'Xương rồng';
+
+  @override
+  String get speciesBonsai => 'Bonsai';
+
+  @override
+  String get speciesBaobab => 'Bao báp';
+
+  @override
+  String get speciesWisteria => 'Tử đằng';
+
+  @override
+  String get speciesBamboo => 'Tre';
+
+  @override
+  String get speciesCoconut => 'Dừa';
+
+  @override
+  String get speciesBanana => 'Chuối';
+
+  @override
+  String get speciesPhuong => 'Phượng vĩ';
+
+  @override
+  String get speciesBang => 'Bàng';
+
+  @override
+  String get speciesMai => 'Hoa mai';
+
+  @override
+  String get speciesDao => 'Hoa đào';
+
+  @override
+  String get speciesLotus => 'Sen';
+
+  @override
+  String get speciesBanyan => 'Đa';
+
+  @override
+  String get speciesSnowpine => 'Thông tuyết';
+
+  @override
+  String get speciesGalaxy => 'Ngân hà';
+
+  @override
+  String get gardenTitle => 'Vườn của bạn';
+
+  @override
+  String get gardenDay => 'Ngày';
+
+  @override
+  String get gardenWeek => 'Tuần';
+
+  @override
+  String get gardenMonth => 'Tháng';
+
+  @override
+  String get gardenYear => 'Năm';
+
+  @override
+  String gardenCounts(int trees, int withered) {
+    return '$trees cây · $withered cây héo';
+  }
+
+  @override
+  String get gardenEmpty =>
+      'Chưa có cây nào. Tập trung hoặc ôn từ để trồng cây đầu tiên.';
+
+  @override
+  String get gardenFocusTime => 'Tập trung';
+
+  @override
+  String get gardenReviews => 'Lượt tưới';
+
+  @override
+  String get gardenStudyDays => 'Ngày học';
+
+  @override
+  String gardenHoursMinutes(int hours, int minutes) {
+    return '${hours}g ${minutes}p';
+  }
+
+  @override
+  String gardenGrowing(int count, int total) {
+    return 'Cây học đang lớn · $count/$total lượt tưới';
+  }
+
+  @override
+  String get gardenGrowingHint =>
+      'Mỗi thẻ mới hoặc đến hạn bạn ôn là một lượt tưới. Chạm để đổi loài cây.';
+
+  @override
+  String get gardenCollection => 'Bộ sưu tập';
+
+  @override
+  String gardenUnlocked(int count, int total) {
+    return 'Đã mở $count/$total loài';
+  }
+
+  @override
+  String get gardenStartFocus => 'Bắt đầu tập trung';
+
+  @override
+  String get unlockAlways => 'Có sẵn';
+
+  @override
+  String unlockStudyTrees(int n) {
+    return 'Trồng $n cây học';
+  }
+
+  @override
+  String unlockWordsKnown(int n) {
+    return 'Thuộc $n từ';
+  }
+
+  @override
+  String unlockStreak(int n) {
+    return 'Chuỗi $n ngày';
+  }
+
+  @override
+  String unlockFocusHours(int n) {
+    return 'Tập trung $n giờ';
+  }
+
+  @override
+  String unlockFocusSessions(int n) {
+    return '$n phiên tập trung';
+  }
+
+  @override
+  String unlockLongSession(int n) {
+    return 'Một phiên $n phút';
+  }
+
+  @override
+  String unlockReviews(int n) {
+    return 'Ôn $n lượt';
+  }
+
+  @override
+  String unlockStudyDays(int n) {
+    return 'Học $n ngày';
+  }
+
+  @override
+  String unlockBlooms(int n) {
+    return 'Nở hoa $n lần';
+  }
+
+  @override
+  String unlockEvenings(int n) {
+    return 'Học $n buổi tối';
+  }
+
+  @override
+  String unlockComeback(int n) {
+    return '$n phiên liền sau một cây héo';
+  }
+
+  @override
+  String unlockWeeks(int n) {
+    return 'Học $n tuần liền';
+  }
+
+  @override
+  String unlockMonth(int n) {
+    return 'Học trong tháng $n';
+  }
+
+  @override
+  String get focusWarnTitle => 'Cây của bạn sắp héo';
+
+  @override
+  String get focusWarnBody =>
+      'Quay lại hifive trong vài giây để cây tiếp tục lớn.';
+
+  @override
+  String reviewWatered(int count) {
+    return 'Cây học +$count lượt tưới';
+  }
+
+  @override
+  String get homeGardenTitle => 'Vườn của bạn';
+
+  @override
+  String get homeGardenBody => 'Tập trung hoặc ôn từ để cây lớn';
+
+  @override
+  String get homeGardenOpen => 'Mở vườn';
+
+  @override
+  String get tagPickTitle => 'Nhãn việc';
+
+  @override
+  String get tagNew => 'Tạo nhãn';
+
+  @override
+  String get tagEditTitle => 'Sửa nhãn';
+
+  @override
+  String get tagNameHint => 'Tên nhãn, ví dụ Đọc sách';
+
+  @override
+  String get tagSave => 'Lưu';
+
+  @override
+  String get tagDelete => 'Xoá nhãn';
+
+  @override
+  String get tagDeleteTitle => 'Xoá nhãn này?';
+
+  @override
+  String get tagDeleteBody =>
+      'Các phiên đã gắn nhãn này sẽ chuyển sang \"Khác\". Thời gian tập trung vẫn giữ nguyên.';
+
+  @override
+  String get gardenByTag => 'Theo nhãn';
+
+  @override
+  String get gardenByTagEmpty =>
+      'Hoàn thành một phiên tập trung để xem thời gian theo từng nhãn.';
+
+  @override
+  String get gardenShare => 'Chia sẻ';
+
+  @override
+  String gardenShareText(int count) {
+    return 'Khu vườn của mình trên hifive: $count cây từ việc học và tập trung.';
+  }
+
+  @override
+  String get gardenShareFailed => 'Không mở được bảng chia sẻ.';
+
+  @override
+  String get timerTitle => 'Hẹn giờ';
+
+  @override
+  String get timerSubtitle => 'Đặt thời lượng rồi đếm ngược';
+
+  @override
+  String get stopwatchTitle => 'Bấm giờ';
+
+  @override
+  String get stopwatchSubtitle => 'Đếm lên từ 0, tối đa 180 phút';
+
+  @override
+  String get sessionTitleHint => 'Thêm tiêu đề phiên...';
+
+  @override
+  String get sessionTitleSheet => 'Tiêu đề phiên';
+
+  @override
+  String get focusStop => 'Dừng';
+
+  @override
+  String get focusStopShortTitle => 'Dừng khi chưa đủ 10 phút?';
+
+  @override
+  String get focusStopShortBody =>
+      'Phiên bấm giờ dưới 10 phút sẽ không trồng cây.';
+
+  @override
+  String get helpTitle0 => 'Câu chuyện của hifive';
+
+  @override
+  String get helpBody0 =>
+      'hifive giúp bạn học ngôn ngữ mỗi ngày như vun trồng một khu vườn: mỗi ngày một chút, rồi một ngày nhìn lại đã thấy cả một khu rừng.\n\nÝ nghĩa logo\n\n• Năm vạch bo tròn là năm ngón tay giơ lên cho một cú high five, lời chúc mừng sau mỗi buổi học.\n• Năm vạch cũng là sóng âm của giọng nói, vì học ngôn ngữ là để nói và hiểu nhau.\n• Năm màu là các cách học trong app: hội thoại (xanh ngọc), viết (xanh dương), màu chàm của hifive, ngữ pháp (tím) và AI (tím đậm).\n\nLời hứa của hifive\n\nMỗi từ bạn gặp ở bất cứ đâu trong hifive, từ thẻ ghi nhớ, trò chơi đến từ điển, đều được theo dõi cho đến khi bạn dùng được nó.';
+
+  @override
+  String get todayTitle => 'Ôn hôm nay';
+
+  @override
+  String todaySummary(int due, int fresh) {
+    return '$due từ cần ôn · $fresh từ mới';
+  }
+
+  @override
+  String get todayStart => 'Bắt đầu';
+
+  @override
+  String get todayAllDone => 'Hôm nay đã ôn xong';
+
+  @override
+  String get todayAllDoneBody => 'Quay lại ngày mai để ôn đúng lúc sắp quên.';
+
+  @override
+  String get exIntro => 'Từ mới. Đoán nghĩa trước khi xem.';
+
+  @override
+  String get exShowMeaning => 'Xem nghĩa';
+
+  @override
+  String get exChoose => 'Chọn nghĩa đúng';
+
+  @override
+  String get exType => 'Gõ từ có nghĩa này';
+
+  @override
+  String get exListen => 'Nghe rồi gõ lại';
+
+  @override
+  String get exCloze => 'Điền từ còn thiếu';
+
+  @override
+  String get exAnswerHint => 'Gõ câu trả lời';
+
+  @override
+  String get exHint => 'Gợi ý';
+
+  @override
+  String get exCheck => 'Kiểm tra';
+
+  @override
+  String get exDontKnow => 'Không biết';
+
+  @override
+  String get exCorrect => 'Chính xác';
+
+  @override
+  String get exAlmost => 'Gần đúng, chú ý chính tả';
+
+  @override
+  String get exWrong => 'Chưa đúng, từ này sẽ quay lại';
+
+  @override
+  String get exNext => 'Tiếp';
+
+  @override
+  String get exTooEasy => 'Quá dễ';
+
+  @override
+  String get exPlay => 'Nghe lại';
+
+  @override
+  String exProgress(int done, int total) {
+    return '$done/$total';
+  }
+
+  @override
+  String get newPerDayTitle => 'Từ mới mỗi ngày';
+
+  @override
+  String get newPerDayBody =>
+      'Ôn tập không giới hạn. Khi còn nhiều từ cần ôn, app tự giảm từ mới.';
+
+  @override
+  String get memorySettings => 'Ghi nhớ từ vựng';
+
+  @override
+  String get exTypingSetting => 'Bài tập gõ từ';
+
+  @override
+  String get exTypingSettingBody => 'Nhìn nghĩa rồi gõ từ, điền vào câu';
+
+  @override
+  String get exListeningSetting => 'Bài tập nghe';
+
+  @override
+  String get exListeningSettingBody =>
+      'Nghe rồi gõ lại. Tắt khi đang ở nơi công cộng.';
+
+  @override
+  String get reminderTitle => 'Nhắc ôn từ mỗi ngày';
+
+  @override
+  String reminderAt(String time) {
+    return 'Lúc $time · chỉ khi có từ sắp quên';
+  }
+
+  @override
+  String get reminderPickTime => 'Giờ nhắc';
+
+  @override
+  String get reminderDone => 'Xong';
+
+  @override
+  String reminderNoteTitle(int count) {
+    return '$count từ sắp quên';
+  }
+
+  @override
+  String reminderNoteBody(int minutes) {
+    return 'Ôn khoảng $minutes phút để nhớ lâu hơn, và tưới cây học của bạn.';
+  }
+
+  @override
+  String get memoryTitle => 'Trí nhớ từ vựng';
+
+  @override
+  String memoryCardBody(int known, int total) {
+    return '$known từ đã thuộc · $total từ đã gặp';
+  }
+
+  @override
+  String get levelFresh => 'Mới';
+
+  @override
+  String get levelLearning => 'Đang học';
+
+  @override
+  String get levelRemembering => 'Đang nhớ';
+
+  @override
+  String get levelKnown => 'Thuộc';
+
+  @override
+  String get levelMastered => 'Thành thạo';
+
+  @override
+  String get memoryLevels => 'Từ theo mức độ';
+
+  @override
+  String get memoryLevelsNote =>
+      'Thuộc: nhớ được ít nhất 3 tuần. Thành thạo: thuộc và đã tự gõ hoặc dùng đúng trong 60 ngày qua.';
+
+  @override
+  String get memoryRetention => 'Tỉ lệ nhớ';
+
+  @override
+  String memoryRetentionBody(int count) {
+    return 'Trong $count lần ôn từ đã thuộc, 30 ngày qua. Mục tiêu khoảng 90%.';
+  }
+
+  @override
+  String get memoryRetentionWait => 'Ôn thêm vài ngày để đo được tỉ lệ nhớ.';
+
+  @override
+  String get memoryForecast => 'Dự báo 7 ngày';
+
+  @override
+  String get memoryToday => 'Hôm nay';
+
+  @override
+  String get memorySkills => 'Kỹ năng';
+
+  @override
+  String get memorySkillsEmpty =>
+      'Làm bài trong Ôn hôm nay để thấy kỹ năng nào còn yếu.';
+
+  @override
+  String get skillMeaning => 'Hiểu nghĩa';
+
+  @override
+  String get skillRecall => 'Nhớ ra từ';
+
+  @override
+  String get skillForm => 'Nghe và chính tả';
+
+  @override
+  String get skillUse => 'Dùng trong câu';
+
+  @override
+  String get memoryHard => 'Từ khó';
+
+  @override
+  String get memoryHardEmpty =>
+      'Chưa có từ khó. Từ quên từ 4 lần trở lên sẽ hiện ở đây.';
+
+  @override
+  String get wordRecallNow => 'Khả năng nhớ lúc này';
+
+  @override
+  String get wordNextReview => 'Lần ôn tới';
+
+  @override
+  String get wordStability => 'Nhớ được khoảng';
+
+  @override
+  String wordDays(int count) {
+    return '$count ngày';
+  }
+
+  @override
+  String get wordLapses => 'Số lần quên';
+
+  @override
+  String get wordHistory => 'Các lần gặp';
+
+  @override
+  String get wordNoHistory => 'Chưa ôn lần nào.';
+
+  @override
+  String get wordNow => 'Bây giờ';
+
+  @override
+  String get todayEyebrow => 'HÔM NAY';
+
+  @override
+  String get todayHeadline => 'Ôn từ vựng';
+
+  @override
+  String todayDueChip(int count) {
+    return '$count cần ôn';
+  }
+
+  @override
+  String todayNewChip(int count) {
+    return '$count từ mới';
+  }
+
+  @override
+  String todayMinutes(int count) {
+    return 'khoảng $count phút';
+  }
+
+  @override
+  String get todayDoneBody => 'Quay lại ngày mai nhé';
+
+  @override
+  String get practiceTitle => 'Luyện gõ và nghe';
+
+  @override
+  String get practiceBody => 'Tự gõ, nghe và điền từ vào câu để nhớ chắc hơn.';
+
+  @override
+  String get menuListen => 'Nghe';
+
+  @override
+  String get listenTitle => 'Luyện nghe';
+
+  @override
+  String get listenIntro =>
+      'Nguồn nghe hifive chọn lọc theo trình độ. Gặp từ lạ thì lưu lại để ôn trong Ôn hôm nay.';
+
+  @override
+  String get listenEmpty =>
+      'Đang tải nguồn nghe. Hãy kiểm tra kết nối mạng rồi mở lại.';
+
+  @override
+  String listenPlaylist(String channel) {
+    return 'Playlist YouTube · $channel';
+  }
+
+  @override
+  String get listenSaveWord => 'Lưu từ vừa nghe';
+
+  @override
+  String get listenWord => 'Từ hoặc cụm từ';
+
+  @override
+  String get listenMeaning => 'Nghĩa';
+
+  @override
+  String get listenSave => 'Lưu';
+
+  @override
+  String listenSaved(String word) {
+    return 'Đã lưu \"$word\" vào Từ đã lưu';
+  }
+
+  @override
+  String get listenTip =>
+      'Mẹo: nghe một lần để hiểu ý chính, nghe lần hai và lưu những từ bạn muốn dùng được.';
 }

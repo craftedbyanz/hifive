@@ -55,12 +55,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get exitGame => '게임 종료';
 
   @override
-  String get plusBannerTitle => 'Hifive Plus 구독하기';
-
-  @override
-  String get plusBannerBody => '더 높은 사용 한도를 열고 언어 실력을 키워 보세요.';
-
-  @override
   String get vietnamFlag => '베트남 국기';
 
   @override
@@ -556,7 +550,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get smartReminders => '스마트 알림';
 
   @override
-  String get smartRemindersBody => 'Hifive가 학습 습관을 파악해 평소 공부하는 시간에 알려 드려요.';
+  String get smartRemindersBody =>
+      'hifive가 곧 잊을 단어를 미리 계산해요. 알림 시간에 복습할 단어가 있을 때만, 개수와 예상 시간을 알려 드려요.';
 
   @override
   String get lessonSettingsTitle => '수업 설정';
@@ -2338,4 +2333,679 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get closeTip => '팁 닫기';
+
+  @override
+  String get menuFocus => '정원';
+
+  @override
+  String get focusStart => '집중 시작';
+
+  @override
+  String get focusChangeTree => '나무 바꾸기';
+
+  @override
+  String focusMinutes(int count) {
+    return '$count분';
+  }
+
+  @override
+  String get focusRunningHint => '휴대폰을 내려놓으세요. 집중하는 동안 나무가 자라요.';
+
+  @override
+  String focusCancel(int seconds) {
+    return '취소 ($seconds)';
+  }
+
+  @override
+  String get focusGiveUp => '포기';
+
+  @override
+  String get focusGiveUpTitle => '이번 세션을 포기할까요?';
+
+  @override
+  String get focusGiveUpBody => '이번 나무는 시들어 정원에 남아요.';
+
+  @override
+  String get focusKeepGoing => '계속하기';
+
+  @override
+  String focusDoneTitle(int count) {
+    return '$count분 완료';
+  }
+
+  @override
+  String focusDoneReview(int count) {
+    return '5분 쉬어요. 곧 잊을 단어 $count개를 복습해 꽃을 피울까요?';
+  }
+
+  @override
+  String get focusDoneRest => '5분 쉬고 다시 와요.';
+
+  @override
+  String focusReviewWords(int count) {
+    return '단어 $count개 복습';
+  }
+
+  @override
+  String get focusRest => '그냥 쉴래요';
+
+  @override
+  String get focusBloomed => '나무에 꽃이 피었어요';
+
+  @override
+  String get focusBreakDeck => '쉬는 시간 복습';
+
+  @override
+  String get focusWitheredTitle => '괜찮아요, 다시 해 봐요';
+
+  @override
+  String focusWitheredBody(int count) {
+    return '이 나무는 $count분 만에 시들었어요. 새싹이 기다리고 있어요.';
+  }
+
+  @override
+  String get focusReplant => '다시 심기';
+
+  @override
+  String get focusFinish => '완료';
+
+  @override
+  String get focusPickTree => '나무 고르기';
+
+  @override
+  String get focusLocked => '잠김';
+
+  @override
+  String get focusTagEnglish => '영어 공부';
+
+  @override
+  String get focusTagWriting => '글쓰기';
+
+  @override
+  String get focusTagWork => '업무';
+
+  @override
+  String get focusTagOther => '기타';
+
+  @override
+  String get speciesOak => '참나무';
+
+  @override
+  String get speciesPine => '소나무';
+
+  @override
+  String get speciesSunflower => '해바라기';
+
+  @override
+  String get speciesTulip => '튤립';
+
+  @override
+  String get speciesCherry => '벚나무';
+
+  @override
+  String get speciesApple => '사과나무';
+
+  @override
+  String get speciesOrange => '오렌지나무';
+
+  @override
+  String get speciesMaple => '단풍나무';
+
+  @override
+  String get speciesBirch => '자작나무';
+
+  @override
+  String get speciesGinkgo => '은행나무';
+
+  @override
+  String get speciesWillow => '버드나무';
+
+  @override
+  String get speciesLavender => '라벤더';
+
+  @override
+  String get speciesMushroom => '버섯';
+
+  @override
+  String get speciesCactus => '선인장';
+
+  @override
+  String get speciesBonsai => '분재';
+
+  @override
+  String get speciesBaobab => '바오밥나무';
+
+  @override
+  String get speciesWisteria => '등나무';
+
+  @override
+  String get speciesBamboo => '대나무';
+
+  @override
+  String get speciesCoconut => '코코넛나무';
+
+  @override
+  String get speciesBanana => '바나나나무';
+
+  @override
+  String get speciesPhuong => '봉황목';
+
+  @override
+  String get speciesBang => '열대 아몬드나무';
+
+  @override
+  String get speciesMai => '노란 매화';
+
+  @override
+  String get speciesDao => '복숭아꽃';
+
+  @override
+  String get speciesLotus => '연꽃';
+
+  @override
+  String get speciesBanyan => '반얀나무';
+
+  @override
+  String get speciesSnowpine => '눈 덮인 소나무';
+
+  @override
+  String get speciesGalaxy => '은하수 나무';
+
+  @override
+  String get gardenTitle => '나의 정원';
+
+  @override
+  String get gardenDay => '일';
+
+  @override
+  String get gardenWeek => '주';
+
+  @override
+  String get gardenMonth => '월';
+
+  @override
+  String get gardenYear => '년';
+
+  @override
+  String gardenCounts(int trees, int withered) {
+    return '나무 $trees그루 · 시든 나무 $withered그루';
+  }
+
+  @override
+  String get gardenEmpty => '아직 나무가 없어요. 집중하거나 단어를 복습해 첫 나무를 심어요.';
+
+  @override
+  String get gardenFocusTime => '집중';
+
+  @override
+  String get gardenReviews => '물주기';
+
+  @override
+  String get gardenStudyDays => '공부한 날';
+
+  @override
+  String gardenHoursMinutes(int hours, int minutes) {
+    return '$hours시간 $minutes분';
+  }
+
+  @override
+  String gardenGrowing(int count, int total) {
+    return '공부 나무 성장 중 · 물주기 $count/$total';
+  }
+
+  @override
+  String get gardenGrowingHint => '새 카드나 복습할 카드를 볼 때마다 물을 줘요. 눌러서 나무를 바꿔요.';
+
+  @override
+  String get gardenCollection => '컬렉션';
+
+  @override
+  String gardenUnlocked(int count, int total) {
+    return '$total종 중 $count종 열림';
+  }
+
+  @override
+  String get gardenStartFocus => '집중 시작';
+
+  @override
+  String get unlockAlways => '기본 제공';
+
+  @override
+  String unlockStudyTrees(int n) {
+    return '공부 나무 $n그루 키우기';
+  }
+
+  @override
+  String unlockWordsKnown(int n) {
+    return '단어 $n개 익히기';
+  }
+
+  @override
+  String unlockStreak(int n) {
+    return '$n일 연속';
+  }
+
+  @override
+  String unlockFocusHours(int n) {
+    return '$n시간 집중';
+  }
+
+  @override
+  String unlockFocusSessions(int n) {
+    return '집중 $n회';
+  }
+
+  @override
+  String unlockLongSession(int n) {
+    return '한 번에 $n분 집중';
+  }
+
+  @override
+  String unlockReviews(int n) {
+    return '복습 $n회';
+  }
+
+  @override
+  String unlockStudyDays(int n) {
+    return '$n일 공부';
+  }
+
+  @override
+  String unlockBlooms(int n) {
+    return '꽃 $n번 피우기';
+  }
+
+  @override
+  String unlockEvenings(int n) {
+    return '저녁 공부 $n번';
+  }
+
+  @override
+  String unlockComeback(int n) {
+    return '시든 뒤 연속 집중 $n회';
+  }
+
+  @override
+  String unlockWeeks(int n) {
+    return '$n주 연속 공부';
+  }
+
+  @override
+  String unlockMonth(int n) {
+    return '$n월에 공부';
+  }
+
+  @override
+  String get focusWarnTitle => '나무가 곧 시들어요';
+
+  @override
+  String get focusWarnBody => '몇 초 안에 hifive로 돌아오면 계속 자라요.';
+
+  @override
+  String reviewWatered(int count) {
+    return '공부 나무 물주기 +$count';
+  }
+
+  @override
+  String get homeGardenTitle => '나의 정원';
+
+  @override
+  String get homeGardenBody => '집중하거나 단어를 복습해 나무를 키워요';
+
+  @override
+  String get homeGardenOpen => '열기';
+
+  @override
+  String get tagPickTitle => '태그';
+
+  @override
+  String get tagNew => '새 태그';
+
+  @override
+  String get tagEditTitle => '태그 편집';
+
+  @override
+  String get tagNameHint => '태그 이름, 예: 독서';
+
+  @override
+  String get tagSave => '저장';
+
+  @override
+  String get tagDelete => '태그 삭제';
+
+  @override
+  String get tagDeleteTitle => '이 태그를 삭제할까요?';
+
+  @override
+  String get tagDeleteBody => '이 태그의 세션은 \'기타\'로 바뀌어요. 집중 시간은 그대로예요.';
+
+  @override
+  String get gardenByTag => '태그별';
+
+  @override
+  String get gardenByTagEmpty => '집중을 한 번 마치면 태그별 시간을 볼 수 있어요.';
+
+  @override
+  String get gardenShare => '공유';
+
+  @override
+  String gardenShareText(int count) {
+    return 'hifive 나의 정원: 공부와 집중으로 나무 $count그루를 키웠어요.';
+  }
+
+  @override
+  String get gardenShareFailed => '공유 창을 열 수 없어요.';
+
+  @override
+  String get timerTitle => '타이머';
+
+  @override
+  String get timerSubtitle => '시간을 정하고 카운트다운해요';
+
+  @override
+  String get stopwatchTitle => '스톱워치';
+
+  @override
+  String get stopwatchSubtitle => '0부터 최대 180분까지 세요';
+
+  @override
+  String get sessionTitleHint => '세션 제목 추가...';
+
+  @override
+  String get sessionTitleSheet => '세션 제목';
+
+  @override
+  String get focusStop => '멈추기';
+
+  @override
+  String get focusStopShortTitle => '10분이 되기 전에 멈출까요?';
+
+  @override
+  String get focusStopShortBody => '10분 미만의 스톱워치 세션은 나무를 심지 않아요.';
+
+  @override
+  String get helpTitle0 => 'hifive 이야기';
+
+  @override
+  String get helpBody0 =>
+      'hifive는 정원을 가꾸듯 매일 언어를 배우게 도와줘요. 하루에 조금씩, 어느 날 돌아보면 숲이 되어 있어요.\n\n로고의 의미\n\n• 둥근 막대 다섯 개는 하이파이브를 위해 든 다섯 손가락이에요. 공부를 마칠 때마다 보내는 축하예요.\n• 목소리의 음파이기도 해요. 언어를 배우는 건 말하고 서로 이해하기 위해서니까요.\n• 다섯 가지 색은 앱 속 배움의 방식이에요: 대화(청록), 글쓰기(파랑), hifive의 남색, 문법(보라), AI(진보라).\n\nhifive의 약속\n\nhifive 어디에서 만난 단어든, 플래시카드든 게임이든 사전이든, 쓸 수 있을 때까지 계속 챙겨요.';
+
+  @override
+  String get todayTitle => '오늘의 복습';
+
+  @override
+  String todaySummary(int due, int fresh) {
+    return '복습 $due개 · 새 단어 $fresh개';
+  }
+
+  @override
+  String get todayStart => '시작';
+
+  @override
+  String get todayAllDone => '오늘 복습 완료';
+
+  @override
+  String get todayAllDoneBody => '잊기 직전인 내일 다시 와요.';
+
+  @override
+  String get exIntro => '새 단어예요. 뜻을 먼저 짐작해 봐요.';
+
+  @override
+  String get exShowMeaning => '뜻 보기';
+
+  @override
+  String get exChoose => '알맞은 뜻을 고르세요';
+
+  @override
+  String get exType => '이 뜻의 단어를 입력하세요';
+
+  @override
+  String get exListen => '듣고 입력하세요';
+
+  @override
+  String get exCloze => '빠진 단어를 채우세요';
+
+  @override
+  String get exAnswerHint => '답을 입력하세요';
+
+  @override
+  String get exHint => '힌트';
+
+  @override
+  String get exCheck => '확인';
+
+  @override
+  String get exDontKnow => '모르겠어요';
+
+  @override
+  String get exCorrect => '정답';
+
+  @override
+  String get exAlmost => '거의 맞았어요, 철자를 확인해요';
+
+  @override
+  String get exWrong => '아쉬워요, 이 단어는 다시 나와요';
+
+  @override
+  String get exNext => '다음';
+
+  @override
+  String get exTooEasy => '너무 쉬워요';
+
+  @override
+  String get exPlay => '다시 듣기';
+
+  @override
+  String exProgress(int done, int total) {
+    return '$done/$total';
+  }
+
+  @override
+  String get newPerDayTitle => '하루 새 단어';
+
+  @override
+  String get newPerDayBody => '복습은 제한이 없어요. 복습할 단어가 많으면 새 단어를 줄여요.';
+
+  @override
+  String get memorySettings => '단어 기억';
+
+  @override
+  String get exTypingSetting => '입력 연습';
+
+  @override
+  String get exTypingSettingBody => '뜻을 보고 단어 입력, 빈칸 채우기';
+
+  @override
+  String get exListeningSetting => '듣기 연습';
+
+  @override
+  String get exListeningSettingBody => '듣고 입력해요. 공공장소에서는 꺼 두세요.';
+
+  @override
+  String get reminderTitle => '매일 복습 알림';
+
+  @override
+  String reminderAt(String time) {
+    return '$time · 잊을 단어가 있을 때만';
+  }
+
+  @override
+  String get reminderPickTime => '알림 시간';
+
+  @override
+  String get reminderDone => '완료';
+
+  @override
+  String reminderNoteTitle(int count) {
+    return '곧 잊을 단어 $count개';
+  }
+
+  @override
+  String reminderNoteBody(int minutes) {
+    return '$minutes분 정도 복습하면 오래 기억하고 공부 나무에도 물을 줘요.';
+  }
+
+  @override
+  String get memoryTitle => '단어 기억';
+
+  @override
+  String memoryCardBody(int known, int total) {
+    return '익힌 단어 $known개 · 만난 단어 $total개';
+  }
+
+  @override
+  String get levelFresh => '새 단어';
+
+  @override
+  String get levelLearning => '학습 중';
+
+  @override
+  String get levelRemembering => '기억 중';
+
+  @override
+  String get levelKnown => '익힘';
+
+  @override
+  String get levelMastered => '능숙';
+
+  @override
+  String get memoryLevels => '수준별 단어';
+
+  @override
+  String get memoryLevelsNote =>
+      '익힘: 3주 이상 기억해요. 능숙: 익혔고 최근 60일 안에 직접 입력하거나 바르게 썼어요.';
+
+  @override
+  String get memoryRetention => '기억률';
+
+  @override
+  String memoryRetentionBody(int count) {
+    return '최근 30일 동안 익힌 단어 복습 $count번 중. 목표는 약 90%예요.';
+  }
+
+  @override
+  String get memoryRetentionWait => '며칠 더 복습하면 기억률을 잴 수 있어요.';
+
+  @override
+  String get memoryForecast => '앞으로 7일';
+
+  @override
+  String get memoryToday => '오늘';
+
+  @override
+  String get memorySkills => '기술';
+
+  @override
+  String get memorySkillsEmpty => '오늘의 복습을 하면 약한 기술을 볼 수 있어요.';
+
+  @override
+  String get skillMeaning => '뜻 이해';
+
+  @override
+  String get skillRecall => '단어 떠올리기';
+
+  @override
+  String get skillForm => '소리와 철자';
+
+  @override
+  String get skillUse => '문장에서 쓰기';
+
+  @override
+  String get memoryHard => '어려운 단어';
+
+  @override
+  String get memoryHardEmpty => '아직 어려운 단어가 없어요. 4번 이상 잊은 단어가 여기에 나와요.';
+
+  @override
+  String get wordRecallNow => '지금 기억할 확률';
+
+  @override
+  String get wordNextReview => '다음 복습';
+
+  @override
+  String get wordStability => '기억 유지 약';
+
+  @override
+  String wordDays(int count) {
+    return '$count일';
+  }
+
+  @override
+  String get wordLapses => '잊은 횟수';
+
+  @override
+  String get wordHistory => '만난 기록';
+
+  @override
+  String get wordNoHistory => '아직 복습하지 않았어요.';
+
+  @override
+  String get wordNow => '지금';
+
+  @override
+  String get todayEyebrow => '오늘';
+
+  @override
+  String get todayHeadline => '단어 복습';
+
+  @override
+  String todayDueChip(int count) {
+    return '복습 $count개';
+  }
+
+  @override
+  String todayNewChip(int count) {
+    return '새 단어 $count개';
+  }
+
+  @override
+  String todayMinutes(int count) {
+    return '약 $count분';
+  }
+
+  @override
+  String get todayDoneBody => '내일 또 만나요';
+
+  @override
+  String get practiceTitle => '입력과 듣기 연습';
+
+  @override
+  String get practiceBody => '직접 입력하고 듣고 문장을 채우면 더 오래 기억해요.';
+
+  @override
+  String get menuListen => '듣기';
+
+  @override
+  String get listenTitle => '듣기 연습';
+
+  @override
+  String get listenIntro => 'hifive가 수준별로 고른 듣기예요. 모르는 단어는 저장해 오늘의 복습에서 복습해요.';
+
+  @override
+  String get listenEmpty => '듣기 자료를 불러오는 중이에요. 연결을 확인하고 다시 열어 주세요.';
+
+  @override
+  String listenPlaylist(String channel) {
+    return 'YouTube 재생목록 · $channel';
+  }
+
+  @override
+  String get listenSaveWord => '방금 들은 단어 저장';
+
+  @override
+  String get listenWord => '단어나 구';
+
+  @override
+  String get listenMeaning => '뜻';
+
+  @override
+  String get listenSave => '저장';
+
+  @override
+  String listenSaved(String word) {
+    return '\'$word\'을(를) 저장한 단어에 넣었어요';
+  }
+
+  @override
+  String get listenTip => '팁: 처음엔 요지를 듣고, 두 번째에는 쓰고 싶은 단어를 저장해요.';
 }

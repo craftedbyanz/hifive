@@ -1,4 +1,5 @@
 import '../models/deck.dart';
+import '../vocab/scheduler.dart';
 import 'hlc.dart';
 
 /// One entry in a card's review log. Replaying a card's log in time order
@@ -14,6 +15,33 @@ class ReviewEvent {
   final DateTime? due;
   final int intervalDays;
 
+  /// The study-tree species chosen when this rating was made, written only
+  /// when the card was new or due, so the rating grows the garden.
+  final String? tree;
+
+  /// The word itself ([wordKey]), so the same word in several decks shares
+  /// one memory. Older events lack it and are matched through [wordId].
+  final String? word;
+
+  /// How the word was asked: `flip`, `choice`, `typing`, `listening`,
+  /// `cloze`, `spelling` or `sentence`.
+  final String mode;
+
+  /// What was practised: `meaning` (see the word, know the meaning),
+  /// `recall` (have the meaning, produce the word), `form` (spelling or
+  /// sound) or `use`.
+  final String skill;
+
+  /// Where it happened: `flashcard`, `today`, `focusBreak`, `flowLetter`,
+  /// `dictionary`, `writing` or `conversation`.
+  final String source;
+
+  /// Milliseconds to answer, when measured.
+  final int? ms;
+
+  /// Hints used before answering.
+  final int hints;
+
   /// The stamp of the record holding this event. It orders events made at
   /// the same moment the way they were written.
   final Hlc stamp;
@@ -25,6 +53,13 @@ class ReviewEvent {
     this.status = 'new',
     this.due,
     this.intervalDays = 0,
+    this.tree,
+    this.word,
+    this.mode = 'flip',
+    this.skill = 'meaning',
+    this.source = 'flashcard',
+    this.ms,
+    this.hints = 0,
     this.stamp = Hlc.zero,
   });
 
@@ -34,6 +69,13 @@ class ReviewEvent {
     'wordId': wordId,
     'at': at.toIso8601String(),
     'rating': rating,
+    if (tree != null) 'tree': tree,
+    if (word != null) 'word': word,
+    if (mode != 'flip') 'mode': mode,
+    if (skill != 'meaning') 'skill': skill,
+    if (source != 'flashcard') 'source': source,
+    if (ms != null) 'ms': ms,
+    if (hints > 0) 'hints': hints,
     if (rating == snapshot) ...{
       'status': status,
       'due': due?.toIso8601String(),
@@ -53,55 +95,91 @@ class ReviewEvent {
     status: j['status'] as String? ?? 'new',
     due: j['due'] == null ? null : DateTime.parse(j['due'] as String),
     intervalDays: j['intervalDays'] as int? ?? 0,
+    tree: j['tree'] as String?,
+    word: j['word'] as String?,
+    mode: j['mode'] as String? ?? 'flip',
+    skill: j['skill'] as String? ?? 'meaning',
+    source: j['source'] as String? ?? 'flashcard',
+    ms: j['ms'] as int?,
+    hints: j['hints'] as int? ?? 0,
     stamp: stamp,
   );
 }
+
+/// The key one word's memory is kept under: its text, trimmed and in lower
+/// case, so the same word in two decks is one memory.
+String wordKey(String text) => text.trim().toLowerCase();
+
+/// Skills that show the learner can produce the word, for mastery.
+const productionSkills = {'recall', 'use'};
 
 /// Applies one event to [word]'s schedule.
 void applyReview(FlashWord word, ReviewEvent event) {
   switch (event.rating) {
     case ReviewEvent.reset:
-      word
-        ..status = 'new'
-        ..due = null
-        ..intervalDays = 0;
+      resetCard(word);
     case ReviewEvent.snapshot:
-      word
-        ..status = event.status
-        ..due = event.due
-        ..intervalDays = event.intervalDays;
+      applySnapshot(word, event.status, event.due, event.intervalDays);
     default:
-      final interval = word.nextIntervals[event.rating];
-      word
-        ..status = event.rating == 0 ? 'learning' : 'review'
-        ..intervalDays = interval.inDays
-        ..due = event.at.add(interval);
+      applyRating(word, event.at, event.rating);
+      if (event.rating >= 2 && productionSkills.contains(event.skill)) {
+        word.lastRecall = event.at;
+      }
   }
 }
 
 /// Rebuilds every card's schedule from [events], in time order; events at
-/// the same moment follow their record stamps, then their ids.
-/// Cards without events are left new.
-void replayReviews(Iterable<FlashWord> words, Iterable<ReviewEvent> events) {
-  final byWord = <String, List<ReviewEvent>>{};
-  for (final e in events) {
-    (byWord[e.wordId] ??= []).add(e);
+/// the same moment follow their record stamps, then their ids. Cards that
+/// hold the same word share one replay. Cards without events are left new.
+/// [onDue] hears every rating given to a card that was new or due at that
+/// moment; [onRated] hears every rating with the card's status just before
+/// it, for measuring retention.
+void replayReviews(
+  Iterable<FlashWord> words,
+  Iterable<ReviewEvent> events, {
+  void Function(ReviewEvent event)? onDue,
+  void Function(ReviewEvent event, String statusBefore)? onRated,
+}) {
+  final keyOf = <String, String>{};
+  final byKey = <String, List<FlashWord>>{};
+  for (final w in words) {
+    resetCard(w);
+    final key = wordKey(w.word);
+    keyOf[w.id] = key;
+    (byKey[key] ??= []).add(w);
   }
-  for (final word in words) {
-    word
-      ..status = 'new'
-      ..due = null
-      ..intervalDays = 0;
-    final log = byWord[word.id];
-    if (log == null) continue;
-    log.sort((a, b) {
+  final log = <String, List<ReviewEvent>>{};
+  for (final e in events) {
+    final key = e.word ?? keyOf[e.wordId];
+    if (key != null) (log[key] ??= []).add(e);
+  }
+  for (final MapEntry(:key, value: cards) in byKey.entries) {
+    final list = log[key];
+    if (list == null) continue;
+    list.sort((a, b) {
       final t = a.at.compareTo(b.at);
       if (t != 0) return t;
       final s = a.stamp.compareTo(b.stamp);
       return s != 0 ? s : a.id.compareTo(b.id);
     });
-    for (final e in log) {
-      applyReview(word, e);
+    final first = cards.first;
+    for (final e in list) {
+      if (onDue != null && e.rating >= 0 && first.isDue(e.at)) onDue(e);
+      if (onRated != null && e.rating >= 0) onRated(e, first.status);
+      applyReview(first, e);
+    }
+    for (final other in cards.skip(1)) {
+      other
+        ..status = first.status
+        ..due = first.due
+        ..intervalDays = first.intervalDays
+        ..stability = first.stability
+        ..difficulty = first.difficulty
+        ..lapses = first.lapses
+        ..reviews = first.reviews
+        ..firstReview = first.firstReview
+        ..lastReview = first.lastReview
+        ..lastRecall = first.lastRecall;
     }
   }
 }

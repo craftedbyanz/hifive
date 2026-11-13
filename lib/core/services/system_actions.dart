@@ -18,6 +18,9 @@ abstract interface class SystemActions {
 
   /// This app's page in the system Settings.
   Future<bool> openAppSettings();
+
+  /// The share sheet with a PNG picture and a line of text.
+  Future<bool> shareImage(Uint8List png, String text);
 }
 
 class PlatformSystemActions implements SystemActions {
@@ -49,6 +52,19 @@ class PlatformSystemActions implements SystemActions {
   Future<bool> openAppSettings() =>
       _guard(() => launchUrl(Uri.parse('app-settings:')));
 
+  @override
+  Future<bool> shareImage(Uint8List png, String text) => _guard(() async {
+    await SharePlus.instance.share(
+      ShareParams(
+        text: text,
+        files: [
+          XFile.fromData(png, mimeType: 'image/png', name: 'hifive-garden.png'),
+        ],
+      ),
+    );
+    return true;
+  });
+
   static Future<bool> _guard(Future<bool> Function() action) async {
     try {
       return await action();
@@ -77,4 +93,6 @@ class RecordingSystemActions implements SystemActions {
   Future<bool> shareInvite() => _record('invite');
   @override
   Future<bool> openAppSettings() => _record('settings');
+  @override
+  Future<bool> shareImage(Uint8List png, String text) => _record('image');
 }

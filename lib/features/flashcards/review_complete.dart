@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../l10n/l10n.dart';
+import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../../widgets/garden/garden_art.dart';
 
 /// The end of a session. Measured from video: the content fades in over about
 /// 0.4 s while the medal scales up, then gold confetti bursts out from behind it.
@@ -13,6 +15,9 @@ import '../../widgets/common.dart';
 class ReviewComplete extends StatefulWidget {
   final String deckTitle;
   final int seen, known, again;
+
+  /// Study-tree waterings this session added; shown when above zero.
+  final int watered;
   final VoidCallback onContinue;
   const ReviewComplete({
     super.key,
@@ -20,6 +25,7 @@ class ReviewComplete extends StatefulWidget {
     required this.seen,
     required this.known,
     required this.again,
+    this.watered = 0,
     required this.onContinue,
   });
   @override
@@ -158,6 +164,35 @@ class _ReviewCompleteState extends State<ReviewComplete>
                 ),
               ),
             ),
+            if (widget.watered > 0)
+              Positioned(
+                left: 24,
+                right: 24,
+                bottom: 132,
+                child: Opacity(
+                  opacity: content,
+                  child: Row(
+                    key: const ValueKey('review-watered'),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TreeArt(
+                        species: AppScope.read(context).studySpecies,
+                        size: 44,
+                        growth: .05,
+                        floating: false,
+                      ),
+                      Text(
+                        context.t.reviewWatered(widget.watered),
+                        style: D.text(
+                          14,
+                          weight: FontWeight.w700,
+                          color: Palette.menuFocus,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             Positioned(
               left: 24,
               right: 24,

@@ -1,3 +1,5 @@
+import '../vocab/scheduler.dart';
+
 class FlashWord {
   final String id, word, meaning, phonetic, example, partOfSpeech, definition;
   String status;
@@ -5,6 +7,25 @@ class FlashWord {
 
   /// Days until the next review once the card is known. Zero while learning.
   int intervalDays;
+
+  // The memory profile below is derived by replaying the review log
+  // (`replayReviews`) and never stored. See `docs/memory-plan.md`.
+
+  /// FSRS stability: days until recall falls to 90%. Zero while new.
+  double stability = 0;
+
+  /// FSRS difficulty, 1 to 10. Zero while new.
+  double difficulty = 0;
+
+  /// Times the card was forgotten after it was known.
+  int lapses = 0;
+
+  /// Ratings given, all time.
+  int reviews = 0;
+  DateTime? firstReview, lastReview;
+
+  /// The last time the learner produced the word (typed or used it) right.
+  DateTime? lastRecall;
   FlashWord({
     required this.id,
     required this.word,
@@ -21,26 +42,10 @@ class FlashWord {
   bool isDue(DateTime now) =>
       status == 'new' || due == null || !due!.isAfter(now);
 
-  /// Mock scheduling fitted to the labels seen on the reference, which showed
-  /// 1m/6m/1d/4d, 1m/1d/3d/4d and 1m/5d/10d/12d. Its real algorithm is unknown.
-  List<Duration> get nextIntervals {
-    if (status != 'review') {
-      return const [
-        Duration(minutes: 1),
-        Duration(minutes: 6),
-        Duration(days: 1),
-        Duration(days: 4),
-      ];
-    }
-    int grow(double factor, int least) =>
-        (intervalDays * factor).ceil().clamp(least, 36500);
-    return [
-      const Duration(minutes: 1),
-      Duration(days: grow(1.2, 1)),
-      Duration(days: grow(2.5, 3)),
-      Duration(days: grow(3, 4)),
-    ];
-  }
+  /// How long each rating 0 (Học lại) to 3 (Dễ) would put the card away.
+  List<Duration> nextIntervals(DateTime now) => [
+    for (final o in preview(this, now)) o.interval,
+  ];
 
   Map<String, dynamic> toJson() => {
     'id': id,

@@ -1,0 +1,324 @@
+{
+  "version": 1,
+  "language": "en",
+  "decks": [
+    {
+      "id": "cat-en-a1-family",
+      "level": "A1",
+      "topic": "family",
+      "title": "A1 · Gia đình",
+      "description": "Những người thân trong gia đình.",
+      "icon": 1,
+      "words": [
+        {
+          "id": "cat-en-family-mother",
+          "word": "mother",
+          "meaning": "mẹ",
+          "phonetic": "/ˈmʌðər/",
+          "partOfSpeech": "NOUN",
+          "example": "My mother cooks dinner every day."
+        },
+        {
+          "id": "cat-en-family-father",
+          "word": "father",
+          "meaning": "bố",
+          "phonetic": "/ˈfɑːðər/",
+          "partOfSpeech": "NOUN",
+          "example": "My father works in a bank."
+        },
+        {
+          "id": "cat-en-family-sister",
+          "word": "sister",
+          "meaning": "chị gái, em gái",
+          "phonetic": "/ˈsɪstər/",
+          "partOfSpeech": "NOUN",
+          "example": "My sister is twelve years old."
+        },
+        {
+          "id": "cat-en-family-brother",
+          "word": "brother",
+          "meaning": "anh trai, em trai",
+          "phonetic": "/ˈbrʌðər/",
+          "partOfSpeech": "NOUN",
+          "example": "Her brother plays football."
+        },
+        {
+          "id": "cat-en-family-parents",
+          "word": "parents",
+          "meaning": "bố mẹ",
+          "phonetic": "/ˈperənts/",
+          "partOfSpeech": "NOUN",
+          "example": "My parents live in Hanoi."
+        },
+        {
+          "id": "cat-en-family-grandmother",
+          "word": "grandmother",
+          "meaning": "bà",
+          "phonetic": "/ˈɡrænmʌðər/",
+          "partOfSpeech": "NOUN",
+          "example": "I visit my grandmother on Sundays."
+        },
+        {
+          "id": "cat-en-family-grandfather",
+          "word": "grandfather",
+          "meaning": "ông",
+          "phonetic": "/ˈɡrænfɑːðər/",
+          "partOfSpeech": "NOUN",
+          "example": "My grandfather reads the newspaper."
+        },
+        {
+          "id": "cat-en-family-husband",
+          "word": "husband",
+          "meaning": "chồng",
+          "phonetic": "/ˈhʌzbənd/",
+          "partOfSpeech": "NOUN",
+          "example": "Her husband is a doctor."
+        },
+        {
+          "id": "cat-en-family-wife",
+          "word": "wife",
+          "meaning": "vợ",
+          "phonetic": "/waɪf/",
+          "partOfSpeech": "NOUN",
+          "example": "His wife speaks French."
+        },
+        {
+          "id": "cat-en-family-son",
+          "word": "son",
+          "meaning": "con trai",
+          "phonetic": "/sʌn/",
+          "partOfSpeech": "NOUN",
+          "example": "Their son goes to school by bus."
+        },
+        {
+          "id": "cat-en-family-daughter",
+          "word": "daughter",
+          "meaning": "con gái",
+          "phonetic": "/ˈdɔːtər/",
+          "partOfSpeech": "NOUN",
+          "example": "My daughter likes music."
+        },
+        {
+          "id": "cat-en-family-cousin",
+          "word": "cousin",
+          "meaning": "anh chị em họ",
+          "phonetic": "/ˈkʌzn/",
+          "partOfSpeech": "NOUN",
+          "example": "My cousin lives in Da Nang."
+        }
+      ]
+    },
+    {
+      "id": "cat-en-a1-food",
+      "level": "A1",
+      "topic": "food",
+      "title": "A1 · Đồ ăn và thức uống",
+      "description": "Món ăn và đồ uống hằng ngày.",
+      "icon": 2,
+      "words": [
+        {
+          "id": "cat-en-food-rice",
+          "word": "rice",
+          "meaning": "cơm, gạo",
+          "phonetic": "/raɪs/",
+          "partOfSpeech": "NOUN",
+          "example": "We eat rice every day."
+        },
+        {
+          "id": "cat-en-food-bread",
+          "word": "bread",
+          "meaning": "bánh mì",
+          "phonetic": "/bred/",
+          "partOfSpeech": "NOUN",
+          "example": "I buy bread in the morning."
+        },
+        {
+          "id": "cat-en-food-water",
+          "word": "water",
+          "meaning": "nước",
+          "phonetic": "/ˈwɔːtər/",
+          "partOfSpeech": "NOUN",
+          "example": "Can I have some water, please?"
+        },
+        {
+          "id": "cat-en-food-coffee",
+          "word": "coffee",
+          "meaning": "cà phê",
+          "phonetic": "/ˈkɔːfi/",
+          "partOfSpeech": "NOUN",
+          "example": "He drinks coffee with milk."
+        },
+        {
+          "id": "cat-en-food-egg",
+          "word": "egg",
+          "meaning": "trứng",
+          "phonetic": "/eɡ/",
+          "partOfSpeech": "NOUN",
+          "example": "She has an egg for breakfast."
+        },
+        {
+          "id": "cat-en-food-chicken",
+          "word": "chicken",
+          "meaning": "thịt gà, con gà",
+          "phonetic": "/ˈtʃɪkɪn/",
+          "partOfSpeech": "NOUN",
+          "example": "The chicken soup is hot."
+        },
+        {
+          "id": "cat-en-food-fish",
+          "word": "fish",
+          "meaning": "cá",
+          "phonetic": "/fɪʃ/",
+          "partOfSpeech": "NOUN",
+          "example": "We have fish on Fridays."
+        },
+        {
+          "id": "cat-en-food-vegetable",
+          "word": "vegetable",
+          "meaning": "rau củ",
+          "phonetic": "/ˈvedʒtəbl/",
+          "partOfSpeech": "NOUN",
+          "example": "Eat a vegetable with every meal."
+        },
+        {
+          "id": "cat-en-food-fruit",
+          "word": "fruit",
+          "meaning": "trái cây",
+          "phonetic": "/fruːt/",
+          "partOfSpeech": "NOUN",
+          "example": "I like fresh fruit."
+        },
+        {
+          "id": "cat-en-food-breakfast",
+          "word": "breakfast",
+          "meaning": "bữa sáng",
+          "phonetic": "/ˈbrekfəst/",
+          "partOfSpeech": "NOUN",
+          "example": "Breakfast is at seven."
+        },
+        {
+          "id": "cat-en-food-hungry",
+          "word": "hungry",
+          "meaning": "đói",
+          "phonetic": "/ˈhʌŋɡri/",
+          "partOfSpeech": "ADJ",
+          "example": "I am hungry, let's eat."
+        },
+        {
+          "id": "cat-en-food-delicious",
+          "word": "delicious",
+          "meaning": "ngon",
+          "phonetic": "/dɪˈlɪʃəs/",
+          "partOfSpeech": "ADJ",
+          "example": "This pho is delicious."
+        }
+      ]
+    },
+    {
+      "id": "cat-en-a1-routine",
+      "level": "A1",
+      "topic": "routine",
+      "title": "A1 · Một ngày của tôi",
+      "description": "Việc làm hằng ngày và tần suất.",
+      "icon": 3,
+      "words": [
+        {
+          "id": "cat-en-routine-wake-up",
+          "word": "wake up",
+          "meaning": "thức dậy",
+          "phonetic": "/weɪk ʌp/",
+          "partOfSpeech": "VERB",
+          "example": "I wake up at six."
+        },
+        {
+          "id": "cat-en-routine-get-dressed",
+          "word": "get dressed",
+          "meaning": "mặc quần áo",
+          "phonetic": "/ɡet drest/",
+          "partOfSpeech": "VERB",
+          "example": "She gets dressed after breakfast."
+        },
+        {
+          "id": "cat-en-routine-brush",
+          "word": "brush",
+          "meaning": "chải, đánh (răng)",
+          "phonetic": "/brʌʃ/",
+          "partOfSpeech": "VERB",
+          "example": "Brush your teeth twice a day."
+        },
+        {
+          "id": "cat-en-routine-work",
+          "word": "work",
+          "meaning": "làm việc",
+          "phonetic": "/wɜːrk/",
+          "partOfSpeech": "VERB",
+          "example": "They work from nine to five."
+        },
+        {
+          "id": "cat-en-routine-study",
+          "word": "study",
+          "meaning": "học",
+          "phonetic": "/ˈstʌdi/",
+          "partOfSpeech": "VERB",
+          "example": "I study English in the evening."
+        },
+        {
+          "id": "cat-en-routine-cook",
+          "word": "cook",
+          "meaning": "nấu ăn",
+          "phonetic": "/kʊk/",
+          "partOfSpeech": "VERB",
+          "example": "My father likes to cook."
+        },
+        {
+          "id": "cat-en-routine-clean",
+          "word": "clean",
+          "meaning": "dọn dẹp",
+          "phonetic": "/kliːn/",
+          "partOfSpeech": "VERB",
+          "example": "We clean the house on Saturday."
+        },
+        {
+          "id": "cat-en-routine-relax",
+          "word": "relax",
+          "meaning": "thư giãn",
+          "phonetic": "/rɪˈlæks/",
+          "partOfSpeech": "VERB",
+          "example": "I relax with a book after work."
+        },
+        {
+          "id": "cat-en-routine-sleep",
+          "word": "sleep",
+          "meaning": "ngủ",
+          "phonetic": "/sliːp/",
+          "partOfSpeech": "VERB",
+          "example": "Babies sleep a lot."
+        },
+        {
+          "id": "cat-en-routine-always",
+          "word": "always",
+          "meaning": "luôn luôn",
+          "phonetic": "/ˈɔːlweɪz/",
+          "partOfSpeech": "ADV",
+          "example": "He always walks to work."
+        },
+        {
+          "id": "cat-en-routine-usually",
+          "word": "usually",
+          "meaning": "thường",
+          "phonetic": "/ˈjuːʒuəli/",
+          "partOfSpeech": "ADV",
+          "example": "I usually have tea at night."
+        },
+        {
+          "id": "cat-en-routine-never",
+          "word": "never",
+          "meaning": "không bao giờ",
+          "phonetic": "/ˈnevər/",
+          "partOfSpeech": "ADV",
+          "example": "She never drinks coffee."
+        }
+      ]
+    }
+  ]
+}

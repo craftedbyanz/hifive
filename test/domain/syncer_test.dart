@@ -88,8 +88,10 @@ void main() {
     ipad.state.rate(ipad.state.decks.first.words.first, 2);
     await syncBoth();
     final card = (await iphone.reopened()).decks.first.words.first;
-    // Good, then Good again a minute later: the interval grows to 3 days.
-    expect((card.status, card.intervalDays), ('review', 3));
+    // Good, then Good again a minute later: the same-day review nudges the
+    // three-day interval up.
+    expect(card.status, 'review');
+    expect(card.intervalDays, greaterThan(3));
   });
 
   test('games, saved words and results merge', () async {

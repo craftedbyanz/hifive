@@ -4,6 +4,7 @@ declare global {
   namespace Cloudflare {
     interface Env {
       DB: D1Database;
+      CATALOG: Fetcher;
       FIREBASE_PROJECT_ID: string;
       TEST_MIGRATIONS: D1Migration[];
     }

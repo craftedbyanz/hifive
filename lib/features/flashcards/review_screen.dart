@@ -24,7 +24,15 @@ part 'review_controls.dart';
 class ReviewScreen extends StatefulWidget with CoverPage {
   final Deck deck;
   final List<FlashWord> words;
-  const ReviewScreen({super.key, required this.deck, required this.words});
+
+  /// Where the session was opened from, kept on each review.
+  final String source;
+  const ReviewScreen({
+    super.key,
+    required this.deck,
+    required this.words,
+    this.source = 'flashcard',
+  });
 
   /// How far a card must travel to be rated. The reference did not rate at 110 pt
   /// held and returned, and did at 170 pt, so this is inside that range.
@@ -37,6 +45,9 @@ class _ReviewScreenState extends State<ReviewScreen>
     with TickerProviderStateMixin {
   late final List<FlashWord> queue = List.of(widget.words);
   late final total = queue.length;
+
+  /// Garden waterings before this session, to show how many it added.
+  late final _wateredBefore = AppScope.read(context).countedStudyCredits.length;
   FlashWord? previous;
   int passed = 0, again = 0;
   bool done = false, autoplay = false, colorful = false;
@@ -78,6 +89,7 @@ class _ReviewScreenState extends State<ReviewScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _wateredBefore;
     activeFeedback = AppScope.read(context).feedback;
   }
 
@@ -140,7 +152,7 @@ class _ReviewScreenState extends State<ReviewScreen>
     final state = AppScope.read(context);
     final word = queue.first;
     state.feedback.tap();
-    state.rate(word, value);
+    state.rate(word, value, source: widget.source);
     activeRating = value;
     final direction = _ratings[value].$2;
     final size = MediaQuery.sizeOf(context);
@@ -266,6 +278,9 @@ class _ReviewScreenState extends State<ReviewScreen>
               seen: total,
               known: passed,
               again: again,
+              watered:
+                  AppScope.read(context).countedStudyCredits.length -
+                  _wateredBefore,
               onContinue: () => Navigator.pop(context),
             )
           : _session(),

@@ -55,12 +55,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get exitGame => '退出游戏';
 
   @override
-  String get plusBannerTitle => '订阅 Hifive Plus';
-
-  @override
-  String get plusBannerBody => '解锁更高的使用额度，全面提升你的语言能力。';
-
-  @override
   String get vietnamFlag => '越南国旗';
 
   @override
@@ -552,7 +546,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get smartReminders => '智能提醒';
 
   @override
-  String get smartRemindersBody => 'Hifive 会学习你的习惯，在你最常学习的时间提醒你。';
+  String get smartRemindersBody =>
+      'hifive 会预先算出哪些词快忘了。到了提醒时间，只有当天有词需要复习时才会通知你，并告诉你数量和大约需要的时间。';
 
   @override
   String get lessonSettingsTitle => '课程设置';
@@ -2320,4 +2315,678 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get closeTip => '关闭提示';
+
+  @override
+  String get menuFocus => '花园';
+
+  @override
+  String get focusStart => '开始专注';
+
+  @override
+  String get focusChangeTree => '换一棵树';
+
+  @override
+  String focusMinutes(int count) {
+    return '$count 分钟';
+  }
+
+  @override
+  String get focusRunningHint => '放下手机。你专注多久，树就长多久。';
+
+  @override
+  String focusCancel(int seconds) {
+    return '取消（$seconds）';
+  }
+
+  @override
+  String get focusGiveUp => '放弃';
+
+  @override
+  String get focusGiveUpTitle => '放弃这次专注？';
+
+  @override
+  String get focusGiveUpBody => '这次的树会枯萎，并留在你的花园里。';
+
+  @override
+  String get focusKeepGoing => '继续';
+
+  @override
+  String focusDoneTitle(int count) {
+    return '完成 $count 分钟';
+  }
+
+  @override
+  String focusDoneReview(int count) {
+    return '休息 5 分钟。复习 $count 个快忘的词，让树开花？';
+  }
+
+  @override
+  String get focusDoneRest => '休息 5 分钟再回来吧。';
+
+  @override
+  String focusReviewWords(int count) {
+    return '复习 $count 个词';
+  }
+
+  @override
+  String get focusRest => '先休息';
+
+  @override
+  String get focusBloomed => '树开花了';
+
+  @override
+  String get focusBreakDeck => '休息时复习';
+
+  @override
+  String get focusWitheredTitle => '没关系，再试一次';
+
+  @override
+  String focusWitheredBody(int count) {
+    return '这棵树在 $count 分钟后枯萎了。新的嫩芽在等你。';
+  }
+
+  @override
+  String get focusReplant => '再种一棵';
+
+  @override
+  String get focusFinish => '完成';
+
+  @override
+  String get focusPickTree => '选择树木';
+
+  @override
+  String get focusLocked => '未解锁';
+
+  @override
+  String get focusTagEnglish => '学英语';
+
+  @override
+  String get focusTagWriting => '写作';
+
+  @override
+  String get focusTagWork => '工作';
+
+  @override
+  String get focusTagOther => '其他';
+
+  @override
+  String get speciesOak => '橡树';
+
+  @override
+  String get speciesPine => '松树';
+
+  @override
+  String get speciesSunflower => '向日葵';
+
+  @override
+  String get speciesTulip => '郁金香';
+
+  @override
+  String get speciesCherry => '樱花';
+
+  @override
+  String get speciesApple => '苹果树';
+
+  @override
+  String get speciesOrange => '橙子树';
+
+  @override
+  String get speciesMaple => '红枫';
+
+  @override
+  String get speciesBirch => '白桦';
+
+  @override
+  String get speciesGinkgo => '银杏';
+
+  @override
+  String get speciesWillow => '柳树';
+
+  @override
+  String get speciesLavender => '薰衣草';
+
+  @override
+  String get speciesMushroom => '蘑菇';
+
+  @override
+  String get speciesCactus => '仙人掌';
+
+  @override
+  String get speciesBonsai => '盆景';
+
+  @override
+  String get speciesBaobab => '猴面包树';
+
+  @override
+  String get speciesWisteria => '紫藤';
+
+  @override
+  String get speciesBamboo => '竹子';
+
+  @override
+  String get speciesCoconut => '椰子树';
+
+  @override
+  String get speciesBanana => '香蕉树';
+
+  @override
+  String get speciesPhuong => '凤凰木';
+
+  @override
+  String get speciesBang => '榄仁树';
+
+  @override
+  String get speciesMai => '黄梅';
+
+  @override
+  String get speciesDao => '桃花';
+
+  @override
+  String get speciesLotus => '莲花';
+
+  @override
+  String get speciesBanyan => '榕树';
+
+  @override
+  String get speciesSnowpine => '雪松';
+
+  @override
+  String get speciesGalaxy => '银河树';
+
+  @override
+  String get gardenTitle => '你的花园';
+
+  @override
+  String get gardenDay => '日';
+
+  @override
+  String get gardenWeek => '周';
+
+  @override
+  String get gardenMonth => '月';
+
+  @override
+  String get gardenYear => '年';
+
+  @override
+  String gardenCounts(int trees, int withered) {
+    return '$trees 棵树 · $withered 棵枯萎';
+  }
+
+  @override
+  String get gardenEmpty => '还没有树。专注或复习单词来种下第一棵吧。';
+
+  @override
+  String get gardenFocusTime => '专注';
+
+  @override
+  String get gardenReviews => '浇水';
+
+  @override
+  String get gardenStudyDays => '学习天数';
+
+  @override
+  String gardenHoursMinutes(int hours, int minutes) {
+    return '$hours小时$minutes分';
+  }
+
+  @override
+  String gardenGrowing(int count, int total) {
+    return '学习树正在长大 · $count/$total 次浇水';
+  }
+
+  @override
+  String get gardenGrowingHint => '每复习一张新卡或到期卡就浇一次水。点按可更换树种。';
+
+  @override
+  String get gardenCollection => '收藏';
+
+  @override
+  String gardenUnlocked(int count, int total) {
+    return '已解锁 $count/$total 种';
+  }
+
+  @override
+  String get gardenStartFocus => '开始专注';
+
+  @override
+  String get unlockAlways => '已拥有';
+
+  @override
+  String unlockStudyTrees(int n) {
+    return '种 $n 棵学习树';
+  }
+
+  @override
+  String unlockWordsKnown(int n) {
+    return '掌握 $n 个词';
+  }
+
+  @override
+  String unlockStreak(int n) {
+    return '连续 $n 天';
+  }
+
+  @override
+  String unlockFocusHours(int n) {
+    return '专注 $n 小时';
+  }
+
+  @override
+  String unlockFocusSessions(int n) {
+    return '$n 次专注';
+  }
+
+  @override
+  String unlockLongSession(int n) {
+    return '一次专注 $n 分钟';
+  }
+
+  @override
+  String unlockReviews(int n) {
+    return '复习 $n 次';
+  }
+
+  @override
+  String unlockStudyDays(int n) {
+    return '学习 $n 天';
+  }
+
+  @override
+  String unlockBlooms(int n) {
+    return '开花 $n 次';
+  }
+
+  @override
+  String unlockEvenings(int n) {
+    return '晚上学习 $n 次';
+  }
+
+  @override
+  String unlockComeback(int n) {
+    return '枯萎后连续 $n 次专注';
+  }
+
+  @override
+  String unlockWeeks(int n) {
+    return '连续学习 $n 周';
+  }
+
+  @override
+  String unlockMonth(int n) {
+    return '在 $n 月学习';
+  }
+
+  @override
+  String get focusWarnTitle => '你的树快要枯萎了';
+
+  @override
+  String get focusWarnBody => '几秒内回到 hifive，让树继续生长。';
+
+  @override
+  String reviewWatered(int count) {
+    return '学习树 +$count 次浇水';
+  }
+
+  @override
+  String get homeGardenTitle => '你的花园';
+
+  @override
+  String get homeGardenBody => '专注或复习单词，让树长大';
+
+  @override
+  String get homeGardenOpen => '打开';
+
+  @override
+  String get tagPickTitle => '标签';
+
+  @override
+  String get tagNew => '新建标签';
+
+  @override
+  String get tagEditTitle => '编辑标签';
+
+  @override
+  String get tagNameHint => '标签名称，例如 阅读';
+
+  @override
+  String get tagSave => '保存';
+
+  @override
+  String get tagDelete => '删除标签';
+
+  @override
+  String get tagDeleteTitle => '删除这个标签？';
+
+  @override
+  String get tagDeleteBody => '使用此标签的专注将显示为“其他”，专注时间保留。';
+
+  @override
+  String get gardenByTag => '按标签';
+
+  @override
+  String get gardenByTagEmpty => '完成一次专注即可查看各标签的时间。';
+
+  @override
+  String get gardenShare => '分享';
+
+  @override
+  String gardenShareText(int count) {
+    return '我在 hifive 的花园：学习和专注种下了 $count 棵树。';
+  }
+
+  @override
+  String get gardenShareFailed => '无法打开分享面板。';
+
+  @override
+  String get timerTitle => '倒计时';
+
+  @override
+  String get timerSubtitle => '设定时长并倒计时';
+
+  @override
+  String get stopwatchTitle => '正计时';
+
+  @override
+  String get stopwatchSubtitle => '从零开始计时，最长 180 分钟';
+
+  @override
+  String get sessionTitleHint => '添加专注标题...';
+
+  @override
+  String get sessionTitleSheet => '专注标题';
+
+  @override
+  String get focusStop => '停止';
+
+  @override
+  String get focusStopShortTitle => '不到 10 分钟就停止？';
+
+  @override
+  String get focusStopShortBody => '不到 10 分钟的正计时不会种树。';
+
+  @override
+  String get helpTitle0 => 'hifive 的故事';
+
+  @override
+  String get helpBody0 =>
+      'hifive 让你像打理花园一样每天学语言：每天一点点，某天回头一看，已是一片森林。\n\n标志的含义\n\n• 五根圆角竖条是举起的五根手指，代表击掌（high five），是每次学习后的庆祝。\n• 它们也是声音的声波，因为学语言就是为了说话和彼此理解。\n• 五种颜色代表应用里的学习方式：对话（青色）、写作（蓝色）、hifive 的靛蓝、语法（紫色）和 AI（深紫）。\n\nhifive 的承诺\n\n你在 hifive 任何地方遇到的每个词，无论在闪卡、游戏还是词典里，都会被跟踪，直到你能用上它。';
+
+  @override
+  String get todayTitle => '今日复习';
+
+  @override
+  String todaySummary(int due, int fresh) {
+    return '$due 个待复习 · $fresh 个新词';
+  }
+
+  @override
+  String get todayStart => '开始';
+
+  @override
+  String get todayAllDone => '今天都复习完了';
+
+  @override
+  String get todayAllDoneBody => '明天在快忘之前再回来吧。';
+
+  @override
+  String get exIntro => '新词。先猜猜意思。';
+
+  @override
+  String get exShowMeaning => '查看意思';
+
+  @override
+  String get exChoose => '选出正确的意思';
+
+  @override
+  String get exType => '输入这个意思对应的词';
+
+  @override
+  String get exListen => '听一听再输入';
+
+  @override
+  String get exCloze => '填入缺少的词';
+
+  @override
+  String get exAnswerHint => '输入答案';
+
+  @override
+  String get exHint => '提示';
+
+  @override
+  String get exCheck => '检查';
+
+  @override
+  String get exDontKnow => '不知道';
+
+  @override
+  String get exCorrect => '正确';
+
+  @override
+  String get exAlmost => '差一点，注意拼写';
+
+  @override
+  String get exWrong => '不对，这个词稍后会再出现';
+
+  @override
+  String get exNext => '下一个';
+
+  @override
+  String get exTooEasy => '太简单';
+
+  @override
+  String get exPlay => '再听一遍';
+
+  @override
+  String exProgress(int done, int total) {
+    return '$done/$total';
+  }
+
+  @override
+  String get newPerDayTitle => '每天新词数';
+
+  @override
+  String get newPerDayBody => '复习不设上限。待复习很多时，会自动减少新词。';
+
+  @override
+  String get memorySettings => '单词记忆';
+
+  @override
+  String get exTypingSetting => '输入练习';
+
+  @override
+  String get exTypingSettingBody => '看意思输入单词，填写句子';
+
+  @override
+  String get exListeningSetting => '听力练习';
+
+  @override
+  String get exListeningSettingBody => '听后输入。在公共场所可关闭。';
+
+  @override
+  String get reminderTitle => '每日复习提醒';
+
+  @override
+  String reminderAt(String time) {
+    return '$time · 仅在有快忘的词时';
+  }
+
+  @override
+  String get reminderPickTime => '提醒时间';
+
+  @override
+  String get reminderDone => '完成';
+
+  @override
+  String reminderNoteTitle(int count) {
+    return '$count 个词快忘了';
+  }
+
+  @override
+  String reminderNoteBody(int minutes) {
+    return '复习约 $minutes 分钟就能记牢，还能给学习树浇水。';
+  }
+
+  @override
+  String get memoryTitle => '单词记忆';
+
+  @override
+  String memoryCardBody(int known, int total) {
+    return '已掌握 $known 个 · 已学 $total 个';
+  }
+
+  @override
+  String get levelFresh => '新词';
+
+  @override
+  String get levelLearning => '学习中';
+
+  @override
+  String get levelRemembering => '记忆中';
+
+  @override
+  String get levelKnown => '已掌握';
+
+  @override
+  String get levelMastered => '熟练';
+
+  @override
+  String get memoryLevels => '按程度分的单词';
+
+  @override
+  String get memoryLevelsNote => '已掌握：能记住至少 3 周。熟练：已掌握，并在最近 60 天内正确输入或使用。';
+
+  @override
+  String get memoryRetention => '记忆率';
+
+  @override
+  String memoryRetentionBody(int count) {
+    return '过去 30 天对已学词的 $count 次复习中。目标约 90%。';
+  }
+
+  @override
+  String get memoryRetentionWait => '再复习几天就能算出记忆率。';
+
+  @override
+  String get memoryForecast => '未来 7 天';
+
+  @override
+  String get memoryToday => '今天';
+
+  @override
+  String get memorySkills => '技能';
+
+  @override
+  String get memorySkillsEmpty => '完成今日复习，看看哪些技能较弱。';
+
+  @override
+  String get skillMeaning => '理解意思';
+
+  @override
+  String get skillRecall => '想起单词';
+
+  @override
+  String get skillForm => '听音和拼写';
+
+  @override
+  String get skillUse => '在句中使用';
+
+  @override
+  String get memoryHard => '难词';
+
+  @override
+  String get memoryHardEmpty => '还没有难词。忘记 4 次及以上的词会显示在这里。';
+
+  @override
+  String get wordRecallNow => '现在记得的概率';
+
+  @override
+  String get wordNextReview => '下次复习';
+
+  @override
+  String get wordStability => '大约能记住';
+
+  @override
+  String wordDays(int count) {
+    return '$count 天';
+  }
+
+  @override
+  String get wordLapses => '遗忘次数';
+
+  @override
+  String get wordHistory => '复习记录';
+
+  @override
+  String get wordNoHistory => '还没有复习过。';
+
+  @override
+  String get wordNow => '现在';
+
+  @override
+  String get todayEyebrow => '今天';
+
+  @override
+  String get todayHeadline => '复习单词';
+
+  @override
+  String todayDueChip(int count) {
+    return '$count 个待复习';
+  }
+
+  @override
+  String todayNewChip(int count) {
+    return '$count 个新词';
+  }
+
+  @override
+  String todayMinutes(int count) {
+    return '约 $count 分钟';
+  }
+
+  @override
+  String get todayDoneBody => '明天见';
+
+  @override
+  String get practiceTitle => '输入与听力练习';
+
+  @override
+  String get practiceBody => '自己输入、听写、填句，记得更牢。';
+
+  @override
+  String get menuListen => '听力';
+
+  @override
+  String get listenTitle => '听力练习';
+
+  @override
+  String get listenIntro => 'hifive 按程度精选的听力。遇到生词就保存，在今日复习里复习。';
+
+  @override
+  String get listenEmpty => '正在加载听力资源。请检查网络后重新打开。';
+
+  @override
+  String listenPlaylist(String channel) {
+    return 'YouTube 播放列表 · $channel';
+  }
+
+  @override
+  String get listenSaveWord => '保存刚听到的词';
+
+  @override
+  String get listenWord => '单词或短语';
+
+  @override
+  String get listenMeaning => '意思';
+
+  @override
+  String get listenSave => '保存';
+
+  @override
+  String listenSaved(String word) {
+    return '已将“$word”保存到收藏词';
+  }
+
+  @override
+  String get listenTip => '小贴士：先听一遍抓大意，再听一遍并保存想学会使用的词。';
 }

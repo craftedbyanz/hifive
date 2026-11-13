@@ -56,13 +56,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exitGame => 'Exit game';
 
   @override
-  String get plusBannerTitle => 'Get Hifive Plus';
-
-  @override
-  String get plusBannerBody =>
-      'Unlock higher limits and master your language skills.';
-
-  @override
   String get vietnamFlag => 'Flag of Vietnam';
 
   @override
@@ -576,7 +569,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get smartRemindersBody =>
-      'Hifive learns your habits and reminds you at the time you usually study.';
+      'hifive works out which words are fading. At your reminder time you only hear from us if words are due, with how many and about how long it takes.';
 
   @override
   String get lessonSettingsTitle => 'Lesson settings';
@@ -2469,4 +2462,697 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get closeTip => 'Close tip';
+
+  @override
+  String get menuFocus => 'Garden';
+
+  @override
+  String get focusStart => 'Start focusing';
+
+  @override
+  String get focusChangeTree => 'Change tree';
+
+  @override
+  String focusMinutes(int count) {
+    return '$count min';
+  }
+
+  @override
+  String get focusRunningHint =>
+      'Put your phone down. Your tree grows while you focus.';
+
+  @override
+  String focusCancel(int seconds) {
+    return 'Cancel ($seconds)';
+  }
+
+  @override
+  String get focusGiveUp => 'Give up';
+
+  @override
+  String get focusGiveUpTitle => 'Give up this session?';
+
+  @override
+  String get focusGiveUpBody =>
+      'This session\'s tree will wither and stay in your garden.';
+
+  @override
+  String get focusKeepGoing => 'Keep going';
+
+  @override
+  String focusDoneTitle(int count) {
+    return '$count minutes done';
+  }
+
+  @override
+  String focusDoneReview(int count) {
+    return 'Take 5. Review $count words you\'re about to forget to make it bloom?';
+  }
+
+  @override
+  String get focusDoneRest => 'Take a 5-minute break, then come back.';
+
+  @override
+  String focusReviewWords(int count) {
+    return 'Review $count words';
+  }
+
+  @override
+  String get focusRest => 'Just rest';
+
+  @override
+  String get focusBloomed => 'Your tree bloomed';
+
+  @override
+  String get focusBreakDeck => 'Break review';
+
+  @override
+  String get focusWitheredTitle => 'That\'s okay, try again';
+
+  @override
+  String focusWitheredBody(int count) {
+    return 'This tree withered after $count min. A new sprout is waiting.';
+  }
+
+  @override
+  String get focusReplant => 'Plant again';
+
+  @override
+  String get focusFinish => 'Done';
+
+  @override
+  String get focusPickTree => 'Choose a tree';
+
+  @override
+  String get focusLocked => 'Locked';
+
+  @override
+  String get focusTagEnglish => 'English';
+
+  @override
+  String get focusTagWriting => 'Writing';
+
+  @override
+  String get focusTagWork => 'Work';
+
+  @override
+  String get focusTagOther => 'Other';
+
+  @override
+  String get speciesOak => 'Oak';
+
+  @override
+  String get speciesPine => 'Pine';
+
+  @override
+  String get speciesSunflower => 'Sunflower';
+
+  @override
+  String get speciesTulip => 'Tulip';
+
+  @override
+  String get speciesCherry => 'Cherry';
+
+  @override
+  String get speciesApple => 'Apple';
+
+  @override
+  String get speciesOrange => 'Orange';
+
+  @override
+  String get speciesMaple => 'Red maple';
+
+  @override
+  String get speciesBirch => 'Birch';
+
+  @override
+  String get speciesGinkgo => 'Ginkgo';
+
+  @override
+  String get speciesWillow => 'Willow';
+
+  @override
+  String get speciesLavender => 'Lavender';
+
+  @override
+  String get speciesMushroom => 'Mushroom';
+
+  @override
+  String get speciesCactus => 'Cactus';
+
+  @override
+  String get speciesBonsai => 'Bonsai';
+
+  @override
+  String get speciesBaobab => 'Baobab';
+
+  @override
+  String get speciesWisteria => 'Wisteria';
+
+  @override
+  String get speciesBamboo => 'Bamboo';
+
+  @override
+  String get speciesCoconut => 'Coconut';
+
+  @override
+  String get speciesBanana => 'Banana';
+
+  @override
+  String get speciesPhuong => 'Flame tree';
+
+  @override
+  String get speciesBang => 'Tropical almond';
+
+  @override
+  String get speciesMai => 'Yellow apricot';
+
+  @override
+  String get speciesDao => 'Peach blossom';
+
+  @override
+  String get speciesLotus => 'Lotus';
+
+  @override
+  String get speciesBanyan => 'Banyan';
+
+  @override
+  String get speciesSnowpine => 'Snow pine';
+
+  @override
+  String get speciesGalaxy => 'Galaxy';
+
+  @override
+  String get gardenTitle => 'Your garden';
+
+  @override
+  String get gardenDay => 'Day';
+
+  @override
+  String get gardenWeek => 'Week';
+
+  @override
+  String get gardenMonth => 'Month';
+
+  @override
+  String get gardenYear => 'Year';
+
+  @override
+  String gardenCounts(int trees, int withered) {
+    return '$trees trees · $withered withered';
+  }
+
+  @override
+  String get gardenEmpty =>
+      'No trees yet. Focus or review words to plant your first.';
+
+  @override
+  String get gardenFocusTime => 'Focused';
+
+  @override
+  String get gardenReviews => 'Waterings';
+
+  @override
+  String get gardenStudyDays => 'Study days';
+
+  @override
+  String gardenHoursMinutes(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String gardenGrowing(int count, int total) {
+    return 'Study tree growing · $count/$total waterings';
+  }
+
+  @override
+  String get gardenGrowingHint =>
+      'Each new or due card you review waters it. Tap to change the species.';
+
+  @override
+  String get gardenCollection => 'Collection';
+
+  @override
+  String gardenUnlocked(int count, int total) {
+    return '$count of $total species unlocked';
+  }
+
+  @override
+  String get gardenStartFocus => 'Start focusing';
+
+  @override
+  String get unlockAlways => 'Ready';
+
+  @override
+  String unlockStudyTrees(int n) {
+    return 'Grow $n study trees';
+  }
+
+  @override
+  String unlockWordsKnown(int n) {
+    return 'Know $n words';
+  }
+
+  @override
+  String unlockStreak(int n) {
+    return '$n-day streak';
+  }
+
+  @override
+  String unlockFocusHours(int n) {
+    return 'Focus for $n hours';
+  }
+
+  @override
+  String unlockFocusSessions(int n) {
+    return '$n focus sessions';
+  }
+
+  @override
+  String unlockLongSession(int n) {
+    return 'One $n-minute session';
+  }
+
+  @override
+  String unlockReviews(int n) {
+    return '$n reviews';
+  }
+
+  @override
+  String unlockStudyDays(int n) {
+    return 'Study on $n days';
+  }
+
+  @override
+  String unlockBlooms(int n) {
+    return 'Bloom $n times';
+  }
+
+  @override
+  String unlockEvenings(int n) {
+    return 'Study on $n evenings';
+  }
+
+  @override
+  String unlockComeback(int n) {
+    return '$n sessions in a row after a withered tree';
+  }
+
+  @override
+  String unlockWeeks(int n) {
+    return 'Study $n weeks in a row';
+  }
+
+  @override
+  String unlockMonth(int n) {
+    return 'Study in month $n';
+  }
+
+  @override
+  String get focusWarnTitle => 'Your tree is about to wither';
+
+  @override
+  String get focusWarnBody =>
+      'Come back to hifive in a few seconds to keep it growing.';
+
+  @override
+  String reviewWatered(int count) {
+    return 'Study tree +$count waterings';
+  }
+
+  @override
+  String get homeGardenTitle => 'Your garden';
+
+  @override
+  String get homeGardenBody => 'Focus or review words to grow trees';
+
+  @override
+  String get homeGardenOpen => 'Open';
+
+  @override
+  String get tagPickTitle => 'Tags';
+
+  @override
+  String get tagNew => 'New tag';
+
+  @override
+  String get tagEditTitle => 'Edit tag';
+
+  @override
+  String get tagNameHint => 'Tag name, e.g. Reading';
+
+  @override
+  String get tagSave => 'Save';
+
+  @override
+  String get tagDelete => 'Delete tag';
+
+  @override
+  String get tagDeleteTitle => 'Delete this tag?';
+
+  @override
+  String get tagDeleteBody =>
+      'Sessions with this tag will show as \"Other\". Their focus time stays.';
+
+  @override
+  String get gardenByTag => 'By tag';
+
+  @override
+  String get gardenByTagEmpty => 'Finish a focus session to see time by tag.';
+
+  @override
+  String get gardenShare => 'Share';
+
+  @override
+  String gardenShareText(int count) {
+    return 'My hifive garden: $count trees grown by studying and focusing.';
+  }
+
+  @override
+  String get gardenShareFailed => 'Couldn\'t open the share sheet.';
+
+  @override
+  String get timerTitle => 'Timer';
+
+  @override
+  String get timerSubtitle => 'Set a length and count down';
+
+  @override
+  String get stopwatchTitle => 'Stopwatch';
+
+  @override
+  String get stopwatchSubtitle => 'Count up from zero, up to 180 minutes';
+
+  @override
+  String get sessionTitleHint => 'Add a session title...';
+
+  @override
+  String get sessionTitleSheet => 'Session title';
+
+  @override
+  String get focusStop => 'Stop';
+
+  @override
+  String get focusStopShortTitle => 'Stop before 10 minutes?';
+
+  @override
+  String get focusStopShortBody =>
+      'A stopwatch session under 10 minutes plants no tree.';
+
+  @override
+  String get helpTitle0 => 'The story of hifive';
+
+  @override
+  String get helpBody0 =>
+      'hifive helps you learn a language every day the way you tend a garden: a little each day, until one day you look back at a whole forest.\n\nWhat the logo means\n\n• The five rounded bars are five fingers raised for a high five, a cheer after every session.\n• They are also the sound wave of a voice, because learning a language is about speaking and understanding each other.\n• The five colors are the ways you learn here: conversation (cyan), writing (blue), hifive\'s own indigo, grammar (violet) and AI (purple).\n\nThe hifive promise\n\nEvery word you meet anywhere in hifive, in flashcards, games or the dictionary, is followed until you can use it.';
+
+  @override
+  String get todayTitle => 'Today\'s review';
+
+  @override
+  String todaySummary(int due, int fresh) {
+    return '$due to review · $fresh new';
+  }
+
+  @override
+  String get todayStart => 'Start';
+
+  @override
+  String get todayAllDone => 'All done for today';
+
+  @override
+  String get todayAllDoneBody =>
+      'Come back tomorrow, just before you\'d forget.';
+
+  @override
+  String get exIntro => 'New word. Guess the meaning first.';
+
+  @override
+  String get exShowMeaning => 'Show meaning';
+
+  @override
+  String get exChoose => 'Pick the right meaning';
+
+  @override
+  String get exType => 'Type the word for this meaning';
+
+  @override
+  String get exListen => 'Listen and type it';
+
+  @override
+  String get exCloze => 'Fill in the missing word';
+
+  @override
+  String get exAnswerHint => 'Type your answer';
+
+  @override
+  String get exHint => 'Hint';
+
+  @override
+  String get exCheck => 'Check';
+
+  @override
+  String get exDontKnow => 'I don\'t know';
+
+  @override
+  String get exCorrect => 'Correct';
+
+  @override
+  String get exAlmost => 'Almost, mind the spelling';
+
+  @override
+  String get exWrong => 'Not quite, this word comes back';
+
+  @override
+  String get exNext => 'Next';
+
+  @override
+  String get exTooEasy => 'Too easy';
+
+  @override
+  String get exPlay => 'Play again';
+
+  @override
+  String exProgress(int done, int total) {
+    return '$done/$total';
+  }
+
+  @override
+  String get newPerDayTitle => 'New words a day';
+
+  @override
+  String get newPerDayBody =>
+      'Reviews are never capped. When many are waiting, new words slow down.';
+
+  @override
+  String get memorySettings => 'Word memory';
+
+  @override
+  String get exTypingSetting => 'Typing exercises';
+
+  @override
+  String get exTypingSettingBody =>
+      'See the meaning and type the word; fill in sentences';
+
+  @override
+  String get exListeningSetting => 'Listening exercises';
+
+  @override
+  String get exListeningSettingBody =>
+      'Hear and type. Turn off in public places.';
+
+  @override
+  String get reminderTitle => 'Daily review reminder';
+
+  @override
+  String reminderAt(String time) {
+    return 'At $time · only when words are due';
+  }
+
+  @override
+  String get reminderPickTime => 'Reminder time';
+
+  @override
+  String get reminderDone => 'Done';
+
+  @override
+  String reminderNoteTitle(int count) {
+    return '$count words are fading';
+  }
+
+  @override
+  String reminderNoteBody(int minutes) {
+    return 'About $minutes min of review keeps them, and waters your study tree.';
+  }
+
+  @override
+  String get memoryTitle => 'Word memory';
+
+  @override
+  String memoryCardBody(int known, int total) {
+    return '$known known · $total met';
+  }
+
+  @override
+  String get levelFresh => 'New';
+
+  @override
+  String get levelLearning => 'Learning';
+
+  @override
+  String get levelRemembering => 'Remembering';
+
+  @override
+  String get levelKnown => 'Known';
+
+  @override
+  String get levelMastered => 'Mastered';
+
+  @override
+  String get memoryLevels => 'Words by level';
+
+  @override
+  String get memoryLevelsNote =>
+      'Known: remembered for 3 weeks or more. Mastered: known, and typed or used right in the last 60 days.';
+
+  @override
+  String get memoryRetention => 'Retention';
+
+  @override
+  String memoryRetentionBody(int count) {
+    return 'Of $count reviews of known words in 30 days. The aim is about 90%.';
+  }
+
+  @override
+  String get memoryRetentionWait =>
+      'Review a few more days to measure retention.';
+
+  @override
+  String get memoryForecast => 'Next 7 days';
+
+  @override
+  String get memoryToday => 'Today';
+
+  @override
+  String get memorySkills => 'Skills';
+
+  @override
+  String get memorySkillsEmpty =>
+      'Do Today\'s review to see which skills need work.';
+
+  @override
+  String get skillMeaning => 'Meaning';
+
+  @override
+  String get skillRecall => 'Recall';
+
+  @override
+  String get skillForm => 'Sound and spelling';
+
+  @override
+  String get skillUse => 'Use in a sentence';
+
+  @override
+  String get memoryHard => 'Hard words';
+
+  @override
+  String get memoryHardEmpty =>
+      'No hard words yet. Words forgotten four times or more show here.';
+
+  @override
+  String get wordRecallNow => 'Chance you remember now';
+
+  @override
+  String get wordNextReview => 'Next review';
+
+  @override
+  String get wordStability => 'Memory lasts about';
+
+  @override
+  String wordDays(int count) {
+    return '$count days';
+  }
+
+  @override
+  String get wordLapses => 'Times forgotten';
+
+  @override
+  String get wordHistory => 'Meetings';
+
+  @override
+  String get wordNoHistory => 'Not reviewed yet.';
+
+  @override
+  String get wordNow => 'Now';
+
+  @override
+  String get todayEyebrow => 'TODAY';
+
+  @override
+  String get todayHeadline => 'Review words';
+
+  @override
+  String todayDueChip(int count) {
+    return '$count due';
+  }
+
+  @override
+  String todayNewChip(int count) {
+    return '$count new';
+  }
+
+  @override
+  String todayMinutes(int count) {
+    return 'about $count min';
+  }
+
+  @override
+  String get todayDoneBody => 'See you tomorrow';
+
+  @override
+  String get practiceTitle => 'Type and listen';
+
+  @override
+  String get practiceBody =>
+      'Type, listen and fill words into sentences to remember them for good.';
+
+  @override
+  String get menuListen => 'Listen';
+
+  @override
+  String get listenTitle => 'Listening';
+
+  @override
+  String get listenIntro =>
+      'Listening picked by hifive for your level. Save new words to review them in Today\'s review.';
+
+  @override
+  String get listenEmpty =>
+      'Loading listening sources. Check your connection and open this again.';
+
+  @override
+  String listenPlaylist(String channel) {
+    return 'YouTube playlist · $channel';
+  }
+
+  @override
+  String get listenSaveWord => 'Save a word you heard';
+
+  @override
+  String get listenWord => 'Word or phrase';
+
+  @override
+  String get listenMeaning => 'Meaning';
+
+  @override
+  String get listenSave => 'Save';
+
+  @override
+  String listenSaved(String word) {
+    return 'Saved \"$word\" to Saved words';
+  }
+
+  @override
+  String get listenTip =>
+      'Tip: listen once for the gist, then again and save the words you want to use.';
 }

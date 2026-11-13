@@ -31,6 +31,7 @@ Everything the learner creates is a **record**: `kind`, `id`, a JSON `data` map 
 | `word` | word id | yes | Cards the learner added, with their deck id. |
 | `review` | review id | yes | Append-only review log: a rating, a schedule reset or, for migrated data, a state snapshot. A card's schedule is the log replayed in time order, so reviews of one card on two devices both count. |
 | `game` | game id | yes | One row per finished game; played count, XP and best score are derived (count, sum, max). |
+| `focus` | session id | yes | One row per finished focus session (done, withered or cancelled). Blooming after the break review rewrites the row, so the later stamp wins. Garden trees and study trees are derived, never stored; a study tree's species is the `tree` field on the first review that counted towards it. |
 | `legacyStats` | device id | yes | Counters from the old JSON blob, added to the derived totals. |
 | `firstUse` | device id | yes | When each device was first used; the app shows the earliest. |
 | `device` | name | no | Device-only state: sound, haptic and the unfinished game. |
@@ -110,9 +111,9 @@ Part C done: `AppState` syncs when it has a `SyncService` and a signed-in learne
 Part D done on 10 November 2026: D1 `hifive` (APAC, id `37c646f6-…`) migrated and the Worker deployed to `https://hifive-api.hifive-worker.workers.dev`. Wrangler registered the `hifive-worker` subdomain on its own in non-interactive mode; the chosen name was `anznguyen`, which can only be changed in the Cloudflare dashboard (Workers & Pages, Subdomain, Change); after changing it, update `scripts/install_iphone.sh` and CLAUDE.md. Verified end to end with a real Firebase ID token from a temporary email account: 401 without or with a tampered token, push from one device and pull on another, an older stamp losing, device records refused, rows in D1; the test account and its rows were deleted afterwards. Not yet verified: the app syncing on a device, which needs a real sign-in (Deferred item 2).
 - D. Deploy to `workers.dev` after `npx wrangler login`, then an end-to-end check with a real Firebase test account through the Auth REST API.
 
-### 4. Course content on R2 - todo
+### 4. Course content - done for the word catalog
 
-A manifest lists a content version per language; the app checks it about once a day and caches new content in SQLite.
+A manifest lists a content version per language; the app checks it about once a day and caches new content in SQLite. Built and deployed on 13 November 2026 for the word catalog, as Worker static assets because R2 is not enabled on the account: see step 5 in `docs/memory-plan.md`.
 
 ### 5. AI on the Worker - todo
 

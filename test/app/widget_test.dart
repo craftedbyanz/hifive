@@ -182,7 +182,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Xuất sắc!'), findsOneWidget);
-    expect(deck.words.first.due, state.now().add(const Duration(days: 4)));
+    // FSRS: a new card rated Dễ starts at about 16 days of stability.
+    expect(deck.words.first.due, state.now().add(const Duration(days: 16)));
   });
   testWidgets('Flow Letter long press drag solves a word and awards XP', (
     tester,

@@ -185,7 +185,7 @@ class _RatingRow extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final intervals = word?.nextIntervals;
+    final intervals = word?.nextIntervals(AppScope.read(context).now());
     return SizedBox(
       height: 101,
       child: Row(

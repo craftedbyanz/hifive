@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../domain/vocab/vocab.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
+import 'memory_screen.dart';
 
 part 'insight_cards.dart';
 part 'insight_chart.dart';
@@ -106,6 +108,8 @@ class _InsightScreenState extends State<InsightScreen> {
             now: now,
             studyDays: s.studyDays,
           ),
+          const SizedBox(height: 20),
+          const _MemoryCard(),
           const SizedBox(height: 32),
           _StatRow(
             stats: [
@@ -251,4 +255,53 @@ String ordinalBadge(int n) {
           _ => 'TH',
         };
   return '$n$suffix';
+}
+
+/// The way into word memory: words met and known, with the level bar.
+class _MemoryCard extends StatelessWidget {
+  const _MemoryCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final m = AppScope.of(context).memoryInsight;
+    final known =
+        m.levels[MemoryLevel.known]! + m.levels[MemoryLevel.mastered]!;
+    final met = m.levels.entries
+        .where((e) => e.key != MemoryLevel.fresh)
+        .fold(0, (sum, e) => sum + e.value);
+    return PressFade(
+      key: const ValueKey('insight-memory'),
+      onTap: () => go<void>(context, const MemoryScreen()),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: D.line),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    t.memoryTitle,
+                    style: D.text(16, weight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    t.memoryCardBody(known, met),
+                    style: D.text(12.5, color: D.secondary),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(CupertinoIcons.chevron_right, size: 16, color: D.muted),
+          ],
+        ),
+      ),
+    );
+  }
 }

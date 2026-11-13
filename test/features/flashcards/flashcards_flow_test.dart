@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/domain/vocab/vocab.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/state/state.dart';
 import 'package:hifive/widgets/common.dart';
@@ -36,15 +37,26 @@ void main() {
       final (state, deck) = await open(tester, words: 4);
       final words = deck.words.take(4).toList();
       await swipe(tester, const Offset(0, 200));
-      expect(words[0].status, 'review');
+      // Khó on a new card keeps it in learning, back in six minutes.
+      expect(words[0].status, 'learning');
       expect(words[0].due, state.now().add(const Duration(minutes: 6)));
       await swipe(tester, const Offset(0, -200));
-      expect(words[1].due, state.now().add(const Duration(days: 1)));
+      expect(words[1].due, state.now().add(const Duration(days: 3)));
       await swipe(tester, const Offset(200, 0));
-      expect(words[2].due, state.now().add(const Duration(days: 4)));
+      expect(words[2].due, state.now().add(const Duration(days: 16)));
       await swipe(tester, const Offset(-200, 0));
       expect(words[3].status, 'learning');
       expect(words[3].due, state.now().add(const Duration(minutes: 1)));
+    });
+
+    testWidgets('the summary shows how much the study tree was watered', (
+      tester,
+    ) async {
+      await open(tester, words: 2);
+      await swipe(tester, const Offset(0, -200));
+      await swipe(tester, const Offset(0, -200));
+      expect(find.byKey(const ValueKey('review-watered')), findsOneWidget);
+      expect(find.text('Cây học +2 lượt tưới'), findsOneWidget);
     });
 
     testWidgets('a short drag snaps back and rates nothing', (tester) async {
@@ -123,16 +135,21 @@ void main() {
       tester,
     ) async {
       final word = FlashWord(id: 'x', word: 'x', meaning: 'y');
-      String labels() => word.nextIntervals
+      final t = DateTime(2026, 11, 1, 9);
+      String labels(DateTime now) => word
+          .nextIntervals(now)
           .map((d) => d.inDays > 0 ? '${d.inDays}d' : '${d.inMinutes}m')
           .join(' ');
-      expect(labels(), '1m 6m 1d 4d');
-      word
-        ..status = 'review'
-        ..intervalDays = 0;
-      expect(labels(), '1m 1d 3d 4d');
-      word.intervalDays = 4;
-      expect(labels(), '1m 5d 10d 12d');
+      expect(labels(t), '1m 6m 3d 16d');
+      applyRating(word, t, 2);
+      // Due three days later: every answer but Học lại waits longer than
+      // the first time, and Khó < Tốt < Dễ.
+      final later = t.add(const Duration(days: 3));
+      final days = word.nextIntervals(later).map((d) => d.inDays).toList();
+      expect(days[0], 0);
+      expect(days[1], greaterThanOrEqualTo(3));
+      expect(days[2], greaterThan(days[1]));
+      expect(days[3], greaterThan(days[2]));
     });
 
     testWidgets('tapping flips to the meaning and back', (tester) async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
+import '../../core/services/screen_lock.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -25,6 +26,8 @@ class NotificationScreen extends StatelessWidget {
             date: DateFormat.MMMMEEEEd(context.t.localeName).format(today),
           ),
           const SizedBox(height: 24),
+          _ReminderCard(state: s),
+          const SizedBox(height: 16),
           Container(
             height: 76,
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -317,4 +320,102 @@ class _WallpaperPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_WallpaperPainter oldDelegate) => false;
+}
+
+/// The daily review reminder: on or off, and the time, picked on a wheel.
+class _ReminderCard extends StatelessWidget {
+  final AppState state;
+  const _ReminderCard({required this.state});
+
+  Future<void> _pickTime(BuildContext context) async {
+    final parts = state.reminderTime.split(':');
+    var picked = DateTime(2026, 1, 1, int.parse(parts[0]), int.parse(parts[1]));
+    await sheet<void>(
+      context,
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              context.t.reminderPickTime,
+              style: D.text(16, weight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: 200,
+              child: CupertinoDatePicker(
+                key: const ValueKey('reminder-wheel'),
+                mode: CupertinoDatePickerMode.time,
+                use24hFormat: true,
+                minuteInterval: 5,
+                initialDateTime: DateTime(
+                  2026,
+                  1,
+                  1,
+                  picked.hour,
+                  picked.minute - picked.minute % 5,
+                ),
+                onDateTimeChanged: (d) => picked = d,
+              ),
+            ),
+            PressFade(
+              key: const ValueKey('reminder-done'),
+              onTap: () => Navigator.of(context).pop(),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  context.t.reminderDone,
+                  style: D.text(16, weight: FontWeight.w700, color: D.blue),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    state.setReminder(
+      time:
+          '${picked.hour.toString().padLeft(2, '0')}:'
+          '${picked.minute.toString().padLeft(2, '0')}',
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+    decoration: NotificationScreen._boxDecoration,
+    child: Row(
+      children: [
+        Expanded(
+          child: PressFade(
+            key: const ValueKey('reminder-time'),
+            onTap: () => _pickTime(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.t.reminderTitle,
+                  style: D.text(14.8, weight: FontWeight.w700),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  context.t.reminderAt(state.reminderTime),
+                  style: D.text(12.5, color: Palette.settingsMuted),
+                ),
+              ],
+            ),
+          ),
+        ),
+        CupertinoSwitch(
+          key: const ValueKey('reminder-toggle'),
+          value: state.reminderOn,
+          activeTrackColor: D.green,
+          onChanged: (on) {
+            if (on) ScreenLock.askPermission();
+            state.setReminder(on: on);
+          },
+        ),
+      ],
+    ),
+  );
 }

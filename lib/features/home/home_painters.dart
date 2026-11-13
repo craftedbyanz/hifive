@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../core/design/design.dart';
 import '../../widgets/common.dart';
+import '../../widgets/garden/garden_art.dart';
 import 'home_menu_art.dart';
 
 class StreakBarsPainter extends CustomPainter {
@@ -90,6 +91,15 @@ class HomeMenuGlyph extends StatelessWidget {
     HomeMenuItem.plus => const MenuArt(kind: MenuArtKind.gem),
     HomeMenuItem.flashcards => const MenuArt(kind: MenuArtKind.cards),
     HomeMenuItem.game => const MenuArt(kind: MenuArtKind.blocks),
+    HomeMenuItem.listen => const Icon(
+      CupertinoIcons.headphones,
+      size: 22,
+      color: D.background,
+    ),
+    HomeMenuItem.focus => const Padding(
+      padding: EdgeInsets.only(bottom: 4),
+      child: TreeArt(species: 'oak', size: 40, floating: false),
+    ),
   };
 }
 

@@ -108,6 +108,44 @@ class LessonSettingsScreen extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 24),
+          _Card(
+            title: context.t.memorySettings,
+            child: Column(
+              children: [
+                _SettingRow(
+                  title: context.t.newPerDayTitle,
+                  body: context.t.newPerDayBody,
+                  trailing: _Stepper(
+                    value: s.newPerDay,
+                    onChanged: s.setNewPerDay,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _SettingRow(
+                  title: context.t.exTypingSetting,
+                  body: context.t.exTypingSettingBody,
+                  trailing: _HintToggle(
+                    id: 'setting-typing',
+                    label: context.t.exTypingSetting,
+                    value: s.exTyping,
+                    onChanged: (v) => s.setExercises(typing: v),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _SettingRow(
+                  title: context.t.exListeningSetting,
+                  body: context.t.exListeningSettingBody,
+                  trailing: _HintToggle(
+                    id: 'setting-listening',
+                    label: context.t.exListeningSetting,
+                    value: s.exListening,
+                    onChanged: (v) => s.setExercises(listening: v),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -216,13 +254,20 @@ class _Swatch extends StatelessWidget {
 class _HintToggle extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
-  const _HintToggle({required this.value, required this.onChanged});
+  final String id;
+  final String? label;
+  const _HintToggle({
+    required this.value,
+    required this.onChanged,
+    this.id = 'hints-toggle',
+    this.label,
+  });
   @override
   Widget build(BuildContext context) => Semantics(
     toggled: value,
-    label: context.t.alwaysShowHints,
+    label: label ?? context.t.alwaysShowHints,
     child: GestureDetector(
-      key: const ValueKey('hints-toggle'),
+      key: ValueKey(id),
       behavior: HitTestBehavior.opaque,
       onTap: () => onChanged(!value),
       child: AnimatedContainer(
@@ -388,4 +433,90 @@ class _SpecklePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_SpecklePainter oldDelegate) => seed != oldDelegate.seed;
+}
+
+/// A titled setting with a short explanation and a control on the right.
+class _SettingRow extends StatelessWidget {
+  final String title, body;
+  final Widget trailing;
+  const _SettingRow({
+    required this.title,
+    required this.body,
+    required this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+    decoration: ShapeDecoration(
+      color: Palette.settingsPage,
+      shape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(20)),
+    ),
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: D.text(14, weight: FontWeight.w600)),
+              const SizedBox(height: 2),
+              Text(
+                body,
+                style: D.text(12, color: Palette.settingsMuted, height: 1.3),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 10),
+        trailing,
+      ],
+    ),
+  );
+}
+
+/// Minus and plus around a number, in steps of five.
+class _Stepper extends StatelessWidget {
+  final int value;
+  final ValueChanged<int> onChanged;
+  const _Stepper({required this.value, required this.onChanged});
+
+  Widget _button(String id, IconData icon, int next) => PressFade(
+    key: ValueKey(id),
+    onTap: () => onChanged(next),
+    child: Container(
+      width: 30,
+      height: 30,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(icon, size: 15, color: D.ink),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      _button(
+        'new-per-day-less',
+        CupertinoIcons.minus,
+        (value - 5).clamp(0, 50),
+      ),
+      SizedBox(
+        width: 34,
+        child: Text(
+          '$value',
+          key: const ValueKey('new-per-day'),
+          textAlign: TextAlign.center,
+          style: D.text(16, weight: FontWeight.w800),
+        ),
+      ),
+      _button(
+        'new-per-day-more',
+        CupertinoIcons.plus,
+        (value + 5).clamp(0, 50),
+      ),
+    ],
+  );
 }

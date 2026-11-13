@@ -192,18 +192,6 @@ abstract class AppLocalizations {
   /// **'Thoát game'**
   String get exitGame;
 
-  /// No description provided for @plusBannerTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đăng ký Hifive Plus'**
-  String get plusBannerTitle;
-
-  /// No description provided for @plusBannerBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Mở khóa mức sử dụng cao hơn và làm chủ kỹ năng ngôn ngữ của bạn.'**
-  String get plusBannerBody;
-
   /// No description provided for @vietnamFlag.
   ///
   /// In vi, this message translates to:
@@ -1173,7 +1161,7 @@ abstract class AppLocalizations {
   /// No description provided for @smartRemindersBody.
   ///
   /// In vi, this message translates to:
-  /// **'Hifive tự động học thói quen của bạn. Chúng tôi sẽ nhắc bạn vào thời gian bạn thường học nhất.'**
+  /// **'hifive tính trước từ nào sắp quên. Đến giờ nhắc, bạn chỉ nhận thông báo nếu hôm đó có từ cần ôn, kèm số từ và thời gian ôn ước tính.'**
   String get smartRemindersBody;
 
   /// No description provided for @lessonSettingsTitle.
@@ -4541,6 +4529,1200 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đóng gợi ý'**
   String get closeTip;
+
+  /// No description provided for @menuFocus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vườn'**
+  String get menuFocus;
+
+  /// No description provided for @focusStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu tập trung'**
+  String get focusStart;
+
+  /// No description provided for @focusChangeTree.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi cây'**
+  String get focusChangeTree;
+
+  /// No description provided for @focusMinutes.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} phút'**
+  String focusMinutes(int count);
+
+  /// No description provided for @focusRunningHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt máy xuống. Cây lớn dần theo thời gian bạn tập trung.'**
+  String get focusRunningHint;
+
+  /// No description provided for @focusCancel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huỷ ({seconds})'**
+  String focusCancel(int seconds);
+
+  /// No description provided for @focusGiveUp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ cuộc'**
+  String get focusGiveUp;
+
+  /// No description provided for @focusGiveUpTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ phiên này?'**
+  String get focusGiveUpTitle;
+
+  /// No description provided for @focusGiveUpBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây của phiên này sẽ héo và nằm lại trong vườn.'**
+  String get focusGiveUpBody;
+
+  /// No description provided for @focusKeepGoing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục'**
+  String get focusKeepGoing;
+
+  /// No description provided for @focusDoneTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn thành {count} phút'**
+  String focusDoneTitle(int count);
+
+  /// No description provided for @focusDoneReview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghỉ 5 phút. Ôn {count} từ sắp quên để cây nở hoa?'**
+  String focusDoneReview(int count);
+
+  /// No description provided for @focusDoneRest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghỉ 5 phút rồi quay lại nhé.'**
+  String get focusDoneRest;
+
+  /// No description provided for @focusReviewWords.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn {count} từ'**
+  String focusReviewWords(int count);
+
+  /// No description provided for @focusRest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghỉ thôi'**
+  String get focusRest;
+
+  /// No description provided for @focusBloomed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây đã nở hoa'**
+  String get focusBloomed;
+
+  /// No description provided for @focusBreakDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn trong giờ nghỉ'**
+  String get focusBreakDeck;
+
+  /// No description provided for @focusWitheredTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không sao, thử lại nhé'**
+  String get focusWitheredTitle;
+
+  /// No description provided for @focusWitheredBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây này đã héo sau {count} phút. Một mầm mới đang chờ bạn.'**
+  String focusWitheredBody(int count);
+
+  /// No description provided for @focusReplant.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trồng lại'**
+  String get focusReplant;
+
+  /// No description provided for @focusFinish.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong'**
+  String get focusFinish;
+
+  /// No description provided for @focusPickTree.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn cây'**
+  String get focusPickTree;
+
+  /// No description provided for @focusLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa mở'**
+  String get focusLocked;
+
+  /// No description provided for @focusTagEnglish.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học tiếng Anh'**
+  String get focusTagEnglish;
+
+  /// No description provided for @focusTagWriting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Viết'**
+  String get focusTagWriting;
+
+  /// No description provided for @focusTagWork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm việc'**
+  String get focusTagWork;
+
+  /// No description provided for @focusTagOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get focusTagOther;
+
+  /// No description provided for @speciesOak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sồi'**
+  String get speciesOak;
+
+  /// No description provided for @speciesPine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông'**
+  String get speciesPine;
+
+  /// No description provided for @speciesSunflower.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hướng dương'**
+  String get speciesSunflower;
+
+  /// No description provided for @speciesTulip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tulip'**
+  String get speciesTulip;
+
+  /// No description provided for @speciesCherry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Anh đào'**
+  String get speciesCherry;
+
+  /// No description provided for @speciesApple.
+  ///
+  /// In vi, this message translates to:
+  /// **'Táo'**
+  String get speciesApple;
+
+  /// No description provided for @speciesOrange.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cam'**
+  String get speciesOrange;
+
+  /// No description provided for @speciesMaple.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phong đỏ'**
+  String get speciesMaple;
+
+  /// No description provided for @speciesBirch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạch dương'**
+  String get speciesBirch;
+
+  /// No description provided for @speciesGinkgo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rẻ quạt'**
+  String get speciesGinkgo;
+
+  /// No description provided for @speciesWillow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liễu'**
+  String get speciesWillow;
+
+  /// No description provided for @speciesLavender.
+  ///
+  /// In vi, this message translates to:
+  /// **'Oải hương'**
+  String get speciesLavender;
+
+  /// No description provided for @speciesMushroom.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nấm'**
+  String get speciesMushroom;
+
+  /// No description provided for @speciesCactus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xương rồng'**
+  String get speciesCactus;
+
+  /// No description provided for @speciesBonsai.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bonsai'**
+  String get speciesBonsai;
+
+  /// No description provided for @speciesBaobab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bao báp'**
+  String get speciesBaobab;
+
+  /// No description provided for @speciesWisteria.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tử đằng'**
+  String get speciesWisteria;
+
+  /// No description provided for @speciesBamboo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tre'**
+  String get speciesBamboo;
+
+  /// No description provided for @speciesCoconut.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dừa'**
+  String get speciesCoconut;
+
+  /// No description provided for @speciesBanana.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuối'**
+  String get speciesBanana;
+
+  /// No description provided for @speciesPhuong.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phượng vĩ'**
+  String get speciesPhuong;
+
+  /// No description provided for @speciesBang.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bàng'**
+  String get speciesBang;
+
+  /// No description provided for @speciesMai.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoa mai'**
+  String get speciesMai;
+
+  /// No description provided for @speciesDao.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoa đào'**
+  String get speciesDao;
+
+  /// No description provided for @speciesLotus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sen'**
+  String get speciesLotus;
+
+  /// No description provided for @speciesBanyan.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đa'**
+  String get speciesBanyan;
+
+  /// No description provided for @speciesSnowpine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tuyết'**
+  String get speciesSnowpine;
+
+  /// No description provided for @speciesGalaxy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân hà'**
+  String get speciesGalaxy;
+
+  /// No description provided for @gardenTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vườn của bạn'**
+  String get gardenTitle;
+
+  /// No description provided for @gardenDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày'**
+  String get gardenDay;
+
+  /// No description provided for @gardenWeek.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuần'**
+  String get gardenWeek;
+
+  /// No description provided for @gardenMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng'**
+  String get gardenMonth;
+
+  /// No description provided for @gardenYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Năm'**
+  String get gardenYear;
+
+  /// No description provided for @gardenCounts.
+  ///
+  /// In vi, this message translates to:
+  /// **'{trees} cây · {withered} cây héo'**
+  String gardenCounts(int trees, int withered);
+
+  /// No description provided for @gardenEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có cây nào. Tập trung hoặc ôn từ để trồng cây đầu tiên.'**
+  String get gardenEmpty;
+
+  /// No description provided for @gardenFocusTime.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập trung'**
+  String get gardenFocusTime;
+
+  /// No description provided for @gardenReviews.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lượt tưới'**
+  String get gardenReviews;
+
+  /// No description provided for @gardenStudyDays.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày học'**
+  String get gardenStudyDays;
+
+  /// No description provided for @gardenHoursMinutes.
+  ///
+  /// In vi, this message translates to:
+  /// **'{hours}g {minutes}p'**
+  String gardenHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @gardenGrowing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây học đang lớn · {count}/{total} lượt tưới'**
+  String gardenGrowing(int count, int total);
+
+  /// No description provided for @gardenGrowingHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi thẻ mới hoặc đến hạn bạn ôn là một lượt tưới. Chạm để đổi loài cây.'**
+  String get gardenGrowingHint;
+
+  /// No description provided for @gardenCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sưu tập'**
+  String get gardenCollection;
+
+  /// No description provided for @gardenUnlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mở {count}/{total} loài'**
+  String gardenUnlocked(int count, int total);
+
+  /// No description provided for @gardenStartFocus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu tập trung'**
+  String get gardenStartFocus;
+
+  /// No description provided for @unlockAlways.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có sẵn'**
+  String get unlockAlways;
+
+  /// No description provided for @unlockStudyTrees.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trồng {n} cây học'**
+  String unlockStudyTrees(int n);
+
+  /// No description provided for @unlockWordsKnown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuộc {n} từ'**
+  String unlockWordsKnown(int n);
+
+  /// No description provided for @unlockStreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuỗi {n} ngày'**
+  String unlockStreak(int n);
+
+  /// No description provided for @unlockFocusHours.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập trung {n} giờ'**
+  String unlockFocusHours(int n);
+
+  /// No description provided for @unlockFocusSessions.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} phiên tập trung'**
+  String unlockFocusSessions(int n);
+
+  /// No description provided for @unlockLongSession.
+  ///
+  /// In vi, this message translates to:
+  /// **'Một phiên {n} phút'**
+  String unlockLongSession(int n);
+
+  /// No description provided for @unlockReviews.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn {n} lượt'**
+  String unlockReviews(int n);
+
+  /// No description provided for @unlockStudyDays.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học {n} ngày'**
+  String unlockStudyDays(int n);
+
+  /// No description provided for @unlockBlooms.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nở hoa {n} lần'**
+  String unlockBlooms(int n);
+
+  /// No description provided for @unlockEvenings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học {n} buổi tối'**
+  String unlockEvenings(int n);
+
+  /// No description provided for @unlockComeback.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} phiên liền sau một cây héo'**
+  String unlockComeback(int n);
+
+  /// No description provided for @unlockWeeks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học {n} tuần liền'**
+  String unlockWeeks(int n);
+
+  /// No description provided for @unlockMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học trong tháng {n}'**
+  String unlockMonth(int n);
+
+  /// No description provided for @focusWarnTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây của bạn sắp héo'**
+  String get focusWarnTitle;
+
+  /// No description provided for @focusWarnBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại hifive trong vài giây để cây tiếp tục lớn.'**
+  String get focusWarnBody;
+
+  /// No description provided for @reviewWatered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây học +{count} lượt tưới'**
+  String reviewWatered(int count);
+
+  /// No description provided for @homeGardenTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vườn của bạn'**
+  String get homeGardenTitle;
+
+  /// No description provided for @homeGardenBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập trung hoặc ôn từ để cây lớn'**
+  String get homeGardenBody;
+
+  /// No description provided for @homeGardenOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở vườn'**
+  String get homeGardenOpen;
+
+  /// No description provided for @tagPickTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhãn việc'**
+  String get tagPickTitle;
+
+  /// No description provided for @tagNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo nhãn'**
+  String get tagNew;
+
+  /// No description provided for @tagEditTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa nhãn'**
+  String get tagEditTitle;
+
+  /// No description provided for @tagNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên nhãn, ví dụ Đọc sách'**
+  String get tagNameHint;
+
+  /// No description provided for @tagSave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu'**
+  String get tagSave;
+
+  /// No description provided for @tagDelete.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá nhãn'**
+  String get tagDelete;
+
+  /// No description provided for @tagDeleteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá nhãn này?'**
+  String get tagDeleteTitle;
+
+  /// No description provided for @tagDeleteBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các phiên đã gắn nhãn này sẽ chuyển sang \"Khác\". Thời gian tập trung vẫn giữ nguyên.'**
+  String get tagDeleteBody;
+
+  /// No description provided for @gardenByTag.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo nhãn'**
+  String get gardenByTag;
+
+  /// No description provided for @gardenByTagEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn thành một phiên tập trung để xem thời gian theo từng nhãn.'**
+  String get gardenByTagEmpty;
+
+  /// No description provided for @gardenShare.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ'**
+  String get gardenShare;
+
+  /// No description provided for @gardenShareText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khu vườn của mình trên hifive: {count} cây từ việc học và tập trung.'**
+  String gardenShareText(int count);
+
+  /// No description provided for @gardenShareFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được bảng chia sẻ.'**
+  String get gardenShareFailed;
+
+  /// No description provided for @timerTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hẹn giờ'**
+  String get timerTitle;
+
+  /// No description provided for @timerSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt thời lượng rồi đếm ngược'**
+  String get timerSubtitle;
+
+  /// No description provided for @stopwatchTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm giờ'**
+  String get stopwatchTitle;
+
+  /// No description provided for @stopwatchSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đếm lên từ 0, tối đa 180 phút'**
+  String get stopwatchSubtitle;
+
+  /// No description provided for @sessionTitleHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm tiêu đề phiên...'**
+  String get sessionTitleHint;
+
+  /// No description provided for @sessionTitleSheet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiêu đề phiên'**
+  String get sessionTitleSheet;
+
+  /// No description provided for @focusStop.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dừng'**
+  String get focusStop;
+
+  /// No description provided for @focusStopShortTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dừng khi chưa đủ 10 phút?'**
+  String get focusStopShortTitle;
+
+  /// No description provided for @focusStopShortBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên bấm giờ dưới 10 phút sẽ không trồng cây.'**
+  String get focusStopShortBody;
+
+  /// No description provided for @helpTitle0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Câu chuyện của hifive'**
+  String get helpTitle0;
+
+  /// No description provided for @helpBody0.
+  ///
+  /// In vi, this message translates to:
+  /// **'hifive giúp bạn học ngôn ngữ mỗi ngày như vun trồng một khu vườn: mỗi ngày một chút, rồi một ngày nhìn lại đã thấy cả một khu rừng.\n\nÝ nghĩa logo\n\n• Năm vạch bo tròn là năm ngón tay giơ lên cho một cú high five, lời chúc mừng sau mỗi buổi học.\n• Năm vạch cũng là sóng âm của giọng nói, vì học ngôn ngữ là để nói và hiểu nhau.\n• Năm màu là các cách học trong app: hội thoại (xanh ngọc), viết (xanh dương), màu chàm của hifive, ngữ pháp (tím) và AI (tím đậm).\n\nLời hứa của hifive\n\nMỗi từ bạn gặp ở bất cứ đâu trong hifive, từ thẻ ghi nhớ, trò chơi đến từ điển, đều được theo dõi cho đến khi bạn dùng được nó.'**
+  String get helpBody0;
+
+  /// No description provided for @todayTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn hôm nay'**
+  String get todayTitle;
+
+  /// No description provided for @todaySummary.
+  ///
+  /// In vi, this message translates to:
+  /// **'{due} từ cần ôn · {fresh} từ mới'**
+  String todaySummary(int due, int fresh);
+
+  /// No description provided for @todayStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu'**
+  String get todayStart;
+
+  /// No description provided for @todayAllDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã ôn xong'**
+  String get todayAllDone;
+
+  /// No description provided for @todayAllDoneBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại ngày mai để ôn đúng lúc sắp quên.'**
+  String get todayAllDoneBody;
+
+  /// No description provided for @exIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ mới. Đoán nghĩa trước khi xem.'**
+  String get exIntro;
+
+  /// No description provided for @exShowMeaning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem nghĩa'**
+  String get exShowMeaning;
+
+  /// No description provided for @exChoose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn nghĩa đúng'**
+  String get exChoose;
+
+  /// No description provided for @exType.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gõ từ có nghĩa này'**
+  String get exType;
+
+  /// No description provided for @exListen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe rồi gõ lại'**
+  String get exListen;
+
+  /// No description provided for @exCloze.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điền từ còn thiếu'**
+  String get exCloze;
+
+  /// No description provided for @exAnswerHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gõ câu trả lời'**
+  String get exAnswerHint;
+
+  /// No description provided for @exHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gợi ý'**
+  String get exHint;
+
+  /// No description provided for @exCheck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra'**
+  String get exCheck;
+
+  /// No description provided for @exDontKnow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không biết'**
+  String get exDontKnow;
+
+  /// No description provided for @exCorrect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chính xác'**
+  String get exCorrect;
+
+  /// No description provided for @exAlmost.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gần đúng, chú ý chính tả'**
+  String get exAlmost;
+
+  /// No description provided for @exWrong.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đúng, từ này sẽ quay lại'**
+  String get exWrong;
+
+  /// No description provided for @exNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp'**
+  String get exNext;
+
+  /// No description provided for @exTooEasy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quá dễ'**
+  String get exTooEasy;
+
+  /// No description provided for @exPlay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe lại'**
+  String get exPlay;
+
+  /// No description provided for @exProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'{done}/{total}'**
+  String exProgress(int done, int total);
+
+  /// No description provided for @newPerDayTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ mới mỗi ngày'**
+  String get newPerDayTitle;
+
+  /// No description provided for @newPerDayBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn tập không giới hạn. Khi còn nhiều từ cần ôn, app tự giảm từ mới.'**
+  String get newPerDayBody;
+
+  /// No description provided for @memorySettings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi nhớ từ vựng'**
+  String get memorySettings;
+
+  /// No description provided for @exTypingSetting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bài tập gõ từ'**
+  String get exTypingSetting;
+
+  /// No description provided for @exTypingSettingBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhìn nghĩa rồi gõ từ, điền vào câu'**
+  String get exTypingSettingBody;
+
+  /// No description provided for @exListeningSetting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bài tập nghe'**
+  String get exListeningSetting;
+
+  /// No description provided for @exListeningSettingBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe rồi gõ lại. Tắt khi đang ở nơi công cộng.'**
+  String get exListeningSettingBody;
+
+  /// No description provided for @reminderTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc ôn từ mỗi ngày'**
+  String get reminderTitle;
+
+  /// No description provided for @reminderAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lúc {time} · chỉ khi có từ sắp quên'**
+  String reminderAt(String time);
+
+  /// No description provided for @reminderPickTime.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giờ nhắc'**
+  String get reminderPickTime;
+
+  /// No description provided for @reminderDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong'**
+  String get reminderDone;
+
+  /// No description provided for @reminderNoteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} từ sắp quên'**
+  String reminderNoteTitle(int count);
+
+  /// No description provided for @reminderNoteBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn khoảng {minutes} phút để nhớ lâu hơn, và tưới cây học của bạn.'**
+  String reminderNoteBody(int minutes);
+
+  /// No description provided for @memoryTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trí nhớ từ vựng'**
+  String get memoryTitle;
+
+  /// No description provided for @memoryCardBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'{known} từ đã thuộc · {total} từ đã gặp'**
+  String memoryCardBody(int known, int total);
+
+  /// No description provided for @levelFresh.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mới'**
+  String get levelFresh;
+
+  /// No description provided for @levelLearning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang học'**
+  String get levelLearning;
+
+  /// No description provided for @levelRemembering.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang nhớ'**
+  String get levelRemembering;
+
+  /// No description provided for @levelKnown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuộc'**
+  String get levelKnown;
+
+  /// No description provided for @levelMastered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành thạo'**
+  String get levelMastered;
+
+  /// No description provided for @memoryLevels.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ theo mức độ'**
+  String get memoryLevels;
+
+  /// No description provided for @memoryLevelsNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuộc: nhớ được ít nhất 3 tuần. Thành thạo: thuộc và đã tự gõ hoặc dùng đúng trong 60 ngày qua.'**
+  String get memoryLevelsNote;
+
+  /// No description provided for @memoryRetention.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ lệ nhớ'**
+  String get memoryRetention;
+
+  /// No description provided for @memoryRetentionBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trong {count} lần ôn từ đã thuộc, 30 ngày qua. Mục tiêu khoảng 90%.'**
+  String memoryRetentionBody(int count);
+
+  /// No description provided for @memoryRetentionWait.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn thêm vài ngày để đo được tỉ lệ nhớ.'**
+  String get memoryRetentionWait;
+
+  /// No description provided for @memoryForecast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dự báo 7 ngày'**
+  String get memoryForecast;
+
+  /// No description provided for @memoryToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay'**
+  String get memoryToday;
+
+  /// No description provided for @memorySkills.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỹ năng'**
+  String get memorySkills;
+
+  /// No description provided for @memorySkillsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm bài trong Ôn hôm nay để thấy kỹ năng nào còn yếu.'**
+  String get memorySkillsEmpty;
+
+  /// No description provided for @skillMeaning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiểu nghĩa'**
+  String get skillMeaning;
+
+  /// No description provided for @skillRecall.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhớ ra từ'**
+  String get skillRecall;
+
+  /// No description provided for @skillForm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe và chính tả'**
+  String get skillForm;
+
+  /// No description provided for @skillUse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng trong câu'**
+  String get skillUse;
+
+  /// No description provided for @memoryHard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ khó'**
+  String get memoryHard;
+
+  /// No description provided for @memoryHardEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có từ khó. Từ quên từ 4 lần trở lên sẽ hiện ở đây.'**
+  String get memoryHardEmpty;
+
+  /// No description provided for @wordRecallNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khả năng nhớ lúc này'**
+  String get wordRecallNow;
+
+  /// No description provided for @wordNextReview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần ôn tới'**
+  String get wordNextReview;
+
+  /// No description provided for @wordStability.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhớ được khoảng'**
+  String get wordStability;
+
+  /// No description provided for @wordDays.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} ngày'**
+  String wordDays(int count);
+
+  /// No description provided for @wordLapses.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số lần quên'**
+  String get wordLapses;
+
+  /// No description provided for @wordHistory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các lần gặp'**
+  String get wordHistory;
+
+  /// No description provided for @wordNoHistory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ôn lần nào.'**
+  String get wordNoHistory;
+
+  /// No description provided for @wordNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bây giờ'**
+  String get wordNow;
+
+  /// No description provided for @todayEyebrow.
+  ///
+  /// In vi, this message translates to:
+  /// **'HÔM NAY'**
+  String get todayEyebrow;
+
+  /// No description provided for @todayHeadline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn từ vựng'**
+  String get todayHeadline;
+
+  /// No description provided for @todayDueChip.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} cần ôn'**
+  String todayDueChip(int count);
+
+  /// No description provided for @todayNewChip.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} từ mới'**
+  String todayNewChip(int count);
+
+  /// No description provided for @todayMinutes.
+  ///
+  /// In vi, this message translates to:
+  /// **'khoảng {count} phút'**
+  String todayMinutes(int count);
+
+  /// No description provided for @todayDoneBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại ngày mai nhé'**
+  String get todayDoneBody;
+
+  /// No description provided for @practiceTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Luyện gõ và nghe'**
+  String get practiceTitle;
+
+  /// No description provided for @practiceBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự gõ, nghe và điền từ vào câu để nhớ chắc hơn.'**
+  String get practiceBody;
+
+  /// No description provided for @menuListen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe'**
+  String get menuListen;
+
+  /// No description provided for @listenTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Luyện nghe'**
+  String get listenTitle;
+
+  /// No description provided for @listenIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguồn nghe hifive chọn lọc theo trình độ. Gặp từ lạ thì lưu lại để ôn trong Ôn hôm nay.'**
+  String get listenIntro;
+
+  /// No description provided for @listenEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải nguồn nghe. Hãy kiểm tra kết nối mạng rồi mở lại.'**
+  String get listenEmpty;
+
+  /// No description provided for @listenPlaylist.
+  ///
+  /// In vi, this message translates to:
+  /// **'Playlist YouTube · {channel}'**
+  String listenPlaylist(String channel);
+
+  /// No description provided for @listenSaveWord.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu từ vừa nghe'**
+  String get listenSaveWord;
+
+  /// No description provided for @listenWord.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ hoặc cụm từ'**
+  String get listenWord;
+
+  /// No description provided for @listenMeaning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghĩa'**
+  String get listenMeaning;
+
+  /// No description provided for @listenSave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu'**
+  String get listenSave;
+
+  /// No description provided for @listenSaved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu \"{word}\" vào Từ đã lưu'**
+  String listenSaved(String word);
+
+  /// No description provided for @listenTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mẹo: nghe một lần để hiểu ý chính, nghe lần hai và lưu những từ bạn muốn dùng được.'**
+  String get listenTip;
 }
 
 class _AppLocalizationsDelegate

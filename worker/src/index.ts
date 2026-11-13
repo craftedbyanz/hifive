@@ -1,6 +1,7 @@
 import type { JWTVerifyGetKey } from "jose";
 
 import { AuthUnavailable, googleKeys, verifyIdToken, type Caller } from "./auth";
+import { serveCatalog } from "./catalog";
 import type { Env } from "./env";
 import { parseSyncRequest, sync } from "./sync";
 
@@ -15,6 +16,9 @@ export function createHandler(keys: JWTVerifyGetKey, now: () => Date = () => new
   return {
     async fetch(request: Request, env: Env): Promise<Response> {
       const url = new URL(request.url);
+      if (request.method === "GET" && url.pathname.startsWith("/v1/catalog/")) {
+        return (await serveCatalog(url, env.CATALOG)) ?? json({ error: "not_found" }, 404);
+      }
       if (url.pathname !== "/v1/sync") return json({ error: "not_found" }, 404);
       if (request.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 

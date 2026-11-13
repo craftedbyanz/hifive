@@ -9,6 +9,7 @@ abstract final class RecordKind {
       word = 'word',
       review = 'review',
       game = 'game',
+      focus = 'focus',
       legacyStats = 'legacyStats',
       device = 'device';
 

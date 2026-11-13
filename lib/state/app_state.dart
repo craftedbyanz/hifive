@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 
 import '../core/services/feedback_service.dart';
 import '../core/services/system_actions.dart';
+import '../domain/garden/garden.dart';
 import '../domain/models/models.dart';
 import '../domain/repositories/repositories.dart';
 import '../domain/sync/sync.dart';
+import '../domain/vocab/vocab.dart';
 import 'app_records.dart';
 
 class AppState extends ChangeNotifier {
@@ -21,6 +23,18 @@ class AppState extends ChangeNotifier {
   /// The sync API, or null when the build has no API address; then nothing
   /// syncs and signing out keeps local data.
   final SyncService? syncService;
+
+  /// hifive's word catalog on the server; null keeps only the bundled decks.
+  final CatalogRepository? catalog;
+
+  /// Catalog decks cached on the device, shown beside the bundled ones.
+  List<Deck> _catalogDecks = const [];
+
+  /// Listening sources from the cached catalog.
+  List<ListeningSource> listening = const [];
+
+  /// Every deck the learner did not make.
+  List<Deck> get _allBuiltIn => [..._builtIn, ..._catalogDecks];
   final LessonRepository lessons;
   final GradingRepository grading;
   final ConversationRepository conversation;
@@ -41,6 +55,7 @@ class AppState extends ChangeNotifier {
     this.legacy,
     required this.auth,
     this.syncService,
+    this.catalog,
     required this.lessons,
     required this.grading,
     required this.conversation,
@@ -91,6 +106,41 @@ class AppState extends ChangeNotifier {
   ];
   List<Deck> decks;
   List<StudySession> history;
+
+  /// The species the next study tree grows as.
+  String studySpecies = defaultSpecies;
+
+  /// Tags the learner made; [builtInTags] come first in [focusTags].
+  List<FocusTag> customTags = const [];
+
+  /// The tag the last focus session used, offered for the next one.
+  String focusTag = defaultTag;
+
+  /// Finished focus sessions, oldest first.
+  List<FocusSession> focusSessions = [];
+
+  /// Ratings of new or due cards, oldest first, before the once-a-day rule.
+  List<StudyCredit> studyCredits = [];
+
+  /// Every rating with the card's status before it, for memory insight.
+  List<Rated> rated = [];
+
+  MemoryInsight get memoryInsight =>
+      MemoryInsight.of(uniqueWords.values, rated, now());
+
+  /// The log of ratings for [word] (any card holding the same word).
+  List<ReviewEvent> historyOf(FlashWord word) {
+    final key = wordKey(word.word);
+    final ids = {
+      for (final w in decks.expand((d) => d.words))
+        if (wordKey(w.word) == key) w.id,
+    };
+    return [
+      for (final r in rated)
+        if (r.event.word == key || ids.contains(r.event.wordId)) r.event,
+    ]..sort((a, b) => b.at.compareTo(a.at));
+  }
+
   late DateTime firstUse = now();
   Map<String, dynamic>? gameResume;
   String? storageError;
@@ -164,9 +214,10 @@ class AppState extends ChangeNotifier {
         }
         await store.setMeta('legacyImported', '1');
       }
+      _catalogDecks = await _cachedCatalog();
       final restored = restore(
         records,
-        builtIn: _builtIn,
+        builtIn: _allBuiltIn,
         examples: _examples,
         deviceId: _deviceId,
       );
@@ -182,6 +233,7 @@ class AppState extends ChangeNotifier {
       }
       _loaded = true;
       if (user != null) _startSyncing();
+      unawaited(refreshCatalog());
     } catch (_) {
       // Unreadable or mistyped data must not stop the app from opening.
       _pending.clear();
@@ -189,6 +241,71 @@ class AppState extends ChangeNotifier {
           'Không thể đọc dữ liệu đã lưu. Dữ liệu gốc chưa bị ghi đè.';
     }
     _syncFeedback();
+  }
+
+  static const _catalogLanguage = 'en';
+  static const catalogCheckEvery = Duration(hours: 20);
+
+  Future<List<Deck>> _cachedCatalog() async {
+    final text = await store.meta('catalog:$_catalogLanguage');
+    if (text == null) return const [];
+    try {
+      listening = parseListening(text);
+      return parseCatalog(text);
+    } on Object {
+      return const [];
+    }
+  }
+
+  /// Fetches a newer catalog pack, about once a day, and shows its decks.
+  /// Offline or failing, it keeps what is cached; nothing is lost.
+  Future<void> refreshCatalog({bool force = false}) =>
+      _catalogRefresh ??= _refreshCatalog(force: force)
+          .whenComplete(() => _catalogRefresh = null);
+  Future<void>? _catalogRefresh;
+
+  Future<void> _refreshCatalog({required bool force}) async {
+    final repo = catalog;
+    if (repo == null || storageError != null) return;
+    try {
+      final checked = DateTime.tryParse(
+        await store.meta('catalogChecked:$_catalogLanguage') ?? '',
+      );
+      if (!force &&
+          checked != null &&
+          now().difference(checked) < catalogCheckEvery) {
+        return;
+      }
+      final latest = await repo.latestVersion(_catalogLanguage);
+      // A server without a catalog yet is asked again next launch.
+      if (latest == null) return;
+      await store.setMeta(
+        'catalogChecked:$_catalogLanguage',
+        now().toIso8601String(),
+      );
+      final have = int.tryParse(
+        await store.meta('catalogVersion:$_catalogLanguage') ?? '',
+      );
+      if (latest == have) return;
+      final text = await repo.pack(_catalogLanguage, latest);
+      final decks = parseCatalog(text);
+      listening = parseListening(text);
+      await store.setMeta('catalog:$_catalogLanguage', text);
+      await store.setMeta('catalogVersion:$_catalogLanguage', '$latest');
+      await flush();
+      _catalogDecks = decks;
+      _apply(
+        restore(
+          await store.loadAll(),
+          builtIn: _allBuiltIn,
+          examples: _examples,
+          deviceId: _deviceId,
+        ),
+      );
+      notifyListeners();
+    } on Object {
+      // The catalog is extra; the bundled decks keep working without it.
+    }
   }
 
   void _apply(RestoredState r) {
@@ -201,6 +318,17 @@ class AppState extends ChangeNotifier {
     difficulty = s['difficulty'] as String? ?? difficulty;
     chatTone = s['chatTone'] as String? ?? chatTone;
     appLanguage = s['appLanguage'] as String? ?? appLanguage;
+    studySpecies = s['studySpecies'] as String? ?? studySpecies;
+    focusTag = s['focusTag'] as String? ?? focusTag;
+    newPerDay = int.tryParse(s['newPerDay'] as String? ?? '') ?? newPerDay;
+    exTyping = s['exTyping'] as bool? ?? exTyping;
+    reminderOn = s['reminderOn'] as bool? ?? reminderOn;
+    reminderTime = s['reminderTime'] as String? ?? reminderTime;
+    exListening = s['exListening'] as bool? ?? exListening;
+    customTags = s['focusTags'] as List<FocusTag>? ?? customTags;
+    focusSessions = [...r.focusSessions];
+    studyCredits = [...r.studyCredits];
+    rated = [...r.rated];
     chatFree = s['chatFree'] as bool? ?? chatFree;
     showHints = s['showHints'] as bool? ?? showHints;
     chatTipSeen = s['chatTipSeen'] as bool? ?? chatTipSeen;
@@ -340,7 +468,7 @@ class AppState extends ChangeNotifier {
       _apply(
         restore(
           await store.loadAll(),
-          builtIn: _builtIn,
+          builtIn: _allBuiltIn,
           examples: _examples,
           deviceId: _deviceId,
         ),
@@ -449,6 +577,14 @@ class AppState extends ChangeNotifier {
     difficulty = 'Dễ';
     chatTone = 'Thoải mái';
     appLanguage = '';
+    studySpecies = defaultSpecies;
+    focusTag = defaultTag;
+    newPerDay = 10;
+    exTyping = true;
+    exListening = true;
+    reminderOn = false;
+    reminderTime = '20:00';
+    customTags = const [];
     showHints = false;
     chatFree = true;
     sound = true;
@@ -465,7 +601,7 @@ class AppState extends ChangeNotifier {
     _apply(
       restore(
         const [],
-        builtIn: _builtIn,
+        builtIn: _allBuiltIn,
         examples: _examples,
         deviceId: _deviceId,
       ),
@@ -488,15 +624,221 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  void rate(FlashWord word, int rating) {
+  /// Rates [word] 0 (Học lại) to 3 (Dễ). Every card holding the same word
+  /// shares the result. [mode], [skill], [source], [ms] and [hints] describe
+  /// how it was asked (see `ReviewEvent`).
+  void rate(
+    FlashWord word,
+    int rating, {
+    String mode = 'flip',
+    String skill = 'meaning',
+    String source = 'flashcard',
+    int? ms,
+    int hints = 0,
+  }) {
+    final at = now();
+    final grows = word.isDue(at);
     final event = ReviewEvent(
       id: newId(),
       wordId: word.id,
-      at: now(),
+      at: at,
       rating: rating,
+      tree: grows ? studySpecies : null,
+      word: wordKey(word.word),
+      mode: mode,
+      skill: skill,
+      source: source,
+      ms: ms,
+      hints: hints,
     );
+    if (grows) studyCredits.add(StudyCredit(word.id, at, studySpecies));
+    rated.add(Rated(event, word.status));
+    final key = wordKey(word.word);
+    for (final w in decks.expand((d) => d.words)) {
+      if (!identical(w, word) && wordKey(w.word) == key) applyReview(w, event);
+    }
     applyReview(word, event);
     _put(RecordKind.review, event.id, event.toJson());
+    commit();
+  }
+
+  /// Ratings that grow the garden: one per card per day.
+  List<StudyCredit> get countedStudyCredits => countedCredits(studyCredits);
+
+  /// Cards whose memory lasts three weeks or more.
+  int get wordsKnown => uniqueWords.values.where((w) {
+    final level = levelOf(w, now());
+    return level == MemoryLevel.known || level == MemoryLevel.mastered;
+  }).length;
+
+  /// New words offered each day; reviews are never capped.
+  int newPerDay = 10;
+
+  /// The daily review reminder, and its time as "HH:mm".
+  bool reminderOn = false;
+  String reminderTime = '20:00';
+
+  void setReminder({bool? on, String? time}) {
+    if (on != null) {
+      reminderOn = on;
+      _setting('reminderOn', on);
+    }
+    if (time != null) {
+      reminderTime = time;
+      _setting('reminderTime', time);
+    }
+    commit();
+  }
+
+  /// The next moment the reminder would fire, from now.
+  DateTime get nextReminder {
+    final parts = reminderTime.split(':');
+    final n = now();
+    var at = DateTime(
+      n.year,
+      n.month,
+      n.day,
+      int.tryParse(parts.first) ?? 20,
+      int.tryParse(parts.last) ?? 0,
+    );
+    if (!at.isAfter(n)) {
+      at = DateTime(at.year, at.month, at.day + 1, at.hour, at.minute);
+    }
+    return at;
+  }
+
+  /// Words already learned that will be due by [at].
+  int dueBy(DateTime at) => uniqueWords.values
+      .where((w) => w.status != 'new' && w.due != null && !w.due!.isAfter(at))
+      .length;
+
+  /// Whether exercises may ask the learner to type, or to listen.
+  bool exTyping = true, exListening = true;
+
+  void setExercises({bool? typing, bool? listening}) {
+    if (typing != null) {
+      exTyping = typing;
+      _setting('exTyping', typing);
+    }
+    if (listening != null) {
+      exListening = listening;
+      _setting('exListening', listening);
+    }
+    commit();
+  }
+
+  /// Today's reviews and new words. Saved words come first, then the
+  /// learner's own decks, then hifive's.
+  TodayPlan get today {
+    final builtIn = {for (final d in _allBuiltIn) d.id};
+    final ordered = [
+      ...decks.where((d) => d.id == 'saved'),
+      ...decks.where((d) => d.id != 'saved' && !builtIn.contains(d.id)),
+      ...decks.where((d) => builtIn.contains(d.id)),
+    ];
+    return planToday(
+      words: uniqueWords,
+      decks: ordered,
+      now: now(),
+      perDay: newPerDay,
+    );
+  }
+
+  void setNewPerDay(int count) {
+    newPerDay = count.clamp(0, 50);
+    _setting('newPerDay', '$newPerDay');
+    commit();
+  }
+
+  /// One card per word: cards holding the same word share one memory.
+  Map<String, FlashWord> get uniqueWords => {
+    for (final w in decks.expand((d) => d.words)) wordKey(w.word): w,
+  };
+
+  GardenStats get gardenStats => GardenStats.from(
+    counted: countedStudyCredits,
+    sessions: focusSessions,
+    reviews: studyCredits.length,
+    wordsKnown: wordsKnown,
+    streak: streak,
+  );
+
+  /// Trees planted from [from] (inclusive) to [to] (exclusive).
+  List<Plant> plants(DateTime from, DateTime to) =>
+      plantsBetween(countedStudyCredits, focusSessions, from, to);
+
+  /// Chooses the species of the next study tree; ignored while locked.
+  void setStudySpecies(String id) {
+    if (!gardenStats.unlocks(speciesById(id)) || speciesById(id).id != id) {
+      return;
+    }
+    studySpecies = id;
+    _setting('studySpecies', id);
+    commit();
+  }
+
+  List<FocusTag> get focusTags => [...builtInTags, ...customTags];
+
+  /// The tag with [id]; a deleted tag reads as "other".
+  FocusTag tagById(String id) =>
+      focusTags.firstWhere((t) => t.id == id, orElse: () => builtInTags.last);
+
+  void setFocusTag(String id) {
+    focusTag = id;
+    _setting('focusTag', id);
+    commit();
+  }
+
+  /// Adds a tag named [name] and returns its id.
+  String addTag(String name, int color) {
+    final tag = FocusTag(newId(), name: name.trim(), color: color);
+    _saveTags([...customTags, tag]);
+    return tag.id;
+  }
+
+  void editTag(String id, String name, int color) => _saveTags([
+    for (final t in customTags)
+      t.id == id ? FocusTag(id, name: name.trim(), color: color) : t,
+  ]);
+
+  /// Removes a tag the learner made. Its sessions keep their time and show
+  /// as "other".
+  void deleteTag(String id) {
+    _saveTags([
+      for (final t in customTags)
+        if (t.id != id) t,
+    ]);
+    if (focusTag == id) setFocusTag(defaultTag);
+  }
+
+  void _saveTags(List<FocusTag> tags) {
+    customTags = List.unmodifiable(tags);
+    _setting('focusTags', [for (final t in tags) t.toJson()]);
+    commit();
+  }
+
+  /// Minutes of finished focus by tag in [from] to [to], largest first.
+  List<(FocusTag, int)> focusByTag(DateTime from, DateTime to) {
+    final minutes = <String, int>{};
+    for (final s in focusSessions) {
+      if (s.outcome != FocusOutcome.done) continue;
+      if (s.end.isBefore(from) || !s.end.isBefore(to)) continue;
+      final id = tagById(s.tag).id;
+      minutes[id] = (minutes[id] ?? 0) + s.minutes;
+    }
+    return [for (final e in minutes.entries) (tagById(e.key), e.value)]
+      ..sort((a, b) => b.$2.compareTo(a.$2));
+  }
+
+  /// Saves a focus session when it ends, or again when its tree blooms.
+  void recordFocus(FocusSession session) {
+    final i = focusSessions.indexWhere((s) => s.id == session.id);
+    if (i >= 0) {
+      focusSessions[i] = session;
+    } else {
+      focusSessions.add(session);
+    }
+    _put(RecordKind.focus, session.id, session.toJson());
     commit();
   }
 
@@ -705,9 +1047,11 @@ class AppState extends ChangeNotifier {
 
   /// Whole days since the first recorded use, counting older saved data from
   /// its earliest session because the first-use date was not stored then.
+  /// Sample results are dated before any use, so they don't count.
   int get daysWithHifive {
     var first = firstUse;
     for (final session in history) {
+      if (session.isExample) continue;
       if (session.date.isBefore(first)) first = session.date;
     }
     return DateUtils.dateOnly(now())
@@ -715,7 +1059,14 @@ class AppState extends ChangeNotifier {
         .inDays;
   }
 
-  Set<String> get studyDays => history.map((h) => dayKey(h.date)).toSet();
+  /// Days the learner studied: a finished lesson, or any rating of a word
+  /// (Flashcard, Ôn hôm nay, the break after focus). Sample results don't
+  /// count; a focus session alone doesn't either.
+  Set<String> get studyDays => {
+    for (final h in history)
+      if (!h.isExample) dayKey(h.date),
+    for (final r in rated) dayKey(r.event.at),
+  };
   int get streak {
     final days = studyDays;
     var date = DateUtils.dateOnly(now());

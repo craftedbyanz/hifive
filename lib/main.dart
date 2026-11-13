@@ -26,6 +26,7 @@ Future<void> main() async {
       webClientId: '440247164777-9q60d3r0p8s09t13igr9cbin8o1n59t2.apps.googleusercontent.com',
     ),
     sync: _api.isEmpty ? null : HttpSyncService(Uri.parse(_api)),
+    catalog: _api.isEmpty ? null : HttpCatalogRepository(Uri.parse(_api)),
     includeExamples: true,
   );
   await state.load();

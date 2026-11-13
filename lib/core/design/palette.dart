@@ -41,6 +41,9 @@ abstract final class Palette {
 
   /// The logo's five bars, left to right: conversation cyan, writing blue,
   /// indigo, grammar violet, AI purple.
+  /// The ground of the logo story art in Hifive 101.
+  static const storyTop = Color(0xfff7f7ff);
+  static const storyBottom = Color(0xffe9ebfd);
   static const logoBars = [
     Color(0xff06b6d4),
     Color(0xff3b82f6),
@@ -173,6 +176,27 @@ abstract final class Palette {
   static const menuFlashcard = Color(0xff9d77f5);
   static const menuStreak = Color(0xfff48744);
   static const menuGame = Color(0xff31be94);
+  static const menuFocus = Color(0xff5b6cf0);
+  static const menuListen = Color(0xffe8598b);
+
+  // Focus screens: the logo's indigo, lighter at the top (the garden mockup).
+  static const focusSkyTop = Color(0xff7c88f8);
+  static const focusSkyMiddle = Color(0xff4c52d2);
+  static const focusSkyBottom = Color(0xff292d8c);
+  static const focusInk = Color(0xff2b2f92);
+  static const focusShade = Color(0xb3101236);
+
+  /// Focus tag colors, by the index a tag stores. Only append.
+  static const tagColors = [
+    Color(0xffffd166),
+    Color(0xff74c0fc),
+    Color(0xffff8787),
+    Color(0xffb197fc),
+    Color(0xff63e6be),
+    Color(0xffffa94d),
+    Color(0xfff783ac),
+    Color(0xffa9e34b),
+  ];
   static const orbBack = Color(0xffa4b6eb);
   static const orbMiddle = Color(0xff75c9cb);
   static const orbFront = Color(0xff8ed3d8);
@@ -227,6 +251,8 @@ abstract final class Palette {
   static const progressDone = Color(0xffa7efc6);
   static const highlight = Color(0xfffffac3);
   static const wrong = Color(0xffef4444);
+  static const wrongFill = Color(0xfffdecec);
+  static const correctFill = Color(0xffe7f8f1);
   static const correctionBackground = Color(0xfff3f6f7);
   static const removedWord = Color(0xffef8888);
   static const gameTop = Color(0xff69c847);

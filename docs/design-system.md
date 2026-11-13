@@ -236,6 +236,15 @@ Borderless by default: `isCollapsed`, no fill, `InputBorder.none`, placed inside
 | Loading / error / empty | `AsyncView` |
 | Correct / almost / wrong | Status colors above, always with a word or icon |
 
+## Garden art
+
+The garden and focus screens draw their trees in code (`lib/widgets/garden/`, barrel file `garden_art.dart`), ported from the approved mockup `docs/mockups/garden.html`. Regenerate a sheet of every species with `flutter test tool/garden_art_sheet_test.dart --dart-define=PIX_OUT=<dir>` and compare it with the mockup by eye.
+
+- `TreeArt` draws one species on a floating isometric tile; `GardenScene` draws an isometric grid (at least 5 cells a side, `GardenScene.cellsFor`) with plants in a fixed shuffled cell order, nearest last.
+- Forms: a sprout below 0.14 growth, a staked sapling up to 0.45 for woody species, then the full tree scaled up; a withered tree is grey and bare with a new sprout beside it; a bloom opens white flowers one by one.
+- Each species's colors are part of its illustration and stay in its drawing, like vector geometry, instead of in `Palette`. Screens around the art use the design system as usual: the focus screens use the logo's indigo, the garden screen the app's light background.
+- Wind, falling petals and small animals move only under `AmbientMotion`; without it the art draws one still frame at a fixed moment.
+
 ## Motion
 
 | Motion | Value |

@@ -3,78 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../core/design/design.dart';
-import '../l10n/l10n.dart';
 import 'common.dart';
-
-class PlusBanner extends StatelessWidget {
-  final VoidCallback onTap;
-  const PlusBanner({super.key, required this.onTap});
-
-  /// Measured on Home (F01) at 393 pt.
-  static const _height = 101.0;
-  @override
-  Widget build(BuildContext context) => Material(
-    color: D.blue,
-    borderRadius: BorderRadius.circular(28),
-    child: InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(28),
-      child: SizedBox(
-        height: _height,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            const Positioned.fill(child: BannerStars()),
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 16),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 64,
-                    height: 64,
-                    child: Center(child: Flower(size: 40)),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          context.t.plusBannerTitle,
-                          style: D.text(
-                            15,
-                            weight: FontWeight.w700,
-                            color: Colors.white,
-                            height: 20 / 15,
-                          ),
-                        ),
-                        const SizedBox(height: 3),
-                        SizedBox(
-                          width: 231,
-                          child: Text(
-                            context.t.plusBannerBody,
-                            style: D.text(
-                              11.5,
-                              spacing: -.17,
-                              color: Colors.white.withValues(alpha: .9),
-                              height: 14.5 / 11.5,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
 
 class BannerStarsPainter extends CustomPainter {
   const BannerStarsPainter();

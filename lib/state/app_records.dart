@@ -1,5 +1,7 @@
+import '../domain/garden/garden.dart';
 import '../domain/models/models.dart';
 import '../domain/sync/sync.dart';
+import '../domain/vocab/vocab.dart';
 
 /// Kinds that only [AppState] uses. Shared kinds are in [RecordKind].
 abstract final class AppKinds {
@@ -20,8 +22,20 @@ const stringSettings = {
   'difficulty',
   'chatTone',
   'appLanguage',
+  'studySpecies',
+  'focusTag',
+  'newPerDay',
+  'reminderTime',
 };
-const boolSettings = {'chatFree', 'showHints', 'chatTipSeen', 'onboarded'};
+const boolSettings = {
+  'chatFree',
+  'showHints',
+  'chatTipSeen',
+  'onboarded',
+  'exTyping',
+  'exListening',
+  'reminderOn',
+};
 
 /// Learning goals offered during onboarding, stored by id in the `goals`
 /// setting. Only append; an id never changes meaning.
@@ -48,6 +62,13 @@ class RestoredState {
   final List<StudySession> history;
   final int gamesPlayed, totalXp, bestScore;
   final DateTime? firstUse;
+  final List<FocusSession> focusSessions;
+
+  /// Ratings of new or due cards, in time order, before the once-a-day rule.
+  final List<StudyCredit> studyCredits;
+
+  /// Every rating with the card's status before it, in replay order.
+  final List<Rated> rated;
 
   /// Whether this device already stored its first-use time.
   final bool hasOwnFirstUse;
@@ -65,6 +86,9 @@ class RestoredState {
     required this.totalXp,
     required this.bestScore,
     required this.firstUse,
+    this.focusSessions = const [],
+    this.studyCredits = const [],
+    this.rated = const [],
     required this.hasOwnFirstUse,
     required this.latest,
   });
@@ -147,6 +171,7 @@ RestoredState restore(
   final words = <String, List<(DateTime, FlashWord)>>{};
   final reviews = <ReviewEvent>[];
   final sessions = <(Hlc, StudySession)>[];
+  final focus = <FocusSession>[];
   DateTime? clearedAt, firstUse;
   var hasOwnFirstUse = false;
   var played = 0, xp = 0, best = 0;
@@ -167,6 +192,11 @@ RestoredState restore(
           language = Language.fromCode(v as String);
         } else if (r.id == 'modeOrder') {
           modeOrder = _modeOrder(v);
+        } else if (r.id == 'focusTags') {
+          settings['focusTags'] = [
+            for (final t in (v as List).cast<Map<dynamic, dynamic>>())
+              FocusTag.fromJson(Map<String, dynamic>.from(t)),
+          ];
         } else if (r.id == 'goals') {
           settings['goals'] = [
             for (final g in (v as List).cast<String>())
@@ -218,6 +248,8 @@ RestoredState restore(
         played++;
         xp += score;
         if (score > best) best = score;
+      case RecordKind.focus:
+        focus.add(FocusSession.fromJson(r.id, d));
       case RecordKind.legacyStats:
         played += d['gamesPlayed'] as int? ?? 0;
         xp += d['totalXp'] as int? ?? 0;
@@ -241,7 +273,19 @@ RestoredState restore(
     for (final deck in builtIn) _copyDeck(deck, added(deck.id)),
     for (final (_, deck) in userDecks) deck..words.addAll(added(deck.id)),
   ];
-  replayReviews(decks.expand((d) => d.words), reviews);
+  final credits = <StudyCredit>[];
+  final rated = <Rated>[];
+  replayReviews(
+    decks.expand((d) => d.words),
+    reviews,
+    onRated: (e, before) => rated.add(Rated(e, before)),
+    onDue: (e) {
+      if (e.tree case final tree?) {
+        credits.add(StudyCredit(e.wordId, e.at, tree));
+      }
+    },
+  );
+  focus.sort((a, b) => a.start.compareTo(b.start));
 
   // Results finished at the same moment show the last one saved first.
   sessions.sort((a, b) => b.$1.compareTo(a.$1));
@@ -268,6 +312,9 @@ RestoredState restore(
     totalXp: xp,
     bestScore: best,
     firstUse: firstUse,
+    focusSessions: focus,
+    studyCredits: credits,
+    rated: rated,
     hasOwnFirstUse: hasOwnFirstUse,
     latest: latest,
   );

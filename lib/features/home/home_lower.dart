@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../domain/garden/garden.dart';
 import '../../l10n/l10n.dart';
+import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../../widgets/garden/garden_art.dart';
 import '../flashcards/flashcards.dart';
 import '../game/game.dart';
 import '../information/information.dart';
@@ -503,9 +506,12 @@ class HomeHelpCard extends StatelessWidget {
               right: 0,
               top: 0,
               height: 120,
-              child: CustomPaint(painter: HomeMiniArtwork(index)),
+              // The first card is hifive's own story; the rest keep their art.
+              child: index == 0
+                  ? const LogoStoryArt()
+                  : CustomPaint(painter: HomeMiniArtwork(index - 1)),
             ),
-            if (index == 4)
+            if (index == 5)
               Positioned(
                 left: 0,
                 right: 0,
@@ -545,4 +551,114 @@ class HomeHelpCard extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// The way into the garden, where Home used to offer Hifive Plus: the study
+/// tree growing now on a floating tile, over the logo's indigo.
+class HomeGardenBanner extends StatelessWidget {
+  final VoidCallback onTap;
+  const HomeGardenBanner({super.key, required this.onTap});
+
+  /// The height the Plus banner had here.
+  static const height = 101.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final state = AppScope.of(context);
+    final growing = state.gardenStats.growing;
+    return Semantics(
+      button: true,
+      label: '${t.homeGardenTitle} — ${t.homeGardenOpen}',
+      child: GestureDetector(
+        key: const ValueKey('home-garden'),
+        onTap: onTap,
+        child: ClipRSuperellipse(
+          borderRadius: BorderRadius.circular(28),
+          child: Container(
+            height: height,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Palette.focusSkyTop, Palette.focusSkyBottom],
+              ),
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 96,
+                  child: OverflowBox(
+                    maxHeight: 120,
+                    child: TreeArt(
+                      species: state.studySpecies,
+                      size: 112,
+                      growth: .05 + .95 * growing / reviewsPerTree,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t.homeGardenTitle,
+                          style: D.text(
+                            15,
+                            weight: FontWeight.w700,
+                            color: Colors.white,
+                            height: 20 / 15,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          t.homeGardenBody,
+                          maxLines: 2,
+                          style: D.text(
+                            11.5,
+                            color: Colors.white.withValues(alpha: .9),
+                            height: 14.5 / 11.5,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(99),
+                                child: LinearProgressIndicator(
+                                  value: growing / reviewsPerTree,
+                                  minHeight: 5,
+                                  color: Colors.white,
+                                  backgroundColor: Colors.white.withValues(
+                                    alpha: .25,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '$growing/$reviewsPerTree',
+                              style: D.text(
+                                11,
+                                weight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

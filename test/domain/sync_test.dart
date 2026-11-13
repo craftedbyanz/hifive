@@ -92,8 +92,8 @@ void main() {
         [ReviewEvent(id: '1', wordId: 'w', at: t, rating: 2)],
       );
       expect(word.status, 'review');
-      expect(word.intervalDays, 1);
-      expect(word.due, t.add(const Duration(days: 1)));
+      expect(word.intervalDays, 3);
+      expect(word.due, t.add(const Duration(days: 3)));
     });
 
     test('reviews made on two devices both count, in time order', () {
@@ -107,9 +107,9 @@ void main() {
       );
       final iphone = ReviewEvent(id: 'a', wordId: 'w', at: t, rating: 2);
       replayReviews([word], [ipad, iphone]);
-      // Good after Good: the second review grows the one-day interval.
-      expect(word.intervalDays, 3);
-      expect(word.due, ipad.at.add(const Duration(days: 3)));
+      // Good after Good: the second review grows the three-day interval.
+      expect(word.intervalDays, greaterThan(3));
+      expect(word.due, ipad.at.add(Duration(days: word.intervalDays)));
     });
 
     test('a reset clears earlier reviews but not later ones', () {

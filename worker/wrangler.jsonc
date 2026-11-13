@@ -5,6 +5,10 @@
   "compatibility_date": "2026-11-01",
   "observability": { "enabled": true },
   "vars": { "FIREBASE_PROJECT_ID": "hifive-3371b" },
+  // The word catalog (docs/memory-plan.md), shipped with the Worker as static
+  // assets: `catalog/manifest.json` and one pack per language and version.
+  // Only the Worker serves them, under /v1/catalog. Edit and `npm run deploy`.
+  "assets": { "directory": "./catalog", "binding": "CATALOG", "run_worker_first": true },
   "d1_databases": [
     {
       "binding": "DB",

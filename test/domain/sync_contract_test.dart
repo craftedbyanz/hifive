@@ -14,6 +14,7 @@ const _appSynced = {
   RecordKind.word,
   RecordKind.review,
   RecordKind.game,
+  RecordKind.focus,
   RecordKind.legacyStats,
   AppKinds.firstUse,
 };

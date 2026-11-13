@@ -15,8 +15,6 @@
   "close": "Đóng",
   "back": "Quay lại",
   "exitGame": "Thoát game",
-  "plusBannerTitle": "Đăng ký Hifive Plus",
-  "plusBannerBody": "Mở khóa mức sử dụng cao hơn và làm chủ kỹ năng ngôn ngữ của bạn.",
   "vietnamFlag": "Cờ Việt Nam",
   "greetingNight": "Chúc ngủ ngon,",
   "greetingMorning": "Chào buổi sáng,",
@@ -206,7 +204,7 @@
   "cannotOpenSettings": "Không mở được Cài đặt.",
   "settingsAction": "Cài đặt",
   "smartReminders": "Lịch nhắc thông minh",
-  "smartRemindersBody": "Hifive tự động học thói quen của bạn. Chúng tôi sẽ nhắc bạn vào thời gian bạn thường học nhất.",
+  "smartRemindersBody": "hifive tính trước từ nào sắp quên. Đến giờ nhắc, bạn chỉ nhận thông báo nếu hôm đó có từ cần ôn, kèm số từ và thời gian ôn ước tính.",
   "lessonSettingsTitle": "Lesson Settings",
   "inputColor": "Màu ô nhập",
   "hintSettings": "Cài đặt gợi ý",
@@ -1030,5 +1028,491 @@
   "customizeLesson": "Tùy chỉnh bài học",
   "customizeLessonTitle": "Tùy chỉnh Bài học",
   "customizeLessonBody": "Chuyển đổi giữa Trò chuyện Tự do và Kịch bản. Điều chỉnh độ khó, giọng và số câu hỏi.",
-  "closeTip": "Đóng gợi ý"
+  "closeTip": "Đóng gợi ý",
+  "menuFocus": "Vườn",
+  "focusStart": "Bắt đầu tập trung",
+  "focusChangeTree": "Đổi cây",
+  "focusMinutes": "{count} phút",
+  "@focusMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusRunningHint": "Đặt máy xuống. Cây lớn dần theo thời gian bạn tập trung.",
+  "focusCancel": "Huỷ ({seconds})",
+  "@focusCancel": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "focusGiveUp": "Bỏ cuộc",
+  "focusGiveUpTitle": "Bỏ phiên này?",
+  "focusGiveUpBody": "Cây của phiên này sẽ héo và nằm lại trong vườn.",
+  "focusKeepGoing": "Tiếp tục",
+  "focusDoneTitle": "Hoàn thành {count} phút",
+  "@focusDoneTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusDoneReview": "Nghỉ 5 phút. Ôn {count} từ sắp quên để cây nở hoa?",
+  "@focusDoneReview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusDoneRest": "Nghỉ 5 phút rồi quay lại nhé.",
+  "focusReviewWords": "Ôn {count} từ",
+  "@focusReviewWords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusRest": "Nghỉ thôi",
+  "focusBloomed": "Cây đã nở hoa",
+  "focusBreakDeck": "Ôn trong giờ nghỉ",
+  "focusWitheredTitle": "Không sao, thử lại nhé",
+  "focusWitheredBody": "Cây này đã héo sau {count} phút. Một mầm mới đang chờ bạn.",
+  "@focusWitheredBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusReplant": "Trồng lại",
+  "focusFinish": "Xong",
+  "focusPickTree": "Chọn cây",
+  "focusLocked": "Chưa mở",
+  "focusTagEnglish": "Học tiếng Anh",
+  "focusTagWriting": "Viết",
+  "focusTagWork": "Làm việc",
+  "focusTagOther": "Khác",
+  "speciesOak": "Sồi",
+  "speciesPine": "Thông",
+  "speciesSunflower": "Hướng dương",
+  "speciesTulip": "Tulip",
+  "speciesCherry": "Anh đào",
+  "speciesApple": "Táo",
+  "speciesOrange": "Cam",
+  "speciesMaple": "Phong đỏ",
+  "speciesBirch": "Bạch dương",
+  "speciesGinkgo": "Rẻ quạt",
+  "speciesWillow": "Liễu",
+  "speciesLavender": "Oải hương",
+  "speciesMushroom": "Nấm",
+  "speciesCactus": "Xương rồng",
+  "speciesBonsai": "Bonsai",
+  "speciesBaobab": "Bao báp",
+  "speciesWisteria": "Tử đằng",
+  "speciesBamboo": "Tre",
+  "speciesCoconut": "Dừa",
+  "speciesBanana": "Chuối",
+  "speciesPhuong": "Phượng vĩ",
+  "speciesBang": "Bàng",
+  "speciesMai": "Hoa mai",
+  "speciesDao": "Hoa đào",
+  "speciesLotus": "Sen",
+  "speciesBanyan": "Đa",
+  "speciesSnowpine": "Thông tuyết",
+  "speciesGalaxy": "Ngân hà",
+  "gardenTitle": "Vườn của bạn",
+  "gardenDay": "Ngày",
+  "gardenWeek": "Tuần",
+  "gardenMonth": "Tháng",
+  "gardenYear": "Năm",
+  "gardenCounts": "{trees} cây · {withered} cây héo",
+  "@gardenCounts": {
+    "placeholders": {
+      "trees": {
+        "type": "int"
+      },
+      "withered": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenEmpty": "Chưa có cây nào. Tập trung hoặc ôn từ để trồng cây đầu tiên.",
+  "gardenFocusTime": "Tập trung",
+  "gardenReviews": "Lượt tưới",
+  "gardenStudyDays": "Ngày học",
+  "gardenHoursMinutes": "{hours}g {minutes}p",
+  "@gardenHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenGrowing": "Cây học đang lớn · {count}/{total} lượt tưới",
+  "@gardenGrowing": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenGrowingHint": "Mỗi thẻ mới hoặc đến hạn bạn ôn là một lượt tưới. Chạm để đổi loài cây.",
+  "gardenCollection": "Bộ sưu tập",
+  "gardenUnlocked": "Đã mở {count}/{total} loài",
+  "@gardenUnlocked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenStartFocus": "Bắt đầu tập trung",
+  "unlockAlways": "Có sẵn",
+  "unlockStudyTrees": "Trồng {n} cây học",
+  "@unlockStudyTrees": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockWordsKnown": "Thuộc {n} từ",
+  "@unlockWordsKnown": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockStreak": "Chuỗi {n} ngày",
+  "@unlockStreak": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockFocusHours": "Tập trung {n} giờ",
+  "@unlockFocusHours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockFocusSessions": "{n} phiên tập trung",
+  "@unlockFocusSessions": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockLongSession": "Một phiên {n} phút",
+  "@unlockLongSession": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockReviews": "Ôn {n} lượt",
+  "@unlockReviews": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockStudyDays": "Học {n} ngày",
+  "@unlockStudyDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockBlooms": "Nở hoa {n} lần",
+  "@unlockBlooms": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockEvenings": "Học {n} buổi tối",
+  "@unlockEvenings": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockComeback": "{n} phiên liền sau một cây héo",
+  "@unlockComeback": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockWeeks": "Học {n} tuần liền",
+  "@unlockWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockMonth": "Học trong tháng {n}",
+  "@unlockMonth": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "focusWarnTitle": "Cây của bạn sắp héo",
+  "focusWarnBody": "Quay lại hifive trong vài giây để cây tiếp tục lớn.",
+  "reviewWatered": "Cây học +{count} lượt tưới",
+  "@reviewWatered": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeGardenTitle": "Vườn của bạn",
+  "homeGardenBody": "Tập trung hoặc ôn từ để cây lớn",
+  "homeGardenOpen": "Mở vườn",
+  "tagPickTitle": "Nhãn việc",
+  "tagNew": "Tạo nhãn",
+  "tagEditTitle": "Sửa nhãn",
+  "tagNameHint": "Tên nhãn, ví dụ Đọc sách",
+  "tagSave": "Lưu",
+  "tagDelete": "Xoá nhãn",
+  "tagDeleteTitle": "Xoá nhãn này?",
+  "tagDeleteBody": "Các phiên đã gắn nhãn này sẽ chuyển sang \"Khác\". Thời gian tập trung vẫn giữ nguyên.",
+  "gardenByTag": "Theo nhãn",
+  "gardenByTagEmpty": "Hoàn thành một phiên tập trung để xem thời gian theo từng nhãn.",
+  "gardenShare": "Chia sẻ",
+  "gardenShareText": "Khu vườn của mình trên hifive: {count} cây từ việc học và tập trung.",
+  "@gardenShareText": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenShareFailed": "Không mở được bảng chia sẻ.",
+  "timerTitle": "Hẹn giờ",
+  "timerSubtitle": "Đặt thời lượng rồi đếm ngược",
+  "stopwatchTitle": "Bấm giờ",
+  "stopwatchSubtitle": "Đếm lên từ 0, tối đa 180 phút",
+  "sessionTitleHint": "Thêm tiêu đề phiên...",
+  "sessionTitleSheet": "Tiêu đề phiên",
+  "focusStop": "Dừng",
+  "focusStopShortTitle": "Dừng khi chưa đủ 10 phút?",
+  "focusStopShortBody": "Phiên bấm giờ dưới 10 phút sẽ không trồng cây.",
+  "helpTitle0": "Câu chuyện của hifive",
+  "helpBody0": "hifive giúp bạn học ngôn ngữ mỗi ngày như vun trồng một khu vườn: mỗi ngày một chút, rồi một ngày nhìn lại đã thấy cả một khu rừng.\n\nÝ nghĩa logo\n\n• Năm vạch bo tròn là năm ngón tay giơ lên cho một cú high five, lời chúc mừng sau mỗi buổi học.\n• Năm vạch cũng là sóng âm của giọng nói, vì học ngôn ngữ là để nói và hiểu nhau.\n• Năm màu là các cách học trong app: hội thoại (xanh ngọc), viết (xanh dương), màu chàm của hifive, ngữ pháp (tím) và AI (tím đậm).\n\nLời hứa của hifive\n\nMỗi từ bạn gặp ở bất cứ đâu trong hifive, từ thẻ ghi nhớ, trò chơi đến từ điển, đều được theo dõi cho đến khi bạn dùng được nó.",
+  "todayTitle": "Ôn hôm nay",
+  "todaySummary": "{due} từ cần ôn · {fresh} từ mới",
+  "@todaySummary": {
+    "placeholders": {
+      "due": {
+        "type": "int"
+      },
+      "fresh": {
+        "type": "int"
+      }
+    }
+  },
+  "todayStart": "Bắt đầu",
+  "todayAllDone": "Hôm nay đã ôn xong",
+  "todayAllDoneBody": "Quay lại ngày mai để ôn đúng lúc sắp quên.",
+  "exIntro": "Từ mới. Đoán nghĩa trước khi xem.",
+  "exShowMeaning": "Xem nghĩa",
+  "exChoose": "Chọn nghĩa đúng",
+  "exType": "Gõ từ có nghĩa này",
+  "exListen": "Nghe rồi gõ lại",
+  "exCloze": "Điền từ còn thiếu",
+  "exAnswerHint": "Gõ câu trả lời",
+  "exHint": "Gợi ý",
+  "exCheck": "Kiểm tra",
+  "exDontKnow": "Không biết",
+  "exCorrect": "Chính xác",
+  "exAlmost": "Gần đúng, chú ý chính tả",
+  "exWrong": "Chưa đúng, từ này sẽ quay lại",
+  "exNext": "Tiếp",
+  "exTooEasy": "Quá dễ",
+  "exPlay": "Nghe lại",
+  "exProgress": "{done}/{total}",
+  "@exProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "newPerDayTitle": "Từ mới mỗi ngày",
+  "newPerDayBody": "Ôn tập không giới hạn. Khi còn nhiều từ cần ôn, app tự giảm từ mới.",
+  "memorySettings": "Ghi nhớ từ vựng",
+  "exTypingSetting": "Bài tập gõ từ",
+  "exTypingSettingBody": "Nhìn nghĩa rồi gõ từ, điền vào câu",
+  "exListeningSetting": "Bài tập nghe",
+  "exListeningSettingBody": "Nghe rồi gõ lại. Tắt khi đang ở nơi công cộng.",
+  "reminderTitle": "Nhắc ôn từ mỗi ngày",
+  "reminderAt": "Lúc {time} · chỉ khi có từ sắp quên",
+  "@reminderAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderPickTime": "Giờ nhắc",
+  "reminderDone": "Xong",
+  "reminderNoteTitle": "{count} từ sắp quên",
+  "@reminderNoteTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderNoteBody": "Ôn khoảng {minutes} phút để nhớ lâu hơn, và tưới cây học của bạn.",
+  "@reminderNoteBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "memoryTitle": "Trí nhớ từ vựng",
+  "memoryCardBody": "{known} từ đã thuộc · {total} từ đã gặp",
+  "@memoryCardBody": {
+    "placeholders": {
+      "known": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "levelFresh": "Mới",
+  "levelLearning": "Đang học",
+  "levelRemembering": "Đang nhớ",
+  "levelKnown": "Thuộc",
+  "levelMastered": "Thành thạo",
+  "memoryLevels": "Từ theo mức độ",
+  "memoryLevelsNote": "Thuộc: nhớ được ít nhất 3 tuần. Thành thạo: thuộc và đã tự gõ hoặc dùng đúng trong 60 ngày qua.",
+  "memoryRetention": "Tỉ lệ nhớ",
+  "memoryRetentionBody": "Trong {count} lần ôn từ đã thuộc, 30 ngày qua. Mục tiêu khoảng 90%.",
+  "@memoryRetentionBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "memoryRetentionWait": "Ôn thêm vài ngày để đo được tỉ lệ nhớ.",
+  "memoryForecast": "Dự báo 7 ngày",
+  "memoryToday": "Hôm nay",
+  "memorySkills": "Kỹ năng",
+  "memorySkillsEmpty": "Làm bài trong Ôn hôm nay để thấy kỹ năng nào còn yếu.",
+  "skillMeaning": "Hiểu nghĩa",
+  "skillRecall": "Nhớ ra từ",
+  "skillForm": "Nghe và chính tả",
+  "skillUse": "Dùng trong câu",
+  "memoryHard": "Từ khó",
+  "memoryHardEmpty": "Chưa có từ khó. Từ quên từ 4 lần trở lên sẽ hiện ở đây.",
+  "wordRecallNow": "Khả năng nhớ lúc này",
+  "wordNextReview": "Lần ôn tới",
+  "wordStability": "Nhớ được khoảng",
+  "wordDays": "{count} ngày",
+  "@wordDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wordLapses": "Số lần quên",
+  "wordHistory": "Các lần gặp",
+  "wordNoHistory": "Chưa ôn lần nào.",
+  "wordNow": "Bây giờ",
+  "todayEyebrow": "HÔM NAY",
+  "todayHeadline": "Ôn từ vựng",
+  "todayDueChip": "{count} cần ôn",
+  "@todayDueChip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayNewChip": "{count} từ mới",
+  "@todayNewChip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayMinutes": "khoảng {count} phút",
+  "@todayMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayDoneBody": "Quay lại ngày mai nhé",
+  "practiceTitle": "Luyện gõ và nghe",
+  "practiceBody": "Tự gõ, nghe và điền từ vào câu để nhớ chắc hơn.",
+  "menuListen": "Nghe",
+  "listenTitle": "Luyện nghe",
+  "listenIntro": "Nguồn nghe hifive chọn lọc theo trình độ. Gặp từ lạ thì lưu lại để ôn trong Ôn hôm nay.",
+  "listenEmpty": "Đang tải nguồn nghe. Hãy kiểm tra kết nối mạng rồi mở lại.",
+  "listenPlaylist": "Playlist YouTube · {channel}",
+  "@listenPlaylist": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "listenSaveWord": "Lưu từ vừa nghe",
+  "listenWord": "Từ hoặc cụm từ",
+  "listenMeaning": "Nghĩa",
+  "listenSave": "Lưu",
+  "listenSaved": "Đã lưu \"{word}\" vào Từ đã lưu",
+  "@listenSaved": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "listenTip": "Mẹo: nghe một lần để hiểu ý chính, nghe lần hai và lưu những từ bạn muốn dùng được."
 }

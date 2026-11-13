@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../core/design/design.dart';
+import 'ambient.dart';
 
 /// The hifive logo: five rounded bars, a hand raised for a high five and a
 /// voice's sound wave at once, each in a study mode's color, on an ink tile.
@@ -156,4 +158,139 @@ class _FlowerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+/// The art of hifive's own story in Hifive 101: the logo's five bars, large
+/// on a soft ground, moving like a voice's sound wave and then settling into
+/// the raised hand of the logo, with ripples of sound behind. It fills the
+/// space it is given and moves only under [AmbientMotion].
+class LogoStoryArt extends StatefulWidget {
+  const LogoStoryArt({super.key});
+
+  @override
+  State<LogoStoryArt> createState() => _LogoStoryArtState();
+}
+
+class _LogoStoryArtState extends State<LogoStoryArt>
+    with SingleTickerProviderStateMixin {
+  final _time = ValueNotifier<double>(0);
+  late final Ticker _ticker = createTicker(
+    (e) => _time.value = e.inMicroseconds / 1e6,
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final on = AmbientMotion.of(context);
+    if (on && !_ticker.isActive) {
+      _ticker.start();
+    } else if (!on && _ticker.isActive) {
+      _ticker.stop();
+      _time.value = 0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    _time.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => RepaintBoundary(
+    child: CustomPaint(
+      painter: _StoryPainter(_time, still: !_ticker.isActive),
+      child: const SizedBox.expand(),
+    ),
+  );
+}
+
+class _StoryPainter extends CustomPainter {
+  final ValueNotifier<double> time;
+  final bool still;
+  _StoryPainter(this.time, {required this.still}) : super(repaint: time);
+
+  /// The logo's bar heights, as a share of the tallest.
+  static const _logo = [.55, .87, 1.0, .89, .68];
+  static const _cycle = 6.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width, h = size.height;
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Palette.storyTop, Palette.storyBottom],
+        ).createShader(Offset.zero & size),
+    );
+    final t = time.value;
+    final unit = math.min(w, h * 1.15);
+    final barW = unit * .085, gap = unit * .045;
+    final total = barW * 5 + gap * 4;
+    final left = (w - total) / 2, base = h * .78, tallest = h * .56;
+    final c = Offset(w / 2, base - tallest * .45);
+
+    // Ripples of sound spreading from behind the bars.
+    for (var i = 0; i < 3; i++) {
+      final u = still ? (i + 1) / 4 : ((t * .22 + i / 3) % 1);
+      final r = unit * (.22 + u * .5);
+      canvas.drawCircle(
+        c,
+        r,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.4
+          ..color = Palette.logoBars[2].withValues(alpha: .22 * (1 - u)),
+      );
+    }
+
+    // Talking, then settling into the logo's raised hand, then talking again.
+    final phase = still ? _cycle : t % _cycle;
+    final settle = Curves.easeInOutCubic.transform(
+      ((phase - 3.2) / 1.1).clamp(0.0, 1.0) *
+          (1 - ((phase - 5.4) / .6).clamp(0.0, 1.0)),
+    );
+    for (var i = 0; i < 5; i++) {
+      final talk =
+          .35 +
+          .6 *
+              (math.sin(t * (2.4 + i * .7) + i * 1.3).abs() * .7 +
+                  math.sin(t * 1.3 + i).abs() * .3);
+      final k = still ? _logo[i] : talk + (_logo[i] - talk) * settle;
+      final bh = tallest * k;
+      final x = left + i * (barW + gap);
+      final rect = RRect.fromRectAndRadius(
+        Rect.fromLTWH(x, base - bh, barW, bh),
+        Radius.circular(barW / 2),
+      );
+      canvas
+        ..drawRRect(
+          rect.shift(Offset(0, unit * .02)),
+          Paint()
+            ..color = Palette.logoBars[i].withValues(alpha: .18)
+            ..maskFilter = MaskFilter.blur(BlurStyle.normal, unit * .025),
+        )
+        ..drawRRect(rect, Paint()..color = Palette.logoBars[i]);
+      // A soft highlight down the left of each bar.
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+            x + barW * .18,
+            base - bh + barW * .3,
+            barW * .16,
+            bh - barW * .6,
+          ),
+          Radius.circular(barW),
+        ),
+        Paint()..color = Colors.white.withValues(alpha: .28),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_StoryPainter old) => old.still != still;
 }

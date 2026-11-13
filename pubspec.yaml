@@ -23,6 +23,7 @@ dependencies:
   http: ^1.6.0
   lottie: ^3.8.2
   intl: any
+  youtube_player_iframe: ^6.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

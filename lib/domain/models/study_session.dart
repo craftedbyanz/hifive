@@ -32,6 +32,10 @@ class StudySession {
     required this.seconds,
   });
 
+  /// Sample results seeded on a first launch to show the screens; they are
+  /// not the learner's own study (`sampleHistory`).
+  bool get isExample => id.startsWith('sample-');
+
   /// Answers the learner gave, leaving out partner lines in a conversation.
   List<AnswerRecord> get scored => [
     for (var i = 0; i < answers.length; i++)

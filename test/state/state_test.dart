@@ -299,6 +299,35 @@ void main() {
       expect(saved.words, hasLength(1));
     });
   });
+  test('days with hifive count from first use, not the sample results', () {
+    final state = createAppState(
+      store: MemoryRecordStore(),
+      feedback: SilentFeedback(),
+      includeExamples: true,
+      now: () => _now,
+    );
+    // The samples are dated 24 October; the learner started today.
+    expect(state.history.any((s) => s.date.isBefore(_now)), isTrue);
+    expect(state.daysWithHifive, 0);
+  });
+
+  test('reviewing words keeps the streak; samples and focus alone do not', () {
+    var now = DateTime(2026, 11, 12, 9);
+    final state = createAppState(
+      store: MemoryRecordStore(),
+      feedback: SilentFeedback(),
+      includeExamples: true,
+      now: () => now,
+    );
+    expect(state.studyDays, isEmpty);
+    expect(state.streak, 0);
+
+    state.rate(state.decks.first.words.first, 2);
+    now = DateTime(2026, 11, 13, 9);
+    state.rate(state.decks.first.words[1], 2);
+    expect(state.studyDays, {'2026-11-12', '2026-11-13'});
+    expect(state.streak, 2);
+  });
 }
 
 class _ThrowingStore extends MemoryRecordStore {

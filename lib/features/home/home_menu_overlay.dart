@@ -7,8 +7,10 @@ import '../../core/design/design.dart';
 import '../../l10n/l10n.dart';
 import '../flashcards/flashcards.dart';
 import '../game/game.dart';
+import '../garden/garden.dart';
 import '../information/information.dart';
 import '../insights/insights.dart';
+import '../listening/listening.dart';
 import 'home_design.dart';
 import 'home_menu_art.dart';
 import 'home_menu_motion.dart';
@@ -36,6 +38,8 @@ class HomeMenuOverlay extends StatelessWidget {
       (t.menuFlashcards, Palette.menuFlashcard, const DeckListScreen()),
       (t.menuStreak, Palette.menuStreak, const StreakScreen()),
       (t.menuGame, Palette.menuGame, const GameHomeScreen()),
+      (t.menuFocus, Palette.menuFocus, const GardenScreen()),
+      (t.menuListen, Palette.menuListen, const ListeningScreen()),
     ];
     return AnimatedBuilder(
       animation: motion,

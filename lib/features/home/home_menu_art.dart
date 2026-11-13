@@ -6,7 +6,7 @@ import '../../core/design/design.dart';
 import '../../widgets/common.dart';
 
 /// The rows of the Home menu, top to bottom.
-enum HomeMenuItem { insight, plus, flashcards, streak, game }
+enum HomeMenuItem { insight, plus, flashcards, streak, game, focus, listen }
 
 /// The Home menu's animated icons. They share the streak flame's look (one
 /// hue, dark on top, with a pale core) and its easing, and each makes one

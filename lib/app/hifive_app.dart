@@ -7,6 +7,7 @@ import '../l10n/l10n.dart';
 import '../state/state.dart';
 import '../widgets/ambient.dart';
 import '../widgets/app_scroll.dart';
+import '../widgets/reminder_sync.dart';
 import '../widgets/tap_feedback.dart';
 
 class HifiveApp extends StatelessWidget {
@@ -30,11 +31,13 @@ class HifiveApp extends StatelessWidget {
           supportedLocales: supportedAppLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           scrollBehavior: const AppScrollBehavior(),
-          builder: (context, child) => TapFeedback(
-            onTap: state.feedback.buttonTap,
-            child: AmbientMotion(
-              enabled: animateAmbient,
-              child: textScaling(child!),
+          builder: (context, child) => ReminderSync(
+            child: TapFeedback(
+              onTap: state.feedback.buttonTap,
+              child: AmbientMotion(
+                enabled: animateAmbient,
+                child: textScaling(child!),
+              ),
             ),
           ),
           home: AuthGate(child: HomeScreen(animateAmbient: animateAmbient)),
