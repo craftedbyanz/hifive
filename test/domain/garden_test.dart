@@ -169,7 +169,41 @@ void main() {
 
     test('an unknown stored species falls back to the first one', () {
       expect(speciesById('nope').id, defaultSpecies);
-      expect(species.map((s) => s.id).toSet(), hasLength(28));
+      expect(species.map((s) => s.id).toSet(), hasLength(30));
+    });
+
+    test('the collection sections hold every species once, easiest first', () {
+      final listed = [
+        for (final g in SpeciesGroup.values) ...speciesInGroup(g),
+      ];
+      expect(listed.map((s) => s.id).toSet(), hasLength(species.length));
+      expect(speciesInGroup(SpeciesGroup.memory).map((s) => s.id), [
+        'cherry',
+        'bonsai',
+        'birch',
+        'olive',
+        'ginkgo',
+      ]);
+      expect(speciesInGroup(SpeciesGroup.season).map((s) => s.id), [
+        'dao',
+        'mai',
+        'snowpine',
+      ]);
+      expect(speciesInGroup(SpeciesGroup.legend).map((s) => s.id), [
+        'baobab',
+        'banyan',
+        'galaxy',
+      ]);
+    });
+
+    test('Vietnamese and foreign species are both in the garden', () {
+      final home = species.where((s) => s.origin == Origin.vietnam);
+      expect(home.map((s) => s.id), containsAll(['mai', 'dao', 'lotus']));
+      expect(species.where((s) => s.origin == null).single.id, 'galaxy');
+      expect(
+        species.map((s) => s.origin).whereType<Origin>().toSet().length,
+        greaterThan(12),
+      );
     });
   });
 }

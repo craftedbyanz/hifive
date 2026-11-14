@@ -617,9 +617,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get continueWithGoogle => 'Google로 계속하기';
 
   @override
-  String get continueWithEmail => '이메일로 계속하기';
-
-  @override
   String introPage(int index, int count) {
     return '소개 $count개 중 $index번째';
   }
@@ -671,45 +668,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get authUnknown => '로그인하지 못했어요. 다시 시도하세요.';
-
-  @override
-  String get resetNeedsEmail => '비밀번호 재설정 링크를 받을 이메일을 입력하세요.';
-
-  @override
-  String get resetSent => '비밀번호 재설정 이메일을 보냈어요.';
-
-  @override
-  String get createAccountTitle => 'Hifive 계정 만들기';
-
-  @override
-  String get emailSignInTitle => '이메일로 로그인';
-
-  @override
-  String get emailSignInBody => '학습 기록을 저장하고 어느 기기에서든 이어서 공부하세요.';
-
-  @override
-  String get emailHint => '이메일';
-
-  @override
-  String get passwordHint => '비밀번호';
-
-  @override
-  String get working => '처리 중...';
-
-  @override
-  String get createAccount => '계정 만들기';
-
-  @override
-  String get signIn => '로그인';
-
-  @override
-  String get haveAccountSignIn => '계정이 있나요? 로그인';
-
-  @override
-  String get createNewAccount => '새 계정 만들기';
-
-  @override
-  String get forgotPassword => '비밀번호를 잊으셨나요?';
 
   @override
   String get sceneWritingTitle => '많이 쓰고,\n한 문장씩 고치기';
@@ -2413,9 +2371,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get focusPickTree => '나무 고르기';
 
   @override
-  String get focusLocked => '잠김';
-
-  @override
   String get focusTagEnglish => '영어 공부';
 
   @override
@@ -2510,6 +2465,90 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get speciesGalaxy => '은하수 나무';
+
+  @override
+  String get speciesOlive => '올리브나무';
+
+  @override
+  String get speciesMugunghwa => '무궁화';
+
+  @override
+  String get gardenGroupStart => '첫걸음';
+
+  @override
+  String get gardenGroupMemory => '기억';
+
+  @override
+  String get gardenGroupDiligence => '꾸준함';
+
+  @override
+  String get gardenGroupFocus => '집중';
+
+  @override
+  String get gardenGroupSeason => '계절';
+
+  @override
+  String get gardenGroupLegend => '전설';
+
+  @override
+  String get originVietnam => '베트남';
+
+  @override
+  String get originJapan => '일본';
+
+  @override
+  String get originKorea => '한국';
+
+  @override
+  String get originChina => '중국';
+
+  @override
+  String get originIndia => '인도';
+
+  @override
+  String get originGermany => '독일';
+
+  @override
+  String get originEngland => '영국';
+
+  @override
+  String get originNetherlands => '네덜란드';
+
+  @override
+  String get originFrance => '프랑스';
+
+  @override
+  String get originSpain => '스페인';
+
+  @override
+  String get originGreece => '그리스';
+
+  @override
+  String get originNorway => '노르웨이';
+
+  @override
+  String get originFinland => '핀란드';
+
+  @override
+  String get originRussia => '러시아';
+
+  @override
+  String get originKazakhstan => '카자흐스탄';
+
+  @override
+  String get originCanada => '캐나다';
+
+  @override
+  String get originUsa => '미국';
+
+  @override
+  String get originMexico => '멕시코';
+
+  @override
+  String get originMadagascar => '마다가스카르';
+
+  @override
+  String get originLegend => '전설 속';
 
   @override
   String get gardenTitle => '나의 정원';
@@ -3008,4 +3047,538 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get listenTip => '팁: 처음엔 요지를 듣고, 두 번째에는 쓰고 싶은 단어를 저장해요.';
+
+  @override
+  String listenEpisode(int n) {
+    return '$n화';
+  }
+
+  @override
+  String get listenNowPlaying => '재생 중';
+
+  @override
+  String get listenEpisodes => '에피소드 목록';
+
+  @override
+  String listenHeardCount(int done, int total) {
+    return '$done/$total 들음';
+  }
+
+  @override
+  String listenEpisodeCount(int n) {
+    return '$n개 에피소드';
+  }
+
+  @override
+  String listenAboutHours(int h) {
+    return '약 $h시간';
+  }
+
+  @override
+  String listenMinutesLeft(int m) {
+    return '$m분 남음';
+  }
+
+  @override
+  String listenMinutes(int m) {
+    return '$m분';
+  }
+
+  @override
+  String get listenResume => '이어 듣기';
+
+  @override
+  String get listenToday => '오늘';
+
+  @override
+  String listenTodayBody(int m, int goal) {
+    return '$m/$goal분 들었어요';
+  }
+
+  @override
+  String get listenGoalDone => '오늘의 듣기 목표 달성!';
+
+  @override
+  String get listenTodayHint => '매일 조금씩 들으면 귀가 영어에 익숙해져요. 1분만 들어도 연속 학습이 이어져요.';
+
+  @override
+  String get listenMinuteUnit => '분';
+
+  @override
+  String get listenSources => '듣기 자료';
+
+  @override
+  String listenEpisodeDone(int n, String title) {
+    return '$n화 완료! 다음: $title';
+  }
+
+  @override
+  String get listenAllDone => '이 목록을 모두 들었어요!';
+
+  @override
+  String get listenBack => '5초 뒤로';
+
+  @override
+  String get listenForward => '5초 앞으로';
+
+  @override
+  String get listenSpeed => '재생 속도';
+
+  @override
+  String get listenPlay => '재생';
+
+  @override
+  String get listenPause => '일시정지';
+
+  @override
+  String get shareDeck => '카드 묶음 공유';
+
+  @override
+  String get shareDeckBody =>
+      '친구가 hifive에서 이 코드를 입력하거나 링크를 열면 돼요. 단어와 뜻만 공유되고 학습 진도는 공유되지 않아요.';
+
+  @override
+  String get shareDeckUpdated => '여기를 다시 열 때마다 공유된 묶음이 최신 단어로 업데이트돼요.';
+
+  @override
+  String get shareDeckSending => '코드를 만드는 중…';
+
+  @override
+  String get shareCopy => '복사';
+
+  @override
+  String get shareCopied => '복사했어요';
+
+  @override
+  String get shareSend => '친구에게 보내기';
+
+  @override
+  String get shareStop => '공유 중지';
+
+  @override
+  String get shareStopTitle => '이 묶음 공유를 중지할까요?';
+
+  @override
+  String get shareStopBody => '코드와 링크를 더 이상 쓸 수 없어요. 이미 추가한 사람은 자기 사본을 계속 가져요.';
+
+  @override
+  String get shareStopped => '공유를 중지했어요';
+
+  @override
+  String shareMessage(String title, String link, String code) {
+    return 'hifive에서 \"$title\" 묶음을 학습해 보세요: $link\n또는 hifive를 열고 카드 묶음에서 코드 입력을 눌러 입력하세요: $code';
+  }
+
+  @override
+  String get importDeck => '코드 입력';
+
+  @override
+  String get importTitle => '공유된 묶음 추가';
+
+  @override
+  String get importHint => '6자리 코드 또는 링크';
+
+  @override
+  String get importOpen => '묶음 보기';
+
+  @override
+  String get importAdd => '내 묶음에 추가';
+
+  @override
+  String importAdded(String title) {
+    return '\"$title\"을(를) 추가했어요';
+  }
+
+  @override
+  String get importBadCode => '코드는 K7M2QX처럼 영문자와 숫자 6자리예요.';
+
+  @override
+  String importWordCount(int n) {
+    return '단어 $n개';
+  }
+
+  @override
+  String importMore(int n) {
+    return '외 $n개';
+  }
+
+  @override
+  String get shareErrorNotFound => '이 코드의 묶음을 찾을 수 없어요. 공유가 중지됐을 수 있어요.';
+
+  @override
+  String get shareErrorOffline => '연결할 수 없어요. 네트워크를 확인하고 다시 시도하세요.';
+
+  @override
+  String get shareErrorSignIn => '공유하려면 로그인하고 온라인이어야 해요.';
+
+  @override
+  String get shareErrorTooMany => '이미 100개의 묶음을 공유 중이에요. 일부 공유를 중지하고 다시 시도하세요.';
+
+  @override
+  String get shareErrorRejected => '이 묶음은 너무 커서 공유할 수 없어요(최대 500단어).';
+
+  @override
+  String get helpTitle8 => '정원과 집중';
+
+  @override
+  String get helpBody8 =>
+      '공부하는 날마다 정원이 조금씩 더 푸르러져요.\n\n공부로 자라는 나무\n\n• 새 단어나 복습할 단어를 하나 복습할 때마다 나무에 물을 줘요. 10번 주면 정원에 공부 나무가 자라요.\n• 정원에서 공부 나무 종류를 골라요. 꾸준히 공부할수록 더 많은 종류가 열려요.\n\n집중 모드\n\n• 시간을 정하고 태그(영어, 쓰기, 업무…)를 고른 뒤 시작하면, 집중하는 동안 나무가 자라요.\n• 앱을 30초 넘게 떠나거나 포기하면 나무가 시들어요. 화면을 잠가도 나무는 계속 자라요.\n• 세션이 끝나면 복습할 단어 몇 개를 복습해 나무에 꽃을 피워요.\n\n곧 출시\n\n• 집중하는 동안 방해되는 앱 차단.\n• 편안한 소리와 호흡 연습.\n• 자라는 나무와 복습할 단어 수를 보여 주는 홈 화면 위젯.';
+
+  @override
+  String get helpTitle9 => '듣기 연습';
+
+  @override
+  String get helpBody9 =>
+      '매일 조금씩 들으면 귀가 영어에 익숙해져요.\n\n지금 쓸 수 있어요\n\n• hifive가 수준별로 고른 듣기 자료, 먼저 REACH 채널의 A1 팟캐스트.\n• 앱에서 바로 재생: 5초 뒤로·앞으로, 0.75×나 0.5×로 느리게, 시간 막대 끌기.\n• 듣던 곳을 기억하고, 다음 에피소드를 이어 재생하고, 다 들은 에피소드에 표시해요.\n• 1분만 들어도 그날이 연속 학습에 들어가요. 추천 목표는 하루 15분.\n• 모르는 단어가 들리면 단어 저장을 눌러요. 오늘의 복습에 나와요.\n\n곧 출시\n\n• 말에 맞춰 나오는 2개 언어 자막.\n• 섀도잉: 듣고 따라 말하고 녹음해서 비교.\n• 수준별 듣기 자료 추가.';
+
+  @override
+  String get helpTitle10 => '커뮤니티';
+
+  @override
+  String get helpBody10 =>
+      '함께 공부하면 꾸준히 하기 쉬워요. 카드 묶음을 열고 지구본을 눌러 커뮤니티로 가요.\n\n묶음 공유\n\n• 묶음을 열고 •••에서 카드 묶음 공유를 누르면 6자리 코드와 보낼 링크가 생겨요.\n• 카드 묶음에서 코드 입력을 누르고 코드나 링크를 붙여 넣어 미리 본 뒤 내 묶음에 추가해요.\n• 단어와 뜻만 공유되고 학습 진도는 공유되지 않아요.\n\n둘러보기\n\n• 인기순이나 최신순으로 공개 묶음을 찾아 내 묶음에 추가해요.\n• 공유할 때 공개를 켜면 내 묶음이 여기에 나와요(처음에는 커뮤니티 규칙에 동의해요).\n• 부적절한 내용은 신고하거나 만든 사람을 차단할 수 있어요.\n\n스터디 그룹\n\n• 그룹을 만들고 주간 학습일 목표를 정한 뒤 친구에게 초대 코드를 보내요.\n• 주간 표에서 누가 어느 날 공부했는지, 누가 목표를 달성했는지 보여요. 단어 복습, 수업, 1분 듣기 모두 포함돼요.\n\n수업\n\n• 선생님이 수업을 만들고 학생에게 코드를 보내 마감이 있는 묶음을 내요.\n• 학생은 공부하기를 눌러 묶음을 추가하고 평소처럼 복습해요. 진도는 자동으로 업데이트돼요.\n• 선생님은 학생마다 몇 단어를 배웠는지, 누가 끝냈고 누가 늦었는지 봐요.';
+
+  @override
+  String get sharePublic => '둘러보기에 공개';
+
+  @override
+  String sharePublicOn(String name) {
+    return '누구나 이 묶음을 찾을 수 있어요. 표시 이름: $name';
+  }
+
+  @override
+  String get sharePublicOff => '코드나 링크가 있는 사람만 열 수 있어요.';
+
+  @override
+  String get rulesTitle => '커뮤니티 규칙';
+
+  @override
+  String get rulesBody =>
+      '공개 묶음은 모두의 학습을 도와요. 묶음을 공개하면 다음에 동의하는 거예요:\n\n• 언어 학습 내용만 공유해요.\n• 모욕, 혐오, 선정적이거나 폭력적인 내용, 다른 사람의 개인정보는 올리지 않아요.\n• 스팸이나 광고는 안 돼요.\n• 공유할 권리가 있는 내용만 써요.\n\n여러 사람이 신고한 묶음은 검토를 위해 숨겨지고, 규칙을 어긴 계정은 정지될 수 있어요.';
+
+  @override
+  String get rulesAccept => '동의해요';
+
+  @override
+  String get exploreTitle => '묶음 둘러보기';
+
+  @override
+  String get exploreSearch => '묶음 검색';
+
+  @override
+  String get explorePopular => '인기';
+
+  @override
+  String get exploreNewest => '최신';
+
+  @override
+  String get exploreEmpty => '아직 공개 묶음이 없어요. 내 묶음을 공유하고 공개로 바꿔 첫 번째가 되어 보세요!';
+
+  @override
+  String get exploreNoResults => '맞는 묶음이 없어요.';
+
+  @override
+  String get exploreMore => '더 보기';
+
+  @override
+  String exploreMeta(int count, String author) {
+    return '단어 $count개 · $author';
+  }
+
+  @override
+  String exploreAdds(int count) {
+    return '$count회 추가';
+  }
+
+  @override
+  String get exploreAuthorUnknown => 'hifive 학습자';
+
+  @override
+  String get exploreUnblock => '차단한 모든 사람 차단 해제';
+
+  @override
+  String get exploreUnblocked => '차단을 해제했어요';
+
+  @override
+  String get reportDeck => '신고';
+
+  @override
+  String get reportTitle => '이 묶음 신고';
+
+  @override
+  String get reportOffensive => '모욕적이거나 부적절함';
+
+  @override
+  String get reportSpam => '스팸 또는 광고';
+
+  @override
+  String get reportWrong => '틀린 곳이 많음';
+
+  @override
+  String get reportCopyright => '저작권 침해';
+
+  @override
+  String get reportOther => '기타';
+
+  @override
+  String get reportDone => '고마워요. 이 묶음은 더 이상 보이지 않아요.';
+
+  @override
+  String get blockOwner => '만든 사람 차단';
+
+  @override
+  String blockTitle(String author) {
+    return '$author님을 차단할까요?';
+  }
+
+  @override
+  String get blockBody =>
+      '둘러보기에서 이 사람의 묶음이 더 이상 보이지 않아요. 둘러보기 맨 아래에서 차단을 해제할 수 있어요.';
+
+  @override
+  String get blockDone => '차단했어요';
+
+  @override
+  String get editDeck => '묶음 편집';
+
+  @override
+  String get deckName => '묶음 이름';
+
+  @override
+  String get deckIcon => '아이콘';
+
+  @override
+  String get save => '저장';
+
+  @override
+  String get deckCreate => '묶음 만들기';
+
+  @override
+  String get deckOrAi => '또는 AI가 주제에 맞는 단어를 채우게 하기';
+
+  @override
+  String get deckMine => '내 묶음';
+
+  @override
+  String get addWords => '단어 추가';
+
+  @override
+  String get addWordTitle => '묶음에 단어 추가';
+
+  @override
+  String get addWordWord => '단어 또는 구';
+
+  @override
+  String get addWordMeaning => '뜻';
+
+  @override
+  String get addWordExample => '예문(선택)';
+
+  @override
+  String get addWordSave => '추가';
+
+  @override
+  String get addWordDone => '완료';
+
+  @override
+  String addWordAdded(int n) {
+    return '$n개 추가했어요';
+  }
+
+  @override
+  String get addWordExists => '이 단어는 이미 묶음에 있어요.';
+
+  @override
+  String get deckDescription => '설명(선택)';
+
+  @override
+  String get communityTitle => '커뮤니티';
+
+  @override
+  String get tabExplore => '둘러보기';
+
+  @override
+  String get tabGroups => '스터디 그룹';
+
+  @override
+  String get tabClasses => '수업';
+
+  @override
+  String get groupsIntro => '친구와 함께 공부해요: 주간 학습일 목표를 정하고 오늘 누가 공부했는지 봐요.';
+
+  @override
+  String get classesIntro => '선생님이 마감일이 있는 묶음을 내고 학생별 진도를 봐요.';
+
+  @override
+  String get groupCreate => '그룹 만들기';
+
+  @override
+  String get classCreate => '수업 만들기';
+
+  @override
+  String get circleJoin => '코드로 참여';
+
+  @override
+  String get groupsEmpty => '아직 그룹이 없어요. 그룹을 만들고 친구에게 코드를 보내요.';
+
+  @override
+  String get classesEmpty => '아직 수업이 없어요. 선생님이 보낸 코드를 입력하거나, 선생님이라면 수업을 만들어요.';
+
+  @override
+  String circleMembers(int n) {
+    return '멤버 $n명';
+  }
+
+  @override
+  String get circleTeacher => '선생님';
+
+  @override
+  String get circleOwner => '그룹장';
+
+  @override
+  String get circleYou => '나';
+
+  @override
+  String get circleMemberUnknown => '멤버';
+
+  @override
+  String circleGoal(int n) {
+    return '목표: 주 $n일';
+  }
+
+  @override
+  String get circleGoalLabel => '주간 목표';
+
+  @override
+  String circleDays(int n) {
+    return '$n일';
+  }
+
+  @override
+  String get circleNameHint => '이름';
+
+  @override
+  String get groupCreateTitle => '스터디 그룹 만들기';
+
+  @override
+  String get classCreateTitle => '수업 만들기';
+
+  @override
+  String get circleEditTitle => '이름과 목표 편집';
+
+  @override
+  String get circleJoinTitle => '그룹이나 수업 참여';
+
+  @override
+  String get circleJoinHint => '6자리 코드';
+
+  @override
+  String get circleCode => '초대 코드';
+
+  @override
+  String get circleInvite => '초대하기';
+
+  @override
+  String groupInviteMessage(String name, String code) {
+    return 'hifive의 \"$name\" 그룹에서 같이 공부해요! hifive를 열고 카드 묶음, 커뮤니티, 스터디 그룹, 코드로 참여에서 입력하세요: $code';
+  }
+
+  @override
+  String classInviteMessage(String name, String code) {
+    return 'hifive의 \"$name\" 수업에 참여하세요: hifive를 열고 카드 묶음, 커뮤니티, 수업, 코드로 참여에서 입력하세요: $code';
+  }
+
+  @override
+  String get circleThisWeek => '이번 주';
+
+  @override
+  String get circleReached => '목표 달성';
+
+  @override
+  String get circleLeave => '그룹 나가기';
+
+  @override
+  String get classLeave => '수업 나가기';
+
+  @override
+  String circleLeaveTitle(String name) {
+    return '\"$name\"에서 나갈까요?';
+  }
+
+  @override
+  String get circleLeaveBody => '초대 코드로 다시 참여할 수 있어요.';
+
+  @override
+  String get circleRemove => '내보내기';
+
+  @override
+  String circleRemoveTitle(String name) {
+    return '$name님을 내보낼까요?';
+  }
+
+  @override
+  String get circleRemoveBody => '코드가 있으면 다시 참여할 수 있어요.';
+
+  @override
+  String get circleEdit => '편집';
+
+  @override
+  String get circleErrorNotFound => '이 코드의 그룹이나 수업을 찾을 수 없어요.';
+
+  @override
+  String get circleErrorTooMany => '그룹이 꽉 찼거나 참여한 그룹과 수업이 너무 많아요.';
+
+  @override
+  String get classAssign => '묶음 내기';
+
+  @override
+  String get classAssignTitle => '수업에 묶음 내기';
+
+  @override
+  String get classPickDeck => '묶음 고르기';
+
+  @override
+  String get classDue => '마감일';
+
+  @override
+  String get classAssignments => '낸 묶음';
+
+  @override
+  String get classNoAssignments => '아직 낸 묶음이 없어요.';
+
+  @override
+  String classDueOn(String date) {
+    return '마감 $date';
+  }
+
+  @override
+  String classProgress(int done, int total) {
+    return '$done/$total 단어';
+  }
+
+  @override
+  String classDoneCount(int done, int all) {
+    return '학생 $all명 중 $done명 완료';
+  }
+
+  @override
+  String get classStudy => '공부하기';
+
+  @override
+  String get classDone => '완료';
+
+  @override
+  String get classLate => '마감 지남';
+
+  @override
+  String get classStudents => '학생';
+
+  @override
+  String get classUnassign => '내기 취소';
+
+  @override
+  String get classNoStudents => '아직 학생이 없어요. 수업에 초대 코드를 보내요.';
+
+  @override
+  String get classNoDecks => '먼저 단어가 있는 묶음을 만든 뒤 내 주세요.';
 }

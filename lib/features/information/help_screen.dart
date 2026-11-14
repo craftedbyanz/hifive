@@ -9,6 +9,22 @@ import 'help_content.dart';
 class HelpScreen extends StatelessWidget {
   final int index;
   const HelpScreen({super.key, required this.index});
+
+  /// hifive's own articles have their own art; the rest keep their
+  /// illustrations.
+  static Widget _art(int index) {
+    final own = switch (index) {
+      0 => const LogoStoryArt(),
+      8 => const GardenFeatureArt(),
+      9 => const ListenFeatureArt(),
+      10 => const CommunityFeatureArt(),
+      _ => null,
+    };
+    return own == null
+        ? CustomPaint(painter: HelpIllustration(index - 1))
+        : ClipRRect(borderRadius: BorderRadius.circular(28), child: own);
+  }
+
   @override
   Widget build(BuildContext context) => AppPage(
     title: helpTitle(context.t, index),
@@ -17,17 +33,7 @@ class HelpScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: 345 / 294,
-            // The first article is hifive's own story; the rest keep their
-            // illustrations.
-            child: index == 0
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(28),
-                    child: const LogoStoryArt(),
-                  )
-                : CustomPaint(painter: HelpIllustration(index - 1)),
-          ),
+          AspectRatio(aspectRatio: 345 / 294, child: _art(index)),
           const SizedBox(height: 24),
           Text(
             helpTitle(context.t, index),

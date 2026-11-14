@@ -48,9 +48,6 @@ abstract interface class AuthService {
 
   Future<AuthUser> signInWithApple();
   Future<AuthUser> signInWithGoogle();
-  Future<AuthUser> signInWithEmail(String email, String password);
-  Future<AuthUser> createAccount(String email, String password);
-  Future<void> sendPasswordReset(String email);
   Future<void> signOut();
 
   /// A fresh ID token for the API, or null when signed out.

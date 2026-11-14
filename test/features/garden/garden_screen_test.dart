@@ -81,6 +81,16 @@ void main() {
   testWidgets('the collection shows what unlocks each species', (tester) async {
     await mount(tester, fresh(), const GardenScreen());
     await tester.scrollUntilVisible(
+      find.text('Đã mở 2/30 loài'),
+      300,
+      scrollable: find
+          .descendant(
+            of: find.byKey(const ValueKey('garden-list')),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+    await tester.scrollUntilVisible(
       find.byKey(const ValueKey('garden-species-galaxy')),
       300,
       scrollable: find
@@ -91,6 +101,8 @@ void main() {
           .first,
     );
     expect(find.text('Chuỗi 365 ngày'), findsOneWidget);
-    expect(find.text('Đã mở 2/28 loài'), findsOneWidget);
+    // The legendary galaxy tree sits in the last section, with no country.
+    expect(find.text('Huyền thoại'), findsOneWidget);
+    expect(find.text('Truyền thuyết'), findsOneWidget);
   });
 }

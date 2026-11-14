@@ -2,10 +2,33 @@ import 'dart:convert';
 
 import '../models/deck.dart';
 
+/// One video of a listening source, in the playlist's order.
+class Episode {
+  /// The YouTube video id.
+  final String id;
+
+  /// The topic, as hifive names it.
+  final String title;
+  final int seconds;
+  const Episode({required this.id, required this.title, required this.seconds});
+
+  /// YouTube's public thumbnail, 320 × 180.
+  String get thumbnail => 'https://i.ytimg.com/vi/$id/mqdefault.jpg';
+
+  factory Episode.fromJson(Map<String, dynamic> j) => Episode(
+    id: j['id'] as String,
+    title: j['title'] as String,
+    seconds: j['seconds'] as int? ?? 0,
+  );
+}
+
 /// A listening source hifive recommends: a YouTube playlist, played inside
-/// the app with YouTube's own player. Subtitles come later.
+/// the app with YouTube's own player. Packs from version 3 list its
+/// [episodes]; without them the whole playlist plays in one player.
+/// Subtitles come later.
 class ListeningSource {
   final String id, title, channel, level, description, playlistId, coverVideoId;
+  final List<Episode> episodes;
   const ListeningSource({
     required this.id,
     required this.title,
@@ -14,10 +37,14 @@ class ListeningSource {
     required this.description,
     required this.playlistId,
     required this.coverVideoId,
+    this.episodes = const [],
   });
 
   /// YouTube's public thumbnail of the first video.
   String get cover => 'https://i.ytimg.com/vi/$coverVideoId/hqdefault.jpg';
+
+  /// The length of every episode together.
+  int get seconds => episodes.fold(0, (sum, e) => sum + e.seconds);
 
   factory ListeningSource.fromJson(Map<String, dynamic> j) => ListeningSource(
     id: j['id'] as String,
@@ -27,6 +54,11 @@ class ListeningSource {
     description: j['description'] as String? ?? '',
     playlistId: j['playlistId'] as String,
     coverVideoId: j['coverVideoId'] as String,
+    episodes: [
+      for (final e
+          in (j['episodes'] as List? ?? const []).cast<Map<String, dynamic>>())
+        Episode.fromJson(e),
+    ],
   );
 }
 

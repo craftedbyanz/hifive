@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 
 import '../core/services/feedback_service.dart';
 import '../core/services/system_actions.dart';
+import '../domain/community/community.dart';
 import '../domain/garden/garden.dart';
+import '../domain/listening/listening.dart';
 import '../domain/models/models.dart';
 import '../domain/repositories/repositories.dart';
 import '../domain/sync/sync.dart';
@@ -27,11 +29,31 @@ class AppState extends ChangeNotifier {
   /// hifive's word catalog on the server; null keeps only the bundled decks.
   final CatalogRepository? catalog;
 
+  /// Decks shared by link or code; null when the build has no server, which
+  /// hides sharing.
+  final ShareRepository? shares;
+
+  /// Study groups and classes; null when the build has no server.
+  final CircleRepository? circles;
+
+  /// Codes of the learner's decks shared by link, by deck id.
+  Map<String, String> sharedDecks = {};
+
+  /// Ids of the learner's shared decks that Explore lists.
+  Set<String> publicDecks = {};
+
+  /// Whether the learner agreed to the community rules, asked the first
+  /// time they make a deck public.
+  bool communityRules = false;
+
   /// Catalog decks cached on the device, shown beside the bundled ones.
   List<Deck> _catalogDecks = const [];
 
   /// Listening sources from the cached catalog.
   List<ListeningSource> listening = const [];
+
+  /// What the learner listened to, by video and day.
+  ListenLog listenLog = ListenLog();
 
   /// Every deck the learner did not make.
   List<Deck> get _allBuiltIn => [..._builtIn, ..._catalogDecks];
@@ -44,6 +66,7 @@ class AppState extends ChangeNotifier {
   final SystemActions system;
   final DateTime Function() now;
   final List<Deck> _builtIn;
+
   final List<StudySession> _examples;
 
   /// Wires the state to its services. `lib/app/app_state_factory.dart` picks
@@ -56,6 +79,8 @@ class AppState extends ChangeNotifier {
     required this.auth,
     this.syncService,
     this.catalog,
+    this.shares,
+    this.circles,
     required this.lessons,
     required this.grading,
     required this.conversation,
@@ -327,6 +352,10 @@ class AppState extends ChangeNotifier {
     exListening = s['exListening'] as bool? ?? exListening;
     customTags = s['focusTags'] as List<FocusTag>? ?? customTags;
     focusSessions = [...r.focusSessions];
+    listenLog = ListenLog(r.listenDays);
+    sharedDecks = {...r.sharedDecks};
+    publicDecks = {...r.publicDecks};
+    communityRules = s['communityRules'] as bool? ?? communityRules;
     studyCredits = [...r.studyCredits];
     rated = [...r.rated];
     chatFree = s['chatFree'] as bool? ?? chatFree;
@@ -414,12 +443,6 @@ class AppState extends ChangeNotifier {
 
   Future<void> signInWithApple() => _signIn(auth.signInWithApple);
   Future<void> signInWithGoogle() => _signIn(auth.signInWithGoogle);
-  Future<void> signInWithEmail(String email, String password) =>
-      _signIn(() => auth.signInWithEmail(email.trim(), password));
-  Future<void> createAccount(String email, String password) =>
-      _signIn(() => auth.createAccount(email.trim(), password));
-  Future<void> sendPasswordReset(String email) =>
-      auth.sendPasswordReset(email.trim());
 
   static String _lastSyncKey(String uid) => 'lastSyncedAt:$uid';
 
@@ -591,6 +614,7 @@ class AppState extends ChangeNotifier {
     haptic = true;
     language = Language.english;
     chatTipSeen = false;
+    communityRules = false;
     onboarded = false;
     goals = const [];
     modeOrder = [StudyMode.writing, StudyMode.grammar, StudyMode.conversation];
@@ -830,6 +854,61 @@ class AppState extends ChangeNotifier {
       ..sort((a, b) => b.$2.compareTo(a.$2));
   }
 
+  /// Records listening to [video]: where playback stands, the seconds
+  /// [heard] since the last call, and whether it reached the end.
+  void listened(
+    String video, {
+    required int position,
+    int heard = 0,
+    bool done = false,
+  }) {
+    final at = now();
+    final day = dayKey(at);
+    final before = listenLog.day(video, day);
+    final entry = ListenDay(
+      video: video,
+      day: day,
+      position: position,
+      heard: (before?.heard ?? 0) + heard,
+      done: done || (before?.done ?? false),
+      at: at,
+    );
+    listenLog.put(entry);
+    _put(RecordKind.listen, entry.id, entry.toJson());
+    commit();
+  }
+
+  /// Seconds of listening today.
+  int get listenedToday => listenLog.heardOn(dayKey(now()));
+
+  /// What to play next: the episode played last, from where it stopped, or
+  /// the one after it once it was heard to the end. Null before any
+  /// listening, or when the last source has no episode left.
+  ({ListeningSource source, int index, int position})? get listenNext {
+    final progress = listenLog.progress;
+    ({ListeningSource source, int index, ListenProgress p})? last;
+    for (final s in listening) {
+      for (final (i, e) in s.episodes.indexed) {
+        final p = progress[e.id];
+        if (p != null && (last == null || !p.at.isBefore(last.p.at))) {
+          last = (source: s, index: i, p: p);
+        }
+      }
+    }
+    if (last == null) return null;
+    if (!last.p.done) {
+      return (
+        source: last.source,
+        index: last.index,
+        position: last.p.position,
+      );
+    }
+    final next = last.index + 1;
+    return next < last.source.episodes.length
+        ? (source: last.source, index: next, position: 0)
+        : null;
+  }
+
   /// Saves a focus session when it ends, or again when its tree blooms.
   void recordFocus(FocusSession session) {
     final i = focusSessions.indexWhere((s) => s.id == session.id);
@@ -979,9 +1058,229 @@ class AppState extends ChangeNotifier {
     commit();
   }
 
+  /// Shares [deck] by link: publishes a snapshot of its words (never the
+  /// learner's progress) and returns its code. Sharing it again keeps the
+  /// code and updates the words. [public] lists it in Explore under the
+  /// learner's name; left out, it stays as it was. Throws [ShareException].
+  Future<String> shareDeck(Deck deck, {bool? public}) async {
+    final repo = shares;
+    final token = await auth.idToken();
+    if (repo == null || token == null) {
+      throw const ShareException(ShareError.unauthorized);
+    }
+    final listed = public ?? publicDecks.contains(deck.id);
+    final code = await repo.publish(
+      token,
+      deck.id,
+      SharedDeck.of(deck, language.code),
+      public: listed,
+      author: name.trim(),
+    );
+    sharedDecks[deck.id] = code;
+    listed ? publicDecks.add(deck.id) : publicDecks.remove(deck.id);
+    _put(RecordKind.share, deck.id, {'code': code, 'public': listed});
+    commit();
+    return code;
+  }
+
+  void acceptCommunityRules() {
+    communityRules = true;
+    _setting('communityRules', true);
+    commit();
+  }
+
+  /// A page of public decks in the study language. Signed in, decks the
+  /// learner reported or whose owners they blocked are left out.
+  Future<ExplorePage> explore({
+    ExploreSort sort = ExploreSort.popular,
+    String query = '',
+    int offset = 0,
+  }) async {
+    final repo = shares;
+    if (repo == null) throw const ShareException(ShareError.unavailable);
+    return repo.explore(
+      language: language.code,
+      sort: sort,
+      query: query,
+      offset: offset,
+      idToken: await auth.idToken(),
+    );
+  }
+
+  /// Copies the public deck [shared] into the learner's decks and counts
+  /// the add for its owner, without waiting for the server.
+  Deck addPublicDeck(SharedDeck shared) {
+    final deck = addSharedDeck(shared);
+    final repo = shares;
+    if (repo != null && shared.code.isNotEmpty) {
+      unawaited(
+        () async {
+          final token = await auth.idToken();
+          if (token != null) await repo.countAdd(token, shared.code);
+        }().catchError((Object _) {}),
+      );
+    }
+    return deck;
+  }
+
+  Future<String> _token() async =>
+      await auth.idToken() ??
+      (throw const ShareException(ShareError.unauthorized));
+
+  /// Reports the public deck [code]; it leaves the learner's Explore.
+  Future<void> reportDeck(String code, ReportReason reason) async {
+    final repo = shares;
+    if (repo == null) throw const ShareException(ShareError.unavailable);
+    await repo.report(await _token(), code, reason);
+  }
+
+  /// Blocks the owner of [code]; their decks leave the learner's Explore.
+  Future<void> blockOwnerOf(String code) async {
+    final repo = shares;
+    if (repo == null) throw const ShareException(ShareError.unavailable);
+    await repo.blockOwner(await _token(), code);
+  }
+
+  CircleRepository _circles() =>
+      circles ?? (throw const ShareException(ShareError.unavailable));
+
+  /// The study groups and classes the learner is in.
+  Future<List<Circle>> myCircles() async => _circles().mine(await _token());
+
+  Future<Circle> createCircle(
+    CircleKind kind,
+    String name, {
+    int goal = 3,
+  }) async => _circles().create(
+    await _token(),
+    kind: kind,
+    name: name.trim(),
+    goal: goal,
+  );
+
+  /// Joins the group or class with [code], typed or pasted.
+  Future<Circle> joinCircle(String code) async {
+    final clean = code.toUpperCase().replaceAll(RegExp(r'[\s-]'), '');
+    return _circles().join(await _token(), clean);
+  }
+
+  /// The Monday of this week, `yyyy-mm-dd`.
+  String get weekStart {
+    final today = DateUtils.dateOnly(now());
+    return dayKey(today.subtract(Duration(days: today.weekday - 1)));
+  }
+
+  /// A circle with this week's study days, and a class's decks set.
+  Future<CircleDetail> circle(String id) async =>
+      _circles().detail(await _token(), id, weekStart);
+
+  Future<void> updateCircle(String id, String name, int goal) async =>
+      _circles().update(await _token(), id, name: name.trim(), goal: goal);
+
+  Future<void> leaveCircle(String id) async =>
+      _circles().leave(await _token(), id);
+
+  Future<void> removeFromCircle(String id, String member) async =>
+      _circles().remove(await _token(), id, member);
+
+  /// Sets [deck] for class [id], due [due]: shares the deck (keeping its
+  /// code if already shared) and sets that.
+  Future<void> assignDeck(String id, Deck deck, DateTime due) async {
+    final code = await shareDeck(deck);
+    await _circles().assign(await _token(), id, code, dayKey(due));
+  }
+
+  Future<void> unassign(String id, String assignment) async =>
+      _circles().unassign(await _token(), id, assignment);
+
+  /// The learner's copy of the deck shared as [code], if they added it.
+  Deck? deckFrom(String code) =>
+      decks.where((d) => d.source == code).firstOrNull;
+
+  /// Opens an assignment's deck: the learner's copy, made now if needed.
+  Future<Deck> assignedDeck(Assignment a) async =>
+      deckFrom(a.shareCode) ?? addSharedDeck(await openSharedDeck(a.shareCode));
+
+  /// Unblocks everyone the learner blocked.
+  Future<void> unblockAll() async {
+    final repo = shares;
+    if (repo == null) throw const ShareException(ShareError.unavailable);
+    await repo.unblockAll(await _token());
+  }
+
+  /// Stops sharing [deck]; its link and code stop working.
+  Future<void> unshareDeck(Deck deck) async {
+    final code = sharedDecks[deck.id];
+    final repo = shares;
+    if (code == null || repo == null) return;
+    final token = await auth.idToken();
+    if (token == null) throw const ShareException(ShareError.unauthorized);
+    try {
+      await repo.unpublish(token, code);
+    } on ShareException catch (e) {
+      if (e.error != ShareError.notFound) rethrow;
+    }
+    sharedDecks.remove(deck.id);
+    publicDecks.remove(deck.id);
+    _put(RecordKind.share, deck.id, null);
+    commit();
+  }
+
+  /// The deck shared under [code]. Throws [ShareException].
+  Future<SharedDeck> openSharedDeck(String code) {
+    final repo = shares;
+    if (repo == null) throw const ShareException(ShareError.unavailable);
+    return repo.open(code);
+  }
+
+  /// Copies [shared] into a deck of the learner's own, with new ids, so it
+  /// is learned like any deck they made.
+  Deck addSharedDeck(SharedDeck shared) {
+    final deck = Deck(
+      id: newId(),
+      title: shared.title,
+      description: shared.description,
+      icon: shared.icon,
+      source: shared.code.isEmpty ? null : shared.code,
+      words: [
+        for (final w in shared.words)
+          FlashWord(
+            id: newId(),
+            word: w.word,
+            meaning: w.meaning,
+            phonetic: w.phonetic,
+            example: w.example,
+            partOfSpeech: w.partOfSpeech,
+            definition: w.definition,
+          ),
+      ],
+    );
+    addDeck(deck);
+    return deck;
+  }
+
+  /// Renames [deck], changes its description and gives it [icon]. Any
+  /// deck can be: for one hifive provides, only these are stored, as a deck
+  /// record that restoring lays over the bundled deck; its words and the
+  /// learner's progress stay as they are.
+  void editDeck(
+    Deck deck, {
+    required String title,
+    String? description,
+    required int icon,
+  }) {
+    deck
+      ..title = title.trim().isEmpty ? deck.title : title.trim()
+      ..description = description?.trim() ?? deck.description
+      ..icon = icon;
+    _put(RecordKind.deck, deck.id, deckData(deck, deck.createdAt ?? now()));
+    commit();
+  }
+
   void addDeck(Deck deck) {
+    deck.createdAt ??= now();
     decks.add(deck);
-    _put(RecordKind.deck, deck.id, deckData(deck, now()));
+    _put(RecordKind.deck, deck.id, deckData(deck, deck.createdAt!));
     _putWords(deck, deck.words);
     commit();
   }
@@ -1059,13 +1358,15 @@ class AppState extends ChangeNotifier {
         .inDays;
   }
 
-  /// Days the learner studied: a finished lesson, or any rating of a word
-  /// (Flashcard, Ôn hôm nay, the break after focus). Sample results don't
-  /// count; a focus session alone doesn't either.
+  /// Days the learner studied: a finished lesson, any rating of a word
+  /// (Flashcard, Ôn hôm nay, the break after focus) or a minute of
+  /// listening. Sample results don't count; a focus session alone doesn't
+  /// either.
   Set<String> get studyDays => {
     for (final h in history)
       if (!h.isExample) dayKey(h.date),
     for (final r in rated) dayKey(r.event.at),
+    ...listenLog.studyDays,
   };
   int get streak {
     final days = studyDays;

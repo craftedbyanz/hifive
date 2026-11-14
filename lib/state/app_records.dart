@@ -1,4 +1,5 @@
 import '../domain/garden/garden.dart';
+import '../domain/listening/listening.dart';
 import '../domain/models/models.dart';
 import '../domain/sync/sync.dart';
 import '../domain/vocab/vocab.dart';
@@ -29,6 +30,7 @@ const stringSettings = {
 };
 const boolSettings = {
   'chatFree',
+  'communityRules',
   'showHints',
   'chatTipSeen',
   'onboarded',
@@ -64,6 +66,15 @@ class RestoredState {
   final DateTime? firstUse;
   final List<FocusSession> focusSessions;
 
+  /// Listening, one record per video and day.
+  final List<ListenDay> listenDays;
+
+  /// Codes of the learner's decks shared by link, by deck id.
+  final Map<String, String> sharedDecks;
+
+  /// Ids of shared decks listed in Explore.
+  final Set<String> publicDecks;
+
   /// Ratings of new or due cards, in time order, before the once-a-day rule.
   final List<StudyCredit> studyCredits;
 
@@ -87,6 +98,9 @@ class RestoredState {
     required this.bestScore,
     required this.firstUse,
     this.focusSessions = const [],
+    this.listenDays = const [],
+    this.sharedDecks = const {},
+    this.publicDecks = const {},
     this.studyCredits = const [],
     this.rated = const [],
     required this.hasOwnFirstUse,
@@ -110,6 +124,16 @@ Deck _copyDeck(Deck deck, List<FlashWord> extra) => Deck(
   icon: deck.icon,
   words: [for (final w in deck.words) _copyWord(w), ...extra],
 );
+
+extension on Deck {
+  /// Takes the title, description and icon the learner gave [edit], if any.
+  void rename(Deck? edit) {
+    if (edit == null) return;
+    title = edit.title;
+    description = edit.description;
+    icon = edit.icon;
+  }
+}
 
 FlashWord _copyWord(FlashWord w) => FlashWord(
   id: w.id,
@@ -138,6 +162,7 @@ Map<String, dynamic> deckData(Deck d, DateTime createdAt) => {
   'description': d.description,
   'icon': d.icon,
   'createdAt': createdAt.toIso8601String(),
+  if (d.source != null) 'from': d.source,
 };
 
 Map<String, dynamic> sessionData(StudySession s) => s.toJson()..remove('id');
@@ -172,6 +197,9 @@ RestoredState restore(
   final reviews = <ReviewEvent>[];
   final sessions = <(Hlc, StudySession)>[];
   final focus = <FocusSession>[];
+  final listen = <ListenDay>[];
+  final shared = <String, String>{};
+  final listed = <String>{};
   DateTime? clearedAt, firstUse;
   var hasOwnFirstUse = false;
   var played = 0, xp = 0, best = 0;
@@ -221,6 +249,8 @@ RestoredState restore(
         userDecks.add((
           DateTime.parse(d['createdAt'] as String),
           Deck(
+            createdAt: DateTime.parse(d['createdAt'] as String),
+            source: d['from'] as String?,
             id: r.id,
             title: d['title'] as String,
             description: d['description'] as String,
@@ -250,6 +280,11 @@ RestoredState restore(
         if (score > best) best = score;
       case RecordKind.focus:
         focus.add(FocusSession.fromJson(r.id, d));
+      case RecordKind.listen:
+        listen.add(ListenDay.fromJson(r.id, d));
+      case RecordKind.share:
+        shared[r.id] = d['code'] as String;
+        if (d['public'] == true) listed.add(r.id);
       case RecordKind.legacyStats:
         played += d['gamesPlayed'] as int? ?? 0;
         xp += d['totalXp'] as int? ?? 0;
@@ -268,9 +303,19 @@ RestoredState restore(
     return [for (final (_, w) in sorted) w];
   }
 
-  userDecks.sort((a, b) => a.$1.compareTo(b.$1));
+  // A deck record for a deck hifive provides renames it or changes its
+  // description or icon; its words stay hifive's.
+  final builtInIds = {for (final d in builtIn) d.id};
+  final renamed = {
+    for (final (_, d) in userDecks)
+      if (builtInIds.contains(d.id)) d.id: d,
+  };
+  userDecks
+    ..removeWhere((e) => builtInIds.contains(e.$2.id))
+    ..sort((a, b) => a.$1.compareTo(b.$1));
   final decks = [
-    for (final deck in builtIn) _copyDeck(deck, added(deck.id)),
+    for (final deck in builtIn)
+      _copyDeck(deck, added(deck.id))..rename(renamed[deck.id]),
     for (final (_, deck) in userDecks) deck..words.addAll(added(deck.id)),
   ];
   final credits = <StudyCredit>[];
@@ -313,6 +358,9 @@ RestoredState restore(
     bestScore: best,
     firstUse: firstUse,
     focusSessions: focus,
+    listenDays: listen,
+    sharedDecks: shared,
+    publicDecks: listed,
     studyCredits: credits,
     rated: rated,
     hasOwnFirstUse: hasOwnFirstUse,

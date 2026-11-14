@@ -179,12 +179,23 @@ abstract final class Palette {
   static const menuFocus = Color(0xff5b6cf0);
   static const menuListen = Color(0xffe8598b);
 
+  // Listening screens: the menu's pink, a soft tint of it and a deep ink.
+  static const listenSoft = Color(0xfffdeef3);
+  static const listenInk = Color(0xffb3265a);
+
   // Focus screens: the logo's indigo, lighter at the top (the garden mockup).
   static const focusSkyTop = Color(0xff7c88f8);
   static const focusSkyMiddle = Color(0xff4c52d2);
   static const focusSkyBottom = Color(0xff292d8c);
   static const focusInk = Color(0xff2b2f92);
   static const focusShade = Color(0xb3101236);
+
+  // The focus screen's misty sky: pale and deep drifts of mist, the warm
+  // sunbeam and the motes of light rising in it.
+  static const focusMist = Color(0xffb4bcff);
+  static const focusMistDeep = Color(0xff23277e);
+  static const focusBeam = Color(0xfffff4d2);
+  static const focusMote = Color(0xfffffae6);
 
   /// Focus tag colors, by the index a tag stores. Only append.
   static const tagColors = [
@@ -417,4 +428,22 @@ class ArtTone {
     Color(0xffa6ebcb),
   );
   static const gameShadow = Color(0xff04563b);
+  static const garden = ArtTone(
+    Color(0xff2c37b5),
+    Color(0xff4a5ae6),
+    Color(0xff7f8dfb),
+    Color(0xffdde2ff),
+    Color(0xffeef0ff),
+    Color(0xfffcfcff),
+    Color(0xffb8c1ff),
+  );
+  static const listen = ArtTone(
+    Color(0xffc22a63),
+    Color(0xffe2477f),
+    Color(0xfff57ea6),
+    Color(0xffffdbe7),
+    Color(0xffffeef4),
+    Color(0xfffffcfd),
+    Color(0xffffb6cd),
+  );
 }

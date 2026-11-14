@@ -112,71 +112,173 @@ class FocusTopBar extends StatelessWidget {
   );
 }
 
-/// A ring around the tree: 60 ticks showing the chosen length, or a progress
-/// arc while the session runs.
-class FocusRing extends StatelessWidget {
-  final double value;
-  final bool ticks;
-  const FocusRing({super.key, required this.value, this.ticks = false});
+/// The focus screen's sky: the logo's indigo softened by drifting mist, a
+/// warm sunbeam slanting down onto the plant, and motes of light rising in
+/// it. It moves only under [AmbientMotion].
+class FocusBackdrop extends StatefulWidget {
+  final Widget child;
+  const FocusBackdrop({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-    size: const Size(236, 236),
-    painter: _RingPainter(value, ticks),
-  );
+  State<FocusBackdrop> createState() => _FocusBackdropState();
 }
 
-class _RingPainter extends CustomPainter {
-  final double value;
-  final bool ticks;
-  _RingPainter(this.value, this.ticks);
+class _FocusBackdropState extends State<FocusBackdrop>
+    with SingleTickerProviderStateMixin {
+  final _time = ValueNotifier<double>(4);
+  late final Ticker _ticker = createTicker(
+    (elapsed) => _time.value = 4 + elapsed.inMicroseconds / 1e6,
+  );
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final c = size.center(Offset.zero), r = size.width / 2;
-    final paint = Paint()
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
-    if (ticks) {
-      final on = (value * 60).round();
-      for (var i = 0; i < 60; i++) {
-        final a = -math.pi / 2 + i * math.pi * 2 / 60, lit = i < on;
-        final r0 = lit ? r - 9 : r - 6, r1 = lit ? r : r - 3;
-        paint
-          ..color = Colors.white.withValues(alpha: lit ? .95 : .28)
-          ..strokeWidth = lit ? 2 : 1.4;
-        canvas.drawLine(
-          c + Offset(math.cos(a), math.sin(a)) * r0,
-          c + Offset(math.cos(a), math.sin(a)) * r1,
-          paint,
-        );
-      }
-      return;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final on = AmbientMotion.of(context);
+    if (on && !_ticker.isActive) {
+      _ticker.start();
+    } else if (!on && _ticker.isActive) {
+      _ticker.stop();
     }
-    final rect = Rect.fromCircle(center: c, radius: r - 4);
-    paint
-      ..strokeWidth = 4
-      ..color = Colors.white.withValues(alpha: .2);
-    canvas.drawCircle(c, r - 4, paint);
-    paint.color = Colors.white;
-    canvas.drawArc(
-      rect,
-      -math.pi / 2,
-      math.max(.001, value) * math.pi * 2,
-      false,
-      paint,
-    );
-    final a = -math.pi / 2 + value * math.pi * 2;
-    canvas.drawCircle(
-      c + Offset(math.cos(a), math.sin(a)) * (r - 4),
-      6,
-      Paint()..color = Colors.white,
-    );
   }
 
   @override
-  bool shouldRepaint(_RingPainter old) =>
-      old.value != value || old.ticks != ticks;
+  void dispose() {
+    _ticker.dispose();
+    _time.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Palette.focusSkyTop,
+          Palette.focusSkyMiddle,
+          Palette.focusSkyBottom,
+        ],
+      ),
+    ),
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        RepaintBoundary(child: CustomPaint(painter: _MistPainter(_time))),
+        widget.child,
+      ],
+    ),
+  );
+}
+
+class _MistPainter extends CustomPainter {
+  final ValueNotifier<double> time;
+  _MistPainter(this.time) : super(repaint: time);
+
+  void _glow(Canvas c, Offset o, double rx, double ry, Color color) {
+    c
+      ..save()
+      ..translate(o.dx, o.dy)
+      ..scale(1, ry / rx)
+      ..drawCircle(
+        Offset.zero,
+        rx,
+        Paint()
+          ..shader = RadialGradient(colors: [color, color.withValues(alpha: 0)])
+              .createShader(Rect.fromCircle(center: Offset.zero, radius: rx)),
+      )
+      ..restore();
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final t = time.value, w = size.width, h = size.height;
+    double drift(double speed, double phase) => math.sin(t * speed + phase);
+    // Mist: pale drifts above, a deep one below.
+    _glow(
+      canvas,
+      Offset(w * (.15 + drift(.05, 1) * .04), h * .36),
+      w * .55,
+      h * .1,
+      Palette.focusMist.withValues(alpha: .38),
+    );
+    _glow(
+      canvas,
+      Offset(w * (.9 + drift(.04, 3) * .04), h * .45),
+      w * .5,
+      h * .11,
+      Palette.focusMist.withValues(alpha: .3),
+    );
+    _glow(
+      canvas,
+      Offset(w * (.45 + drift(.03, 5) * .05), h * .86),
+      w * .7,
+      h * .14,
+      Palette.focusMistDeep.withValues(alpha: .5),
+    );
+    // The sun beyond the top right corner, and its beams onto the plant.
+    _glow(
+      canvas,
+      Offset(w * 1.02, -h * .02),
+      w * .55,
+      w * .55,
+      Palette.focusBeam.withValues(alpha: .42),
+    );
+    final target = Offset(w * .5, h * .56);
+    for (final (dx, width, alpha, phase) in const [
+      (.0, .3, .26, 0.0),
+      (.12, .14, .18, 2.0),
+      (-.14, .12, .14, 4.0),
+    ]) {
+      final top = Offset(w * (.82 + dx), -h * .05);
+      final along = target - top;
+      final n = Offset(-along.dy, along.dx) / along.distance;
+      final half = w * width / 2;
+      final a = alpha * (.75 + .25 * math.sin(t * .6 + phase));
+      canvas.drawPath(
+        Path()..addPolygon([
+          top + n * half,
+          top - n * half,
+          target - n * half * .5,
+          target + n * half * .5,
+        ], true),
+        Paint()
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 14)
+          ..shader = LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Palette.focusBeam.withValues(alpha: a),
+              Palette.focusBeam.withValues(alpha: 0),
+            ],
+          ).createShader(Rect.fromPoints(top, target)),
+      );
+    }
+    // Motes of light rising from the sunlit ground.
+    for (var i = 0; i < 12; i++) {
+      final life = (t / (9 + (i % 4) * 1.6) + i / 12) % 1;
+      final x =
+          w * (.3 + ((i * 7.31 * 13.7) % 1) * .42) + math.sin(t * .7 + i) * 6;
+      final y = h * .58 - life * h * .32;
+      final a = math.sin(life * math.pi) * .8;
+      canvas
+        ..drawCircle(
+          Offset(x, y),
+          5,
+          Paint()
+            ..color = Palette.focusMote.withValues(alpha: a * .25)
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
+        )
+        ..drawCircle(
+          Offset(x, y),
+          1.6,
+          Paint()..color = Palette.focusMote.withValues(alpha: a),
+        );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_MistPainter old) => false;
 }
 
 class FocusTimer extends StatelessWidget {
@@ -193,11 +295,11 @@ class FocusTimer extends StatelessWidget {
       key: const ValueKey('focus-timer'),
       style: D
           .text(
-            56,
-            weight: FontWeight.w800,
+            72,
+            weight: FontWeight.w700,
             color: Colors.white,
             height: 1,
-            spacing: -1,
+            spacing: 1,
           )
           .copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
     );
@@ -283,6 +385,41 @@ class FocusLink extends StatelessWidget {
       child: Text(
         label,
         style: D.text(15, weight: FontWeight.w600, color: Colors.white),
+      ),
+    ),
+  );
+}
+
+/// The quiet text button that ends a running session: "Huỷ (n)" while it
+/// can still be cancelled, then stop for the stopwatch, or give up.
+class FocusStopButton extends StatelessWidget {
+  final String id, label;
+  final VoidCallback onTap;
+  const FocusStopButton({
+    super.key,
+    required this.id,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => PressFade(
+    key: ValueKey(id),
+    onTap: onTap,
+    child: Semantics(
+      button: true,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 120, minHeight: 48),
+        child: Center(
+          child: Text(
+            label,
+            style: D.text(
+              17,
+              weight: FontWeight.w600,
+              color: Colors.white.withValues(alpha: .92),
+            ),
+          ),
+        ),
       ),
     ),
   );

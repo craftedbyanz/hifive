@@ -10,7 +10,7 @@ import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
-import 'email_sign_in.dart';
+import 'auth_text.dart';
 import 'welcome_motion.dart';
 
 part 'welcome_scenes.dart';
@@ -117,24 +117,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                       const SizedBox(height: 12),
                     ],
+                    // Google's light button: white, outlined, with its
+                    // four-colour mark.
                     ActionButton(
                       context.t.continueWithGoogle,
                       key: const ValueKey('sign-in-google'),
-                      icon: Icons.g_mobiledata_rounded,
-                      color: s.auth.supportsApple ? Colors.white : D.ink,
-                      foreground: s.auth.supportsApple ? D.ink : Colors.white,
-                      outlined: s.auth.supportsApple,
-                      onTap: busy ? null : () => _signIn(s.signInWithGoogle),
-                    ),
-                    const SizedBox(height: 12),
-                    ActionButton(
-                      context.t.continueWithEmail,
-                      key: const ValueKey('sign-in-email-open'),
-                      icon: CupertinoIcons.mail,
-                      outlined: true,
-                      color: D.ink,
+                      leading: const GoogleLogo(),
+                      color: Colors.white,
                       foreground: D.ink,
-                      onTap: busy ? null : () => showEmailSignIn(context),
+                      outlined: true,
+                      onTap: busy ? null : () => _signIn(s.signInWithGoogle),
                     ),
                     const SizedBox(height: 14),
                     const _Terms(),

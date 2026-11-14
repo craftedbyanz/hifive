@@ -21,6 +21,9 @@ abstract interface class SystemActions {
 
   /// The share sheet with a PNG picture and a line of text.
   Future<bool> shareImage(Uint8List png, String text);
+
+  /// The share sheet with [text].
+  Future<bool> shareText(String text);
 }
 
 class PlatformSystemActions implements SystemActions {
@@ -65,6 +68,12 @@ class PlatformSystemActions implements SystemActions {
     return true;
   });
 
+  @override
+  Future<bool> shareText(String text) => _guard(() async {
+    await SharePlus.instance.share(ShareParams(text: text));
+    return true;
+  });
+
   static Future<bool> _guard(Future<bool> Function() action) async {
     try {
       return await action();
@@ -95,4 +104,12 @@ class RecordingSystemActions implements SystemActions {
   Future<bool> openAppSettings() => _record('settings');
   @override
   Future<bool> shareImage(Uint8List png, String text) => _record('image');
+
+  /// The text of each [shareText], in order.
+  final texts = <String>[];
+  @override
+  Future<bool> shareText(String text) {
+    texts.add(text);
+    return _record('text');
+  }
 }

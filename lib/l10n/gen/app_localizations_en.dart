@@ -638,9 +638,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueWithGoogle => 'Continue with Google';
 
   @override
-  String get continueWithEmail => 'Continue with email';
-
-  @override
   String introPage(int index, int count) {
     return 'Intro $index of $count';
   }
@@ -694,47 +691,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authUnknown => 'Couldn\'t sign in. Please try again.';
-
-  @override
-  String get resetNeedsEmail =>
-      'Enter your email to get a password reset link.';
-
-  @override
-  String get resetSent => 'Password reset email sent.';
-
-  @override
-  String get createAccountTitle => 'Create your Hifive account';
-
-  @override
-  String get emailSignInTitle => 'Sign in with email';
-
-  @override
-  String get emailSignInBody =>
-      'Save your progress and keep learning on any device.';
-
-  @override
-  String get emailHint => 'Email';
-
-  @override
-  String get passwordHint => 'Password';
-
-  @override
-  String get working => 'Working...';
-
-  @override
-  String get createAccount => 'Create account';
-
-  @override
-  String get signIn => 'Sign in';
-
-  @override
-  String get haveAccountSignIn => 'Have an account? Sign in';
-
-  @override
-  String get createNewAccount => 'Create a new account';
-
-  @override
-  String get forgotPassword => 'Forgot password?';
 
   @override
   String get sceneWritingTitle => 'Write a lot,\nfix every line';
@@ -2544,9 +2500,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get focusPickTree => 'Choose a tree';
 
   @override
-  String get focusLocked => 'Locked';
-
-  @override
   String get focusTagEnglish => 'English';
 
   @override
@@ -2641,6 +2594,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get speciesGalaxy => 'Galaxy';
+
+  @override
+  String get speciesOlive => 'Olive';
+
+  @override
+  String get speciesMugunghwa => 'Mugunghwa';
+
+  @override
+  String get gardenGroupStart => 'First steps';
+
+  @override
+  String get gardenGroupMemory => 'Memory';
+
+  @override
+  String get gardenGroupDiligence => 'Diligence';
+
+  @override
+  String get gardenGroupFocus => 'Focus';
+
+  @override
+  String get gardenGroupSeason => 'Seasons';
+
+  @override
+  String get gardenGroupLegend => 'Legends';
+
+  @override
+  String get originVietnam => 'Vietnam';
+
+  @override
+  String get originJapan => 'Japan';
+
+  @override
+  String get originKorea => 'Korea';
+
+  @override
+  String get originChina => 'China';
+
+  @override
+  String get originIndia => 'India';
+
+  @override
+  String get originGermany => 'Germany';
+
+  @override
+  String get originEngland => 'England';
+
+  @override
+  String get originNetherlands => 'Netherlands';
+
+  @override
+  String get originFrance => 'France';
+
+  @override
+  String get originSpain => 'Spain';
+
+  @override
+  String get originGreece => 'Greece';
+
+  @override
+  String get originNorway => 'Norway';
+
+  @override
+  String get originFinland => 'Finland';
+
+  @override
+  String get originRussia => 'Russia';
+
+  @override
+  String get originKazakhstan => 'Kazakhstan';
+
+  @override
+  String get originCanada => 'Canada';
+
+  @override
+  String get originUsa => 'United States';
+
+  @override
+  String get originMexico => 'Mexico';
+
+  @override
+  String get originMadagascar => 'Madagascar';
+
+  @override
+  String get originLegend => 'Legend';
 
   @override
   String get gardenTitle => 'Your garden';
@@ -3155,4 +3192,553 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get listenTip =>
       'Tip: listen once for the gist, then again and save the words you want to use.';
+
+  @override
+  String listenEpisode(int n) {
+    return 'Episode $n';
+  }
+
+  @override
+  String get listenNowPlaying => 'Now playing';
+
+  @override
+  String get listenEpisodes => 'Episodes';
+
+  @override
+  String listenHeardCount(int done, int total) {
+    return '$done/$total heard';
+  }
+
+  @override
+  String listenEpisodeCount(int n) {
+    return '$n episodes';
+  }
+
+  @override
+  String listenAboutHours(int h) {
+    return 'about $h hours';
+  }
+
+  @override
+  String listenMinutesLeft(int m) {
+    return '$m min left';
+  }
+
+  @override
+  String listenMinutes(int m) {
+    return '$m min';
+  }
+
+  @override
+  String get listenResume => 'Keep listening';
+
+  @override
+  String get listenToday => 'Today';
+
+  @override
+  String listenTodayBody(int m, int goal) {
+    return 'You\'ve listened $m/$goal min';
+  }
+
+  @override
+  String get listenGoalDone => 'Today\'s listening goal reached!';
+
+  @override
+  String get listenTodayHint =>
+      'A little every day gets your ear used to English. A minute of listening keeps your streak.';
+
+  @override
+  String get listenMinuteUnit => 'min';
+
+  @override
+  String get listenSources => 'Sources';
+
+  @override
+  String listenEpisodeDone(int n, String title) {
+    return 'Episode $n done! Next: $title';
+  }
+
+  @override
+  String get listenAllDone => 'You\'ve heard every episode here!';
+
+  @override
+  String get listenBack => 'Back 5 seconds';
+
+  @override
+  String get listenForward => 'Forward 5 seconds';
+
+  @override
+  String get listenSpeed => 'Playback speed';
+
+  @override
+  String get listenPlay => 'Play';
+
+  @override
+  String get listenPause => 'Pause';
+
+  @override
+  String get shareDeck => 'Share deck';
+
+  @override
+  String get shareDeckBody =>
+      'Friends enter this code in hifive, or open the link. Only the words and meanings are shared, never your progress.';
+
+  @override
+  String get shareDeckUpdated =>
+      'Opening this again updates the shared deck with your latest words.';
+
+  @override
+  String get shareDeckSending => 'Creating a code…';
+
+  @override
+  String get shareCopy => 'Copy';
+
+  @override
+  String get shareCopied => 'Copied';
+
+  @override
+  String get shareSend => 'Send to friends';
+
+  @override
+  String get shareStop => 'Stop sharing';
+
+  @override
+  String get shareStopTitle => 'Stop sharing this deck?';
+
+  @override
+  String get shareStopBody =>
+      'The code and link will stop working. Anyone who added the deck keeps their copy.';
+
+  @override
+  String get shareStopped => 'Sharing stopped';
+
+  @override
+  String shareMessage(String title, String link, String code) {
+    return 'Learn the deck \"$title\" on hifive: $link\nOr open hifive, go to Decks and choose Enter code: $code';
+  }
+
+  @override
+  String get importDeck => 'Enter code';
+
+  @override
+  String get importTitle => 'Add a shared deck';
+
+  @override
+  String get importHint => '6-character code or link';
+
+  @override
+  String get importOpen => 'View deck';
+
+  @override
+  String get importAdd => 'Add to my decks';
+
+  @override
+  String importAdded(String title) {
+    return 'Added \"$title\"';
+  }
+
+  @override
+  String get importBadCode => 'A code is 6 letters and digits, like K7M2QX.';
+
+  @override
+  String importWordCount(int n) {
+    return '$n words';
+  }
+
+  @override
+  String importMore(int n) {
+    return 'and $n more';
+  }
+
+  @override
+  String get shareErrorNotFound =>
+      'No deck has this code. It may no longer be shared.';
+
+  @override
+  String get shareErrorOffline =>
+      'Couldn\'t connect. Check your connection and try again.';
+
+  @override
+  String get shareErrorSignIn => 'Sharing needs you signed in and online.';
+
+  @override
+  String get shareErrorTooMany =>
+      'You share 100 decks already. Stop sharing some and try again.';
+
+  @override
+  String get shareErrorRejected =>
+      'This deck is too large to share (500 words at most).';
+
+  @override
+  String get helpTitle8 => 'Your garden & Focus';
+
+  @override
+  String get helpBody8 =>
+      'Every day you study, your garden grows a little greener.\n\nTrees that grow from studying\n\n• Each new or due word you review waters your tree. Ten waterings grow a study tree in your garden.\n• Choose your study tree in Garden. The more regularly you study, the more species you unlock.\n\nFocus mode\n\n• Set a time, pick a tag (English, Writing, Work…) and start: your tree grows as you focus.\n• Leave the app for more than 30 seconds or give up and the tree withers. Locking the phone keeps it growing.\n• After a session, review a few due words to make it bloom.\n\nComing soon\n\n• Blocking distracting apps while you focus.\n• Relaxing sounds and breathing exercises.\n• A home screen widget with your growing tree and words to review.';
+
+  @override
+  String get helpTitle9 => 'Listening';
+
+  @override
+  String get helpBody9 =>
+      'Your ear gets used to English by listening a little every day.\n\nAvailable now\n\n• Listening sources hifive picks for each level, starting with REACH\'s A1 podcast.\n• Plays right in the app: back or forward 5 seconds, slow it to 0.75× or 0.5×, drag the time bar.\n• The app remembers where you stopped, plays the next episode and ticks the ones you finished.\n• A minute of listening counts that day toward your streak. Suggested goal: 15 minutes a day.\n• Hear a new word? Tap Save word and it shows up in Today\'s review.\n\nComing soon\n\n• Bilingual subtitles that follow the speech.\n• Shadowing: listen, repeat and record to compare.\n• More sources for every level.';
+
+  @override
+  String get helpTitle10 => 'Community';
+
+  @override
+  String get helpBody10 =>
+      'Studying together makes it easier to keep going. Open Decks and tap the globe to enter Community.\n\nShare a deck\n\n• Open a deck, tap ••• then Share deck to get a 6-character code and a link to send.\n• In Decks, tap Enter code, paste the code or link, preview it and add it to your decks.\n• Only the words and meanings are shared, never your progress.\n\nExplore\n\n• Find public decks, popular or newest, and add them to yours.\n• Turn on Public when sharing to list your deck here (the first time, you agree to the community rules).\n• See something wrong? Report the deck or block its creator.\n\nStudy groups\n\n• Make a group, set a goal of study days a week and send friends the invite code.\n• The week shows who studied which day and who met the goal. Reviewing words, a lesson or a minute of listening all count.\n\nClasses\n\n• Teachers make a class, send students the code and set decks with a due date.\n• Students tap Study to add the deck and review as usual; progress updates by itself.\n• Teachers see how many words each student learned, who finished and who is late.';
+
+  @override
+  String get sharePublic => 'Public in Explore';
+
+  @override
+  String sharePublicOn(String name) {
+    return 'Everyone can find this deck. Shown as: $name';
+  }
+
+  @override
+  String get sharePublicOff => 'Only people with the code or link can open it.';
+
+  @override
+  String get rulesTitle => 'Community rules';
+
+  @override
+  String get rulesBody =>
+      'Public decks help everyone learn. By making a deck public, you agree:\n\n• To share only language-learning content.\n• No offensive, hateful, sexual or violent content, and no one else\'s personal information.\n• No spam or advertising.\n• To use only content you have the right to share.\n\nDecks reported by several people are hidden for review; accounts that break these rules may be suspended.';
+
+  @override
+  String get rulesAccept => 'I agree';
+
+  @override
+  String get exploreTitle => 'Explore decks';
+
+  @override
+  String get exploreSearch => 'Search decks';
+
+  @override
+  String get explorePopular => 'Popular';
+
+  @override
+  String get exploreNewest => 'Newest';
+
+  @override
+  String get exploreEmpty =>
+      'No public decks yet. Share one of yours and make it public to be the first!';
+
+  @override
+  String get exploreNoResults => 'No decks match.';
+
+  @override
+  String get exploreMore => 'Show more';
+
+  @override
+  String exploreMeta(int count, String author) {
+    return '$count words · $author';
+  }
+
+  @override
+  String exploreAdds(int count) {
+    return '$count adds';
+  }
+
+  @override
+  String get exploreAuthorUnknown => 'A hifive learner';
+
+  @override
+  String get exploreUnblock => 'Unblock everyone you blocked';
+
+  @override
+  String get exploreUnblocked => 'Unblocked';
+
+  @override
+  String get reportDeck => 'Report';
+
+  @override
+  String get reportTitle => 'Report this deck';
+
+  @override
+  String get reportOffensive => 'Offensive or inappropriate';
+
+  @override
+  String get reportSpam => 'Spam or advertising';
+
+  @override
+  String get reportWrong => 'Many mistakes';
+
+  @override
+  String get reportCopyright => 'Copyright infringement';
+
+  @override
+  String get reportOther => 'Something else';
+
+  @override
+  String get reportDone => 'Thank you. You won\'t see this deck again.';
+
+  @override
+  String get blockOwner => 'Block creator';
+
+  @override
+  String blockTitle(String author) {
+    return 'Block $author?';
+  }
+
+  @override
+  String get blockBody =>
+      'You won\'t see any of their decks in Explore. You can unblock at the bottom of Explore.';
+
+  @override
+  String get blockDone => 'Blocked';
+
+  @override
+  String get editDeck => 'Edit deck';
+
+  @override
+  String get deckName => 'Deck name';
+
+  @override
+  String get deckIcon => 'Icon';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get deckCreate => 'Create deck';
+
+  @override
+  String get deckOrAi => 'Or let AI fill it with words on the topic';
+
+  @override
+  String get deckMine => 'Your deck';
+
+  @override
+  String get addWords => 'Add words';
+
+  @override
+  String get addWordTitle => 'Add words to the deck';
+
+  @override
+  String get addWordWord => 'Word or phrase';
+
+  @override
+  String get addWordMeaning => 'Meaning';
+
+  @override
+  String get addWordExample => 'Example sentence (optional)';
+
+  @override
+  String get addWordSave => 'Add';
+
+  @override
+  String get addWordDone => 'Done';
+
+  @override
+  String addWordAdded(int n) {
+    return '$n added';
+  }
+
+  @override
+  String get addWordExists => 'This word is already in the deck.';
+
+  @override
+  String get deckDescription => 'Description (optional)';
+
+  @override
+  String get communityTitle => 'Community';
+
+  @override
+  String get tabExplore => 'Explore';
+
+  @override
+  String get tabGroups => 'Groups';
+
+  @override
+  String get tabClasses => 'Classes';
+
+  @override
+  String get groupsIntro =>
+      'Study with friends: set a goal of study days a week and see who studied today.';
+
+  @override
+  String get classesIntro =>
+      'Teachers set decks with a due date and see each student\'s progress.';
+
+  @override
+  String get groupCreate => 'New group';
+
+  @override
+  String get classCreate => 'New class';
+
+  @override
+  String get circleJoin => 'Join with code';
+
+  @override
+  String get groupsEmpty =>
+      'You\'re not in a group yet. Make one and send friends the code.';
+
+  @override
+  String get classesEmpty =>
+      'You\'re not in a class yet. Enter the code your teacher sent, or make a class if you teach.';
+
+  @override
+  String circleMembers(int n) {
+    return '$n members';
+  }
+
+  @override
+  String get circleTeacher => 'Teacher';
+
+  @override
+  String get circleOwner => 'Owner';
+
+  @override
+  String get circleYou => 'You';
+
+  @override
+  String get circleMemberUnknown => 'Member';
+
+  @override
+  String circleGoal(int n) {
+    return 'Goal: $n days a week';
+  }
+
+  @override
+  String get circleGoalLabel => 'Weekly goal';
+
+  @override
+  String circleDays(int n) {
+    return '$n days';
+  }
+
+  @override
+  String get circleNameHint => 'Name';
+
+  @override
+  String get groupCreateTitle => 'New study group';
+
+  @override
+  String get classCreateTitle => 'New class';
+
+  @override
+  String get circleEditTitle => 'Edit name and goal';
+
+  @override
+  String get circleJoinTitle => 'Join a group or class';
+
+  @override
+  String get circleJoinHint => '6-character code';
+
+  @override
+  String get circleCode => 'Invite code';
+
+  @override
+  String get circleInvite => 'Invite';
+
+  @override
+  String groupInviteMessage(String name, String code) {
+    return 'Study with me in the group \"$name\" on hifive! Open hifive, go to Decks, choose Community, Groups, Join with code: $code';
+  }
+
+  @override
+  String classInviteMessage(String name, String code) {
+    return 'Join the class \"$name\" on hifive: open hifive, go to Decks, choose Community, Classes, Join with code: $code';
+  }
+
+  @override
+  String get circleThisWeek => 'This week';
+
+  @override
+  String get circleReached => 'Goal met';
+
+  @override
+  String get circleLeave => 'Leave group';
+
+  @override
+  String get classLeave => 'Leave class';
+
+  @override
+  String circleLeaveTitle(String name) {
+    return 'Leave \"$name\"?';
+  }
+
+  @override
+  String get circleLeaveBody => 'You can join again with the invite code.';
+
+  @override
+  String get circleRemove => 'Remove';
+
+  @override
+  String circleRemoveTitle(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String get circleRemoveBody =>
+      'They can join again if they still have the code.';
+
+  @override
+  String get circleEdit => 'Edit';
+
+  @override
+  String get circleErrorNotFound => 'No group or class has this code.';
+
+  @override
+  String get circleErrorTooMany =>
+      'The group is full, or you\'re in too many groups and classes.';
+
+  @override
+  String get classAssign => 'Set a deck';
+
+  @override
+  String get classAssignTitle => 'Set a deck for the class';
+
+  @override
+  String get classPickDeck => 'Choose a deck';
+
+  @override
+  String get classDue => 'Due';
+
+  @override
+  String get classAssignments => 'Decks set';
+
+  @override
+  String get classNoAssignments => 'No decks set yet.';
+
+  @override
+  String classDueOn(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String classProgress(int done, int total) {
+    return '$done/$total words';
+  }
+
+  @override
+  String classDoneCount(int done, int all) {
+    return '$done of $all students done';
+  }
+
+  @override
+  String get classStudy => 'Study';
+
+  @override
+  String get classDone => 'Done';
+
+  @override
+  String get classLate => 'Late';
+
+  @override
+  String get classStudents => 'Students';
+
+  @override
+  String get classUnassign => 'Remove';
+
+  @override
+  String get classNoStudents =>
+      'No students yet. Send the class the invite code.';
+
+  @override
+  String get classNoDecks => 'Make a deck with words first, then set it.';
 }

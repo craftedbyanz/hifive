@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/core/services/screen_lock.dart';
 import 'package:hifive/domain/garden/garden.dart';
@@ -146,13 +146,48 @@ void main() {
     expect(state.focusSessions.single.outcome, FocusOutcome.done);
   });
 
+  testWidgets('the tree is changed by tapping it, only before starting', (
+    tester,
+  ) async {
+    await open(tester);
+    expect(find.text('Đổi cây'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('focus-change-tree')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('focus-species-pine')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('focus-tree-pine')), findsOneWidget);
+
+    await start(tester);
+    await wait(tester, const Duration(minutes: 1));
+    await tester.tap(find.byKey(const ValueKey('focus-change-tree')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('focus-species-pine')), findsNothing);
+    // After the first seconds the quiet text button gives up instead.
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('focus-give-up')),
+        matching: find.text('Bỏ cuộc'),
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('a locked species cannot be chosen', (tester) async {
     await open(tester);
     await tester.tap(find.byKey(const ValueKey('focus-change-tree')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('focus-species-galaxy')));
+    // A locked species keeps its name, faded under a lock. Cherry opens at
+    // 50 known words, so it is locked in a new garden.
+    expect(find.text('Anh đào'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('focus-species-lock-cherry')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('focus-species-lock-pine')), findsNothing);
+    expect(find.text('Chưa mở'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('focus-species-cherry')));
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('focus-species-galaxy')), findsOneWidget);
+    expect(find.byKey(const ValueKey('focus-species-cherry')), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey('focus-species-pine')));
     await tester.pumpAndSettle();

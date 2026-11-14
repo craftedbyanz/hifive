@@ -73,6 +73,8 @@ void main() {
       (HomeMenuItem.plus, 'menu-art-gem'),
       (HomeMenuItem.flashcards, 'menu-art-cards'),
       (HomeMenuItem.game, 'menu-art-blocks'),
+      (HomeMenuItem.focus, 'menu-art-sprout'),
+      (HomeMenuItem.listen, 'menu-art-headphones'),
     ]) {
       await row(item);
       expect(find.byKey(ValueKey(key)), findsOneWidget, reason: item.name);

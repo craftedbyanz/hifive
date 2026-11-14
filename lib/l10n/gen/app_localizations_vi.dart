@@ -631,9 +631,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get continueWithGoogle => 'Tiếp tục với Google';
 
   @override
-  String get continueWithEmail => 'Tiếp tục với email';
-
-  @override
   String introPage(int index, int count) {
     return 'Giới thiệu $index trên $count';
   }
@@ -687,45 +684,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get authUnknown => 'Không đăng nhập được. Vui lòng thử lại.';
-
-  @override
-  String get resetNeedsEmail => 'Nhập email để nhận liên kết đặt lại mật khẩu.';
-
-  @override
-  String get resetSent => 'Đã gửi email đặt lại mật khẩu.';
-
-  @override
-  String get createAccountTitle => 'Tạo tài khoản Hifive';
-
-  @override
-  String get emailSignInTitle => 'Đăng nhập bằng email';
-
-  @override
-  String get emailSignInBody => 'Lưu tiến độ và học tiếp trên mọi thiết bị.';
-
-  @override
-  String get emailHint => 'Email';
-
-  @override
-  String get passwordHint => 'Mật khẩu';
-
-  @override
-  String get working => 'Đang xử lý...';
-
-  @override
-  String get createAccount => 'Tạo tài khoản';
-
-  @override
-  String get signIn => 'Đăng nhập';
-
-  @override
-  String get haveAccountSignIn => 'Đã có tài khoản? Đăng nhập';
-
-  @override
-  String get createNewAccount => 'Tạo tài khoản mới';
-
-  @override
-  String get forgotPassword => 'Quên mật khẩu?';
 
   @override
   String get sceneWritingTitle => 'Viết thật nhiều,\nsửa từng câu';
@@ -2469,9 +2427,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get focusPickTree => 'Chọn cây';
 
   @override
-  String get focusLocked => 'Chưa mở';
-
-  @override
   String get focusTagEnglish => 'Học tiếng Anh';
 
   @override
@@ -2566,6 +2521,90 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get speciesGalaxy => 'Ngân hà';
+
+  @override
+  String get speciesOlive => 'Ô liu';
+
+  @override
+  String get speciesMugunghwa => 'Mộc cận';
+
+  @override
+  String get gardenGroupStart => 'Khởi đầu';
+
+  @override
+  String get gardenGroupMemory => 'Ghi nhớ';
+
+  @override
+  String get gardenGroupDiligence => 'Chuyên cần';
+
+  @override
+  String get gardenGroupFocus => 'Tập trung';
+
+  @override
+  String get gardenGroupSeason => 'Theo mùa';
+
+  @override
+  String get gardenGroupLegend => 'Huyền thoại';
+
+  @override
+  String get originVietnam => 'Việt Nam';
+
+  @override
+  String get originJapan => 'Nhật Bản';
+
+  @override
+  String get originKorea => 'Hàn Quốc';
+
+  @override
+  String get originChina => 'Trung Quốc';
+
+  @override
+  String get originIndia => 'Ấn Độ';
+
+  @override
+  String get originGermany => 'Đức';
+
+  @override
+  String get originEngland => 'Anh';
+
+  @override
+  String get originNetherlands => 'Hà Lan';
+
+  @override
+  String get originFrance => 'Pháp';
+
+  @override
+  String get originSpain => 'Tây Ban Nha';
+
+  @override
+  String get originGreece => 'Hy Lạp';
+
+  @override
+  String get originNorway => 'Na Uy';
+
+  @override
+  String get originFinland => 'Phần Lan';
+
+  @override
+  String get originRussia => 'Nga';
+
+  @override
+  String get originKazakhstan => 'Kazakhstan';
+
+  @override
+  String get originCanada => 'Canada';
+
+  @override
+  String get originUsa => 'Mỹ';
+
+  @override
+  String get originMexico => 'Mexico';
+
+  @override
+  String get originMadagascar => 'Madagascar';
+
+  @override
+  String get originLegend => 'Truyền thuyết';
 
   @override
   String get gardenTitle => 'Vườn của bạn';
@@ -3077,4 +3116,553 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get listenTip =>
       'Mẹo: nghe một lần để hiểu ý chính, nghe lần hai và lưu những từ bạn muốn dùng được.';
+
+  @override
+  String listenEpisode(int n) {
+    return 'Tập $n';
+  }
+
+  @override
+  String get listenNowPlaying => 'Đang phát';
+
+  @override
+  String get listenEpisodes => 'Danh sách tập';
+
+  @override
+  String listenHeardCount(int done, int total) {
+    return 'Đã nghe $done/$total';
+  }
+
+  @override
+  String listenEpisodeCount(int n) {
+    return '$n tập';
+  }
+
+  @override
+  String listenAboutHours(int h) {
+    return 'khoảng $h giờ';
+  }
+
+  @override
+  String listenMinutesLeft(int m) {
+    return 'còn $m phút';
+  }
+
+  @override
+  String listenMinutes(int m) {
+    return '$m phút';
+  }
+
+  @override
+  String get listenResume => 'Nghe tiếp';
+
+  @override
+  String get listenToday => 'Hôm nay';
+
+  @override
+  String listenTodayBody(int m, int goal) {
+    return 'Bạn đã nghe $m/$goal phút';
+  }
+
+  @override
+  String get listenGoalDone => 'Đạt mục tiêu nghe hôm nay rồi!';
+
+  @override
+  String get listenTodayHint =>
+      'Nghe mỗi ngày một chút để tai quen tiếng Anh. Một phút nghe cũng giữ chuỗi ngày học.';
+
+  @override
+  String get listenMinuteUnit => 'phút';
+
+  @override
+  String get listenSources => 'Nguồn nghe';
+
+  @override
+  String listenEpisodeDone(int n, String title) {
+    return 'Xong tập $n! Tiếp theo: $title';
+  }
+
+  @override
+  String get listenAllDone => 'Bạn đã nghe hết danh sách này!';
+
+  @override
+  String get listenBack => 'Lùi 5 giây';
+
+  @override
+  String get listenForward => 'Tới 5 giây';
+
+  @override
+  String get listenSpeed => 'Tốc độ phát';
+
+  @override
+  String get listenPlay => 'Phát';
+
+  @override
+  String get listenPause => 'Tạm dừng';
+
+  @override
+  String get shareDeck => 'Chia sẻ bộ thẻ';
+
+  @override
+  String get shareDeckBody =>
+      'Bạn bè nhập mã này trong hifive, hoặc mở liên kết. Chỉ từ và nghĩa được chia sẻ, tiến độ học của bạn thì không.';
+
+  @override
+  String get shareDeckUpdated =>
+      'Mỗi lần mở lại đây, bộ thẻ được chia sẻ cập nhật theo các từ mới nhất.';
+
+  @override
+  String get shareDeckSending => 'Đang tạo mã…';
+
+  @override
+  String get shareCopy => 'Sao chép';
+
+  @override
+  String get shareCopied => 'Đã sao chép';
+
+  @override
+  String get shareSend => 'Gửi cho bạn bè';
+
+  @override
+  String get shareStop => 'Ngừng chia sẻ';
+
+  @override
+  String get shareStopTitle => 'Ngừng chia sẻ bộ thẻ?';
+
+  @override
+  String get shareStopBody =>
+      'Mã và liên kết sẽ không dùng được nữa. Ai đã thêm bộ thẻ vẫn giữ bản của họ.';
+
+  @override
+  String get shareStopped => 'Đã ngừng chia sẻ';
+
+  @override
+  String shareMessage(String title, String link, String code) {
+    return 'Học bộ thẻ \"$title\" trên hifive: $link\nHoặc mở hifive, vào Bộ thẻ, chọn Nhập mã: $code';
+  }
+
+  @override
+  String get importDeck => 'Nhập mã';
+
+  @override
+  String get importTitle => 'Nhập bộ thẻ được chia sẻ';
+
+  @override
+  String get importHint => 'Mã 6 ký tự hoặc liên kết';
+
+  @override
+  String get importOpen => 'Xem bộ thẻ';
+
+  @override
+  String get importAdd => 'Thêm vào bộ thẻ của tôi';
+
+  @override
+  String importAdded(String title) {
+    return 'Đã thêm \"$title\"';
+  }
+
+  @override
+  String get importBadCode => 'Mã gồm 6 chữ và số, ví dụ K7M2QX.';
+
+  @override
+  String importWordCount(int n) {
+    return '$n từ';
+  }
+
+  @override
+  String importMore(int n) {
+    return 'và $n từ nữa';
+  }
+
+  @override
+  String get shareErrorNotFound =>
+      'Không tìm thấy bộ thẻ với mã này. Có thể nó đã ngừng được chia sẻ.';
+
+  @override
+  String get shareErrorOffline =>
+      'Không kết nối được. Kiểm tra mạng rồi thử lại.';
+
+  @override
+  String get shareErrorSignIn =>
+      'Bạn cần đăng nhập và có kết nối mạng để chia sẻ.';
+
+  @override
+  String get shareErrorTooMany =>
+      'Bạn đã chia sẻ 100 bộ thẻ. Hãy ngừng chia sẻ bớt rồi thử lại.';
+
+  @override
+  String get shareErrorRejected =>
+      'Bộ thẻ này quá lớn để chia sẻ (tối đa 500 từ).';
+
+  @override
+  String get helpTitle8 => 'Khu vườn & Tập trung';
+
+  @override
+  String get helpBody8 =>
+      'Mỗi ngày bạn học, khu vườn của bạn lại xanh thêm một chút.\n\nCây lớn lên từ việc học\n\n• Mỗi lần ôn một từ mới hoặc một từ đến hạn là một lần tưới cây. Đủ 10 lần, một cây học mọc trong vườn.\n• Chọn loài cây học trong mục Vườn. Học càng đều, càng mở khoá thêm nhiều loài.\n\nChế độ Tập trung\n\n• Đặt thời gian, gắn nhãn (Tiếng Anh, Viết, Công việc…) rồi bắt đầu: cây lớn dần theo thời gian bạn tập trung.\n• Rời app quá 30 giây hoặc bỏ cuộc thì cây héo. Khoá màn hình thì cây vẫn lớn.\n• Xong phiên, ôn vài từ đến hạn để cây nở hoa.\n\nSắp ra mắt\n\n• Chặn các app gây xao nhãng trong lúc tập trung.\n• Âm thanh thư giãn và bài tập thở.\n• Widget màn hình chính cho cây đang lớn và số từ cần ôn.';
+
+  @override
+  String get helpTitle9 => 'Luyện nghe';
+
+  @override
+  String get helpBody9 =>
+      'Tai quen tiếng Anh nhờ nghe mỗi ngày một chút.\n\nĐang có\n\n• Nguồn nghe hifive chọn lọc theo trình độ, bắt đầu với podcast A1 của kênh REACH.\n• Phát ngay trong app: lùi hoặc tới 5 giây, nghe chậm 0.75× hay 0.5×, kéo thanh thời gian.\n• App nhớ chỗ bạn đang nghe, tự chuyển sang tập tiếp theo và đánh dấu tập đã nghe xong.\n• Nghe đủ 1 phút là ngày đó được tính vào chuỗi ngày học. Mục tiêu gợi ý: 15 phút mỗi ngày.\n• Gặp từ lạ thì bấm Lưu từ, từ đó sẽ có trong Ôn hôm nay.\n\nSắp ra mắt\n\n• Phụ đề song ngữ chạy theo lời.\n• Shadowing: nghe rồi nói theo, thu âm để so sánh.\n• Thêm nhiều nguồn nghe cho từng trình độ.';
+
+  @override
+  String get helpTitle10 => 'Cộng đồng';
+
+  @override
+  String get helpBody10 =>
+      'Học cùng nhau thì dễ giữ nhịp hơn. Mở Bộ thẻ rồi bấm biểu tượng quả địa cầu để vào Cộng đồng.\n\nChia sẻ bộ thẻ\n\n• Mở bộ thẻ, chọn ••• rồi Chia sẻ bộ thẻ để nhận mã 6 ký tự và liên kết gửi cho bạn bè.\n• Trong Bộ thẻ, bấm Nhập mã, dán mã hoặc liên kết, xem trước rồi thêm vào bộ của bạn.\n• Chỉ từ và nghĩa được chia sẻ, tiến độ học của bạn thì không.\n\nKhám phá\n\n• Tìm bộ thẻ công khai, xem phổ biến hay mới nhất và thêm vào bộ của bạn.\n• Bật Công khai khi chia sẻ để bộ thẻ của bạn hiện ở đây (lần đầu cần đồng ý quy tắc cộng đồng).\n• Gặp bộ thẻ không phù hợp thì Báo cáo, hoặc Chặn người tạo.\n\nNhóm học\n\n• Tạo nhóm, đặt mục tiêu số ngày học mỗi tuần rồi gửi mã mời cho bạn bè.\n• Bảng tuần cho thấy ai đã học ngày nào và ai đạt mục tiêu. Ôn từ, học bài hay nghe một phút đều được tính.\n\nLớp học\n\n• Giáo viên tạo lớp, gửi mã cho học sinh và giao bộ thẻ có hạn chót.\n• Học sinh bấm Học để thêm bộ thẻ và ôn như bình thường; tiến độ tự cập nhật.\n• Giáo viên xem từng học sinh đã học bao nhiêu từ, ai đã xong, ai trễ hạn.';
+
+  @override
+  String get sharePublic => 'Công khai trong Khám phá';
+
+  @override
+  String sharePublicOn(String name) {
+    return 'Mọi người đều tìm thấy bộ thẻ này. Tên hiển thị: $name';
+  }
+
+  @override
+  String get sharePublicOff => 'Chỉ ai có mã hoặc liên kết mới mở được.';
+
+  @override
+  String get rulesTitle => 'Quy tắc cộng đồng';
+
+  @override
+  String get rulesBody =>
+      'Bộ thẻ công khai giúp mọi người cùng học. Khi công khai, bạn đồng ý:\n\n• Chỉ chia sẻ nội dung học ngôn ngữ.\n• Không có nội dung xúc phạm, thù ghét, khiêu dâm, bạo lực hay thông tin cá nhân của người khác.\n• Không spam, không quảng cáo.\n• Chỉ dùng nội dung bạn có quyền chia sẻ.\n\nBộ thẻ bị nhiều người báo cáo sẽ tạm ẩn để xem xét; tài khoản vi phạm có thể bị khoá.';
+
+  @override
+  String get rulesAccept => 'Tôi đồng ý';
+
+  @override
+  String get exploreTitle => 'Khám phá bộ thẻ';
+
+  @override
+  String get exploreSearch => 'Tìm bộ thẻ';
+
+  @override
+  String get explorePopular => 'Phổ biến';
+
+  @override
+  String get exploreNewest => 'Mới nhất';
+
+  @override
+  String get exploreEmpty =>
+      'Chưa có bộ thẻ công khai nào. Hãy chia sẻ bộ thẻ của bạn và bật Công khai để là người đầu tiên!';
+
+  @override
+  String get exploreNoResults => 'Không tìm thấy bộ thẻ nào khớp.';
+
+  @override
+  String get exploreMore => 'Xem thêm';
+
+  @override
+  String exploreMeta(int count, String author) {
+    return '$count từ · $author';
+  }
+
+  @override
+  String exploreAdds(int count) {
+    return '$count lượt thêm';
+  }
+
+  @override
+  String get exploreAuthorUnknown => 'Người học hifive';
+
+  @override
+  String get exploreUnblock => 'Bỏ chặn mọi người bạn đã chặn';
+
+  @override
+  String get exploreUnblocked => 'Đã bỏ chặn';
+
+  @override
+  String get reportDeck => 'Báo cáo';
+
+  @override
+  String get reportTitle => 'Báo cáo bộ thẻ này';
+
+  @override
+  String get reportOffensive => 'Xúc phạm hoặc không phù hợp';
+
+  @override
+  String get reportSpam => 'Spam hoặc quảng cáo';
+
+  @override
+  String get reportWrong => 'Nhiều chỗ sai';
+
+  @override
+  String get reportCopyright => 'Vi phạm bản quyền';
+
+  @override
+  String get reportOther => 'Lý do khác';
+
+  @override
+  String get reportDone => 'Cảm ơn bạn. Bộ thẻ này sẽ không hiện với bạn nữa.';
+
+  @override
+  String get blockOwner => 'Chặn người tạo';
+
+  @override
+  String blockTitle(String author) {
+    return 'Chặn $author?';
+  }
+
+  @override
+  String get blockBody =>
+      'Bạn sẽ không thấy bộ thẻ nào của người này trong Khám phá nữa. Có thể bỏ chặn ở cuối trang Khám phá.';
+
+  @override
+  String get blockDone => 'Đã chặn';
+
+  @override
+  String get editDeck => 'Sửa bộ thẻ';
+
+  @override
+  String get deckName => 'Tên bộ thẻ';
+
+  @override
+  String get deckIcon => 'Biểu tượng';
+
+  @override
+  String get save => 'Lưu';
+
+  @override
+  String get deckCreate => 'Tạo bộ thẻ';
+
+  @override
+  String get deckOrAi => 'Hoặc để AI tạo sẵn từ theo chủ đề';
+
+  @override
+  String get deckMine => 'Bộ thẻ của bạn';
+
+  @override
+  String get addWords => 'Thêm từ';
+
+  @override
+  String get addWordTitle => 'Thêm từ vào bộ';
+
+  @override
+  String get addWordWord => 'Từ hoặc cụm từ';
+
+  @override
+  String get addWordMeaning => 'Nghĩa';
+
+  @override
+  String get addWordExample => 'Câu ví dụ (không bắt buộc)';
+
+  @override
+  String get addWordSave => 'Thêm';
+
+  @override
+  String get addWordDone => 'Xong';
+
+  @override
+  String addWordAdded(int n) {
+    return 'Đã thêm $n từ';
+  }
+
+  @override
+  String get addWordExists => 'Từ này đã có trong bộ thẻ.';
+
+  @override
+  String get deckDescription => 'Mô tả (không bắt buộc)';
+
+  @override
+  String get communityTitle => 'Cộng đồng';
+
+  @override
+  String get tabExplore => 'Khám phá';
+
+  @override
+  String get tabGroups => 'Nhóm học';
+
+  @override
+  String get tabClasses => 'Lớp học';
+
+  @override
+  String get groupsIntro =>
+      'Học cùng bạn bè: đặt mục tiêu số ngày học mỗi tuần và xem ai đã học hôm nay.';
+
+  @override
+  String get classesIntro =>
+      'Giáo viên giao bộ thẻ có hạn chót và xem tiến độ từng học sinh.';
+
+  @override
+  String get groupCreate => 'Tạo nhóm';
+
+  @override
+  String get classCreate => 'Tạo lớp';
+
+  @override
+  String get circleJoin => 'Vào bằng mã';
+
+  @override
+  String get groupsEmpty =>
+      'Bạn chưa ở nhóm nào. Tạo nhóm rồi gửi mã cho bạn bè.';
+
+  @override
+  String get classesEmpty =>
+      'Bạn chưa ở lớp nào. Nhập mã giáo viên gửi, hoặc tạo lớp nếu bạn là giáo viên.';
+
+  @override
+  String circleMembers(int n) {
+    return '$n thành viên';
+  }
+
+  @override
+  String get circleTeacher => 'Giáo viên';
+
+  @override
+  String get circleOwner => 'Trưởng nhóm';
+
+  @override
+  String get circleYou => 'Bạn';
+
+  @override
+  String get circleMemberUnknown => 'Thành viên';
+
+  @override
+  String circleGoal(int n) {
+    return 'Mục tiêu $n ngày/tuần';
+  }
+
+  @override
+  String get circleGoalLabel => 'Mục tiêu mỗi tuần';
+
+  @override
+  String circleDays(int n) {
+    return '$n ngày';
+  }
+
+  @override
+  String get circleNameHint => 'Tên';
+
+  @override
+  String get groupCreateTitle => 'Tạo nhóm học';
+
+  @override
+  String get classCreateTitle => 'Tạo lớp học';
+
+  @override
+  String get circleEditTitle => 'Sửa tên và mục tiêu';
+
+  @override
+  String get circleJoinTitle => 'Vào nhóm hoặc lớp';
+
+  @override
+  String get circleJoinHint => 'Mã 6 ký tự';
+
+  @override
+  String get circleCode => 'Mã mời';
+
+  @override
+  String get circleInvite => 'Mời bạn';
+
+  @override
+  String groupInviteMessage(String name, String code) {
+    return 'Học cùng mình trong nhóm \"$name\" trên hifive! Mở hifive, vào Bộ thẻ, chọn Cộng đồng, Nhóm học, Vào bằng mã: $code';
+  }
+
+  @override
+  String classInviteMessage(String name, String code) {
+    return 'Vào lớp \"$name\" trên hifive: mở hifive, vào Bộ thẻ, chọn Cộng đồng, Lớp học, Vào bằng mã: $code';
+  }
+
+  @override
+  String get circleThisWeek => 'Tuần này';
+
+  @override
+  String get circleReached => 'Đạt mục tiêu';
+
+  @override
+  String get circleLeave => 'Rời nhóm';
+
+  @override
+  String get classLeave => 'Rời lớp';
+
+  @override
+  String circleLeaveTitle(String name) {
+    return 'Rời \"$name\"?';
+  }
+
+  @override
+  String get circleLeaveBody => 'Bạn có thể vào lại bằng mã mời.';
+
+  @override
+  String get circleRemove => 'Mời ra';
+
+  @override
+  String circleRemoveTitle(String name) {
+    return 'Mời $name ra khỏi nhóm?';
+  }
+
+  @override
+  String get circleRemoveBody => 'Người này có thể vào lại nếu còn mã mời.';
+
+  @override
+  String get circleEdit => 'Sửa';
+
+  @override
+  String get circleErrorNotFound => 'Không tìm thấy nhóm hoặc lớp với mã này.';
+
+  @override
+  String get circleErrorTooMany =>
+      'Nhóm đã đủ người, hoặc bạn đã ở quá nhiều nhóm và lớp.';
+
+  @override
+  String get classAssign => 'Giao bộ thẻ';
+
+  @override
+  String get classAssignTitle => 'Giao bộ thẻ cho lớp';
+
+  @override
+  String get classPickDeck => 'Chọn bộ thẻ';
+
+  @override
+  String get classDue => 'Hạn chót';
+
+  @override
+  String get classAssignments => 'Bộ thẻ được giao';
+
+  @override
+  String get classNoAssignments => 'Chưa có bộ thẻ nào được giao.';
+
+  @override
+  String classDueOn(String date) {
+    return 'Hạn $date';
+  }
+
+  @override
+  String classProgress(int done, int total) {
+    return '$done/$total từ';
+  }
+
+  @override
+  String classDoneCount(int done, int all) {
+    return '$done/$all học sinh đã xong';
+  }
+
+  @override
+  String get classStudy => 'Học';
+
+  @override
+  String get classDone => 'Xong';
+
+  @override
+  String get classLate => 'Trễ hạn';
+
+  @override
+  String get classStudents => 'Học sinh';
+
+  @override
+  String get classUnassign => 'Bỏ giao';
+
+  @override
+  String get classNoStudents => 'Chưa có học sinh. Gửi mã mời cho lớp.';
+
+  @override
+  String get classNoDecks =>
+      'Hãy tạo một bộ thẻ có từ trước, rồi giao cho lớp.';
 }

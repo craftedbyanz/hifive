@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../../core/design/design.dart';
 import '../../core/services/screen_lock.dart';
@@ -281,18 +282,7 @@ class _FocusScreenState extends State<FocusScreen>
       },
       child: Scaffold(
         backgroundColor: Palette.focusSkyMiddle,
-        body: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Palette.focusSkyTop,
-                Palette.focusSkyMiddle,
-                Palette.focusSkyBottom,
-              ],
-            ),
-          ),
+        body: FocusBackdrop(
           child: SafeArea(
             child: Column(
               children: [
@@ -308,24 +298,33 @@ class _FocusScreenState extends State<FocusScreen>
                 ),
                 const Spacer(),
                 SizedBox(
-                  height: 300,
+                  height: 330,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      if (running) FocusRing(value: progress),
-                      AnimatedBuilder(
-                        animation: _bloom,
-                        builder: (context, _) => TreeArt(
-                          key: ValueKey('focus-tree-$_species'),
-                          species: _species,
-                          size: 250,
-                          growth: switch (_phase) {
-                            _Phase.setup => 1,
-                            _Phase.running => .05 + .95 * progress,
-                            _Phase.done || _Phase.withered => 1,
-                          },
-                          withered: _phase == _Phase.withered,
-                          bloom: bloomed ? math.max(_bloom.value, .001) : 0,
+                      PressFade(
+                        key: const ValueKey('focus-change-tree'),
+                        onTap: _phase == _Phase.setup ? _pickTree : null,
+                        child: Semantics(
+                          button: _phase == _Phase.setup,
+                          label: _phase == _Phase.setup
+                              ? t.focusChangeTree
+                              : null,
+                          child: AnimatedBuilder(
+                            animation: _bloom,
+                            builder: (context, _) => TreeArt(
+                              key: ValueKey('focus-tree-$_species'),
+                              species: _species,
+                              size: 330,
+                              growth: switch (_phase) {
+                                _Phase.setup => 1,
+                                _Phase.running => .05 + .95 * progress,
+                                _Phase.done || _Phase.withered => 1,
+                              },
+                              withered: _phase == _Phase.withered,
+                              bloom: bloomed ? math.max(_bloom.value, .001) : 0,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -367,27 +366,22 @@ class _FocusScreenState extends State<FocusScreen>
                 ...switch (_phase) {
                   _Phase.setup => [
                     FocusButton('focus-start', t.focusStart, _start),
-                    FocusLink(
-                      'focus-change-tree',
-                      t.focusChangeTree,
-                      _pickTree,
-                    ),
                   ],
                   _Phase.running => [
-                    FocusLink(
-                      _canCancel
+                    FocusStopButton(
+                      id: _canCancel
                           ? 'focus-cancel'
                           : _stopwatch
                           ? 'focus-stop'
                           : 'focus-give-up',
-                      _canCancel
+                      label: _canCancel
                           ? t.focusCancel(
                               (FocusScreen.cancelWindow - _elapsed).inSeconds,
                             )
                           : _stopwatch
                           ? t.focusStop
                           : t.focusGiveUp,
-                      _stop,
+                      onTap: _stop,
                     ),
                   ],
                   _Phase.done => [
@@ -489,14 +483,14 @@ class SpeciesPicker extends StatelessWidget {
               crossAxisSpacing: 10,
               childAspectRatio: .78,
               children: [
-                for (final s in species)
-                  _SpeciesTile(
-                    id: s.id,
-                    name: speciesName(t, s.id),
-                    open: stats.unlocks(s),
-                    picked: s.id == selected,
-                    locked: t.focusLocked,
-                  ),
+                for (final g in SpeciesGroup.values)
+                  for (final s in speciesInGroup(g))
+                    _SpeciesTile(
+                      id: s.id,
+                      name: speciesName(t, s.id),
+                      open: stats.unlocks(s),
+                      picked: s.id == selected,
+                    ),
               ],
             ),
           ),
@@ -507,60 +501,76 @@ class SpeciesPicker extends StatelessWidget {
 }
 
 class _SpeciesTile extends StatelessWidget {
-  final String id, name, locked;
+  final String id, name;
   final bool open, picked;
   const _SpeciesTile({
     required this.id,
     required this.name,
     required this.open,
     required this.picked,
-    required this.locked,
   });
 
+  /// A locked species is faded, with a lock over it; its name still shows.
   @override
   Widget build(BuildContext context) => PressFade(
     key: ValueKey('focus-species-$id'),
     onTap: open ? () => Navigator.of(context).pop(id) : null,
-    child: Opacity(
-      opacity: open ? 1 : .4,
-      child: Container(
-        decoration: BoxDecoration(
-          color: D.background,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: picked ? Palette.menuFocus : D.line,
-            width: picked ? 2 : 1,
-          ),
+    child: Container(
+      decoration: BoxDecoration(
+        color: D.background,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: picked ? Palette.menuFocus : D.line,
+          width: picked ? 2 : 1,
         ),
-        child: Column(
-          children: [
-            Expanded(child: TreeArt(species: id, size: 72, floating: false)),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (!open) ...[
-                    const Icon(
-                      CupertinoIcons.lock_fill,
-                      size: 10,
-                      color: D.muted,
+      ),
+      child: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Opacity(
+                  opacity: open ? 1 : .35,
+                  child: TreeArt(
+                    species: id,
+                    size: 72,
+                    island: false,
+                    animate: false,
+                  ),
+                ),
+                if (!open)
+                  Container(
+                    key: ValueKey('focus-species-lock-$id'),
+                    width: 26,
+                    height: 26,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: .9),
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(width: 3),
-                  ],
-                  Flexible(
-                    child: Text(
-                      open ? name : locked,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: D.text(11, weight: FontWeight.w700),
+                    child: const Icon(
+                      CupertinoIcons.lock_fill,
+                      size: 13,
+                      color: D.secondary,
                     ),
                   ),
-                ],
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: D.text(
+                11,
+                weight: FontWeight.w700,
+                color: open ? D.ink : D.muted,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );

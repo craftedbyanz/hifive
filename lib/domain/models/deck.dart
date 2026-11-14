@@ -74,15 +74,30 @@ class FlashWord {
 }
 
 class Deck {
-  final String id, title, description;
-  final int icon;
+  final String id;
+
+  /// A deck the learner made can be renamed and given another icon.
+  String title, description;
+
+  /// The deck's icon, by its number in `deckIcons`.
+  int icon;
   final List<FlashWord> words;
+
+  /// When the learner made it; null for decks hifive provides. Kept so an
+  /// edit doesn't move the deck in the list.
+  DateTime? createdAt;
+
+  /// The share code it was copied from, for a deck added from a link,
+  /// Explore or a class; null otherwise.
+  String? source;
   Deck({
     required this.id,
     required this.title,
     required this.description,
     required this.words,
     this.icon = 0,
+    this.createdAt,
+    this.source,
   });
   Map<String, dynamic> toJson() => {
     'id': id,

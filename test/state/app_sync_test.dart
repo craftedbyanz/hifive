@@ -79,7 +79,7 @@ void main() {
     guest.setName('Mai');
     await guest.flush();
     expect(server.requests, 0);
-    await guest.createAccount('mai@x.vn', 'secret1');
+    await guest.signInWithGoogle();
     await guest.sync();
     final uid = guest.user!.uid;
     expect(server.recordsOf(uid).singleWhere((r) => r.id == 'name').data, {

@@ -1,257 +1,398 @@
 part of 'garden_art.dart';
 
-// The land tile, the tree dispatcher that picks a plant's form, and the
-// garden grid.
+// How a plant is shown: its forms as it grows (a sprout, a young plant, then
+// the grown drawing scaled up), the bloom and withered states, the sunlit
+// patch of the focus screen, and the garden grid. Each form is recorded once
+// into a Picture and replayed, so a frame only moves and scales it.
 
+/// How a species looks between its sprout and its grown form.
+enum _Young {
+  /// A thin trunk with a few small clumps in the species' leaf tones.
+  tree,
+
+  /// A small fir of three tiers.
+  conifer,
+
+  /// A short stem with a few fronds.
+  palm,
+
+  /// The grown drawing, only smaller: flowers, shrubs and mushrooms.
+  small,
+}
+
+/// A species' drawing and how it grows.
+class _Art {
+  final void Function(_Pen) draw;
+  final _Young young;
+
+  /// Leaf tones, darkest first, for its young form and fallen leaves.
+  final List<_Tone> tones;
+  final _Tone bark;
+
+  /// How far wind sways it.
+  final double stiff;
+  const _Art(
+    this.draw, {
+    required this.tones,
+    this.young = _Young.tree,
+    this.bark = _wood,
+    this.stiff = 1,
+  });
+}
+
+const _wood = (Color(0xFFC49468), Color(0xFF7E5636));
+
+final _pictures = <String, ui.Picture>{};
+final _bloomSpots = <String, List<Offset>>{};
+
+ui.Picture _record(String key, void Function(_Pen) draw) =>
+    _pictures[key] ??= () {
+      final recorder = ui.PictureRecorder();
+      final pen = _Pen(Canvas(recorder));
+      draw(pen);
+      _bloomSpots[key] = _pickSpots(pen.spots, key.hashCode);
+      return recorder.endRecording();
+    }();
+
+/// Up to nine places for bloom flowers, spread over the crown.
+List<Offset> _pickSpots(List<Offset> spots, int seed) {
+  if (spots.isEmpty) {
+    return [
+      for (var i = 0; i < 7; i++)
+        Offset(100 + math.cos(i * 0.9) * 26, 90 + math.sin(i * 0.9) * 22),
+    ];
+  }
+  final rnd = _rng(seed & 0xffff);
+  final step = math.max(1, spots.length / 9);
+  return [
+    for (var i = 0.0; i < spots.length && i < 9 * step; i += step)
+      spots[i.floor()] + Offset((rnd() - .5) * 12, (rnd() - .5) * 10),
+  ];
+}
+
+// Dry, grey-brown colours for a withered plant.
+const _dry = <double>[
+  .25, .35, .10, 0, 24, //
+  .22, .30, .09, 0, 18,
+  .18, .25, .08, 0, 14,
+  0, 0, 0, 1, 0,
+];
+
+double _step(double v, double a, double b) {
+  final x = ((v - a) / (b - a)).clamp(0.0, 1.0);
+  return x * x * (3 - 2 * x);
+}
+
+/// Draws species [id] at growth [g] in its 200 box, swaying with time [t].
+void _plant(
+  Canvas c,
+  String id,
+  double g,
+  double t,
+  bool still, {
+  double bloom = 0,
+  bool withered = false,
+}) {
+  final key = _arts.containsKey(id) ? id : defaultSpecies;
+  final art = _arts[key]!;
+  final grown = _record('$key/grown', art.draw);
+  final sway = still
+      ? 0.0
+      : (math.sin(t * 1.1 + key.length) * .014 + math.sin(t * 2.3) * .004) *
+            art.stiff;
+
+  void pose(double scale, double rot, double opacity, void Function() draw) {
+    if (opacity <= .001) return;
+    c
+      ..save()
+      ..translate(100, 182)
+      ..rotate(rot)
+      ..scale(scale)
+      ..translate(-100, -182);
+    if (opacity < 1) {
+      c.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, opacity));
+    }
+    draw();
+    if (opacity < 1) c.restore();
+    c.restore();
+  }
+
+  if (withered) {
+    pose(1, -.06, 1, () {
+      c
+        ..saveLayer(null, Paint()..colorFilter = const ColorFilter.matrix(_dry))
+        ..drawPicture(grown)
+        ..restore();
+    });
+    final pen = _Pen(c), rnd = _rng(key.length * 7 + 3);
+    pen.litter(rnd, 7, 90, const [
+      Color(0xFFA88A5E),
+      Color(0xFF8E7450),
+      Color(0xFFB9A07A),
+    ]);
+    return;
+  }
+  final small = art.young == _Young.small;
+  final sprout = 1 - _step(g, .11, .16);
+  final young = small ? 0.0 : _step(g, .11, .16) * (1 - _step(g, .42, .48));
+  final full = small ? _step(g, .11, .16) : _step(g, .42, .48);
+  pose(.45 + .55 * _step(g, 0, .12), sway * 1.6, sprout, () {
+    c.drawPicture(_record('sprout', _sprout));
+  });
+  pose(.75 + .25 * _step(g, .14, .45), sway, young, () {
+    c.drawPicture(_record('$key/young', (p) => _youngForm(p, art)));
+  });
+  final k = small ? .42 + .58 * _step(g, .12, 1) : .62 + .38 * _step(g, .45, 1);
+  pose(k, sway * .8, full, () {
+    c.drawPicture(grown);
+    if (bloom > 0) _bloom(c, _bloomSpots['$key/grown']!, bloom, t, still);
+  });
+}
+
+/// White flowers opening one by one at [spots], each with a glint.
+void _bloom(Canvas c, List<Offset> spots, double bloom, double t, bool still) {
+  final pen = _Pen(c);
+  for (var i = 0; i < spots.length; i++) {
+    final b = (bloom * spots.length * .9 - i * .8).clamp(0.0, 1.0);
+    if (b <= 0) continue;
+    final pop = b < 1 ? b * (1.7 - .7 * b) : 1.0, s = spots[i];
+    pen.flower(
+      s.dx,
+      s.dy,
+      5.6 * pop,
+      Colors.white,
+      const Color(0xFFFFC94A),
+      i * 1.3,
+      edge: const Color(0x33B08AA0),
+    );
+    if (b > .5) {
+      final r = (1.8 + (still ? .4 : math.sin(t * 3 + i)) * .9) * b;
+      final o = s + const Offset(6, -6);
+      c.drawPath(
+        Path()
+          ..moveTo(o.dx, o.dy - r * 2)
+          ..quadraticBezierTo(o.dx, o.dy, o.dx + r * 2, o.dy)
+          ..quadraticBezierTo(o.dx, o.dy, o.dx, o.dy + r * 2)
+          ..quadraticBezierTo(o.dx, o.dy, o.dx - r * 2, o.dy)
+          ..quadraticBezierTo(o.dx, o.dy, o.dx, o.dy - r * 2),
+        Paint()..color = const Color(0xF2FFF6C8),
+      );
+    }
+  }
+}
+
+/// Two seed leaves on curved stems: the first form of every species.
+void _sprout(_Pen p) {
+  p.oval(100, 183, 16, 3.2, const Color(0x472E4A2A));
+  final stem = _Pen(p.c);
+  stem.stroke(
+    Path()
+      ..moveTo(99, 183)
+      ..quadraticBezierTo(98, 166, 90, 152),
+    const Color(0xFF6FAE4E),
+    3,
+  );
+  stem.stroke(
+    Path()
+      ..moveTo(101, 183)
+      ..quadraticBezierTo(103, 170, 110, 162),
+    const Color(0xFF6FAE4E),
+    2.6,
+  );
+  p
+    ..fill(_leaf(91, 153, -2.55, 26, 19), (
+      const Color(0xFF8FCB72),
+      const Color(0xFF3F8048),
+    ))
+    ..line(
+      const Offset(91, 153),
+      const Offset(72, 140),
+      const Color(0x99CDEBB8),
+      .9,
+    )
+    ..fill(_leaf(109, 162, -.35, 20, 15), (
+      const Color(0xFFA6E0B4),
+      const Color(0xFF5FAE84),
+    ))
+    ..line(
+      const Offset(109, 162),
+      const Offset(126, 156),
+      const Color(0x99E2F6E6),
+      .8,
+    );
+}
+
+/// The young form between the sprout and the grown plant.
+void _youngForm(_Pen p, _Art art) {
+  final tones = art.tones;
+  p.ground(100, 183, 26);
+  switch (art.young) {
+    case _Young.conifer:
+      p.fill(_taper(100, 184, 100, 150, 5, 3), art.bark, across: true);
+      final rnd = _rng(9);
+      for (final (top, bot, hw) in const [
+        (128.0, 162.0, 26.0),
+        (108.0, 142.0, 20.0),
+        (90.0, 120.0, 13.0),
+      ]) {
+        for (var i = 0; i < hw * 3; i++) {
+          final u = rnd() * 2 - 1, v = math.sqrt(rnd());
+          final x = 100 + u * hw * v, y = top + (bot - top) * v;
+          final dir = math.atan2(1, u * 1.5) + (rnd() - .5) * .5;
+          final light = -u * .85 + (.45 - v) * .7 + (rnd() - .5) * .4;
+          p.fill(
+            _needle(x, y, dir, 8 + rnd() * 5, 3.2),
+            tones[_toneOf(light, tones.length)],
+          );
+        }
+      }
+    case _Young.palm:
+      p.fill(_taper(100, 184, 102, 140, 7, 5, -3), art.bark, across: true);
+      for (final (a, l) in const [
+        (-2.7, 30.0),
+        (-1.9, 26.0),
+        (-1.2, 28.0),
+        (-.4, 30.0),
+        (-3.3, 24.0),
+      ]) {
+        final light = -math.cos(a) * .4 - math.sin(a) * .4;
+        p.fill(
+          _needle(102, 140, a + .25, l, 9),
+          tones[_toneOf(light, tones.length)],
+        );
+      }
+    case _Young.tree || _Young.small:
+      p
+        ..fill(_taper(100, 184, 100, 128, 5, 2.6, -2), art.bark, across: true)
+        ..fill(_taper(100, 150, 112, 140, 2, 1, 2), art.bark, across: true)
+        ..fill(_leaf(112, 140, -.6, 12, 8), tones[tones.length - 2]);
+      for (final (i, (x, y, r, bias)) in const [
+        (88.0, 128.0, 11.0, .1),
+        (112.0, 126.0, 12.0, -.1),
+        (100.0, 114.0, 15.0, .35),
+      ].indexed) {
+        p.clump(
+          x: x,
+          y: y,
+          r: r,
+          bias: bias,
+          n: (r * 2.4).round(),
+          len: 9,
+          w: 6.5,
+          tones: tones,
+          seed: 70 + i,
+          core: tones.first.$2,
+        );
+      }
+  }
+}
+
+/// A patch of grass in a pool of sunlight, under a plant on the focus screen.
+void _patch(Canvas c) {
+  c
+    ..save()
+    ..translate(100, 170)
+    ..scale(1, .32)
+    ..drawCircle(
+      Offset.zero,
+      124,
+      Paint()
+        ..shader = ui.Gradient.radial(Offset.zero, 124, const [
+          Color(0x59FFF6D6),
+          Color(0x00FFF6D6),
+        ]),
+    )
+    ..scale(1, .29 / .32)
+    ..drawCircle(
+      Offset.zero,
+      86,
+      Paint()
+        ..shader = ui.Gradient.radial(
+          Offset.zero,
+          86,
+          const [
+            Color(0xFAF6FFD9),
+            Color(0xE6CDEE9E),
+            Color(0x669FD58A),
+            Color(0x009FD58A),
+          ],
+          const [0, .45, .78, 1],
+        ),
+    )
+    ..restore();
+}
+
+// The garden grid's land.
 const _grassTop = Color(0xFFB6F2A2), _grassBottom = Color(0xFF84D880);
 const _lipLeft = Color(0xFF5CBE6C), _lipRight = Color(0xFF3FA05A);
 const _soilLeft = [Color(0xFFC48E58), Color(0xFF9A683D)];
 const _soilRight = [Color(0xFF93633A), Color(0xFF6C4425)];
 
 Offset _iso(double cx, double cy, double w, double h, double u, double v) =>
-    _o(cx + (u - v) * w / 2, cy - h / 2 + (u + v) * h / 2);
+    Offset(cx + (u - v) * w / 2, cy - h / 2 + (u + v) * h / 2);
+
+Path _poly(List<Offset> pts) => Path()..addPolygon(pts, true);
 
 /// A diamond of grass [w] wide and [h] tall centred on [cx], [cy], over [d]
-/// of soil; [n] cells a side. A [floating] tile has rocks and a shadow below.
+/// of soil, with [n] cells a side.
 void _land(
-  _Ctx x,
+  Canvas c,
   double cx,
   double cy,
   double w,
   double h,
   double d,
   int n,
-  int seed,
-  bool floating,
 ) {
-  final l = _o(cx - w / 2, cy),
-      r = _o(cx + w / 2, cy),
-      t = _o(cx, cy - h / 2),
-      b = _o(cx, cy + h / 2);
-  final sc = (w / n / 46).clamp(.55, 1.5), rnd = _rng(seed);
-  Offset mid(Offset a, double u, double dy) =>
-      _o(a.dx + (b.dx - a.dx) * u, a.dy + (b.dy - a.dy) * u + dy);
-  if (floating) {
-    x
-      ..save()
-      ..translate(cx, cy + h / 2 + d + h * .42)
-      ..scale(1, .26);
-    _dot(
-      x,
-      0,
-      0,
-      w * .5,
-      _rg(0, 0, 0, 0, 0, w * .5, const [
-        Color.fromRGBO(18, 14, 80, .42),
-        Color.fromRGBO(18, 14, 80, 0),
-      ]),
+  final l = Offset(cx - w / 2, cy), r = Offset(cx + w / 2, cy);
+  final t = Offset(cx, cy - h / 2), b = Offset(cx, cy + h / 2);
+  final down = Offset(0, d), lip = Offset(0, math.max(3.0, d * .24));
+  Paint grad(List<Color> colors) => Paint()
+    ..shader = ui.Gradient.linear(
+      Offset(0, cy),
+      Offset(0, cy + h / 2 + d),
+      colors,
     );
-    x.restore();
-    for (var k = 0; k < 6; k++) {
-      final u = (k + .5) / 6,
-          s = (3.5 + ((k * 7) % 5) * 1.5) * sc * (.5 + u * .9);
-      final pl = mid(l, u, d), pr = mid(r, u, d);
-      _poly(x, [
-        _o(pl.dx - s * 1.3, pl.dy - 1),
-        _o(pl.dx + s * 1.3, pl.dy - 1),
-        _o(pl.dx + s * .3, pl.dy + s * 2),
-      ], _soilLeft[1]);
-      _poly(x, [
-        _o(pr.dx - s * 1.3, pr.dy - 1),
-        _o(pr.dx + s * 1.3, pr.dy - 1),
-        _o(pr.dx - s * .3, pr.dy + s * 2),
-      ], _soilRight[1]);
-    }
-  }
-  _poly(x, [
-    l,
-    b,
-    b + _o(0, d),
-    l + _o(0, d),
-  ], _lg(0, cy, 0, cy + h / 2 + d, _soilLeft));
-  _poly(x, [
-    r,
-    b,
-    b + _o(0, d),
-    r + _o(0, d),
-  ], _lg(0, cy, 0, cy + h / 2 + d, _soilRight));
-  _poly(x, [
-    mid(l, 0, d * .6),
-    mid(l, 1, d * .6),
-    mid(l, 1, d),
-    mid(l, 0, d),
-  ], const Color.fromRGBO(60, 30, 10, .17));
-  _poly(x, [
-    mid(r, 0, d * .6),
-    mid(r, 1, d * .6),
-    mid(r, 1, d),
-    mid(r, 0, d),
-  ], const Color.fromRGBO(40, 18, 6, .22));
-  final stones = (3 + n * 1.5).round();
-  for (var k = 0; k < stones * 2; k++) {
-    final left = k.isEven,
-        p = mid(left ? l : r, .06 + rnd() * .88, d * (.4 + rnd() * .48)),
-        s = (1.5 + rnd() * 2.1) * sc;
-    _ell(
-      x,
-      p.dx,
-      p.dy,
-      s * 1.3,
-      s * .8,
-      left ? .45 : -.45,
-      Color.fromRGBO(255, 228, 190, left ? .42 : .24),
+  c
+    ..drawPath(_poly([l, b, b + down, l + down]), grad(_soilLeft))
+    ..drawPath(_poly([r, b, b + down, r + down]), grad(_soilRight))
+    ..drawPath(_poly([l, b, b + lip, l + lip]), Paint()..color = _lipLeft)
+    ..drawPath(_poly([r, b, b + lip, r + lip]), Paint()..color = _lipRight)
+    ..drawPath(
+      _poly([t, r, b, l]),
+      Paint()
+        ..shader = ui.Gradient.linear(
+          Offset(0, cy - h / 2),
+          Offset(0, cy + h / 2),
+          const [_grassTop, _grassBottom],
+        ),
     );
-  }
-  final lip = math.max(3.0, d * .24), m = math.max(5, (w / 13).round());
-  _poly(x, [l, b, b + _o(0, lip), l + _o(0, lip)], _lipLeft);
-  _poly(x, [r, b, b + _o(0, lip), r + _o(0, lip)], _lipRight);
-  for (var k = 0; k < m; k++) {
-    final u = (k + .5) / m, rr = w / m * .3 * (.8 + ((k * 5) % 3) * .2);
-    final a = mid(l, u, lip), c = mid(r, u, lip);
-    _dot(x, a.dx, a.dy, rr, _lipLeft);
-    _dot(x, c.dx, c.dy, rr, _lipRight);
-  }
-  _poly(x, [
-    t,
-    r,
-    b,
-    l,
-  ], _lg(0, cy - h / 2, 0, cy + h / 2, const [_grassTop, _grassBottom]));
-  if (n > 1) {
-    for (var i = 0; i < n; i++) {
-      for (var j = 0; j < n; j++) {
-        if ((i + j).isOdd) {
-          _poly(x, [
+  final cell = Paint()..color = const Color(0x24FFFFFF);
+  for (var i = 0; i < n; i++) {
+    for (var j = 0; j < n; j++) {
+      if ((i + j).isOdd) {
+        c.drawPath(
+          _poly([
             _iso(cx, cy, w, h, i / n, j / n),
             _iso(cx, cy, w, h, (i + 1) / n, j / n),
             _iso(cx, cy, w, h, (i + 1) / n, (j + 1) / n),
             _iso(cx, cy, w, h, i / n, (j + 1) / n),
-          ], _white(.14));
-        }
-      }
-    }
-  }
-  _line(x, [l, b, r], 1, _white(.5));
-  final specks = (n * n * 1.5 + 5).round();
-  const flowers = [Colors.white, Color(0xFFFFE066), Color(0xFFFFC2D6)];
-  for (var k = 0; k < specks; k++) {
-    final p = _iso(cx, cy, w, h, .06 + rnd() * .88, .06 + rnd() * .88),
-        q = rnd();
-    if (q < .55) {
-      x.begin();
-      for (final dx in const [-1.7, 0.0, 1.7]) {
-        x
-          ..moveTo(p.dx, p.dy)
-          ..lineTo(p.dx + dx * sc, p.dy - (3.2 - dx.abs() * .5) * sc);
-      }
-      x.stroke(const Color.fromRGBO(47, 148, 88, .6), .9 * sc);
-    } else if (q < .86) {
-      for (var a = 0; a < 5; a++) {
-        _dot(
-          x,
-          p.dx + math.cos(a * 1.257) * 1.25 * sc,
-          p.dy + math.sin(a * 1.257) * .85 * sc,
-          .95 * sc,
-          flowers[k % 3],
+          ]),
+          cell,
         );
       }
-      _dot(x, p.dx, p.dy, .7 * sc, const Color(0xFFF59F00));
-    } else {
-      _ell(
-        x,
-        p.dx,
-        p.dy,
-        2.4 * sc,
-        1.4 * sc,
-        0,
-        const Color.fromRGBO(125, 135, 145, .6),
-      );
     }
   }
-}
-
-/// Draws [key] at [px], [py] in a box [s] wide. Below .14 [g] is a sprout;
-/// woody species show a staked sapling up to .45, then fill out.
-void _tree(
-  _Ctx x,
-  double px,
-  double py,
-  double s,
-  String key,
-  double g,
-  double t,
-  bool still, {
-  double bloom = 0,
-  bool dead = false,
-  double pop = 1,
-}) {
-  final sp = _arts[key] ?? _arts[defaultSpecies]!;
-  final e = _Env(t, still ? 0 : _wind(t, px * .07 + py * .05));
-  final sh = (.3 + .7 * math.min(1.0, g)) * sp.shadow;
-  x
-    ..save()
-    ..translate(px, py)
-    ..scale(s / 100 * pop);
-  if (sh > 0 || dead) {
-    final q = dead ? 1.0 : sh;
-    x
-      ..save()
-      ..translate(2, 1.5)
-      ..scale(1, .32);
-    _dot(
-      x,
-      0,
-      0,
-      27 * q,
-      _rg(0, 0, 0, 0, 0, 27 * q, const [
-        Color.fromRGBO(15, 40, 60, .34),
-        Color.fromRGBO(15, 40, 60, .2),
-        Color.fromRGBO(15, 40, 60, 0),
-      ]),
-    );
-    x.restore();
-  }
-  if (dead) {
-    _deadTree(x, e);
-  } else if (g < .14) {
-    _sprout(x, e, g);
-  } else {
-    x.rotate(e.w * .022 * sp.stiff);
-    if (g < .45 && sp.wood) {
-      _sapling(x, e, sp, (g - .14) / .31);
-    } else {
-      final k = sp.wood ? .6 + .4 * (g - .45) / .55 : .42 + .58 * g;
-      x.scale(k);
-      sp.draw(x, e);
-      if (bloom > 0) {
-        final spots = sp.spots;
-        for (var i = 0; i < spots.length; i++) {
-          final b = (bloom * spots.length * .9 - i * .8).clamp(0.0, 1.0),
-              pop = b < 1 ? b * (1.7 - .7 * b) : 1.0;
-          final bx = spots[i].dx + e.w * (1 - spots[i].dy * .03);
-          _blossom(
-            x,
-            bx,
-            spots[i].dy,
-            4.8 * pop,
-            Colors.white,
-            _yolk,
-            i + t * .2,
-          );
-          if (b > .5) {
-            _star4(
-              x,
-              bx + 5.5,
-              spots[i].dy - 5.5,
-              (1.7 + math.sin(t * 3 + i) * .9) * b,
-              _white(.95),
-            );
-          }
-        }
-      }
-    }
-  }
-  x.restore();
+  c.drawPath(
+    Path()
+      ..moveTo(l.dx, l.dy)
+      ..lineTo(t.dx, t.dy)
+      ..lineTo(r.dx, r.dy),
+    Paint()
+      ..color = const Color(0x80FFFFFF)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1,
+  );
 }
 
 /// Cells in a fixed shuffled order, so plants spread over the grid instead
@@ -272,17 +413,15 @@ List<(int, int)> _cellOrder(int n) {
 }
 
 void _garden(
-  _Ctx x,
+  Canvas c,
   double cx,
   double cy,
   double w,
   int n,
   List<Plant> plants,
-  double t,
-  bool still,
 ) {
   final h = w / 2, d = w * .035 + 9, tw = w / n;
-  _land(x, cx, cy, w, h, d, n, n * 17, false);
+  _land(c, cx, cy, w, h, d, n);
   final order = _cellOrder(n);
   final placed =
       [
@@ -294,17 +433,21 @@ void _garden(
       });
   for (final ((i, j), p) in placed) {
     final q = _iso(cx, cy, w, h, (i + .5) / n, (j + .5) / n);
-    _tree(
-      x,
-      q.dx,
-      q.dy + tw * .03,
-      tw * 1.1,
+    final s = tw / 140;
+    c
+      ..save()
+      ..translate(q.dx, q.dy + tw * .04)
+      ..scale(s)
+      ..translate(-100, -182);
+    _plant(
+      c,
       p.species,
       p.growth,
-      t,
-      still,
-      dead: p.withered,
+      7.3,
+      true,
       bloom: p.bloomed ? 1 : 0,
+      withered: p.withered,
     );
+    c.restore();
   }
 }

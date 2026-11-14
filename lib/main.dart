@@ -27,6 +27,8 @@ Future<void> main() async {
     ),
     sync: _api.isEmpty ? null : HttpSyncService(Uri.parse(_api)),
     catalog: _api.isEmpty ? null : HttpCatalogRepository(Uri.parse(_api)),
+    shares: _api.isEmpty ? null : HttpShareRepository(Uri.parse(_api)),
+    circles: _api.isEmpty ? null : HttpCircleRepository(Uri.parse(_api)),
     includeExamples: true,
   );
   await state.load();

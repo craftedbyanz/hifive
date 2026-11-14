@@ -120,7 +120,7 @@ class HomeLowerContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: helpCount,
             separatorBuilder: (_, _) => const SizedBox(width: 16),
-            itemBuilder: (_, i) => HomeHelpCard(index: i),
+            itemBuilder: (_, i) => HomeHelpCard(index: helpOrder[i]),
           ),
         ),
       ],
@@ -506,10 +506,14 @@ class HomeHelpCard extends StatelessWidget {
               right: 0,
               top: 0,
               height: 120,
-              // The first card is hifive's own story; the rest keep their art.
-              child: index == 0
-                  ? const LogoStoryArt()
-                  : CustomPaint(painter: HomeMiniArtwork(index - 1)),
+              // hifive's own cards have their own art; the rest keep theirs.
+              child: switch (index) {
+                0 => const LogoStoryArt(),
+                8 => const GardenFeatureArt(),
+                9 => const ListenFeatureArt(),
+                10 => const CommunityFeatureArt(),
+                _ => CustomPaint(painter: HomeMiniArtwork(index - 1)),
+              },
             ),
             if (index == 5)
               Positioned(

@@ -98,13 +98,15 @@ describe("sync", () => {
     const pushed = await syncAs("u1", "iphone", 0, [
       rec("setting", "voice", { v: "Mia" }, hlc(1, "iphone")),
       rec("session", "s1", { title: "Bài 1" }, hlc(2, "iphone")),
+      rec("listen", "F5QyH36MnVo@2026-11-14", { pos: 90, heard: 90 }, hlc(3, "iphone")),
     ]);
-    expect(pushed.records).toHaveLength(2);
+    expect(pushed.records).toHaveLength(3);
 
     const ipad = await syncAs("u1", "ipad", 0);
     expect(ipad.records.map((r) => [r.kind, r.id, r.data])).toEqual([
       ["setting", "voice", { v: "Mia" }],
       ["session", "s1", { title: "Bài 1" }],
+      ["listen", "F5QyH36MnVo@2026-11-14", { pos: 90, heard: 90 }],
     ]);
     const again = await syncAs("u1", "ipad", ipad.cursor);
     expect(again).toEqual({ cursor: ipad.cursor, hasMore: false, records: [] });

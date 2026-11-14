@@ -39,10 +39,11 @@ Cùng một từ ở cả hai nguồn chỉ có một hồ sơ trí nhớ.
 | Gặp từ | Kho từ của hifive theo trình độ và chủ đề (gói khởi đầu 3 bộ A1, phát từ Worker) | xong, đã deploy |
 | | Bộ thẻ tự tạo, sửa, xoá | xong |
 | | Từ điển, lưu từ (chưa lưu kèm câu gốc) | xong |
-| | Nghe: playlist YouTube phát ngay trong app (mục Nghe trong menu), nguồn do mình chọn trong kho từ, lưu từ vừa nghe; phụ đề tính sau | xong; nguồn đầu tiên: playlist A1 của kênh REACH (gói kho từ 2, chờ deploy) |
+| | Nghe: từng tập YouTube phát ngay trong app (mục Nghe trong menu), danh sách tập, lùi/tới 5 giây, tốc độ 0.5–1.25×, nhớ chỗ đang nghe, tự chuyển tập, phút nghe hôm nay (mục tiêu 15 phút), nghe 1 phút giữ chuỗi ngày học, lưu từ vừa nghe; phụ đề tính sau | xong; nguồn đầu tiên: playlist A1 của kênh REACH, 100/212 tập (gói kho từ 3, chờ deploy) |
 | Hiểu | Thẻ từ: nghĩa, phiên âm, giọng đọc, câu ví dụ | xong |
 | | Cụm từ, cụm đi kèm, nhiều câu ví dụ | chưa làm |
 | Nhớ | Flashcard với lịch ôn FSRS, cùng một từ ở nhiều bộ dùng chung một trí nhớ | xong |
+| | Tự tạo bộ thẻ (tên + 1 trong 24 biểu tượng), tự thêm từ (từ, nghĩa, ví dụ), đổi tên và biểu tượng bộ mình tạo; bộ của hệ thống (bộ có sẵn, kho từ, Từ đã lưu) giữ nguyên | xong |
 | | "Ôn hôm nay" gộp mọi bộ, đề xuất từ mới theo sức học | xong |
 | | Bài tập: chọn nghĩa, gõ từ, nghe viết, điền vào câu | xong |
 | | FlowLetter, game chính tả (chưa nối bộ lõi) | xong |
@@ -115,12 +116,12 @@ Làm từng nấc, sau khi đã có người dùng.
 
 | Nấc | Mô tả | Trạng thái |
 |---|---|---|
-| 1 | Chia sẻ bộ thẻ bằng liên kết hoặc mã | chưa làm |
-| 2 | Khám phá bộ thẻ công khai; lưu hoặc tạo bản sao | chưa làm |
-| 3 | Nhóm học: mã mời, mục tiêu số ngày mỗi tuần | chưa làm |
-| 4 | Lớp học: giáo viên giao bài có hạn, xem báo cáo | chưa làm |
+| 1 | Chia sẻ bộ thẻ bằng liên kết hoặc mã | xong, chờ deploy: menu ••• của bộ thẻ → Chia sẻ (mã 6 ký tự, liên kết, gửi, ngừng chia sẻ); Bộ thẻ → Nhập mã (dán mã hoặc liên kết, xem trước, thêm bản sao). Bấm liên kết mở trang web có mã; mở thẳng app từ liên kết làm sau |
+| 2 | Khám phá bộ thẻ công khai; lưu hoặc tạo bản sao | xong, chờ deploy: công tắc Công khai khi chia sẻ (đồng ý quy tắc cộng đồng lần đầu, hiện tên trong Hồ sơ); Bộ thẻ → quả địa cầu → Khám phá (tìm, Phổ biến/Mới nhất, thêm bản sao, đếm lượt thêm); Báo cáo (3 người báo cáo thì tự ẩn), Chặn người tạo, Bỏ chặn tất cả. Chưa có trang duyệt báo cáo cho quản trị |
+| 3 | Nhóm học: mã mời, mục tiêu số ngày mỗi tuần | xong, chờ deploy: Bộ thẻ → quả địa cầu → Cộng đồng → Nhóm học: tạo nhóm (tên, mục tiêu 1–7 ngày), vào bằng mã, mời bạn, bảng tuần T2–CN (ôn từ, bài học, 1 phút nghe đều tính), trưởng nhóm sửa tên/mục tiêu và mời người ra, rời nhóm |
+| 4 | Lớp học: giáo viên giao bài có hạn, xem báo cáo | xong, chờ deploy: giáo viên tạo lớp, giao một bộ thẻ của mình với hạn chót, xem từng học sinh học bao nhiêu từ, Xong/Trễ hạn; học sinh bấm Học để thêm và ôn, tiến độ tính từ lượt ôn thật. Chưa có thông báo khi được giao bài |
 
-Lưu ý: nội dung do người dùng tạo cần báo cáo vi phạm và chặn người dùng (App Store bắt buộc), kèm rủi ro bản quyền. Hoàn thành bài giao nên đi qua bộ lõi, để chỉ có một hệ thống tiến độ.
+Lưu ý: nội dung do người dùng tạo cần báo cáo vi phạm và chặn người dùng (App Store bắt buộc), kèm rủi ro bản quyền: đã có báo cáo, chặn, quy tắc cộng đồng; còn thiếu trang duyệt báo cáo cho quản trị. Hoàn thành bài giao đi qua bộ lõi: server đọc lượt ôn đã đồng bộ, nên chỉ có một hệ thống tiến độ.
 
 ## 6. Nền tảng
 
@@ -130,6 +131,7 @@ Lưu ý: nội dung do người dùng tạo cần báo cáo vi phạm và chặn
 | Đăng nhập Apple | tắt, chờ Apple Developer Program |
 | Lưu offline (SQLite), đồng bộ nhiều máy (Cloudflare Worker + D1) | xong, chưa thử trên máy thật |
 | Đổi ngôn ngữ app (4 thứ tiếng) | xong, chưa xem chữ Trung và Hàn trên máy thật |
+| Hifive 101: bài Câu chuyện của hifive, Khu vườn & Tập trung, Luyện nghe, Cộng đồng (mỗi bài ghi rõ phần đang có và phần sắp ra mắt), rồi các bài tính năng cũ | xong |
 | Xoá tài khoản (App Store bắt buộc) | chưa làm |
 | Trang chính sách, landing page, email hỗ trợ | chưa làm |
 | Báo lỗi và phân tích (Crashlytics, Analytics) | chưa làm |

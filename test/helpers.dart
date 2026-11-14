@@ -31,6 +31,8 @@ AppState fresh({
   ConversationRepository? conversation,
   DeckGenerator? deckGenerator,
   InsightRepository? insights,
+  ShareRepository? shares,
+  CircleRepository? circles,
   bool onboarded = true,
   // Tests read the Vietnamese copy (see flutter_test_config.dart).
   String appLanguage = 'vi',
@@ -49,6 +51,8 @@ AppState fresh({
             const MockConversationRepository(latency: Duration.zero),
         deckGenerator: deckGenerator,
         insights: insights,
+        shares: shares,
+        circles: circles,
         now: () => DateTime(2026, 11, 1, 1, 43),
       )
       ..onboarded = onboarded

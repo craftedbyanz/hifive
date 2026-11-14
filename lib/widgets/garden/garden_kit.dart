@@ -1,645 +1,438 @@
 part of 'garden_art.dart';
 
-// Drawing kit for the garden art. It mirrors the 2D canvas calls the approved
-// mockup (`docs/mockups/garden.html`) was drawn with, so each species ports
-// line by line. Trees are drawn in a 100-unit box with the base at 0,0 and up
-// as negative y.
+// The drawing kit every plant is built from: seeded randomness, leaf, petal
+// and branch shapes, and clumps of leaves or flowers. Plants are drawn in a
+// 200 × 200 box with the foot at (100, 182), lit from the upper left: each
+// leaf carries its own soft gradient and leaves are laid from shaded to lit,
+// so the lit ones sit on top.
 
 const _tau = math.pi * 2;
 
-/// A seeded generator, the same sequence as the mockup's, so speckles and
-/// petals land in the same places on every frame.
+/// A light and a dark end of one leaf tone.
+typedef _Tone = (Color, Color);
+
+/// Xorshift32 from [seed], so a plant draws the same every time.
 double Function() _rng(int seed) {
-  var s = seed & 0xFFFFFFFF;
-  if (s == 0) s = 1;
+  var s = (seed * 2654435761 + 1013904223) & 0xFFFFFFFF;
+  if (s == 0) s = 0x9E3779B9;
   return () {
-    s = (s * 1664525 + 1013904223) & 0xFFFFFFFF;
+    s ^= (s << 13) & 0xFFFFFFFF;
+    s ^= s >> 17;
+    s ^= (s << 5) & 0xFFFFFFFF;
     return s / 4294967296;
   };
 }
 
-/// Gusts: a slow swell times two quicker sways, between about -1 and 1.
-double _wind(double t, double ph) {
-  final g = .55 + .45 * math.sin(t * .31 + ph * .7);
-  return (math.sin(t * 1.15 + ph) * .65 + math.sin(t * 2.6 + ph * 1.9) * .35) *
-      g;
+double _angDiff(double target, double a) {
+  final d = (target - a) % _tau;
+  return d > math.pi ? d - _tau : d;
 }
 
-Color _a(Color c, double a) => c.withValues(alpha: c.a * a);
-Color _white(double a) => Color.fromRGBO(255, 255, 255, a);
+/// Which of [n] tones a leaf lit by [light] (about -1 to 1) takes.
+int _toneOf(double light, int n) =>
+    ((light + 1.1) / 2.2 * n).floor().clamp(0, n - 1);
 
-/// The time and wind a tree is drawn with.
-class _Env {
-  final double t, w;
-  const _Env(this.t, this.w);
+/// The shape of the leaves in a clump.
+enum _Shape { oval, needle, star, fan, slim, round }
+
+Offset Function(double a, double b) _frame(double bx, double by, double ang) {
+  final dx = math.cos(ang), dy = math.sin(ang);
+  return (a, b) => Offset(bx + dx * a - dy * b, by + dy * a + dx * b);
 }
 
-/// A thin layer over [Canvas] with a current path, like a 2D context.
-class _Ctx {
-  final Canvas c;
-  _Ctx(this.c);
+/// A soft, round-tipped leaf from ([bx], [by]) pointing at [ang].
+Path _leaf(double bx, double by, double ang, double len, double w) {
+  final p = _frame(bx, by, ang);
+  final a1 = p(len * .18, w * .62), a2 = p(len * .78, w * .56);
+  final b1 = p(len * .78, -w * .56), b2 = p(len * .18, -w * .62);
+  final tip = p(len, 0);
+  return Path()
+    ..moveTo(bx, by)
+    ..cubicTo(a1.dx, a1.dy, a2.dx, a2.dy, tip.dx, tip.dy)
+    ..cubicTo(b1.dx, b1.dy, b2.dx, b2.dy, bx, by)
+    ..close();
+}
 
-  Path _p = Path();
-  double alpha = 1;
-  final _alphas = <double>[];
+/// A narrow leaf or needle, widest near its base and sharp at the tip.
+Path _needle(double bx, double by, double ang, double len, double w) {
+  final p = _frame(bx, by, ang);
+  final a1 = p(len * .25, w * .55), a2 = p(len * .7, w * .32);
+  final b1 = p(len * .7, -w * .32), b2 = p(len * .25, -w * .55);
+  final tip = p(len, 0);
+  return Path()
+    ..moveTo(bx, by)
+    ..cubicTo(a1.dx, a1.dy, a2.dx, a2.dy, tip.dx, tip.dy)
+    ..cubicTo(b1.dx, b1.dy, b2.dx, b2.dy, bx, by)
+    ..close();
+}
 
-  void save() {
-    c.save();
-    _alphas.add(alpha);
+/// A five-lobed maple leaf.
+Path _star(double bx, double by, double ang, double len, double w) {
+  final p = _frame(bx, by, ang);
+  const tips = [-1.15, -.58, 0.0, .58, 1.15];
+  const reach = [.58, .86, 1.0, .86, .58];
+  Offset at(double a, double r) =>
+      p(math.cos(a) * len * r, math.sin(a) * w * r * 1.2);
+  final path = Path()..moveTo(bx, by);
+  var v = at(-1.5, .2);
+  path.lineTo(v.dx, v.dy);
+  for (var i = 0; i < 5; i++) {
+    final t = at(tips[i], reach[i]);
+    path.lineTo(t.dx, t.dy);
+    v = at(i < 4 ? (tips[i] + tips[i + 1]) / 2 : 1.5, i < 4 ? .42 : .2);
+    path.lineTo(v.dx, v.dy);
   }
+  return path..close();
+}
 
-  void restore() {
-    c.restore();
-    alpha = _alphas.removeLast();
-  }
+/// A ginkgo fan on a short stalk, notched in the middle.
+Path _fan(double bx, double by, double ang, double len, double w) {
+  final p = _frame(bx, by, ang);
+  final s = p(len * .3, 0),
+      l = p(len * .78, -w * .75),
+      r = p(len * .78, w * .75);
+  final cl = p(len * 1.05, -w * .42), cr = p(len * 1.05, w * .42);
+  final n = p(len * .8, 0);
+  return Path()
+    ..moveTo(bx, by)
+    ..lineTo(s.dx, s.dy)
+    ..lineTo(l.dx, l.dy)
+    ..quadraticBezierTo(cl.dx, cl.dy, n.dx, n.dy)
+    ..quadraticBezierTo(cr.dx, cr.dy, r.dx, r.dy)
+    ..lineTo(s.dx, s.dy)
+    ..close();
+}
 
-  void translate(double x, double y) => c.translate(x, y);
-  void rotate(double r) => c.rotate(r);
-  void scale(double x, [double? y]) => c.scale(x, y ?? x);
+Path _shape(_Shape s, double bx, double by, double ang, double len, double w) =>
+    switch (s) {
+      _Shape.needle || _Shape.slim => _needle(bx, by, ang, len, w),
+      _Shape.star => _star(bx, by, ang, len, w),
+      _Shape.fan => _fan(bx, by, ang, len, w),
+      _Shape.oval || _Shape.round => _leaf(bx, by, ang, len, w),
+    };
 
-  void begin() => _p = Path();
-  void moveTo(double x, double y) => _p.moveTo(x, y);
-  void lineTo(double x, double y) => _p.lineTo(x, y);
-  void quad(double cx, double cy, double x, double y) =>
-      _p.quadraticBezierTo(cx, cy, x, y);
-  void cubic(double ax, double ay, double bx, double by, double x, double y) =>
-      _p.cubicTo(ax, ay, bx, by, x, y);
-  void close() => _p.close();
-  void arc(double x, double y, double r, double a0, double a1) => _p.arcTo(
-    Rect.fromCircle(center: Offset(x, y), radius: r),
-    a0,
-    a1 - a0,
-    false,
+/// A branch or trunk from ([x1], [y1]) to ([x2], [y2]), [w1] wide at its
+/// base and [w2] at its end, bowed by [bend] to its left.
+Path _taper(
+  double x1,
+  double y1,
+  double x2,
+  double y2,
+  double w1,
+  double w2, [
+  double bend = 0,
+]) {
+  final dx = x2 - x1,
+      dy = y2 - y1,
+      l = math.max(1e-6, math.sqrt(dx * dx + dy * dy));
+  final nx = -dy / l, ny = dx / l;
+  final cx = (x1 + x2) / 2 + nx * bend, cy = (y1 + y2) / 2 + ny * bend;
+  final wm = (w1 + w2) / 4;
+  return Path()
+    ..moveTo(x1 + nx * w1 / 2, y1 + ny * w1 / 2)
+    ..quadraticBezierTo(
+      cx + nx * wm,
+      cy + ny * wm,
+      x2 + nx * w2 / 2,
+      y2 + ny * w2 / 2,
+    )
+    ..lineTo(x2 - nx * w2 / 2, y2 - ny * w2 / 2)
+    ..quadraticBezierTo(
+      cx - nx * wm,
+      cy - ny * wm,
+      x1 - nx * w1 / 2,
+      y1 - ny * w1 / 2,
+    )
+    ..close();
+}
+
+/// The point at [t] along the bowed line that [_taper] draws.
+Offset _along(
+  double x1,
+  double y1,
+  double x2,
+  double y2,
+  double bend,
+  double t,
+) {
+  final dx = x2 - x1,
+      dy = y2 - y1,
+      l = math.max(1e-6, math.sqrt(dx * dx + dy * dy));
+  final cx = (x1 + x2) / 2 - dy / l * bend, cy = (y1 + y2) / 2 + dx / l * bend;
+  final u = 1 - t;
+  return Offset(
+    u * u * x1 + 2 * u * t * cx + t * t * x2,
+    u * u * y1 + 2 * u * t * cy + t * t * y2,
   );
-  void rrect(double x, double y, double w, double h, double r) =>
-      _p.addRRect(RRect.fromLTRBR(x, y, x + w, y + h, Radius.circular(r)));
+}
 
-  Paint _paint(Object f) {
-    final p = Paint()..isAntiAlias = true;
-    if (f is Color) {
-      p.color = _a(f, alpha);
-    } else {
-      p
-        ..shader = f as Shader
-        ..color = Color.fromRGBO(0, 0, 0, alpha);
-    }
-    return p;
+/// A branch: base, end, widths and bow, as [_taper] takes them.
+typedef _Limb = (double, double, double, double, double, double, double);
+
+/// Paints onto a canvas in the plant's box, and collects the places where a
+/// bloom may open its flowers.
+class _Pen {
+  _Pen(this.c);
+  final Canvas c;
+  final spots = <Offset>[];
+
+  /// [p] with a gradient across its bounds: from the upper left by default,
+  /// left to right with [across], top to bottom with [down].
+  void fill(Path p, _Tone t, {bool across = false, bool down = false}) {
+    final r = p.getBounds();
+    final a = down ? r.topCenter : (across ? r.centerLeft : r.topLeft);
+    final b = down ? r.bottomCenter : (across ? r.centerRight : r.bottomRight);
+    c.drawPath(p, Paint()..shader = ui.Gradient.linear(a, b, [t.$1, t.$2]));
   }
 
-  void fill(Object f) => c.drawPath(_p, _paint(f));
-  void stroke(Color col, double w) => c.drawPath(
-    _p,
-    _paint(col)
+  void solid(Path p, Color color) => c.drawPath(p, Paint()..color = color);
+
+  void limbs(List<_Limb> list, _Tone bark) {
+    for (final b in list) {
+      fill(
+        _taper(b.$1, b.$2, b.$3, b.$4, b.$5, b.$6, b.$7),
+        bark,
+        across: true,
+      );
+    }
+  }
+
+  /// A sphere lit from the upper left: fruit, berries, pebbles.
+  void ball(double x, double y, double r, Color lit, Color mid, Color dark) {
+    c.drawCircle(
+      Offset(x, y),
+      r,
+      Paint()
+        ..shader = ui.Gradient.radial(
+          Offset(x - .3 * r, y - .4 * r),
+          1.6 * r,
+          [lit, mid, dark],
+          const [0, .55, 1],
+        ),
+    );
+  }
+
+  void oval(
+    double x,
+    double y,
+    double rx,
+    double ry,
+    Color color, [
+    double rot = 0,
+  ]) {
+    c
+      ..save()
+      ..translate(x, y)
+      ..rotate(rot)
+      ..drawOval(
+        Rect.fromCenter(center: Offset.zero, width: rx * 2, height: ry * 2),
+        Paint()..color = color,
+      )
+      ..restore();
+  }
+
+  void dot(double x, double y, double r, Color color) =>
+      c.drawCircle(Offset(x, y), r, Paint()..color = color);
+
+  void line(Offset a, Offset b, Color color, double w) => c.drawLine(
+    a,
+    b,
+    Paint()
+      ..color = color
+      ..strokeWidth = w
+      ..strokeCap = StrokeCap.round,
+  );
+
+  void stroke(Path p, Color color, double w) => c.drawPath(
+    p,
+    Paint()
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = w
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round,
   );
-  void clip() => c.clipPath(_p);
-  void rect(double x, double y, double w, double h, Object f) =>
-      c.drawRect(Rect.fromLTWH(x, y, w, h), _paint(f));
-}
 
-Shader _lg(double x0, double y0, double x1, double y1, List<Color> cs) =>
-    ui.Gradient.linear(Offset(x0, y0), Offset(x1, y1), cs, _stops(cs.length));
-
-Shader _rg(
-  double fx,
-  double fy,
-  double fr,
-  double cx,
-  double cy,
-  double r,
-  List<Color> cs,
-) => ui.Gradient.radial(
-  Offset(cx, cy),
-  r,
-  cs,
-  _stops(cs.length),
-  TileMode.clamp,
-  null,
-  Offset(fx, fy),
-  fr,
-);
-
-List<double> _stops(int n) => [
-  for (var i = 0; i < n; i++) n > 1 ? i / (n - 1) : 0,
-];
-
-void _poly(_Ctx x, List<Offset> p, Object f) {
-  x.begin();
-  x.moveTo(p[0].dx, p[0].dy);
-  for (var i = 1; i < p.length; i++) {
-    x.lineTo(p[i].dx, p[i].dy);
+  /// The soft shadow a plant stands on.
+  void ground(double cx, double cy, double rx) {
+    c
+      ..save()
+      ..translate(cx, cy)
+      ..scale(1, .17)
+      ..drawCircle(
+        Offset.zero,
+        rx,
+        Paint()
+          ..shader = ui.Gradient.radial(
+            Offset.zero,
+            rx,
+            const [Color(0x5224402A), Color(0x2124402A), Color(0x0024402A)],
+            const [0, .6, 1],
+          ),
+      )
+      ..restore();
   }
-  x.close();
-  x.fill(f);
-}
 
-void _dot(_Ctx x, double a, double b, double r, Object f) {
-  if (!(r > 0)) return;
-  x.c.drawCircle(Offset(a, b), r, x._paint(f));
-}
-
-void _ell(
-  _Ctx x,
-  double a,
-  double b,
-  double rx,
-  double ry,
-  double rot,
-  Object f,
-) {
-  if (!(rx > 0 && ry > 0)) return;
-  x.c
-    ..save()
-    ..translate(a, b)
-    ..rotate(rot)
-    ..drawOval(
-      Rect.fromCenter(center: Offset.zero, width: rx * 2, height: ry * 2),
-      x._paint(f),
-    )
-    ..restore();
-}
-
-void _line(_Ctx x, List<Offset> p, double w, Color c) {
-  x.begin();
-  x.moveTo(p[0].dx, p[0].dy);
-  for (var i = 1; i < p.length; i++) {
-    x.lineTo(p[i].dx, p[i].dy);
-  }
-  x.stroke(c, w);
-}
-
-void _curve(_Ctx x, Offset a, Offset c, Offset b, double w, Color col) {
-  x
-    ..begin()
-    ..moveTo(a.dx, a.dy)
-    ..quad(c.dx, c.dy, b.dx, b.dy)
-    ..stroke(col, w);
-}
-
-Offset _qpt(Offset a, Offset c, Offset b, double u) {
-  final v = 1 - u;
-  return a * (v * v) + c * (2 * v * u) + b * (u * u);
-}
-
-const _o = Offset.new;
-
-/// Five tones of one hue, from shadow [u] to highlight [h].
-class _Tone {
-  final Color u, d, m, l, h;
-  const _Tone(this.u, this.d, this.m, this.l, this.h);
-  Color get hf => _a(h, .55);
-  Color get uf => _a(u, .3);
-}
-
-const _green = _Tone(
-  Color(0xFF1C6B45),
-  Color(0xFF2F9458),
-  Color(0xFF4DBB6A),
-  Color(0xFFA2EC93),
-  Color(0xFFD4FAB8),
-);
-const _deep = _Tone(
-  Color(0xFF125A39),
-  Color(0xFF1F8450),
-  Color(0xFF2FA866),
-  Color(0xFF78DA90),
-  Color(0xFFB4F2BC),
-);
-const _lime = _Tone(
-  Color(0xFF4A8A2C),
-  Color(0xFF6BAE3F),
-  Color(0xFF8FCB52),
-  Color(0xFFCBF08A),
-  Color(0xFFEAFBBC),
-);
-const _pink = _Tone(
-  Color(0xFFCF6494),
-  Color(0xFFEE8FB5),
-  Color(0xFFFFB3CF),
-  Color(0xFFFFE3ED),
-  Color(0xFFFFFFFF),
-);
-const _fire = _Tone(
-  Color(0xFFB4381A),
-  Color(0xFFDF5A22),
-  Color(0xFFF78A2F),
-  Color(0xFFFFC866),
-  Color(0xFFFFE7A6),
-);
-const _gold = _Tone(
-  Color(0xFFB48512),
-  Color(0xFFDBAA22),
-  Color(0xFFF4CC3F),
-  Color(0xFFFFEC94),
-  Color(0xFFFFF8CF),
-);
-const _red = _Tone(
-  Color(0xFFA81F2B),
-  Color(0xFFD4303A),
-  Color(0xFFF2514B),
-  Color(0xFFFF9A7A),
-  Color(0xFFFFD0B8),
-);
-const _cosmos = _Tone(
-  Color(0xFF1E1663),
-  Color(0xFF3B2FA3),
-  Color(0xFF6C5CE7),
-  Color(0xFFA9A0FF),
-  Color(0xFFDCD8FF),
-);
-
-/// Bark: light, middle and dark.
-class _Bark {
-  final Color l, m, d;
-  const _Bark(this.l, this.m, this.d);
-}
-
-const _bark = _Bark(Color(0xFFB07A47), Color(0xFF8A5A33), Color(0xFF5F3A1D));
-const _barkD = _Bark(Color(0xFF8A6050), Color(0xFF684338), Color(0xFF452A22));
-const _barkG = _Bark(Color(0xFFA89B8E), Color(0xFF857565), Color(0xFF5E5046));
-const _birch = _Bark(Color(0xFFFFFFFF), Color(0xFFF1EEE6), Color(0xFFCFC9BC));
-
-const _leafG = Color(0xFF4DBB6A),
-    _leafD = Color(0xFF2F9458),
-    _leafM = Color(0xFF3FAE60);
-const _stemG = Color(0xFF3E9B4F),
-    _leafL = Color(0xFF9BE88F),
-    _yolk = Color(0xFFFFC53D);
-
-/// Round puffs of leaves, each shaded from a highlight to a shadow, with leaf
-/// flecks; they drift a little with the wind.
-void _canopy(_Ctx x, List<List<double>> list, _Tone c, _Env e, int seed) {
-  final r = _rng(seed * 977 + 13);
-  final pts = [
-    for (var i = 0; i < list.length; i++)
-      [
-        list[i][0] +
-            math.sin(e.t * 1.6 + i * 1.9) * list[i][2] * .04 +
-            e.w * (1 - list[i][1] * .03),
-        list[i][1] + math.cos(e.t * 1.3 + i * 1.3) * list[i][2] * .03,
-        list[i][2],
-      ],
-  ];
-  for (final p in pts) {
-    _dot(x, p[0] + p[2] * .1, p[1] + p[2] * .22, p[2] + .8, c.u);
-  }
-  for (final p in pts) {
-    _dot(
-      x,
-      p[0],
-      p[1],
-      p[2],
-      ui.Gradient.radial(
-        Offset(p[0], p[1]),
-        p[2] * 1.02,
-        [c.l, c.m, c.d],
-        const [0, .55, 1],
-        TileMode.clamp,
-        null,
-        Offset(p[0] - p[2] * .38, p[1] - p[2] * .42),
-        p[2] * .05,
-      ),
-    );
-  }
-  for (final p in pts) {
-    for (var k = 0; k < 4; k++) {
-      final an = r() * _tau, rr = (.25 + r() * .5) * p[2];
-      final up = math.cos(an) + math.sin(an) < -.2;
-      _ell(
-        x,
-        p[0] + math.cos(an) * rr,
-        p[1] + math.sin(an) * rr,
-        p[2] * .17,
-        p[2] * .075,
-        -.7 + r() * .5,
-        up ? c.hf : c.uf,
+  /// A few blades of grass.
+  void tuft(
+    double x,
+    double y,
+    double s,
+    double Function() rnd,
+    List<_Tone> tones,
+  ) {
+    for (var i = 0; i < 6; i++) {
+      final a = -math.pi / 2 + (rnd() - .5) * 1.4;
+      final t = tones[(rnd() * tones.length).floor()];
+      fill(
+        _needle(x + (rnd() - .5) * 6 * s, y, a, (8 + rnd() * 6) * s, 2.6 * s),
+        t,
       );
     }
   }
-  for (var i = 0; i < pts.length; i += 2) {
-    final p = pts[i];
-    _ell(
-      x,
-      p[0] - p[2] * .36,
-      p[1] - p[2] * .5,
-      p[2] * .24,
-      p[2] * .1,
-      -.6,
-      _white(.3),
-    );
+
+  /// A clump of a crown: a soft core, then [n] leaves around ([x], [y])
+  /// sorted from shaded to lit. [bias] lifts (or darkens) the whole clump;
+  /// [droop] bends leaves on the way down.
+  void clump({
+    required double x,
+    required double y,
+    required double r,
+    required List<_Tone> tones,
+    required int seed,
+    int? n,
+    double len = 12,
+    double w = 8,
+    double droop = .35,
+    double bias = 0,
+    Color? core,
+    Color? vein,
+    _Shape shape = _Shape.oval,
+    bool spot = true,
+    double squash = .9,
+  }) {
+    final rnd = _rng(seed);
+    if (spot) spots.add(Offset(x, y));
+    if (core != null) {
+      oval(x + r * .06, y + r * .08, r * .78, r * .8 * squash, core);
+    }
+    final leaves = <(double, double, double, double, double, double)>[];
+    for (var i = 0, count = n ?? (r * 2.2).round(); i < count; i++) {
+      final a = rnd() * _tau;
+      final d = r * (.12 + .86 * math.sqrt(rnd()));
+      final px = x + math.cos(a) * d, py = y + math.sin(a) * d * squash;
+      var dir = a + (rnd() - .5) * .9;
+      dir += _angDiff(math.pi / 2, dir) * droop * rnd();
+      final l = len * (.8 + .4 * rnd()), lw = w * (.85 + .3 * rnd());
+      final light =
+          (-(px - x) * .65 - (py - y) * .85) / r + bias + (rnd() - .5) * .38;
+      leaves.add((
+        px - math.cos(dir) * l * .3,
+        py - math.sin(dir) * l * .3,
+        dir,
+        l,
+        lw,
+        light,
+      ));
+    }
+    leaves.sort((a, b) => a.$6.compareTo(b.$6));
+    for (final (bx, by, dir, l, lw, light) in leaves) {
+      final t = _toneOf(light, tones.length);
+      fill(_shape(shape, bx, by, dir, l, lw), tones[t]);
+      if (vein != null && l > 9 && t >= 2) {
+        line(
+          Offset(bx, by),
+          Offset(bx + math.cos(dir) * l * .75, by + math.sin(dir) * l * .75),
+          vein.withValues(alpha: .35),
+          .5,
+        );
+      }
+    }
   }
-}
 
-void _trunk(_Ctx x, double h, double w, _Bark c, [double ln = 0]) {
-  x
-    ..begin()
-    ..moveTo(-w * 1.25, .5)
-    ..quad(-w * .5, -h * .06, -w * .42 + ln * .4, -h * .45)
-    ..lineTo(-w * .3 + ln, -h)
-    ..lineTo(w * .3 + ln, -h)
-    ..lineTo(w * .42 + ln * .4, -h * .45)
-    ..quad(w * .5, -h * .06, w * 1.25, .5)
-    ..quad(w * .45, -1.4, 0, 1.3)
-    ..quad(-w * .45, -1.4, -w * 1.25, .5)
-    ..close()
-    ..fill(_lg(-w * .6 + ln * .5, 0, w * .6 + ln * .5, 0, [c.l, c.m, c.d]));
-  x
-    ..save()
-    ..clip()
-    ..rect(
-      -w * 2 + ln,
-      -h,
-      w * 4,
-      h * .5,
-      _lg(0, -h, 0, -h * .5, const [
-        Color.fromRGBO(40, 20, 10, .38),
-        Color.fromRGBO(40, 20, 10, 0),
-      ]),
-    );
-  for (final b in const [
-    [-.16, .18, .5],
-    [.2, .32, .7],
-    [-.04, .58, .86],
-  ]) {
-    x
-      ..begin()
-      ..moveTo(w * b[0] + ln * b[1], -h * b[1])
-      ..quad(
-        w * (b[0] + .14) + ln * b[2],
-        -h * (b[1] + b[2]) / 2,
-        w * b[0] + ln * b[2],
-        -h * b[2],
-      )
-      ..stroke(_a(c.d, .5), .8);
+  /// A five-petalled flower; [eye] paints a coloured heart under the centre.
+  void flower(
+    double x,
+    double y,
+    double r,
+    Color petal,
+    Color center,
+    double rot, {
+    int petals = 5,
+    Color? eye,
+    Color? edge,
+  }) {
+    for (var i = 0; i < petals; i++) {
+      final a = rot + i * _tau / petals;
+      final cx = x + math.cos(a) * r * .55, cy = y + math.sin(a) * r * .55;
+      if (edge != null) oval(cx, cy, r * .62, r * .5, edge, a);
+      oval(cx, cy, r * .58, r * .46, petal, a);
+    }
+    if (eye != null) dot(x, y, r * .42, eye);
+    dot(x, y, r * .26, center);
   }
-  x.restore();
-}
 
-void _limb(_Ctx x, Offset a, Offset c, Offset b, double w, _Bark k) {
-  _curve(x, a, c, b, w, k.m);
-  final o = _o(w * .2, w * .1);
-  _curve(x, a - o, c - o, b - o, w * .32, _a(k.l, .75));
-}
-
-void _stem(_Ctx x, Offset a, Offset c, Offset b, double w, Color col) {
-  _curve(x, a, c, b, w, col);
-  final o = _o(w * .22, 0);
-  _curve(x, a - o, c - o, b - o, w * .3, _white(.32));
-}
-
-void _leaf(
-  _Ctx x,
-  double a,
-  double b,
-  double len,
-  double wid,
-  double rot,
-  Color col, [
-  Color? vein,
-]) {
-  x
-    ..save()
-    ..translate(a, b)
-    ..rotate(rot)
-    ..begin()
-    ..moveTo(0, 0)
-    ..quad(len * .45, -wid, len, 0)
-    ..quad(len * .45, wid, 0, 0)
-    ..fill(col);
-  if (vein != null) {
-    x
-      ..begin()
-      ..moveTo(len * .08, 0)
-      ..lineTo(len * .9, 0)
-      ..stroke(vein, math.max(.5, wid * .13));
+  /// A clump of flowers instead of leaves.
+  void blossoms({
+    required double x,
+    required double y,
+    required double r,
+    required int n,
+    required double size,
+    required List<Color> tones,
+    required Color center,
+    required int seed,
+    double bias = 0,
+    Color? core,
+    Color? eye,
+    int petals = 5,
+    bool spot = true,
+    double squash = .9,
+  }) {
+    final rnd = _rng(seed);
+    if (spot) spots.add(Offset(x, y));
+    if (core != null) oval(x + r * .1, y + r * .14, r * .86, r * .78, core);
+    final list = <(double, double, double, double, double)>[];
+    for (var i = 0; i < n; i++) {
+      final a = rnd() * _tau, d = r * math.sqrt(rnd());
+      final fx = x + math.cos(a) * d, fy = y + math.sin(a) * d * squash;
+      final light =
+          (-(fx - x) * .65 - (fy - y) * .85) / r + bias + (rnd() - .5) * .38;
+      list.add((fx, fy, light, size * (.8 + rnd() * .45), rnd() * 6));
+    }
+    list.sort((a, b) => a.$3.compareTo(b.$3));
+    for (final (fx, fy, light, fr, rot) in list) {
+      flower(
+        fx,
+        fy,
+        fr,
+        tones[_toneOf(light, tones.length)],
+        center,
+        rot,
+        petals: petals,
+        eye: eye,
+      );
+    }
   }
-  x.restore();
-}
 
-void _blossom(
-  _Ctx x,
-  double a,
-  double b,
-  double r,
-  Color col, [
-  Color ctr = _yolk,
-  double rot = 0,
-]) {
-  if (!(r > 0)) return;
-  for (var i = 0; i < 5; i++) {
-    final g = i * _tau / 5 + rot;
-    _ell(
-      x,
-      a + math.cos(g) * r * .62,
-      b + math.sin(g) * r * .62,
-      r * .58,
-      r * .42,
-      g,
-      col,
-    );
+  /// Small petals or leaves scattered on the ground around the foot.
+  void litter(
+    double Function() rnd,
+    int n,
+    double spread,
+    List<Color> colors, {
+    double y = 184,
+  }) {
+    for (var i = 0; i < n; i++) {
+      final x = 100 + (rnd() - .5) * spread, py = y + rnd() * 5;
+      oval(
+        x,
+        py,
+        2.5,
+        1.5,
+        colors[(rnd() * colors.length).floor()],
+        rnd() * math.pi,
+      );
+    }
   }
-  _dot(x, a, b, r * .34, ctr);
-}
-
-void _star4(_Ctx x, double a, double b, double r, Color col) {
-  if (!(r > 0)) return;
-  x.begin();
-  for (var i = 0; i < 8; i++) {
-    final g = i * _tau / 8, rr = i.isOdd ? r * .3 : r;
-    i == 0
-        ? x.moveTo(a + math.cos(g) * rr, b + math.sin(g) * rr)
-        : x.lineTo(a + math.cos(g) * rr, b + math.sin(g) * rr);
-  }
-  x
-    ..close()
-    ..fill(col);
-}
-
-void _mleaf(_Ctx x, double r, Color col) => _poly(x, [
-  _o(0, -r),
-  _o(r * .3, -r * .35),
-  _o(r, -r * .4),
-  _o(r * .5, r * .15),
-  _o(r * .65, r * .9),
-  _o(0, r * .5),
-  _o(-r * .65, r * .9),
-  _o(-r * .5, r * .15),
-  _o(-r, -r * .4),
-  _o(-r * .3, -r * .35),
-], col);
-
-void _fan(_Ctx x, double r, Color col) {
-  x
-    ..begin()
-    ..moveTo(0, r * .95)
-    ..arc(0, r * .15, r, math.pi + .4, _tau - .4)
-    ..close()
-    ..fill(col);
-}
-
-/// [n] things falling through the box [a] (left, right, top, bottom), each
-/// fading in and out, drawn by [draw] at the origin.
-void _fall(
-  _Ctx x,
-  double t,
-  int n,
-  List<double> a,
-  void Function(int i) draw, [
-  double sp = .14,
-]) {
-  for (var i = 0; i < n; i++) {
-    final k = (i * .618) % 1, u = (t * sp * (.7 + k * .6) + i * .37) % 1;
-    x
-      ..save()
-      ..alpha *= u < .1 ? u * 10 : (u > .82 ? (1 - u) / .18 : 1)
-      ..translate(
-        a[0] +
-            ((i * .739 + .13) % 1) * (a[1] - a[0]) +
-            math.sin(u * 6 + i * 2) * 5 +
-            u * 7,
-        a[2] + u * (a[3] - a[2]),
-      )
-      ..rotate(u * 7 + i);
-    draw(i);
-    x.restore();
-  }
-}
-
-void _fruit(_Ctx x, double a, double b, double r, List<Color> c) =>
-    _dot(x, a, b, r, _rg(a - r * .35, b - r * .4, r * .08, a, b, r, c));
-
-// Small animals.
-
-void _bird(
-  _Ctx x,
-  double a,
-  double b,
-  double t,
-  Color col,
-  Color cd,
-  double ph,
-) {
-  final v = t * .6 + ph, u = v % 5;
-  final hop = u < .35 ? -math.sin(u / .35 * math.pi) * 3.5 : 0.0;
-  final tilt = u > 2 && u < 2.6 ? .4 : 0.0;
-  x
-    ..save()
-    ..translate(a, b + hop)
-    ..scale(v % 10 < 5 ? 1 : -1, 1);
-  _poly(x, [_o(-3.6, -1.4), _o(-8.8, -3.4), _o(-7.6, .6)], cd);
-  _ell(x, 0, -2.6, 4.7, 3.7, -.15, col);
-  _ell(x, .9, -1.5, 3, 2.3, -.1, const Color(0xFFFFE9C7));
-  _ell(x, -1.3, -3, 2.7, 1.7, .5, cd);
-  x
-    ..save()
-    ..translate(3.4, -5.7)
-    ..rotate(tilt);
-  _dot(x, 0, 0, 2.8, col);
-  _poly(x, [_o(2.2, -.6), _o(5, .2), _o(2.2, 1)], const Color(0xFFFFA62B));
-  _dot(x, .9, -.6, .7, const Color(0xFF1B1B2F));
-  _dot(x, 1.15, -.85, .24, Colors.white);
-  x.restore();
-  _line(x, [_o(-.6, .9), _o(-.6, 2.5)], .6, const Color(0xFFC97B2A));
-  _line(x, [_o(1.2, .9), _o(1.2, 2.5)], .6, const Color(0xFFC97B2A));
-  x.restore();
-}
-
-void _bee(_Ctx x, double cx, double cy, double t, double ph) {
-  final a = t * 2.2 + ph, f = math.sin(t * 40) > 0 ? 1.0 : .5;
-  x
-    ..save()
-    ..translate(
-      cx + math.cos(a) * 9 + math.sin(a * .37) * 4,
-      cy + math.sin(a * 1.3) * 5,
-    )
-    ..scale(math.sin(a) > 0 ? -1 : 1, 1);
-  _ell(x, -.6, -2, 2, 1.2, -.5, _white(.75 * f));
-  _ell(x, 1, -2, 2, 1.2, .5, _white(.6 * f));
-  _ell(x, 0, 0, 2.6, 1.9, 0, const Color(0xFFFFD43B));
-  _line(x, [_o(-.5, -1.6), _o(-.5, 1.6)], .8, const Color(0xFF3B2A14));
-  _line(x, [_o(.9, -1.4), _o(.9, 1.4)], .8, const Color(0xFF3B2A14));
-  _dot(x, -2.2, -.2, 1, const Color(0xFF3B2A14));
-  x.restore();
-}
-
-void _butterfly(
-  _Ctx x,
-  double cx,
-  double cy,
-  double t,
-  Color c1,
-  Color c2,
-  double ph, [
-  double amp = 1,
-]) {
-  final a = t * .8 + ph, f = .25 + .75 * math.sin(t * 10 + ph).abs();
-  x
-    ..save()
-    ..translate(
-      cx + (math.sin(a) * 13 + math.sin(a * 2.3) * 5) * amp,
-      cy + (math.cos(a * 1.3) * 7 + math.sin(a * 3.1) * 2) * amp,
-    )
-    ..rotate(math.cos(a) * .35);
-  for (final d in const [-1.0, 1.0]) {
-    x
-      ..save()
-      ..scale(d * f, 1);
-    _ell(x, 2.7, -1.3, 2.9, 2.3, -.4, c1);
-    _ell(x, 2.1, 1.7, 2, 1.6, .5, c2);
-    _dot(x, 3, -1.4, .8, _white(.7));
-    x.restore();
-  }
-  _line(x, [_o(0, -2.4), _o(0, 2.6)], .9, const Color(0xFF3B2A14));
-  x.restore();
-}
-
-// ignore: unused_element, kept for the garden screen's evening sky.
-void _firefly(_Ctx x, double px, double py, double t, double ph) {
-  final a = .3 + .7 * math.sin(t * 1.7 + ph).abs();
-  _dot(
-    x,
-    px,
-    py,
-    6,
-    _rg(px, py, 0, px, py, 6, [
-      Color.fromRGBO(255, 244, 160, a),
-      const Color.fromRGBO(255, 244, 160, 0),
-    ]),
-  );
-  _dot(x, px, py, 1, Color.fromRGBO(255, 255, 235, a));
-}
-
-void _dragonfly(_Ctx x, double cx, double cy, double t) {
-  final a = t * 1.1, f = math.sin(t * 38) > 0 ? 1.0 : .55;
-  x
-    ..save()
-    ..translate(
-      cx + math.sin(a) * 12 + math.sin(a * 2.7) * 3,
-      cy + math.cos(a * 1.6) * 5,
-    )
-    ..scale(math.cos(a) > 0 ? 1 : -1, 1);
-  _ell(x, -1, -2.4, 5, 1.4, -.3, _white(.8 * f));
-  _ell(x, 1.5, -2.2, 4.4, 1.3, .3, _white(.65 * f));
-  _line(x, [_o(-7, 0), _o(3, 0)], 1.3, const Color(0xFF22B8CF));
-  _dot(x, 3.6, 0, 1.5, const Color(0xFF0C8599));
-  x.restore();
-}
-
-void _snail(_Ctx x, double a, double b, double t) {
-  final u = (t * .03) % 1;
-  x
-    ..save()
-    ..alpha *= u < .08 ? u / .08 : (u > .92 ? (1 - u) / .08 : 1)
-    ..translate(a + u * 46, b);
-  _ell(x, 0, 0, 5, 1.6, 0, const Color(0xFFF3D9A4));
-  _dot(x, -1, -2.6, 3.2, const Color(0xFFC98A4B));
-  _dot(x, -1, -2.6, 1.9, const Color(0xFFE0A868));
-  _dot(x, -1, -2.6, .8, const Color(0xFFC98A4B));
-  final w = math.sin(t * 3) * .4;
-  _line(x, [_o(4, -.6), _o(5.4, -3.4 + w)], .6, const Color(0xFFF3D9A4));
-  _dot(x, 5.4, -3.6 + w, .7, const Color(0xFF3B2A14));
-  x.restore();
 }

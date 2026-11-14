@@ -7,23 +7,31 @@ import 'package:flutter/scheduler.dart';
 import '../../domain/garden/garden.dart';
 import '../ambient.dart';
 
+part 'garden_blooms.dart';
 part 'garden_kit.dart';
 part 'garden_land.dart';
-part 'garden_species.dart';
+part 'garden_plants.dart';
+part 'garden_trees.dart';
 
 /// Whether [id] has a drawing. Every id in `species` has one.
 bool hasTreeArt(String id) => _arts.containsKey(id);
 
-/// One tree on its floating tile of land, as on the focus screens and in the
-/// species collection. [growth] runs from a seed (0) to fully grown (1);
-/// [bloom] from 0 to 1 opens white flowers one by one.
+/// One plant. With [island] it stands on a patch of sunlit grass, as on the
+/// focus screen; without, alone on its soft shadow, as in the collection.
+/// [growth] runs from a seed (0) through a sprout and a sapling to fully grown
+/// (1); [bloom] from 0 to 1 opens white flowers one by one; a [withered]
+/// plant keeps its shape in dry colours.
 class TreeArt extends StatelessWidget {
   final String species;
   final double growth, bloom, size;
   final bool withered;
 
-  /// A floating tile casts a shadow below it and shows rocks under its soil.
-  final bool floating;
+  /// True stands the plant on a sunlit patch of grass.
+  final bool island;
+
+  /// False draws it once, still, as in grids of many plants, where each
+  /// moving would cost a frame of its own.
+  final bool animate;
   const TreeArt({
     super.key,
     required this.species,
@@ -31,34 +39,42 @@ class TreeArt extends StatelessWidget {
     this.growth = 1,
     this.bloom = 0,
     this.withered = false,
-    this.floating = true,
+    this.island = true,
+    this.animate = true,
   });
 
   @override
   Widget build(BuildContext context) => _Animated(
     size: Size(size, size),
-    paint: (canvas, size, t, still) {
-      final x = _Ctx(canvas), w = size.width;
-      final cy = w * .72 + (still ? 0 : math.sin(t * .9) * w * .012);
-      _land(x, w / 2, cy, w * .74, w * .38, w * .11, 1, 11, floating);
-      _tree(
-        x,
-        w / 2,
-        cy,
-        w * .66,
+    animate: animate,
+    paint: (canvas, box, t, still) {
+      canvas.scale(box.width / 200);
+      if (island) {
+        _patch(canvas);
+        canvas
+          ..save()
+          ..translate(100, 170)
+          ..scale(.8)
+          ..translate(-100, -182);
+      }
+      _plant(
+        canvas,
         species,
         growth,
         t,
         still,
         bloom: bloom,
-        dead: withered,
+        withered: withered,
       );
+      if (island) canvas.restore();
     },
   );
 }
 
 /// The garden: an isometric grid of land with [plants] set on it, nearest
-/// last. The tallest trees reach a little above the box, as in the mockup. [cells] is the grid's side; plants beyond it are left out.
+/// last. The tallest plants reach a little above the grid. [cells] is the
+/// grid's side; plants beyond it are left out. It is drawn still: many
+/// swaying plants would cost too much each frame.
 class GardenScene extends StatelessWidget {
   final List<Plant> plants;
   final int cells;
@@ -78,9 +94,10 @@ class GardenScene extends StatelessWidget {
     final h = width / 2, d = width * .035 + 9;
     return _Animated(
       size: Size(width, h + d + width / cells * 1.35),
+      animate: false,
       paint: (canvas, size, t, still) {
-        final x = _Ctx(canvas), top = width / cells * 1.25;
-        _garden(x, width / 2, top + h / 2, width, cells, plants, t, still);
+        final top = width / cells * 1.25;
+        _garden(canvas, width / 2, top + h / 2, width, cells, plants);
       },
     );
   }
@@ -98,7 +115,12 @@ typedef _Painter = void Function(
 class _Animated extends StatefulWidget {
   final Size size;
   final _Painter paint;
-  const _Animated({required this.size, required this.paint});
+  final bool animate;
+  const _Animated({
+    required this.size,
+    required this.paint,
+    this.animate = true,
+  });
 
   @override
   State<_Animated> createState() => _AnimatedState();
@@ -106,7 +128,7 @@ class _Animated extends StatefulWidget {
 
 class _AnimatedState extends State<_Animated>
     with SingleTickerProviderStateMixin {
-  // A moment where every tree looks its best when still.
+  // A moment where every plant looks its best when still.
   static const _restTime = 7.3;
   final _time = ValueNotifier<double>(_restTime);
   late final Ticker _ticker = createTicker(
@@ -116,7 +138,7 @@ class _AnimatedState extends State<_Animated>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final on = AmbientMotion.of(context);
+    final on = widget.animate && AmbientMotion.of(context);
     if (on && !_ticker.isActive) {
       _ticker.start();
     } else if (!on && _ticker.isActive) {

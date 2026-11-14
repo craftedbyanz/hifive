@@ -179,7 +179,7 @@ class _ReviewCompleteState extends State<ReviewComplete>
                         species: AppScope.read(context).studySpecies,
                         size: 44,
                         growth: .05,
-                        floating: false,
+                        island: false,
                       ),
                       Text(
                         context.t.reviewWatered(widget.watered),

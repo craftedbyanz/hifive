@@ -161,9 +161,9 @@ class _FlowerPainter extends CustomPainter {
 }
 
 /// The art of hifive's own story in Hifive 101: the logo's five bars, large
-/// on a soft ground, moving like a voice's sound wave and then settling into
-/// the raised hand of the logo, with ripples of sound behind. It fills the
-/// space it is given and moves only under [AmbientMotion].
+/// and still on a soft ground, with ripples of sound spreading behind them.
+/// It fills the space it is given; the ripples move only under
+/// [AmbientMotion].
 class LogoStoryArt extends StatefulWidget {
   const LogoStoryArt({super.key});
 
@@ -213,7 +213,6 @@ class _StoryPainter extends CustomPainter {
 
   /// The logo's bar heights, as a share of the tallest.
   static const _logo = [.55, .87, 1.0, .89, .68];
-  static const _cycle = 6.0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -248,20 +247,9 @@ class _StoryPainter extends CustomPainter {
       );
     }
 
-    // Talking, then settling into the logo's raised hand, then talking again.
-    final phase = still ? _cycle : t % _cycle;
-    final settle = Curves.easeInOutCubic.transform(
-      ((phase - 3.2) / 1.1).clamp(0.0, 1.0) *
-          (1 - ((phase - 5.4) / .6).clamp(0.0, 1.0)),
-    );
+    // The bars stand still in the logo's raised hand; only the sound moves.
     for (var i = 0; i < 5; i++) {
-      final talk =
-          .35 +
-          .6 *
-              (math.sin(t * (2.4 + i * .7) + i * 1.3).abs() * .7 +
-                  math.sin(t * 1.3 + i).abs() * .3);
-      final k = still ? _logo[i] : talk + (_logo[i] - talk) * settle;
-      final bh = tallest * k;
+      final bh = tallest * _logo[i];
       final x = left + i * (barW + gap);
       final rect = RRect.fromRectAndRadius(
         Rect.fromLTWH(x, base - bh, barW, bh),

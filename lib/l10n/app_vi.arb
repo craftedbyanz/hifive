@@ -226,7 +226,6 @@
   "languageSoonTag": "Coming soon",
   "continueWithApple": "Tiếp tục với Apple",
   "continueWithGoogle": "Tiếp tục với Google",
-  "continueWithEmail": "Tiếp tục với email",
   "introPage": "Giới thiệu {index} trên {count}",
   "@introPage": {
     "placeholders": {
@@ -254,19 +253,6 @@
   "authNetwork": "Không có kết nối mạng. Vui lòng thử lại.",
   "authUnavailable": "Cách đăng nhập này chưa được bật.",
   "authUnknown": "Không đăng nhập được. Vui lòng thử lại.",
-  "resetNeedsEmail": "Nhập email để nhận liên kết đặt lại mật khẩu.",
-  "resetSent": "Đã gửi email đặt lại mật khẩu.",
-  "createAccountTitle": "Tạo tài khoản Hifive",
-  "emailSignInTitle": "Đăng nhập bằng email",
-  "emailSignInBody": "Lưu tiến độ và học tiếp trên mọi thiết bị.",
-  "emailHint": "Email",
-  "passwordHint": "Mật khẩu",
-  "working": "Đang xử lý...",
-  "createAccount": "Tạo tài khoản",
-  "signIn": "Đăng nhập",
-  "haveAccountSignIn": "Đã có tài khoản? Đăng nhập",
-  "createNewAccount": "Tạo tài khoản mới",
-  "forgotPassword": "Quên mật khẩu?",
   "sceneWritingTitle": "Viết thật nhiều,\nsửa từng câu",
   "sceneWritingBody": "Viết bằng ngôn ngữ bạn học, nhận góp ý ngay cho từng câu.",
   "sceneChatTitle": "Trò chuyện\nkhông sợ sai",
@@ -1093,7 +1079,6 @@
   "focusReplant": "Trồng lại",
   "focusFinish": "Xong",
   "focusPickTree": "Chọn cây",
-  "focusLocked": "Chưa mở",
   "focusTagEnglish": "Học tiếng Anh",
   "focusTagWriting": "Viết",
   "focusTagWork": "Làm việc",
@@ -1126,6 +1111,34 @@
   "speciesBanyan": "Đa",
   "speciesSnowpine": "Thông tuyết",
   "speciesGalaxy": "Ngân hà",
+  "speciesOlive": "Ô liu",
+  "speciesMugunghwa": "Mộc cận",
+  "gardenGroupStart": "Khởi đầu",
+  "gardenGroupMemory": "Ghi nhớ",
+  "gardenGroupDiligence": "Chuyên cần",
+  "gardenGroupFocus": "Tập trung",
+  "gardenGroupSeason": "Theo mùa",
+  "gardenGroupLegend": "Huyền thoại",
+  "originVietnam": "Việt Nam",
+  "originJapan": "Nhật Bản",
+  "originKorea": "Hàn Quốc",
+  "originChina": "Trung Quốc",
+  "originIndia": "Ấn Độ",
+  "originGermany": "Đức",
+  "originEngland": "Anh",
+  "originNetherlands": "Hà Lan",
+  "originFrance": "Pháp",
+  "originSpain": "Tây Ban Nha",
+  "originGreece": "Hy Lạp",
+  "originNorway": "Na Uy",
+  "originFinland": "Phần Lan",
+  "originRussia": "Nga",
+  "originKazakhstan": "Kazakhstan",
+  "originCanada": "Canada",
+  "originUsa": "Mỹ",
+  "originMexico": "Mexico",
+  "originMadagascar": "Madagascar",
+  "originLegend": "Truyền thuyết",
   "gardenTitle": "Vườn của bạn",
   "gardenDay": "Ngày",
   "gardenWeek": "Tuần",
@@ -1514,5 +1527,382 @@
       }
     }
   },
-  "listenTip": "Mẹo: nghe một lần để hiểu ý chính, nghe lần hai và lưu những từ bạn muốn dùng được."
+  "listenTip": "Mẹo: nghe một lần để hiểu ý chính, nghe lần hai và lưu những từ bạn muốn dùng được.",
+  "listenEpisode": "Tập {n}",
+  "@listenEpisode": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "listenNowPlaying": "Đang phát",
+  "listenEpisodes": "Danh sách tập",
+  "listenHeardCount": "Đã nghe {done}/{total}",
+  "@listenHeardCount": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "listenEpisodeCount": "{n} tập",
+  "@listenEpisodeCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "listenAboutHours": "khoảng {h} giờ",
+  "@listenAboutHours": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "listenMinutesLeft": "còn {m} phút",
+  "@listenMinutesLeft": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "listenMinutes": "{m} phút",
+  "@listenMinutes": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "listenResume": "Nghe tiếp",
+  "listenToday": "Hôm nay",
+  "listenTodayBody": "Bạn đã nghe {m}/{goal} phút",
+  "@listenTodayBody": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "listenGoalDone": "Đạt mục tiêu nghe hôm nay rồi!",
+  "listenTodayHint": "Nghe mỗi ngày một chút để tai quen tiếng Anh. Một phút nghe cũng giữ chuỗi ngày học.",
+  "listenMinuteUnit": "phút",
+  "listenSources": "Nguồn nghe",
+  "listenEpisodeDone": "Xong tập {n}! Tiếp theo: {title}",
+  "@listenEpisodeDone": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "listenAllDone": "Bạn đã nghe hết danh sách này!",
+  "listenBack": "Lùi 5 giây",
+  "listenForward": "Tới 5 giây",
+  "listenSpeed": "Tốc độ phát",
+  "listenPlay": "Phát",
+  "listenPause": "Tạm dừng",
+  "shareDeck": "Chia sẻ bộ thẻ",
+  "shareDeckBody": "Bạn bè nhập mã này trong hifive, hoặc mở liên kết. Chỉ từ và nghĩa được chia sẻ, tiến độ học của bạn thì không.",
+  "shareDeckUpdated": "Mỗi lần mở lại đây, bộ thẻ được chia sẻ cập nhật theo các từ mới nhất.",
+  "shareDeckSending": "Đang tạo mã…",
+  "shareCopy": "Sao chép",
+  "shareCopied": "Đã sao chép",
+  "shareSend": "Gửi cho bạn bè",
+  "shareStop": "Ngừng chia sẻ",
+  "shareStopTitle": "Ngừng chia sẻ bộ thẻ?",
+  "shareStopBody": "Mã và liên kết sẽ không dùng được nữa. Ai đã thêm bộ thẻ vẫn giữ bản của họ.",
+  "shareStopped": "Đã ngừng chia sẻ",
+  "shareMessage": "Học bộ thẻ \"{title}\" trên hifive: {link}\nHoặc mở hifive, vào Bộ thẻ, chọn Nhập mã: {code}",
+  "@shareMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "link": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "importDeck": "Nhập mã",
+  "importTitle": "Nhập bộ thẻ được chia sẻ",
+  "importHint": "Mã 6 ký tự hoặc liên kết",
+  "importOpen": "Xem bộ thẻ",
+  "importAdd": "Thêm vào bộ thẻ của tôi",
+  "importAdded": "Đã thêm \"{title}\"",
+  "@importAdded": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "importBadCode": "Mã gồm 6 chữ và số, ví dụ K7M2QX.",
+  "importWordCount": "{n} từ",
+  "@importWordCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "importMore": "và {n} từ nữa",
+  "@importMore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "shareErrorNotFound": "Không tìm thấy bộ thẻ với mã này. Có thể nó đã ngừng được chia sẻ.",
+  "shareErrorOffline": "Không kết nối được. Kiểm tra mạng rồi thử lại.",
+  "shareErrorSignIn": "Bạn cần đăng nhập và có kết nối mạng để chia sẻ.",
+  "shareErrorTooMany": "Bạn đã chia sẻ 100 bộ thẻ. Hãy ngừng chia sẻ bớt rồi thử lại.",
+  "shareErrorRejected": "Bộ thẻ này quá lớn để chia sẻ (tối đa 500 từ).",
+  "helpTitle8": "Khu vườn & Tập trung",
+  "helpBody8": "Mỗi ngày bạn học, khu vườn của bạn lại xanh thêm một chút.\n\nCây lớn lên từ việc học\n\n• Mỗi lần ôn một từ mới hoặc một từ đến hạn là một lần tưới cây. Đủ 10 lần, một cây học mọc trong vườn.\n• Chọn loài cây học trong mục Vườn. Học càng đều, càng mở khoá thêm nhiều loài.\n\nChế độ Tập trung\n\n• Đặt thời gian, gắn nhãn (Tiếng Anh, Viết, Công việc…) rồi bắt đầu: cây lớn dần theo thời gian bạn tập trung.\n• Rời app quá 30 giây hoặc bỏ cuộc thì cây héo. Khoá màn hình thì cây vẫn lớn.\n• Xong phiên, ôn vài từ đến hạn để cây nở hoa.\n\nSắp ra mắt\n\n• Chặn các app gây xao nhãng trong lúc tập trung.\n• Âm thanh thư giãn và bài tập thở.\n• Widget màn hình chính cho cây đang lớn và số từ cần ôn.",
+  "helpTitle9": "Luyện nghe",
+  "helpBody9": "Tai quen tiếng Anh nhờ nghe mỗi ngày một chút.\n\nĐang có\n\n• Nguồn nghe hifive chọn lọc theo trình độ, bắt đầu với podcast A1 của kênh REACH.\n• Phát ngay trong app: lùi hoặc tới 5 giây, nghe chậm 0.75× hay 0.5×, kéo thanh thời gian.\n• App nhớ chỗ bạn đang nghe, tự chuyển sang tập tiếp theo và đánh dấu tập đã nghe xong.\n• Nghe đủ 1 phút là ngày đó được tính vào chuỗi ngày học. Mục tiêu gợi ý: 15 phút mỗi ngày.\n• Gặp từ lạ thì bấm Lưu từ, từ đó sẽ có trong Ôn hôm nay.\n\nSắp ra mắt\n\n• Phụ đề song ngữ chạy theo lời.\n• Shadowing: nghe rồi nói theo, thu âm để so sánh.\n• Thêm nhiều nguồn nghe cho từng trình độ.",
+  "helpTitle10": "Cộng đồng",
+  "helpBody10": "Học cùng nhau thì dễ giữ nhịp hơn. Mở Bộ thẻ rồi bấm biểu tượng quả địa cầu để vào Cộng đồng.\n\nChia sẻ bộ thẻ\n\n• Mở bộ thẻ, chọn ••• rồi Chia sẻ bộ thẻ để nhận mã 6 ký tự và liên kết gửi cho bạn bè.\n• Trong Bộ thẻ, bấm Nhập mã, dán mã hoặc liên kết, xem trước rồi thêm vào bộ của bạn.\n• Chỉ từ và nghĩa được chia sẻ, tiến độ học của bạn thì không.\n\nKhám phá\n\n• Tìm bộ thẻ công khai, xem phổ biến hay mới nhất và thêm vào bộ của bạn.\n• Bật Công khai khi chia sẻ để bộ thẻ của bạn hiện ở đây (lần đầu cần đồng ý quy tắc cộng đồng).\n• Gặp bộ thẻ không phù hợp thì Báo cáo, hoặc Chặn người tạo.\n\nNhóm học\n\n• Tạo nhóm, đặt mục tiêu số ngày học mỗi tuần rồi gửi mã mời cho bạn bè.\n• Bảng tuần cho thấy ai đã học ngày nào và ai đạt mục tiêu. Ôn từ, học bài hay nghe một phút đều được tính.\n\nLớp học\n\n• Giáo viên tạo lớp, gửi mã cho học sinh và giao bộ thẻ có hạn chót.\n• Học sinh bấm Học để thêm bộ thẻ và ôn như bình thường; tiến độ tự cập nhật.\n• Giáo viên xem từng học sinh đã học bao nhiêu từ, ai đã xong, ai trễ hạn.",
+  "sharePublic": "Công khai trong Khám phá",
+  "sharePublicOn": "Mọi người đều tìm thấy bộ thẻ này. Tên hiển thị: {name}",
+  "@sharePublicOn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "sharePublicOff": "Chỉ ai có mã hoặc liên kết mới mở được.",
+  "rulesTitle": "Quy tắc cộng đồng",
+  "rulesBody": "Bộ thẻ công khai giúp mọi người cùng học. Khi công khai, bạn đồng ý:\n\n• Chỉ chia sẻ nội dung học ngôn ngữ.\n• Không có nội dung xúc phạm, thù ghét, khiêu dâm, bạo lực hay thông tin cá nhân của người khác.\n• Không spam, không quảng cáo.\n• Chỉ dùng nội dung bạn có quyền chia sẻ.\n\nBộ thẻ bị nhiều người báo cáo sẽ tạm ẩn để xem xét; tài khoản vi phạm có thể bị khoá.",
+  "rulesAccept": "Tôi đồng ý",
+  "exploreTitle": "Khám phá bộ thẻ",
+  "exploreSearch": "Tìm bộ thẻ",
+  "explorePopular": "Phổ biến",
+  "exploreNewest": "Mới nhất",
+  "exploreEmpty": "Chưa có bộ thẻ công khai nào. Hãy chia sẻ bộ thẻ của bạn và bật Công khai để là người đầu tiên!",
+  "exploreNoResults": "Không tìm thấy bộ thẻ nào khớp.",
+  "exploreMore": "Xem thêm",
+  "exploreMeta": "{count} từ · {author}",
+  "@exploreMeta": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "exploreAdds": "{count} lượt thêm",
+  "@exploreAdds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exploreAuthorUnknown": "Người học hifive",
+  "exploreUnblock": "Bỏ chặn mọi người bạn đã chặn",
+  "exploreUnblocked": "Đã bỏ chặn",
+  "reportDeck": "Báo cáo",
+  "reportTitle": "Báo cáo bộ thẻ này",
+  "reportOffensive": "Xúc phạm hoặc không phù hợp",
+  "reportSpam": "Spam hoặc quảng cáo",
+  "reportWrong": "Nhiều chỗ sai",
+  "reportCopyright": "Vi phạm bản quyền",
+  "reportOther": "Lý do khác",
+  "reportDone": "Cảm ơn bạn. Bộ thẻ này sẽ không hiện với bạn nữa.",
+  "blockOwner": "Chặn người tạo",
+  "blockTitle": "Chặn {author}?",
+  "@blockTitle": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "blockBody": "Bạn sẽ không thấy bộ thẻ nào của người này trong Khám phá nữa. Có thể bỏ chặn ở cuối trang Khám phá.",
+  "blockDone": "Đã chặn",
+  "editDeck": "Sửa bộ thẻ",
+  "deckName": "Tên bộ thẻ",
+  "deckIcon": "Biểu tượng",
+  "save": "Lưu",
+  "deckCreate": "Tạo bộ thẻ",
+  "deckOrAi": "Hoặc để AI tạo sẵn từ theo chủ đề",
+  "deckMine": "Bộ thẻ của bạn",
+  "addWords": "Thêm từ",
+  "addWordTitle": "Thêm từ vào bộ",
+  "addWordWord": "Từ hoặc cụm từ",
+  "addWordMeaning": "Nghĩa",
+  "addWordExample": "Câu ví dụ (không bắt buộc)",
+  "addWordSave": "Thêm",
+  "addWordDone": "Xong",
+  "addWordAdded": "Đã thêm {n} từ",
+  "@addWordAdded": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "addWordExists": "Từ này đã có trong bộ thẻ.",
+  "deckDescription": "Mô tả (không bắt buộc)",
+  "communityTitle": "Cộng đồng",
+  "tabExplore": "Khám phá",
+  "tabGroups": "Nhóm học",
+  "tabClasses": "Lớp học",
+  "groupsIntro": "Học cùng bạn bè: đặt mục tiêu số ngày học mỗi tuần và xem ai đã học hôm nay.",
+  "classesIntro": "Giáo viên giao bộ thẻ có hạn chót và xem tiến độ từng học sinh.",
+  "groupCreate": "Tạo nhóm",
+  "classCreate": "Tạo lớp",
+  "circleJoin": "Vào bằng mã",
+  "groupsEmpty": "Bạn chưa ở nhóm nào. Tạo nhóm rồi gửi mã cho bạn bè.",
+  "classesEmpty": "Bạn chưa ở lớp nào. Nhập mã giáo viên gửi, hoặc tạo lớp nếu bạn là giáo viên.",
+  "circleMembers": "{n} thành viên",
+  "@circleMembers": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "circleTeacher": "Giáo viên",
+  "circleOwner": "Trưởng nhóm",
+  "circleYou": "Bạn",
+  "circleMemberUnknown": "Thành viên",
+  "circleGoal": "Mục tiêu {n} ngày/tuần",
+  "@circleGoal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "circleGoalLabel": "Mục tiêu mỗi tuần",
+  "circleDays": "{n} ngày",
+  "@circleDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "circleNameHint": "Tên",
+  "groupCreateTitle": "Tạo nhóm học",
+  "classCreateTitle": "Tạo lớp học",
+  "circleEditTitle": "Sửa tên và mục tiêu",
+  "circleJoinTitle": "Vào nhóm hoặc lớp",
+  "circleJoinHint": "Mã 6 ký tự",
+  "circleCode": "Mã mời",
+  "circleInvite": "Mời bạn",
+  "groupInviteMessage": "Học cùng mình trong nhóm \"{name}\" trên hifive! Mở hifive, vào Bộ thẻ, chọn Cộng đồng, Nhóm học, Vào bằng mã: {code}",
+  "@groupInviteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "classInviteMessage": "Vào lớp \"{name}\" trên hifive: mở hifive, vào Bộ thẻ, chọn Cộng đồng, Lớp học, Vào bằng mã: {code}",
+  "@classInviteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "circleThisWeek": "Tuần này",
+  "circleReached": "Đạt mục tiêu",
+  "circleLeave": "Rời nhóm",
+  "classLeave": "Rời lớp",
+  "circleLeaveTitle": "Rời \"{name}\"?",
+  "@circleLeaveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "circleLeaveBody": "Bạn có thể vào lại bằng mã mời.",
+  "circleRemove": "Mời ra",
+  "circleRemoveTitle": "Mời {name} ra khỏi nhóm?",
+  "@circleRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "circleRemoveBody": "Người này có thể vào lại nếu còn mã mời.",
+  "circleEdit": "Sửa",
+  "circleErrorNotFound": "Không tìm thấy nhóm hoặc lớp với mã này.",
+  "circleErrorTooMany": "Nhóm đã đủ người, hoặc bạn đã ở quá nhiều nhóm và lớp.",
+  "classAssign": "Giao bộ thẻ",
+  "classAssignTitle": "Giao bộ thẻ cho lớp",
+  "classPickDeck": "Chọn bộ thẻ",
+  "classDue": "Hạn chót",
+  "classAssignments": "Bộ thẻ được giao",
+  "classNoAssignments": "Chưa có bộ thẻ nào được giao.",
+  "classDueOn": "Hạn {date}",
+  "@classDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "classProgress": "{done}/{total} từ",
+  "@classProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "classDoneCount": "{done}/{all} học sinh đã xong",
+  "@classDoneCount": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "all": {
+        "type": "int"
+      }
+    }
+  },
+  "classStudy": "Học",
+  "classDone": "Xong",
+  "classLate": "Trễ hạn",
+  "classStudents": "Học sinh",
+  "classUnassign": "Bỏ giao",
+  "classNoStudents": "Chưa có học sinh. Gửi mã mời cho lớp.",
+  "classNoDecks": "Hãy tạo một bộ thẻ có từ trước, rồi giao cho lớp."
 }

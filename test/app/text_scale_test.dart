@@ -82,7 +82,6 @@ Future<void> layOut(
     'insight': const InsightScreen(),
     'profile': const ProfileScreen(),
     'welcome': const WelcomeScreen(),
-    'sign in': const Scaffold(body: SafeArea(child: EmailSignInForm())),
     'onboarding': const OnboardingScreen(),
     'decks': const DeckListScreen(),
     'deck': DeckScreen(deck: s.decks.first),

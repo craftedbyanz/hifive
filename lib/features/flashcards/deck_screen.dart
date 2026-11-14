@@ -6,7 +6,9 @@ import '../../domain/models/models.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../community/community.dart';
 import '../game/game.dart';
+import 'deck_edit_sheet.dart';
 import 'deck_list_screen.dart';
 import 'review_screen.dart';
 import 'word_screen.dart';
@@ -57,15 +59,31 @@ class _DeckScreenState extends State<DeckScreen> {
 
   Future<void> _openOptions(BuildContext anchor) async {
     final choice = await showGlassMenu<String>(anchor, [
-      GlassMenuItem('add', context.t.addCards, icon: CupertinoIcons.plus),
+      GlassMenuItem(
+        'words',
+        context.t.addWords,
+        icon: CupertinoIcons.text_badge_plus,
+      ),
+      GlassMenuItem('add', context.t.addCards, icon: CupertinoIcons.sparkles),
+      GlassMenuItem('edit', context.t.editDeck, icon: CupertinoIcons.pencil),
       GlassMenuItem(
         'reset',
         context.t.restartDeck,
         icon: CupertinoIcons.arrow_counterclockwise,
       ),
+      if (AppScope.read(context).shares != null && widget.deck.words.isNotEmpty)
+        GlassMenuItem('share', context.t.shareDeck, icon: CupertinoIcons.share),
     ]);
     if (!mounted || choice == null) return;
-    if (choice == 'add') {
+    if (choice == 'words') {
+      await sheet<void>(context, AddWordSheet(deck: widget.deck));
+      if (mounted) setState(() {});
+    } else if (choice == 'edit') {
+      await sheet<void>(context, EditDeckSheet(deck: widget.deck));
+      if (mounted) setState(() {});
+    } else if (choice == 'share') {
+      await sheet<void>(context, ShareDeckSheet(deck: widget.deck));
+    } else if (choice == 'add') {
       await deckForm(context, deck: widget.deck);
     } else if (await confirm(
       context,
@@ -121,6 +139,13 @@ class _DeckScreenState extends State<DeckScreen> {
                         )
                       : _Summary(
                           deck: deck,
+                          onEdit: () async {
+                            await sheet<void>(
+                              context,
+                              EditDeckSheet(deck: deck),
+                            );
+                            if (mounted) setState(() {});
+                          },
                           reviewLabel: reviewAll
                               ? context.t.reviewAll
                               : context.t.reviewDue(due.length),
@@ -332,12 +357,16 @@ class _Summary extends StatelessWidget {
   final Deck deck;
   final String reviewLabel, sort, filter;
   final VoidCallback? onReview, onGame;
+
+  /// Opens the editor for the name, description and icon.
+  final VoidCallback onEdit;
   final ValueChanged<String> onSort, onFilter;
   const _Summary({
     required this.deck,
     required this.reviewLabel,
     required this.onReview,
     required this.onGame,
+    required this.onEdit,
     required this.sort,
     required this.filter,
     required this.onSort,
@@ -352,23 +381,27 @@ class _Summary extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Center(
-        child: Container(
-          width: 64,
-          height: 64,
-          decoration: ShapeDecoration(
-            color: Palette.previewDefault,
-            shape: RoundedSuperellipseBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            shadows: [
-              BoxShadow(
-                color: Palette.previewDefault.withValues(alpha: .35),
-                blurRadius: 18,
-                offset: const Offset(0, 8),
+        child: PressFade(
+          key: const ValueKey('deck-header-icon'),
+          onTap: onEdit,
+          child: Container(
+            width: 64,
+            height: 64,
+            decoration: ShapeDecoration(
+              color: Palette.previewDefault,
+              shape: RoundedSuperellipseBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-            ],
+              shadows: [
+                BoxShadow(
+                  color: Palette.previewDefault.withValues(alpha: .35),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Icon(deckIcon(deck), size: 36, color: Colors.white),
           ),
-          child: Icon(deckIcon(deck), size: 36, color: Colors.white),
         ),
       ),
       const SizedBox(height: 16),

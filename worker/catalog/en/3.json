@@ -1,0 +1,837 @@
+{
+  "version": 3,
+  "language": "en",
+  "decks": [
+    {
+      "id": "cat-en-a1-family",
+      "level": "A1",
+      "topic": "family",
+      "title": "A1 · Gia đình",
+      "description": "Những người thân trong gia đình.",
+      "icon": 1,
+      "words": [
+        {
+          "id": "cat-en-family-mother",
+          "word": "mother",
+          "meaning": "mẹ",
+          "phonetic": "/ˈmʌðər/",
+          "partOfSpeech": "NOUN",
+          "example": "My mother cooks dinner every day."
+        },
+        {
+          "id": "cat-en-family-father",
+          "word": "father",
+          "meaning": "bố",
+          "phonetic": "/ˈfɑːðər/",
+          "partOfSpeech": "NOUN",
+          "example": "My father works in a bank."
+        },
+        {
+          "id": "cat-en-family-sister",
+          "word": "sister",
+          "meaning": "chị gái, em gái",
+          "phonetic": "/ˈsɪstər/",
+          "partOfSpeech": "NOUN",
+          "example": "My sister is twelve years old."
+        },
+        {
+          "id": "cat-en-family-brother",
+          "word": "brother",
+          "meaning": "anh trai, em trai",
+          "phonetic": "/ˈbrʌðər/",
+          "partOfSpeech": "NOUN",
+          "example": "Her brother plays football."
+        },
+        {
+          "id": "cat-en-family-parents",
+          "word": "parents",
+          "meaning": "bố mẹ",
+          "phonetic": "/ˈperənts/",
+          "partOfSpeech": "NOUN",
+          "example": "My parents live in Hanoi."
+        },
+        {
+          "id": "cat-en-family-grandmother",
+          "word": "grandmother",
+          "meaning": "bà",
+          "phonetic": "/ˈɡrænmʌðər/",
+          "partOfSpeech": "NOUN",
+          "example": "I visit my grandmother on Sundays."
+        },
+        {
+          "id": "cat-en-family-grandfather",
+          "word": "grandfather",
+          "meaning": "ông",
+          "phonetic": "/ˈɡrænfɑːðər/",
+          "partOfSpeech": "NOUN",
+          "example": "My grandfather reads the newspaper."
+        },
+        {
+          "id": "cat-en-family-husband",
+          "word": "husband",
+          "meaning": "chồng",
+          "phonetic": "/ˈhʌzbənd/",
+          "partOfSpeech": "NOUN",
+          "example": "Her husband is a doctor."
+        },
+        {
+          "id": "cat-en-family-wife",
+          "word": "wife",
+          "meaning": "vợ",
+          "phonetic": "/waɪf/",
+          "partOfSpeech": "NOUN",
+          "example": "His wife speaks French."
+        },
+        {
+          "id": "cat-en-family-son",
+          "word": "son",
+          "meaning": "con trai",
+          "phonetic": "/sʌn/",
+          "partOfSpeech": "NOUN",
+          "example": "Their son goes to school by bus."
+        },
+        {
+          "id": "cat-en-family-daughter",
+          "word": "daughter",
+          "meaning": "con gái",
+          "phonetic": "/ˈdɔːtər/",
+          "partOfSpeech": "NOUN",
+          "example": "My daughter likes music."
+        },
+        {
+          "id": "cat-en-family-cousin",
+          "word": "cousin",
+          "meaning": "anh chị em họ",
+          "phonetic": "/ˈkʌzn/",
+          "partOfSpeech": "NOUN",
+          "example": "My cousin lives in Da Nang."
+        }
+      ]
+    },
+    {
+      "id": "cat-en-a1-food",
+      "level": "A1",
+      "topic": "food",
+      "title": "A1 · Đồ ăn và thức uống",
+      "description": "Món ăn và đồ uống hằng ngày.",
+      "icon": 2,
+      "words": [
+        {
+          "id": "cat-en-food-rice",
+          "word": "rice",
+          "meaning": "cơm, gạo",
+          "phonetic": "/raɪs/",
+          "partOfSpeech": "NOUN",
+          "example": "We eat rice every day."
+        },
+        {
+          "id": "cat-en-food-bread",
+          "word": "bread",
+          "meaning": "bánh mì",
+          "phonetic": "/bred/",
+          "partOfSpeech": "NOUN",
+          "example": "I buy bread in the morning."
+        },
+        {
+          "id": "cat-en-food-water",
+          "word": "water",
+          "meaning": "nước",
+          "phonetic": "/ˈwɔːtər/",
+          "partOfSpeech": "NOUN",
+          "example": "Can I have some water, please?"
+        },
+        {
+          "id": "cat-en-food-coffee",
+          "word": "coffee",
+          "meaning": "cà phê",
+          "phonetic": "/ˈkɔːfi/",
+          "partOfSpeech": "NOUN",
+          "example": "He drinks coffee with milk."
+        },
+        {
+          "id": "cat-en-food-egg",
+          "word": "egg",
+          "meaning": "trứng",
+          "phonetic": "/eɡ/",
+          "partOfSpeech": "NOUN",
+          "example": "She has an egg for breakfast."
+        },
+        {
+          "id": "cat-en-food-chicken",
+          "word": "chicken",
+          "meaning": "thịt gà, con gà",
+          "phonetic": "/ˈtʃɪkɪn/",
+          "partOfSpeech": "NOUN",
+          "example": "The chicken soup is hot."
+        },
+        {
+          "id": "cat-en-food-fish",
+          "word": "fish",
+          "meaning": "cá",
+          "phonetic": "/fɪʃ/",
+          "partOfSpeech": "NOUN",
+          "example": "We have fish on Fridays."
+        },
+        {
+          "id": "cat-en-food-vegetable",
+          "word": "vegetable",
+          "meaning": "rau củ",
+          "phonetic": "/ˈvedʒtəbl/",
+          "partOfSpeech": "NOUN",
+          "example": "Eat a vegetable with every meal."
+        },
+        {
+          "id": "cat-en-food-fruit",
+          "word": "fruit",
+          "meaning": "trái cây",
+          "phonetic": "/fruːt/",
+          "partOfSpeech": "NOUN",
+          "example": "I like fresh fruit."
+        },
+        {
+          "id": "cat-en-food-breakfast",
+          "word": "breakfast",
+          "meaning": "bữa sáng",
+          "phonetic": "/ˈbrekfəst/",
+          "partOfSpeech": "NOUN",
+          "example": "Breakfast is at seven."
+        },
+        {
+          "id": "cat-en-food-hungry",
+          "word": "hungry",
+          "meaning": "đói",
+          "phonetic": "/ˈhʌŋɡri/",
+          "partOfSpeech": "ADJ",
+          "example": "I am hungry, let's eat."
+        },
+        {
+          "id": "cat-en-food-delicious",
+          "word": "delicious",
+          "meaning": "ngon",
+          "phonetic": "/dɪˈlɪʃəs/",
+          "partOfSpeech": "ADJ",
+          "example": "This pho is delicious."
+        }
+      ]
+    },
+    {
+      "id": "cat-en-a1-routine",
+      "level": "A1",
+      "topic": "routine",
+      "title": "A1 · Một ngày của tôi",
+      "description": "Việc làm hằng ngày và tần suất.",
+      "icon": 3,
+      "words": [
+        {
+          "id": "cat-en-routine-wake-up",
+          "word": "wake up",
+          "meaning": "thức dậy",
+          "phonetic": "/weɪk ʌp/",
+          "partOfSpeech": "VERB",
+          "example": "I wake up at six."
+        },
+        {
+          "id": "cat-en-routine-get-dressed",
+          "word": "get dressed",
+          "meaning": "mặc quần áo",
+          "phonetic": "/ɡet drest/",
+          "partOfSpeech": "VERB",
+          "example": "She gets dressed after breakfast."
+        },
+        {
+          "id": "cat-en-routine-brush",
+          "word": "brush",
+          "meaning": "chải, đánh (răng)",
+          "phonetic": "/brʌʃ/",
+          "partOfSpeech": "VERB",
+          "example": "Brush your teeth twice a day."
+        },
+        {
+          "id": "cat-en-routine-work",
+          "word": "work",
+          "meaning": "làm việc",
+          "phonetic": "/wɜːrk/",
+          "partOfSpeech": "VERB",
+          "example": "They work from nine to five."
+        },
+        {
+          "id": "cat-en-routine-study",
+          "word": "study",
+          "meaning": "học",
+          "phonetic": "/ˈstʌdi/",
+          "partOfSpeech": "VERB",
+          "example": "I study English in the evening."
+        },
+        {
+          "id": "cat-en-routine-cook",
+          "word": "cook",
+          "meaning": "nấu ăn",
+          "phonetic": "/kʊk/",
+          "partOfSpeech": "VERB",
+          "example": "My father likes to cook."
+        },
+        {
+          "id": "cat-en-routine-clean",
+          "word": "clean",
+          "meaning": "dọn dẹp",
+          "phonetic": "/kliːn/",
+          "partOfSpeech": "VERB",
+          "example": "We clean the house on Saturday."
+        },
+        {
+          "id": "cat-en-routine-relax",
+          "word": "relax",
+          "meaning": "thư giãn",
+          "phonetic": "/rɪˈlæks/",
+          "partOfSpeech": "VERB",
+          "example": "I relax with a book after work."
+        },
+        {
+          "id": "cat-en-routine-sleep",
+          "word": "sleep",
+          "meaning": "ngủ",
+          "phonetic": "/sliːp/",
+          "partOfSpeech": "VERB",
+          "example": "Babies sleep a lot."
+        },
+        {
+          "id": "cat-en-routine-always",
+          "word": "always",
+          "meaning": "luôn luôn",
+          "phonetic": "/ˈɔːlweɪz/",
+          "partOfSpeech": "ADV",
+          "example": "He always walks to work."
+        },
+        {
+          "id": "cat-en-routine-usually",
+          "word": "usually",
+          "meaning": "thường",
+          "phonetic": "/ˈjuːʒuəli/",
+          "partOfSpeech": "ADV",
+          "example": "I usually have tea at night."
+        },
+        {
+          "id": "cat-en-routine-never",
+          "word": "never",
+          "meaning": "không bao giờ",
+          "phonetic": "/ˈnevər/",
+          "partOfSpeech": "ADV",
+          "example": "She never drinks coffee."
+        }
+      ]
+    }
+  ],
+  "listening": [
+    {
+      "id": "reach-a1-podcast",
+      "title": "A1 luyện nghe tiếng Anh cơ bản",
+      "channel": "REACH",
+      "level": "A1",
+      "description": "Podcast ngắn kể chuyện đời thường bằng tiếng Anh chậm và rõ, hợp người mới bắt đầu.",
+      "playlistId": "PLqYGyORvIQiz2lBQGAGxKcNoW6UAmmD7S",
+      "coverVideoId": "F5QyH36MnVo",
+      "episodes": [
+        {
+          "id": "F5QyH36MnVo",
+          "title": "Bạn trai bị bệnh",
+          "seconds": 1216
+        },
+        {
+          "id": "CzXqkWprDjY",
+          "title": "Ăn chay",
+          "seconds": 1389
+        },
+        {
+          "id": "WV0LNIvCfvE",
+          "title": "Thói quen",
+          "seconds": 1084
+        },
+        {
+          "id": "Qp5llcn6IHM",
+          "title": "Bữa tối",
+          "seconds": 1287
+        },
+        {
+          "id": "2kVKjwNDlUE",
+          "title": "Quê hương",
+          "seconds": 1067
+        },
+        {
+          "id": "xvYJO5JpuJ4",
+          "title": "Sở thích",
+          "seconds": 1330
+        },
+        {
+          "id": "6brq3fJtf1w",
+          "title": "Cuối tuần",
+          "seconds": 1174
+        },
+        {
+          "id": "UlgT0cWCqe4",
+          "title": "Ẩm thực",
+          "seconds": 1270
+        },
+        {
+          "id": "n74GjJQaJkA",
+          "title": "Thú cưng",
+          "seconds": 898
+        },
+        {
+          "id": "fFXR3CMy8jw",
+          "title": "Đi chợ",
+          "seconds": 942
+        },
+        {
+          "id": "debAxRi-jWo",
+          "title": "Căn phòng",
+          "seconds": 588
+        },
+        {
+          "id": "UEpAkOQ9-Hg",
+          "title": "Tiết kiệm",
+          "seconds": 586
+        },
+        {
+          "id": "HjJeBn7XWhE",
+          "title": "Mua quần áo",
+          "seconds": 726
+        },
+        {
+          "id": "UtoNNhh8pZQ",
+          "title": "Đi chợ",
+          "seconds": 693
+        },
+        {
+          "id": "_nn_W2-GAyc",
+          "title": "Tập thể dục",
+          "seconds": 1194
+        },
+        {
+          "id": "tdutPb6bJc0",
+          "title": "Gọi món",
+          "seconds": 829
+        },
+        {
+          "id": "o8JuVJ4J3y0",
+          "title": "Gọi món",
+          "seconds": 654
+        },
+        {
+          "id": "z1xC_cKtVx4",
+          "title": "Social media",
+          "seconds": 710
+        },
+        {
+          "id": "KEf9G4Ih_hc",
+          "title": "Du lịch",
+          "seconds": 729
+        },
+        {
+          "id": "fpY48Ycmafg",
+          "title": "Đọc sách",
+          "seconds": 521
+        },
+        {
+          "id": "70EWCCzCRIc",
+          "title": "Đồ ăn",
+          "seconds": 582
+        },
+        {
+          "id": "yK4bmV9mRq8",
+          "title": "Gia đình",
+          "seconds": 512
+        },
+        {
+          "id": "GFvY4wH9Ews",
+          "title": "Học từ vựng",
+          "seconds": 516
+        },
+        {
+          "id": "PWB3j_MD9v8",
+          "title": "Tan vỡ",
+          "seconds": 530
+        },
+        {
+          "id": "U9uScZP9iEE",
+          "title": "School love (movie)",
+          "seconds": 49
+        },
+        {
+          "id": "UKtb7r7azk8",
+          "title": "Nghề nghiệp",
+          "seconds": 446
+        },
+        {
+          "id": "ZVVqRAiUlqU",
+          "title": "School love",
+          "seconds": 722
+        },
+        {
+          "id": "zMpDCK8PvwI",
+          "title": "Thích ai đó",
+          "seconds": 687
+        },
+        {
+          "id": "lppZ8QNqYUM",
+          "title": "Thời tiết yêu",
+          "seconds": 674
+        },
+        {
+          "id": "pcvWyUXHjZg",
+          "title": "Cô ấy là ai",
+          "seconds": 522
+        },
+        {
+          "id": "iAQvrkzEIO0",
+          "title": "Gọi món ăn",
+          "seconds": 544
+        },
+        {
+          "id": "OAck4cFcHW4",
+          "title": "Tán gái",
+          "seconds": 722
+        },
+        {
+          "id": "4dqg05K6wSA",
+          "title": "Tỏ tình",
+          "seconds": 943
+        },
+        {
+          "id": "ND9ZDTJpm4E",
+          "title": "Đồ nói dối",
+          "seconds": 652
+        },
+        {
+          "id": "kE-xOgnO32c",
+          "title": "Lợi dụng",
+          "seconds": 679
+        },
+        {
+          "id": "_g1T3gZhXbM",
+          "title": "Đại ca",
+          "seconds": 704
+        },
+        {
+          "id": "QZrt7oIOVCk",
+          "title": "Đi xem phim",
+          "seconds": 666
+        },
+        {
+          "id": "UWwsouM1eOs",
+          "title": "Chọn bồ",
+          "seconds": 619
+        },
+        {
+          "id": "8sr-guUBCw8",
+          "title": "Cứng đầu",
+          "seconds": 832
+        },
+        {
+          "id": "UffMK3GdmDY",
+          "title": "Đừng bỏ em",
+          "seconds": 801
+        },
+        {
+          "id": "fccM93ccn_k",
+          "title": "Hiểu lầm",
+          "seconds": 638
+        },
+        {
+          "id": "cRa4nTeHHjQ",
+          "title": "Real love",
+          "seconds": 630
+        },
+        {
+          "id": "xs039Os7ilg",
+          "title": "Mùa hè yêu",
+          "seconds": 618
+        },
+        {
+          "id": "Fg0dP-cG4A8",
+          "title": "Làm quen",
+          "seconds": 617
+        },
+        {
+          "id": "V5B0ceDscmw",
+          "title": "Quan tâm",
+          "seconds": 614
+        },
+        {
+          "id": "noy6N4effhE",
+          "title": "Quyết tâm",
+          "seconds": 509
+        },
+        {
+          "id": "Ce1bpT0cz38",
+          "title": "Bạn thân ghen",
+          "seconds": 720
+        },
+        {
+          "id": "pimu-lzebHQ",
+          "title": "Câu đố yêu",
+          "seconds": 614
+        },
+        {
+          "id": "iYz6YAsCVQU",
+          "title": "Over thinking",
+          "seconds": 601
+        },
+        {
+          "id": "Zp7IVcEFxPE",
+          "title": "Bác sĩ",
+          "seconds": 714
+        },
+        {
+          "id": "kQJ-fzykWjM",
+          "title": "Mẹ giữ cho",
+          "seconds": 593
+        },
+        {
+          "id": "lxx8w1NqrI8",
+          "title": "Tình yêu hiện đại",
+          "seconds": 572
+        },
+        {
+          "id": "cXjCA9SqnFo",
+          "title": "Tổng tài bá đạo",
+          "seconds": 706
+        },
+        {
+          "id": "R09bBKIWE2o",
+          "title": "Đi làm (A2)",
+          "seconds": 507
+        },
+        {
+          "id": "J2tYXf_6fmU",
+          "title": "Làm quen",
+          "seconds": 627
+        },
+        {
+          "id": "k0RR0swREGo",
+          "title": "Tổng tài",
+          "seconds": 425
+        },
+        {
+          "id": "1mgzfJQcus8",
+          "title": "Bỏ lỡ nhau",
+          "seconds": 664
+        },
+        {
+          "id": "yGI3FMGQIDA",
+          "title": "Đồ lừa dối",
+          "seconds": 414
+        },
+        {
+          "id": "fZqvdymYna0",
+          "title": "Làm giàu",
+          "seconds": 466
+        },
+        {
+          "id": "lj9Cgy9cA64",
+          "title": "Ăn xin",
+          "seconds": 371
+        },
+        {
+          "id": "7ndbW3_4A7U",
+          "title": "Nấu ăn",
+          "seconds": 479
+        },
+        {
+          "id": "TO5yrtsO7r0",
+          "title": "Mất việc",
+          "seconds": 595
+        },
+        {
+          "id": "XhuISZ4suUU",
+          "title": "Yêu anh đi",
+          "seconds": 258
+        },
+        {
+          "id": "hKvws8RAG30",
+          "title": "Chỉ làm bạn thôi",
+          "seconds": 433
+        },
+        {
+          "id": "oiYtRrX_Ro8",
+          "title": "Buổi hẹn hò đầu tiên",
+          "seconds": 381
+        },
+        {
+          "id": "fdD9U0ONL_A",
+          "title": "Ôn thi học kỳ",
+          "seconds": 573
+        },
+        {
+          "id": "HwtGFvQFtRo",
+          "title": "Đi chơi noel",
+          "seconds": 483
+        },
+        {
+          "id": "uCFgZ1QET_w",
+          "title": "Đồ nghèo nàn",
+          "seconds": 465
+        },
+        {
+          "id": "KFpzAq6zblY",
+          "title": "Anh đầy tiền",
+          "seconds": 467
+        },
+        {
+          "id": "Ml-78aXZlVs",
+          "title": "Tao không thích mày",
+          "seconds": 528
+        },
+        {
+          "id": "M92qobbibn4",
+          "title": "Yêu người yêu cũ của bạn",
+          "seconds": 474
+        },
+        {
+          "id": "VKOXlM_1r0M",
+          "title": "Tổng hợp nhiều bài",
+          "seconds": 1661
+        },
+        {
+          "id": "1r6YFfHb3XY",
+          "title": "Đi biển",
+          "seconds": 700
+        },
+        {
+          "id": "HuOApfO6TJo",
+          "title": "Tôi có người yêu rồi",
+          "seconds": 466
+        },
+        {
+          "id": "D34R_MKgIM4",
+          "title": "Cơn bão lớn",
+          "seconds": 480
+        },
+        {
+          "id": "GBXrft5Pt7s",
+          "title": "Phốt IELTS",
+          "seconds": 576
+        },
+        {
+          "id": "FB_x8IXWSkw",
+          "title": "Chia tiền",
+          "seconds": 527
+        },
+        {
+          "id": "XkUb4YEIBB0",
+          "title": "Phỏng vấn",
+          "seconds": 700
+        },
+        {
+          "id": "VaXNh8-y74I",
+          "title": "Mượn tiền",
+          "seconds": 579
+        },
+        {
+          "id": "cGIKGaog0EA",
+          "title": "Người yêu cũ",
+          "seconds": 687
+        },
+        {
+          "id": "tSw673eG70s",
+          "title": "Hết yêu",
+          "seconds": 408
+        },
+        {
+          "id": "DP71Voq_OxQ",
+          "title": "Đi xem phim",
+          "seconds": 385
+        },
+        {
+          "id": "pRJtgt5twqs",
+          "title": "Part-time job",
+          "seconds": 549
+        },
+        {
+          "id": "bdCGrx4yar0",
+          "title": "Học IELTS",
+          "seconds": 519
+        },
+        {
+          "id": "qIxE_SFd0vM",
+          "title": "Gọi món",
+          "seconds": 469
+        },
+        {
+          "id": "YExophoQooA",
+          "title": "Buổi hẹn hò đầu tiên",
+          "seconds": 676
+        },
+        {
+          "id": "BHIjPgk_o44",
+          "title": "Sinh nhật",
+          "seconds": 695
+        },
+        {
+          "id": "nPhPbupHTWg",
+          "title": "Cuối tuần",
+          "seconds": 539
+        },
+        {
+          "id": "gyXEAY34XJA",
+          "title": "Trốn học",
+          "seconds": 709
+        },
+        {
+          "id": "Wb0DCJk23Ss",
+          "title": "Tỏ tình",
+          "seconds": 867
+        },
+        {
+          "id": "gFUJSn2-a2E",
+          "title": "Câu đố",
+          "seconds": 414
+        },
+        {
+          "id": "fN_eUGNHXbI",
+          "title": "Thuyết trình",
+          "seconds": 447
+        },
+        {
+          "id": "jdskcL9msxU",
+          "title": "Đi cà phê học bài",
+          "seconds": 432
+        },
+        {
+          "id": "8mBeNRGWu3s",
+          "title": "Quên học bài",
+          "seconds": 611
+        },
+        {
+          "id": "msEFiakoU3o",
+          "title": "Máy bay",
+          "seconds": 649
+        },
+        {
+          "id": "zHS_vbVhRik",
+          "title": "Đồ tết",
+          "seconds": 555
+        },
+        {
+          "id": "33YwzUK9cMU",
+          "title": "Xe buýt",
+          "seconds": 528
+        },
+        {
+          "id": "bHy1jO_WPWM",
+          "title": "Học tiếng Anh",
+          "seconds": 508
+        },
+        {
+          "id": "99iQRbs9L_k",
+          "title": "Giao thông",
+          "seconds": 494
+        },
+        {
+          "id": "2G9FqBaBTaA",
+          "title": "Mùa đông",
+          "seconds": 480
+        }
+      ]
+    }
+  ]
+}

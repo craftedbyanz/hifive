@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCDtlphrmaJAaICeH3_wgFGjTK7gEA8hT0',
-    appId: '1:440247164777:ios:32886958e7bebe60cfa7f8',
+    appId: '1:440247164777:ios:7ce389cc295e32dfcfa7f8',
     messagingSenderId: '440247164777',
     projectId: 'hifive-3371b',
     storageBucket: 'hifive-3371b.firebasestorage.app',
-    iosClientId: '440247164777-nfka3rjve3odufgbgv0j4qsif18ob91v.apps.googleusercontent.com',
-    iosBundleId: 'com.anznguyen.hifive',
+    iosClientId: '440247164777-7mpacdeq807sib97q3o4v62bgvvq3ouv.apps.googleusercontent.com',
+    iosBundleId: 'com.anznguyen.hifive.release',
   );
 }

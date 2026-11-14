@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/app/app.dart';
 import 'package:hifive/data/data.dart';
+import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/features/home/home.dart';
 import 'package:hifive/features/profile/profile.dart';
 import 'package:hifive/features/welcome/welcome.dart';
 import 'package:hifive/state/state.dart';
+import 'package:hifive/widgets/common.dart';
 
 import '../../helpers.dart';
 
@@ -40,13 +42,18 @@ void main() {
     expect(find.byType(WelcomeScreen), findsOneWidget);
     expect(find.byType(HomeScreen), findsNothing);
     expect(find.text(_writing), findsOneWidget);
-    for (final key in [
-      'sign-in-apple',
-      'sign-in-google',
-      'sign-in-email-open',
-    ]) {
+    for (final key in ['sign-in-apple', 'sign-in-google']) {
       expect(find.byKey(ValueKey(key)), findsOneWidget);
     }
+    // Only Apple and Google: no email and password.
+    expect(find.byKey(const ValueKey('sign-in-email-open')), findsNothing);
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('sign-in-google')),
+        matching: find.byType(GoogleLogo),
+      ),
+      findsOneWidget,
+    );
     // Without autoplay the demo shows its finished frame.
     expect(find.text("Let's go to the beach this weekend!"), findsOneWidget);
   });
@@ -90,25 +97,12 @@ void main() {
     expect(find.text(_cards), findsOneWidget);
   });
 
-  testWidgets('email opens a sheet that closes once signed in', (tester) async {
-    final auth = MemoryAuthService()..accounts['lan@x.vn'] = 'secret1';
-    final s = fresh(auth: auth);
+  testWidgets('Google signs in and opens Home', (tester) async {
+    final s = fresh(auth: MemoryAuthService());
     await _openApp(tester, s);
-    await tester.tap(find.byKey(const ValueKey('sign-in-email-open')));
+    await tester.tap(find.byKey(const ValueKey('sign-in-google')));
     await tester.pumpAndSettle();
-    expect(find.byType(EmailSignInForm), findsOneWidget);
-    await tester.enterText(
-      find.byKey(const ValueKey('sign-in-email')),
-      'lan@x.vn',
-    );
-    await tester.enterText(
-      find.byKey(const ValueKey('sign-in-password')),
-      'secret1',
-    );
-    await tester.pump();
-    await tester.tap(find.byKey(const ValueKey('sign-in-submit')));
-    await tester.pumpAndSettle();
-    expect(find.byType(EmailSignInForm), findsNothing);
+    expect(s.user?.method, AuthMethod.google);
     expect(find.byType(HomeScreen), findsOneWidget);
   });
 

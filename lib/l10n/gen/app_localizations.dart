@@ -1290,12 +1290,6 @@ abstract class AppLocalizations {
   /// **'Tiếp tục với Google'**
   String get continueWithGoogle;
 
-  /// No description provided for @continueWithEmail.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tiếp tục với email'**
-  String get continueWithEmail;
-
   /// No description provided for @introPage.
   ///
   /// In vi, this message translates to:
@@ -1397,84 +1391,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Không đăng nhập được. Vui lòng thử lại.'**
   String get authUnknown;
-
-  /// No description provided for @resetNeedsEmail.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nhập email để nhận liên kết đặt lại mật khẩu.'**
-  String get resetNeedsEmail;
-
-  /// No description provided for @resetSent.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã gửi email đặt lại mật khẩu.'**
-  String get resetSent;
-
-  /// No description provided for @createAccountTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tạo tài khoản Hifive'**
-  String get createAccountTitle;
-
-  /// No description provided for @emailSignInTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập bằng email'**
-  String get emailSignInTitle;
-
-  /// No description provided for @emailSignInBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Lưu tiến độ và học tiếp trên mọi thiết bị.'**
-  String get emailSignInBody;
-
-  /// No description provided for @emailHint.
-  ///
-  /// In vi, this message translates to:
-  /// **'Email'**
-  String get emailHint;
-
-  /// No description provided for @passwordHint.
-  ///
-  /// In vi, this message translates to:
-  /// **'Mật khẩu'**
-  String get passwordHint;
-
-  /// No description provided for @working.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đang xử lý...'**
-  String get working;
-
-  /// No description provided for @createAccount.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tạo tài khoản'**
-  String get createAccount;
-
-  /// No description provided for @signIn.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập'**
-  String get signIn;
-
-  /// No description provided for @haveAccountSignIn.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã có tài khoản? Đăng nhập'**
-  String get haveAccountSignIn;
-
-  /// No description provided for @createNewAccount.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tạo tài khoản mới'**
-  String get createNewAccount;
-
-  /// No description provided for @forgotPassword.
-  ///
-  /// In vi, this message translates to:
-  /// **'Quên mật khẩu?'**
-  String get forgotPassword;
 
   /// No description provided for @sceneWritingTitle.
   ///
@@ -4662,12 +4578,6 @@ abstract class AppLocalizations {
   /// **'Chọn cây'**
   String get focusPickTree;
 
-  /// No description provided for @focusLocked.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chưa mở'**
-  String get focusLocked;
-
   /// No description provided for @focusTagEnglish.
   ///
   /// In vi, this message translates to:
@@ -4859,6 +4769,174 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ngân hà'**
   String get speciesGalaxy;
+
+  /// No description provided for @speciesOlive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ô liu'**
+  String get speciesOlive;
+
+  /// No description provided for @speciesMugunghwa.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mộc cận'**
+  String get speciesMugunghwa;
+
+  /// No description provided for @gardenGroupStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khởi đầu'**
+  String get gardenGroupStart;
+
+  /// No description provided for @gardenGroupMemory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi nhớ'**
+  String get gardenGroupMemory;
+
+  /// No description provided for @gardenGroupDiligence.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyên cần'**
+  String get gardenGroupDiligence;
+
+  /// No description provided for @gardenGroupFocus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập trung'**
+  String get gardenGroupFocus;
+
+  /// No description provided for @gardenGroupSeason.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo mùa'**
+  String get gardenGroupSeason;
+
+  /// No description provided for @gardenGroupLegend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huyền thoại'**
+  String get gardenGroupLegend;
+
+  /// No description provided for @originVietnam.
+  ///
+  /// In vi, this message translates to:
+  /// **'Việt Nam'**
+  String get originVietnam;
+
+  /// No description provided for @originJapan.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhật Bản'**
+  String get originJapan;
+
+  /// No description provided for @originKorea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hàn Quốc'**
+  String get originKorea;
+
+  /// No description provided for @originChina.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trung Quốc'**
+  String get originChina;
+
+  /// No description provided for @originIndia.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ấn Độ'**
+  String get originIndia;
+
+  /// No description provided for @originGermany.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đức'**
+  String get originGermany;
+
+  /// No description provided for @originEngland.
+  ///
+  /// In vi, this message translates to:
+  /// **'Anh'**
+  String get originEngland;
+
+  /// No description provided for @originNetherlands.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hà Lan'**
+  String get originNetherlands;
+
+  /// No description provided for @originFrance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pháp'**
+  String get originFrance;
+
+  /// No description provided for @originSpain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tây Ban Nha'**
+  String get originSpain;
+
+  /// No description provided for @originGreece.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hy Lạp'**
+  String get originGreece;
+
+  /// No description provided for @originNorway.
+  ///
+  /// In vi, this message translates to:
+  /// **'Na Uy'**
+  String get originNorway;
+
+  /// No description provided for @originFinland.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phần Lan'**
+  String get originFinland;
+
+  /// No description provided for @originRussia.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nga'**
+  String get originRussia;
+
+  /// No description provided for @originKazakhstan.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kazakhstan'**
+  String get originKazakhstan;
+
+  /// No description provided for @originCanada.
+  ///
+  /// In vi, this message translates to:
+  /// **'Canada'**
+  String get originCanada;
+
+  /// No description provided for @originUsa.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỹ'**
+  String get originUsa;
+
+  /// No description provided for @originMexico.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mexico'**
+  String get originMexico;
+
+  /// No description provided for @originMadagascar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Madagascar'**
+  String get originMadagascar;
+
+  /// No description provided for @originLegend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Truyền thuyết'**
+  String get originLegend;
 
   /// No description provided for @gardenTitle.
   ///
@@ -5723,6 +5801,954 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Mẹo: nghe một lần để hiểu ý chính, nghe lần hai và lưu những từ bạn muốn dùng được.'**
   String get listenTip;
+
+  /// No description provided for @listenEpisode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập {n}'**
+  String listenEpisode(int n);
+
+  /// No description provided for @listenNowPlaying.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang phát'**
+  String get listenNowPlaying;
+
+  /// No description provided for @listenEpisodes.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách tập'**
+  String get listenEpisodes;
+
+  /// No description provided for @listenHeardCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nghe {done}/{total}'**
+  String listenHeardCount(int done, int total);
+
+  /// No description provided for @listenEpisodeCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} tập'**
+  String listenEpisodeCount(int n);
+
+  /// No description provided for @listenAboutHours.
+  ///
+  /// In vi, this message translates to:
+  /// **'khoảng {h} giờ'**
+  String listenAboutHours(int h);
+
+  /// No description provided for @listenMinutesLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'còn {m} phút'**
+  String listenMinutesLeft(int m);
+
+  /// No description provided for @listenMinutes.
+  ///
+  /// In vi, this message translates to:
+  /// **'{m} phút'**
+  String listenMinutes(int m);
+
+  /// No description provided for @listenResume.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe tiếp'**
+  String get listenResume;
+
+  /// No description provided for @listenToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay'**
+  String get listenToday;
+
+  /// No description provided for @listenTodayBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã nghe {m}/{goal} phút'**
+  String listenTodayBody(int m, int goal);
+
+  /// No description provided for @listenGoalDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt mục tiêu nghe hôm nay rồi!'**
+  String get listenGoalDone;
+
+  /// No description provided for @listenTodayHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe mỗi ngày một chút để tai quen tiếng Anh. Một phút nghe cũng giữ chuỗi ngày học.'**
+  String get listenTodayHint;
+
+  /// No description provided for @listenMinuteUnit.
+  ///
+  /// In vi, this message translates to:
+  /// **'phút'**
+  String get listenMinuteUnit;
+
+  /// No description provided for @listenSources.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguồn nghe'**
+  String get listenSources;
+
+  /// No description provided for @listenEpisodeDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong tập {n}! Tiếp theo: {title}'**
+  String listenEpisodeDone(int n, String title);
+
+  /// No description provided for @listenAllDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã nghe hết danh sách này!'**
+  String get listenAllDone;
+
+  /// No description provided for @listenBack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lùi 5 giây'**
+  String get listenBack;
+
+  /// No description provided for @listenForward.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tới 5 giây'**
+  String get listenForward;
+
+  /// No description provided for @listenSpeed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tốc độ phát'**
+  String get listenSpeed;
+
+  /// No description provided for @listenPlay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phát'**
+  String get listenPlay;
+
+  /// No description provided for @listenPause.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạm dừng'**
+  String get listenPause;
+
+  /// No description provided for @shareDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ bộ thẻ'**
+  String get shareDeck;
+
+  /// No description provided for @shareDeckBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn bè nhập mã này trong hifive, hoặc mở liên kết. Chỉ từ và nghĩa được chia sẻ, tiến độ học của bạn thì không.'**
+  String get shareDeckBody;
+
+  /// No description provided for @shareDeckUpdated.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi lần mở lại đây, bộ thẻ được chia sẻ cập nhật theo các từ mới nhất.'**
+  String get shareDeckUpdated;
+
+  /// No description provided for @shareDeckSending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tạo mã…'**
+  String get shareDeckSending;
+
+  /// No description provided for @shareCopy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép'**
+  String get shareCopy;
+
+  /// No description provided for @shareCopied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép'**
+  String get shareCopied;
+
+  /// No description provided for @shareSend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi cho bạn bè'**
+  String get shareSend;
+
+  /// No description provided for @shareStop.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngừng chia sẻ'**
+  String get shareStop;
+
+  /// No description provided for @shareStopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngừng chia sẻ bộ thẻ?'**
+  String get shareStopTitle;
+
+  /// No description provided for @shareStopBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã và liên kết sẽ không dùng được nữa. Ai đã thêm bộ thẻ vẫn giữ bản của họ.'**
+  String get shareStopBody;
+
+  /// No description provided for @shareStopped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã ngừng chia sẻ'**
+  String get shareStopped;
+
+  /// No description provided for @shareMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học bộ thẻ \"{title}\" trên hifive: {link}\nHoặc mở hifive, vào Bộ thẻ, chọn Nhập mã: {code}'**
+  String shareMessage(String title, String link, String code);
+
+  /// No description provided for @importDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mã'**
+  String get importDeck;
+
+  /// No description provided for @importTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập bộ thẻ được chia sẻ'**
+  String get importTitle;
+
+  /// No description provided for @importHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã 6 ký tự hoặc liên kết'**
+  String get importHint;
+
+  /// No description provided for @importOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem bộ thẻ'**
+  String get importOpen;
+
+  /// No description provided for @importAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm vào bộ thẻ của tôi'**
+  String get importAdd;
+
+  /// No description provided for @importAdded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thêm \"{title}\"'**
+  String importAdded(String title);
+
+  /// No description provided for @importBadCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã gồm 6 chữ và số, ví dụ K7M2QX.'**
+  String get importBadCode;
+
+  /// No description provided for @importWordCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} từ'**
+  String importWordCount(int n);
+
+  /// No description provided for @importMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'và {n} từ nữa'**
+  String importMore(int n);
+
+  /// No description provided for @shareErrorNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy bộ thẻ với mã này. Có thể nó đã ngừng được chia sẻ.'**
+  String get shareErrorNotFound;
+
+  /// No description provided for @shareErrorOffline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không kết nối được. Kiểm tra mạng rồi thử lại.'**
+  String get shareErrorOffline;
+
+  /// No description provided for @shareErrorSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần đăng nhập và có kết nối mạng để chia sẻ.'**
+  String get shareErrorSignIn;
+
+  /// No description provided for @shareErrorTooMany.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã chia sẻ 100 bộ thẻ. Hãy ngừng chia sẻ bớt rồi thử lại.'**
+  String get shareErrorTooMany;
+
+  /// No description provided for @shareErrorRejected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ thẻ này quá lớn để chia sẻ (tối đa 500 từ).'**
+  String get shareErrorRejected;
+
+  /// No description provided for @helpTitle8.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khu vườn & Tập trung'**
+  String get helpTitle8;
+
+  /// No description provided for @helpBody8.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi ngày bạn học, khu vườn của bạn lại xanh thêm một chút.\n\nCây lớn lên từ việc học\n\n• Mỗi lần ôn một từ mới hoặc một từ đến hạn là một lần tưới cây. Đủ 10 lần, một cây học mọc trong vườn.\n• Chọn loài cây học trong mục Vườn. Học càng đều, càng mở khoá thêm nhiều loài.\n\nChế độ Tập trung\n\n• Đặt thời gian, gắn nhãn (Tiếng Anh, Viết, Công việc…) rồi bắt đầu: cây lớn dần theo thời gian bạn tập trung.\n• Rời app quá 30 giây hoặc bỏ cuộc thì cây héo. Khoá màn hình thì cây vẫn lớn.\n• Xong phiên, ôn vài từ đến hạn để cây nở hoa.\n\nSắp ra mắt\n\n• Chặn các app gây xao nhãng trong lúc tập trung.\n• Âm thanh thư giãn và bài tập thở.\n• Widget màn hình chính cho cây đang lớn và số từ cần ôn.'**
+  String get helpBody8;
+
+  /// No description provided for @helpTitle9.
+  ///
+  /// In vi, this message translates to:
+  /// **'Luyện nghe'**
+  String get helpTitle9;
+
+  /// No description provided for @helpBody9.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tai quen tiếng Anh nhờ nghe mỗi ngày một chút.\n\nĐang có\n\n• Nguồn nghe hifive chọn lọc theo trình độ, bắt đầu với podcast A1 của kênh REACH.\n• Phát ngay trong app: lùi hoặc tới 5 giây, nghe chậm 0.75× hay 0.5×, kéo thanh thời gian.\n• App nhớ chỗ bạn đang nghe, tự chuyển sang tập tiếp theo và đánh dấu tập đã nghe xong.\n• Nghe đủ 1 phút là ngày đó được tính vào chuỗi ngày học. Mục tiêu gợi ý: 15 phút mỗi ngày.\n• Gặp từ lạ thì bấm Lưu từ, từ đó sẽ có trong Ôn hôm nay.\n\nSắp ra mắt\n\n• Phụ đề song ngữ chạy theo lời.\n• Shadowing: nghe rồi nói theo, thu âm để so sánh.\n• Thêm nhiều nguồn nghe cho từng trình độ.'**
+  String get helpBody9;
+
+  /// No description provided for @helpTitle10.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cộng đồng'**
+  String get helpTitle10;
+
+  /// No description provided for @helpBody10.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học cùng nhau thì dễ giữ nhịp hơn. Mở Bộ thẻ rồi bấm biểu tượng quả địa cầu để vào Cộng đồng.\n\nChia sẻ bộ thẻ\n\n• Mở bộ thẻ, chọn ••• rồi Chia sẻ bộ thẻ để nhận mã 6 ký tự và liên kết gửi cho bạn bè.\n• Trong Bộ thẻ, bấm Nhập mã, dán mã hoặc liên kết, xem trước rồi thêm vào bộ của bạn.\n• Chỉ từ và nghĩa được chia sẻ, tiến độ học của bạn thì không.\n\nKhám phá\n\n• Tìm bộ thẻ công khai, xem phổ biến hay mới nhất và thêm vào bộ của bạn.\n• Bật Công khai khi chia sẻ để bộ thẻ của bạn hiện ở đây (lần đầu cần đồng ý quy tắc cộng đồng).\n• Gặp bộ thẻ không phù hợp thì Báo cáo, hoặc Chặn người tạo.\n\nNhóm học\n\n• Tạo nhóm, đặt mục tiêu số ngày học mỗi tuần rồi gửi mã mời cho bạn bè.\n• Bảng tuần cho thấy ai đã học ngày nào và ai đạt mục tiêu. Ôn từ, học bài hay nghe một phút đều được tính.\n\nLớp học\n\n• Giáo viên tạo lớp, gửi mã cho học sinh và giao bộ thẻ có hạn chót.\n• Học sinh bấm Học để thêm bộ thẻ và ôn như bình thường; tiến độ tự cập nhật.\n• Giáo viên xem từng học sinh đã học bao nhiêu từ, ai đã xong, ai trễ hạn.'**
+  String get helpBody10;
+
+  /// No description provided for @sharePublic.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công khai trong Khám phá'**
+  String get sharePublic;
+
+  /// No description provided for @sharePublicOn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi người đều tìm thấy bộ thẻ này. Tên hiển thị: {name}'**
+  String sharePublicOn(String name);
+
+  /// No description provided for @sharePublicOff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ ai có mã hoặc liên kết mới mở được.'**
+  String get sharePublicOff;
+
+  /// No description provided for @rulesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quy tắc cộng đồng'**
+  String get rulesTitle;
+
+  /// No description provided for @rulesBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ thẻ công khai giúp mọi người cùng học. Khi công khai, bạn đồng ý:\n\n• Chỉ chia sẻ nội dung học ngôn ngữ.\n• Không có nội dung xúc phạm, thù ghét, khiêu dâm, bạo lực hay thông tin cá nhân của người khác.\n• Không spam, không quảng cáo.\n• Chỉ dùng nội dung bạn có quyền chia sẻ.\n\nBộ thẻ bị nhiều người báo cáo sẽ tạm ẩn để xem xét; tài khoản vi phạm có thể bị khoá.'**
+  String get rulesBody;
+
+  /// No description provided for @rulesAccept.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi đồng ý'**
+  String get rulesAccept;
+
+  /// No description provided for @exploreTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khám phá bộ thẻ'**
+  String get exploreTitle;
+
+  /// No description provided for @exploreSearch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm bộ thẻ'**
+  String get exploreSearch;
+
+  /// No description provided for @explorePopular.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phổ biến'**
+  String get explorePopular;
+
+  /// No description provided for @exploreNewest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mới nhất'**
+  String get exploreNewest;
+
+  /// No description provided for @exploreEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có bộ thẻ công khai nào. Hãy chia sẻ bộ thẻ của bạn và bật Công khai để là người đầu tiên!'**
+  String get exploreEmpty;
+
+  /// No description provided for @exploreNoResults.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy bộ thẻ nào khớp.'**
+  String get exploreNoResults;
+
+  /// No description provided for @exploreMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem thêm'**
+  String get exploreMore;
+
+  /// No description provided for @exploreMeta.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} từ · {author}'**
+  String exploreMeta(int count, String author);
+
+  /// No description provided for @exploreAdds.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} lượt thêm'**
+  String exploreAdds(int count);
+
+  /// No description provided for @exploreAuthorUnknown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người học hifive'**
+  String get exploreAuthorUnknown;
+
+  /// No description provided for @exploreUnblock.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ chặn mọi người bạn đã chặn'**
+  String get exploreUnblock;
+
+  /// No description provided for @exploreUnblocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bỏ chặn'**
+  String get exploreUnblocked;
+
+  /// No description provided for @reportDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo'**
+  String get reportDeck;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo bộ thẻ này'**
+  String get reportTitle;
+
+  /// No description provided for @reportOffensive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xúc phạm hoặc không phù hợp'**
+  String get reportOffensive;
+
+  /// No description provided for @reportSpam.
+  ///
+  /// In vi, this message translates to:
+  /// **'Spam hoặc quảng cáo'**
+  String get reportSpam;
+
+  /// No description provided for @reportWrong.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiều chỗ sai'**
+  String get reportWrong;
+
+  /// No description provided for @reportCopyright.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vi phạm bản quyền'**
+  String get reportCopyright;
+
+  /// No description provided for @reportOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lý do khác'**
+  String get reportOther;
+
+  /// No description provided for @reportDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cảm ơn bạn. Bộ thẻ này sẽ không hiện với bạn nữa.'**
+  String get reportDone;
+
+  /// No description provided for @blockOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chặn người tạo'**
+  String get blockOwner;
+
+  /// No description provided for @blockTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chặn {author}?'**
+  String blockTitle(String author);
+
+  /// No description provided for @blockBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn sẽ không thấy bộ thẻ nào của người này trong Khám phá nữa. Có thể bỏ chặn ở cuối trang Khám phá.'**
+  String get blockBody;
+
+  /// No description provided for @blockDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã chặn'**
+  String get blockDone;
+
+  /// No description provided for @editDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa bộ thẻ'**
+  String get editDeck;
+
+  /// No description provided for @deckName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên bộ thẻ'**
+  String get deckName;
+
+  /// No description provided for @deckIcon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Biểu tượng'**
+  String get deckIcon;
+
+  /// No description provided for @save.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu'**
+  String get save;
+
+  /// No description provided for @deckCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo bộ thẻ'**
+  String get deckCreate;
+
+  /// No description provided for @deckOrAi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoặc để AI tạo sẵn từ theo chủ đề'**
+  String get deckOrAi;
+
+  /// No description provided for @deckMine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ thẻ của bạn'**
+  String get deckMine;
+
+  /// No description provided for @addWords.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm từ'**
+  String get addWords;
+
+  /// No description provided for @addWordTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm từ vào bộ'**
+  String get addWordTitle;
+
+  /// No description provided for @addWordWord.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ hoặc cụm từ'**
+  String get addWordWord;
+
+  /// No description provided for @addWordMeaning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghĩa'**
+  String get addWordMeaning;
+
+  /// No description provided for @addWordExample.
+  ///
+  /// In vi, this message translates to:
+  /// **'Câu ví dụ (không bắt buộc)'**
+  String get addWordExample;
+
+  /// No description provided for @addWordSave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm'**
+  String get addWordSave;
+
+  /// No description provided for @addWordDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong'**
+  String get addWordDone;
+
+  /// No description provided for @addWordAdded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thêm {n} từ'**
+  String addWordAdded(int n);
+
+  /// No description provided for @addWordExists.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ này đã có trong bộ thẻ.'**
+  String get addWordExists;
+
+  /// No description provided for @deckDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả (không bắt buộc)'**
+  String get deckDescription;
+
+  /// No description provided for @communityTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cộng đồng'**
+  String get communityTitle;
+
+  /// No description provided for @tabExplore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khám phá'**
+  String get tabExplore;
+
+  /// No description provided for @tabGroups.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm học'**
+  String get tabGroups;
+
+  /// No description provided for @tabClasses.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lớp học'**
+  String get tabClasses;
+
+  /// No description provided for @groupsIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học cùng bạn bè: đặt mục tiêu số ngày học mỗi tuần và xem ai đã học hôm nay.'**
+  String get groupsIntro;
+
+  /// No description provided for @classesIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giáo viên giao bộ thẻ có hạn chót và xem tiến độ từng học sinh.'**
+  String get classesIntro;
+
+  /// No description provided for @groupCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo nhóm'**
+  String get groupCreate;
+
+  /// No description provided for @classCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo lớp'**
+  String get classCreate;
+
+  /// No description provided for @circleJoin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vào bằng mã'**
+  String get circleJoin;
+
+  /// No description provided for @groupsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa ở nhóm nào. Tạo nhóm rồi gửi mã cho bạn bè.'**
+  String get groupsEmpty;
+
+  /// No description provided for @classesEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa ở lớp nào. Nhập mã giáo viên gửi, hoặc tạo lớp nếu bạn là giáo viên.'**
+  String get classesEmpty;
+
+  /// No description provided for @circleMembers.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} thành viên'**
+  String circleMembers(int n);
+
+  /// No description provided for @circleTeacher.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giáo viên'**
+  String get circleTeacher;
+
+  /// No description provided for @circleOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trưởng nhóm'**
+  String get circleOwner;
+
+  /// No description provided for @circleYou.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn'**
+  String get circleYou;
+
+  /// No description provided for @circleMemberUnknown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên'**
+  String get circleMemberUnknown;
+
+  /// No description provided for @circleGoal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mục tiêu {n} ngày/tuần'**
+  String circleGoal(int n);
+
+  /// No description provided for @circleGoalLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mục tiêu mỗi tuần'**
+  String get circleGoalLabel;
+
+  /// No description provided for @circleDays.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} ngày'**
+  String circleDays(int n);
+
+  /// No description provided for @circleNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên'**
+  String get circleNameHint;
+
+  /// No description provided for @groupCreateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo nhóm học'**
+  String get groupCreateTitle;
+
+  /// No description provided for @classCreateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo lớp học'**
+  String get classCreateTitle;
+
+  /// No description provided for @circleEditTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa tên và mục tiêu'**
+  String get circleEditTitle;
+
+  /// No description provided for @circleJoinTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vào nhóm hoặc lớp'**
+  String get circleJoinTitle;
+
+  /// No description provided for @circleJoinHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã 6 ký tự'**
+  String get circleJoinHint;
+
+  /// No description provided for @circleCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã mời'**
+  String get circleCode;
+
+  /// No description provided for @circleInvite.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời bạn'**
+  String get circleInvite;
+
+  /// No description provided for @groupInviteMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học cùng mình trong nhóm \"{name}\" trên hifive! Mở hifive, vào Bộ thẻ, chọn Cộng đồng, Nhóm học, Vào bằng mã: {code}'**
+  String groupInviteMessage(String name, String code);
+
+  /// No description provided for @classInviteMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vào lớp \"{name}\" trên hifive: mở hifive, vào Bộ thẻ, chọn Cộng đồng, Lớp học, Vào bằng mã: {code}'**
+  String classInviteMessage(String name, String code);
+
+  /// No description provided for @circleThisWeek.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuần này'**
+  String get circleThisWeek;
+
+  /// No description provided for @circleReached.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt mục tiêu'**
+  String get circleReached;
+
+  /// No description provided for @circleLeave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời nhóm'**
+  String get circleLeave;
+
+  /// No description provided for @classLeave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời lớp'**
+  String get classLeave;
+
+  /// No description provided for @circleLeaveTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời \"{name}\"?'**
+  String circleLeaveTitle(String name);
+
+  /// No description provided for @circleLeaveBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có thể vào lại bằng mã mời.'**
+  String get circleLeaveBody;
+
+  /// No description provided for @circleRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời ra'**
+  String get circleRemove;
+
+  /// No description provided for @circleRemoveTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời {name} ra khỏi nhóm?'**
+  String circleRemoveTitle(String name);
+
+  /// No description provided for @circleRemoveBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người này có thể vào lại nếu còn mã mời.'**
+  String get circleRemoveBody;
+
+  /// No description provided for @circleEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa'**
+  String get circleEdit;
+
+  /// No description provided for @circleErrorNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy nhóm hoặc lớp với mã này.'**
+  String get circleErrorNotFound;
+
+  /// No description provided for @circleErrorTooMany.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm đã đủ người, hoặc bạn đã ở quá nhiều nhóm và lớp.'**
+  String get circleErrorTooMany;
+
+  /// No description provided for @classAssign.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao bộ thẻ'**
+  String get classAssign;
+
+  /// No description provided for @classAssignTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao bộ thẻ cho lớp'**
+  String get classAssignTitle;
+
+  /// No description provided for @classPickDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn bộ thẻ'**
+  String get classPickDeck;
+
+  /// No description provided for @classDue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn chót'**
+  String get classDue;
+
+  /// No description provided for @classAssignments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ thẻ được giao'**
+  String get classAssignments;
+
+  /// No description provided for @classNoAssignments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có bộ thẻ nào được giao.'**
+  String get classNoAssignments;
+
+  /// No description provided for @classDueOn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn {date}'**
+  String classDueOn(String date);
+
+  /// No description provided for @classProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'{done}/{total} từ'**
+  String classProgress(int done, int total);
+
+  /// No description provided for @classDoneCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{done}/{all} học sinh đã xong'**
+  String classDoneCount(int done, int all);
+
+  /// No description provided for @classStudy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học'**
+  String get classStudy;
+
+  /// No description provided for @classDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong'**
+  String get classDone;
+
+  /// No description provided for @classLate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trễ hạn'**
+  String get classLate;
+
+  /// No description provided for @classStudents.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học sinh'**
+  String get classStudents;
+
+  /// No description provided for @classUnassign.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ giao'**
+  String get classUnassign;
+
+  /// No description provided for @classNoStudents.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có học sinh. Gửi mã mời cho lớp.'**
+  String get classNoStudents;
+
+  /// No description provided for @classNoDecks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy tạo một bộ thẻ có từ trước, rồi giao cho lớp.'**
+  String get classNoDecks;
 }
 
 class _AppLocalizationsDelegate

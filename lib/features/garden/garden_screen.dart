@@ -246,7 +246,7 @@ class _GardenScreenState extends State<GardenScreen> {
                     species: state.studySpecies,
                     size: 76,
                     growth: .05 + .95 * stats.growing / reviewsPerTree,
-                    floating: false,
+                    island: false,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -320,28 +320,95 @@ class _GardenScreenState extends State<GardenScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 3,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: .72,
-            children: [
-              for (final s in species)
-                _CollectionTile(
-                  id: s.id,
-                  name: speciesName(t, s.id),
-                  rule: unlockText(t, s.unlock),
-                  open: stats.unlocks(s),
-                ),
-            ],
-          ),
+          for (final g in SpeciesGroup.values) ...[
+            const SizedBox(height: 18),
+            _GroupHeader(
+              name: groupName(t, g),
+              open: speciesInGroup(g).where(stats.unlocks).length,
+              total: speciesInGroup(g).length,
+            ),
+            const SizedBox(height: 10),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: .66,
+              children: [
+                for (final s in speciesInGroup(g))
+                  _CollectionTile(
+                    id: s.id,
+                    name: speciesName(t, s.id),
+                    origin: originName(t, s.origin),
+                    rule: unlockText(t, s.unlock),
+                    open: stats.unlocks(s),
+                  ),
+              ],
+            ),
+          ],
         ],
       ),
     );
   }
+}
+
+/// The name of a collection section.
+String groupName(AppLocalizations t, SpeciesGroup g) => switch (g) {
+  SpeciesGroup.start => t.gardenGroupStart,
+  SpeciesGroup.memory => t.gardenGroupMemory,
+  SpeciesGroup.diligence => t.gardenGroupDiligence,
+  SpeciesGroup.focus => t.gardenGroupFocus,
+  SpeciesGroup.season => t.gardenGroupSeason,
+  SpeciesGroup.legend => t.gardenGroupLegend,
+};
+
+/// Where a species is at home; the legendary one has no country.
+String originName(AppLocalizations t, Origin? o) => switch (o) {
+  Origin.vietnam => t.originVietnam,
+  Origin.japan => t.originJapan,
+  Origin.korea => t.originKorea,
+  Origin.china => t.originChina,
+  Origin.india => t.originIndia,
+  Origin.germany => t.originGermany,
+  Origin.england => t.originEngland,
+  Origin.netherlands => t.originNetherlands,
+  Origin.france => t.originFrance,
+  Origin.spain => t.originSpain,
+  Origin.greece => t.originGreece,
+  Origin.norway => t.originNorway,
+  Origin.finland => t.originFinland,
+  Origin.russia => t.originRussia,
+  Origin.kazakhstan => t.originKazakhstan,
+  Origin.canada => t.originCanada,
+  Origin.usa => t.originUsa,
+  Origin.mexico => t.originMexico,
+  Origin.madagascar => t.originMadagascar,
+  null => t.originLegend,
+};
+
+class _GroupHeader extends StatelessWidget {
+  final String name;
+  final int open, total;
+  const _GroupHeader({
+    required this.name,
+    required this.open,
+    required this.total,
+  });
+
+  @override
+  Widget build(BuildContext context) => Row(
+    crossAxisAlignment: CrossAxisAlignment.baseline,
+    textBaseline: TextBaseline.alphabetic,
+    children: [
+      Text(name, style: D.text(16, weight: FontWeight.w700)),
+      const SizedBox(width: 8),
+      Text(
+        '$open/$total',
+        style: D.text(12, weight: FontWeight.w600, color: D.muted),
+      ),
+    ],
+  );
 }
 
 /// What a learner must do to unlock a species.
@@ -452,11 +519,12 @@ class _Stat extends StatelessWidget {
 }
 
 class _CollectionTile extends StatelessWidget {
-  final String id, name, rule;
+  final String id, name, origin, rule;
   final bool open;
   const _CollectionTile({
     required this.id,
     required this.name,
+    required this.origin,
     required this.rule,
     required this.open,
   });
@@ -477,7 +545,12 @@ class _CollectionTile extends StatelessWidget {
           child: Center(
             child: Opacity(
               opacity: open ? 1 : .35,
-              child: TreeArt(species: id, size: 92, floating: false),
+              child: TreeArt(
+                species: id,
+                size: 92,
+                island: false,
+                animate: false,
+              ),
             ),
           ),
         ),
@@ -497,18 +570,27 @@ class _CollectionTile extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: 1),
         Text(
-          rule,
-          maxLines: 2,
+          origin,
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: D.text(
-            10.5,
-            weight: FontWeight.w600,
-            color: open ? D.secondary : Palette.menuFocus,
-            height: 1.3,
-          ),
+          style: D.text(10.5, weight: FontWeight.w600, color: D.secondary),
         ),
+        if (!open) ...[
+          const SizedBox(height: 2),
+          Text(
+            rule,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: D.text(
+              10.5,
+              weight: FontWeight.w600,
+              color: Palette.menuFocus,
+              height: 1.3,
+            ),
+          ),
+        ],
       ],
     ),
   );

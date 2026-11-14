@@ -9,14 +9,21 @@ import '../../domain/repositories/repositories.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../community/community.dart';
+import 'deck_edit_sheet.dart';
 import 'deck_screen.dart';
-
-/// A deck's icon, by its saved number.
-IconData deckIcon(Deck deck) =>
-    deck.icon == 1 ? Icons.restaurant_rounded : CupertinoIcons.briefcase_fill;
 
 class DeckListScreen extends StatelessWidget {
   const DeckListScreen({super.key});
+
+  /// Adds a deck someone shared, then opens it.
+  static Future<void> _import(BuildContext context) async {
+    final deck = await sheet<Deck>(context, const ImportDeckSheet());
+    if (deck == null || !context.mounted) return;
+    toast(context, context.t.importAdded(deck.title));
+    await go<void>(context, DeckScreen(deck: deck));
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
@@ -26,6 +33,34 @@ class DeckListScreen extends StatelessWidget {
           child: HeaderScrollPage(
             title: context.t.menuFlashcards,
             titleSize: 16.5,
+            trailing: state.shares == null
+                ? null
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      HeaderRoundButton(
+                        key: const ValueKey('deck-explore'),
+                        icon: CupertinoIcons.globe,
+                        iconSize: 22,
+                        label: context.t.communityTitle,
+                        onTap: () => go<void>(
+                          context,
+                          CommunityScreen(
+                            onOpenDeck: (c, deck) =>
+                                go<void>(c, DeckScreen(deck: deck)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      HeaderRoundButton(
+                        key: const ValueKey('deck-import'),
+                        icon: CupertinoIcons.tray_arrow_down,
+                        iconSize: 22,
+                        label: context.t.importDeck,
+                        onTap: () => _import(context),
+                      ),
+                    ],
+                  ),
             background: Palette.settingsPage,
             padding: const EdgeInsets.fromLTRB(24, 137, 24, 120),
             child: state.decks.isEmpty
@@ -60,7 +95,12 @@ class DeckListScreen extends StatelessWidget {
               message: context.t.addDeck,
               triggerMode: TooltipTriggerMode.manual,
               child: PressFade(
-                onTap: () => deckForm(context),
+                onTap: () async {
+                  final deck = await deckForm(context);
+                  if (deck != null && context.mounted) {
+                    await go<void>(context, DeckScreen(deck: deck));
+                  }
+                },
                 child: Container(
                   width: 60,
                   height: 60,
@@ -177,9 +217,10 @@ class _DeckCard extends StatelessWidget {
   );
 }
 
-/// New Deck, or Add Cards when [deck] is given.
-Future<void> deckForm(BuildContext context, {Deck? deck}) =>
-    showModalBottomSheet<void>(
+/// New Deck, or Add Cards when [deck] is given. Returns a deck made empty
+/// for the learner to fill.
+Future<Deck?> deckForm(BuildContext context, {Deck? deck}) =>
+    showModalBottomSheet<Deck>(
       context: context,
       isScrollControlled: true,
       showDragHandle: false,
@@ -215,12 +256,55 @@ class _DeckFormState extends State<_DeckForm> {
   int count = 10;
   bool generating = false;
 
+  /// The new deck's icon, by its number in [deckIcons].
+  int icon = 0;
+
   int get remaining => maxCards - (widget.deck?.words.length ?? 0);
 
   @override
   void dispose() {
     title.dispose();
     super.dispose();
+  }
+
+  /// Makes an empty deck with the name and icon chosen, to fill by hand.
+  void _create() {
+    final name = title.text.trim();
+    if (name.isEmpty) return;
+    final state = AppScope.read(context);
+    final deck = Deck(
+      id: state.newId(),
+      title: name,
+      description: context.t.deckMine,
+      icon: icon,
+      words: [],
+    );
+    state.addDeck(deck);
+    Navigator.pop(context, deck);
+  }
+
+  Future<void> _pickIcon() async {
+    final picked = await sheet<int>(
+      context,
+      Padding(
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 28),
+        child: Builder(
+          builder: (ctx) => Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(ctx.t.deckIcon, style: D.text(20, weight: FontWeight.w800)),
+              const SizedBox(height: 14),
+              DeckIconGrid(
+                selected: icon,
+                onPick: (i) => Navigator.of(ctx).pop(i),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (picked != null && mounted) setState(() => icon = picked);
   }
 
   /// Asks [DeckGenerator] for words, then saves them. A failure keeps the
@@ -243,6 +327,7 @@ class _DeckFormState extends State<_DeckForm> {
             id: state.newId(),
             title: title.text.trim(),
             description: context.t.sampleDeckDescription,
+            icon: icon,
             words: words,
           ),
         );
@@ -359,6 +444,30 @@ class _DeckFormState extends State<_DeckForm> {
                     horizontal: 15,
                     vertical: 16,
                   ),
+                  // A new deck's icon, tapped to choose another.
+                  prefixIcon: locked
+                      ? null
+                      : PressFade(
+                          key: const ValueKey('deck-form-icon'),
+                          onTap: _pickIcon,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 4),
+                            child: Container(
+                              width: 34,
+                              height: 34,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                deckIcons[icon],
+                                size: 18,
+                                color: D.ink,
+                              ),
+                            ),
+                          ),
+                        ),
+                  prefixIconConstraints: const BoxConstraints(),
                   suffixIcon: locked
                       ? const Icon(
                           CupertinoIcons.lock_fill,
@@ -370,7 +479,26 @@ class _DeckFormState extends State<_DeckForm> {
                   focusedBorder: _border(locked),
                 ),
               ),
-              const SizedBox(height: 21),
+              if (!locked) ...[
+                const SizedBox(height: 14),
+                ActionButton(
+                  context.t.deckCreate,
+                  key: const ValueKey('deck-create'),
+                  onTap: title.text.trim().isEmpty ? null : _create,
+                ),
+                const SizedBox(height: 22),
+                Text(
+                  context.t.deckOrAi,
+                  textAlign: TextAlign.center,
+                  style: D.text(
+                    12.5,
+                    weight: FontWeight.w600,
+                    color: Palette.settingsHint,
+                  ),
+                ),
+                const SizedBox(height: 4),
+              ] else
+                const SizedBox(height: 21),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.baseline,

@@ -613,9 +613,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get continueWithGoogle => '通过 Google 继续';
 
   @override
-  String get continueWithEmail => '通过邮箱继续';
-
-  @override
   String introPage(int index, int count) {
     return '介绍 $index/$count';
   }
@@ -667,45 +664,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get authUnknown => '登录失败，请重试。';
-
-  @override
-  String get resetNeedsEmail => '请输入邮箱以接收重置密码链接。';
-
-  @override
-  String get resetSent => '重置密码邮件已发送。';
-
-  @override
-  String get createAccountTitle => '创建 Hifive 账户';
-
-  @override
-  String get emailSignInTitle => '使用邮箱登录';
-
-  @override
-  String get emailSignInBody => '保存学习进度，在任何设备上继续学习。';
-
-  @override
-  String get emailHint => '邮箱';
-
-  @override
-  String get passwordHint => '密码';
-
-  @override
-  String get working => '处理中…';
-
-  @override
-  String get createAccount => '创建账户';
-
-  @override
-  String get signIn => '登录';
-
-  @override
-  String get haveAccountSignIn => '已有账户？登录';
-
-  @override
-  String get createNewAccount => '创建新账户';
-
-  @override
-  String get forgotPassword => '忘记密码？';
 
   @override
   String get sceneWritingTitle => '多写多练，\n逐句改正';
@@ -2395,9 +2353,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get focusPickTree => '选择树木';
 
   @override
-  String get focusLocked => '未解锁';
-
-  @override
   String get focusTagEnglish => '学英语';
 
   @override
@@ -2492,6 +2447,90 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get speciesGalaxy => '银河树';
+
+  @override
+  String get speciesOlive => '橄榄树';
+
+  @override
+  String get speciesMugunghwa => '木槿';
+
+  @override
+  String get gardenGroupStart => '起步';
+
+  @override
+  String get gardenGroupMemory => '记忆';
+
+  @override
+  String get gardenGroupDiligence => '勤奋';
+
+  @override
+  String get gardenGroupFocus => '专注';
+
+  @override
+  String get gardenGroupSeason => '时令';
+
+  @override
+  String get gardenGroupLegend => '传奇';
+
+  @override
+  String get originVietnam => '越南';
+
+  @override
+  String get originJapan => '日本';
+
+  @override
+  String get originKorea => '韩国';
+
+  @override
+  String get originChina => '中国';
+
+  @override
+  String get originIndia => '印度';
+
+  @override
+  String get originGermany => '德国';
+
+  @override
+  String get originEngland => '英格兰';
+
+  @override
+  String get originNetherlands => '荷兰';
+
+  @override
+  String get originFrance => '法国';
+
+  @override
+  String get originSpain => '西班牙';
+
+  @override
+  String get originGreece => '希腊';
+
+  @override
+  String get originNorway => '挪威';
+
+  @override
+  String get originFinland => '芬兰';
+
+  @override
+  String get originRussia => '俄罗斯';
+
+  @override
+  String get originKazakhstan => '哈萨克斯坦';
+
+  @override
+  String get originCanada => '加拿大';
+
+  @override
+  String get originUsa => '美国';
+
+  @override
+  String get originMexico => '墨西哥';
+
+  @override
+  String get originMadagascar => '马达加斯加';
+
+  @override
+  String get originLegend => '传说';
 
   @override
   String get gardenTitle => '你的花园';
@@ -2989,4 +3028,536 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get listenTip => '小贴士：先听一遍抓大意，再听一遍并保存想学会使用的词。';
+
+  @override
+  String listenEpisode(int n) {
+    return '第 $n 集';
+  }
+
+  @override
+  String get listenNowPlaying => '正在播放';
+
+  @override
+  String get listenEpisodes => '剧集列表';
+
+  @override
+  String listenHeardCount(int done, int total) {
+    return '已听 $done/$total';
+  }
+
+  @override
+  String listenEpisodeCount(int n) {
+    return '$n 集';
+  }
+
+  @override
+  String listenAboutHours(int h) {
+    return '约 $h 小时';
+  }
+
+  @override
+  String listenMinutesLeft(int m) {
+    return '还剩 $m 分钟';
+  }
+
+  @override
+  String listenMinutes(int m) {
+    return '$m 分钟';
+  }
+
+  @override
+  String get listenResume => '继续收听';
+
+  @override
+  String get listenToday => '今天';
+
+  @override
+  String listenTodayBody(int m, int goal) {
+    return '已听 $m/$goal 分钟';
+  }
+
+  @override
+  String get listenGoalDone => '今天的听力目标完成了！';
+
+  @override
+  String get listenTodayHint => '每天听一点，让耳朵习惯英语。听一分钟也能保持连续学习。';
+
+  @override
+  String get listenMinuteUnit => '分钟';
+
+  @override
+  String get listenSources => '听力来源';
+
+  @override
+  String listenEpisodeDone(int n, String title) {
+    return '第 $n 集听完了！下一集：$title';
+  }
+
+  @override
+  String get listenAllDone => '这个列表全部听完了！';
+
+  @override
+  String get listenBack => '后退 5 秒';
+
+  @override
+  String get listenForward => '前进 5 秒';
+
+  @override
+  String get listenSpeed => '播放速度';
+
+  @override
+  String get listenPlay => '播放';
+
+  @override
+  String get listenPause => '暂停';
+
+  @override
+  String get shareDeck => '分享卡组';
+
+  @override
+  String get shareDeckBody => '朋友在 hifive 中输入此代码，或打开链接。只分享单词和释义，不分享你的学习进度。';
+
+  @override
+  String get shareDeckUpdated => '每次重新打开这里，分享的卡组都会更新为最新的单词。';
+
+  @override
+  String get shareDeckSending => '正在生成代码…';
+
+  @override
+  String get shareCopy => '复制';
+
+  @override
+  String get shareCopied => '已复制';
+
+  @override
+  String get shareSend => '发送给朋友';
+
+  @override
+  String get shareStop => '停止分享';
+
+  @override
+  String get shareStopTitle => '停止分享此卡组？';
+
+  @override
+  String get shareStopBody => '代码和链接将失效。已添加此卡组的人会保留他们的副本。';
+
+  @override
+  String get shareStopped => '已停止分享';
+
+  @override
+  String shareMessage(String title, String link, String code) {
+    return '在 hifive 上学习卡组“$title”：$link\n或打开 hifive，进入卡组，选择输入代码：$code';
+  }
+
+  @override
+  String get importDeck => '输入代码';
+
+  @override
+  String get importTitle => '添加分享的卡组';
+
+  @override
+  String get importHint => '6 位代码或链接';
+
+  @override
+  String get importOpen => '查看卡组';
+
+  @override
+  String get importAdd => '添加到我的卡组';
+
+  @override
+  String importAdded(String title) {
+    return '已添加“$title”';
+  }
+
+  @override
+  String get importBadCode => '代码由 6 位字母和数字组成，例如 K7M2QX。';
+
+  @override
+  String importWordCount(int n) {
+    return '$n 个单词';
+  }
+
+  @override
+  String importMore(int n) {
+    return '还有 $n 个';
+  }
+
+  @override
+  String get shareErrorNotFound => '找不到此代码的卡组。它可能已停止分享。';
+
+  @override
+  String get shareErrorOffline => '无法连接。请检查网络后重试。';
+
+  @override
+  String get shareErrorSignIn => '分享需要登录并联网。';
+
+  @override
+  String get shareErrorTooMany => '你已分享 100 个卡组。请停止分享一些后重试。';
+
+  @override
+  String get shareErrorRejected => '此卡组太大，无法分享（最多 500 个单词）。';
+
+  @override
+  String get helpTitle8 => '花园与专注';
+
+  @override
+  String get helpBody8 =>
+      '你每天学习，花园就会更绿一点。\n\n学习让树成长\n\n• 每复习一个新词或到期的词，就是给树浇一次水。浇满 10 次，花园里就会长出一棵学习树。\n• 在花园中选择学习树的品种。学得越规律，解锁的品种越多。\n\n专注模式\n\n• 设定时间，选择标签（英语、写作、工作……）后开始：树会随着你专注的时间长大。\n• 离开应用超过 30 秒或放弃，树就会枯萎。锁屏时树仍会继续长大。\n• 一次专注结束后，复习几个到期的词，让树开花。\n\n即将推出\n\n• 专注时屏蔽让人分心的应用。\n• 放松音效和呼吸练习。\n• 显示成长中的树和待复习单词数的主屏幕小组件。';
+
+  @override
+  String get helpTitle9 => '听力练习';
+
+  @override
+  String get helpBody9 =>
+      '每天听一点，耳朵就会习惯英语。\n\n现已推出\n\n• hifive 按级别精选的听力资源，首先是 REACH 频道的 A1 播客。\n• 在应用内直接播放：后退或前进 5 秒，以 0.75× 或 0.5× 慢速收听，拖动进度条。\n• 应用会记住你听到哪里，自动播放下一集，并标记已听完的集数。\n• 听满 1 分钟，当天就计入连续学习。建议目标：每天 15 分钟。\n• 听到生词？点“保存单词”，它会出现在今日复习中。\n\n即将推出\n\n• 跟随语音的双语字幕。\n• 跟读：听后跟着说，录音对比。\n• 为每个级别增加更多听力资源。';
+
+  @override
+  String get helpTitle10 => '社区';
+
+  @override
+  String get helpBody10 =>
+      '一起学习更容易坚持。打开卡组，点地球图标进入社区。\n\n分享卡组\n\n• 打开卡组，点 ••• 再点“分享卡组”，获得 6 位代码和可发送的链接。\n• 在卡组页点“输入代码”，粘贴代码或链接，预览后添加到你的卡组。\n• 只分享单词和释义，不分享你的学习进度。\n\n发现\n\n• 查找热门或最新的公开卡组并添加到你的卡组。\n• 分享时打开“公开”，你的卡组就会出现在这里（第一次需同意社区规则）。\n• 遇到不当内容可以举报卡组或屏蔽创建者。\n\n学习小组\n\n• 创建小组，设定每周学习天数目标，把邀请码发给朋友。\n• 每周表格显示谁哪天学习了、谁达到了目标。复习单词、上课或听一分钟都算。\n\n班级\n\n• 老师创建班级，把代码发给学生，并布置有截止日期的卡组。\n• 学生点“学习”添加卡组并照常复习，进度会自动更新。\n• 老师可以看到每位学生学了多少单词、谁已完成、谁逾期。';
+
+  @override
+  String get sharePublic => '在发现中公开';
+
+  @override
+  String sharePublicOn(String name) {
+    return '所有人都能找到此卡组。显示名称：$name';
+  }
+
+  @override
+  String get sharePublicOff => '只有拥有代码或链接的人才能打开。';
+
+  @override
+  String get rulesTitle => '社区规则';
+
+  @override
+  String get rulesBody =>
+      '公开卡组帮助大家一起学习。公开卡组即表示你同意：\n\n• 只分享语言学习内容。\n• 不含冒犯、仇恨、色情、暴力内容或他人的个人信息。\n• 不发垃圾信息或广告。\n• 只使用你有权分享的内容。\n\n被多人举报的卡组会被暂时隐藏以供审核；违规账号可能被封禁。';
+
+  @override
+  String get rulesAccept => '我同意';
+
+  @override
+  String get exploreTitle => '发现卡组';
+
+  @override
+  String get exploreSearch => '搜索卡组';
+
+  @override
+  String get explorePopular => '热门';
+
+  @override
+  String get exploreNewest => '最新';
+
+  @override
+  String get exploreEmpty => '还没有公开卡组。分享你的卡组并设为公开，成为第一个吧！';
+
+  @override
+  String get exploreNoResults => '没有匹配的卡组。';
+
+  @override
+  String get exploreMore => '查看更多';
+
+  @override
+  String exploreMeta(int count, String author) {
+    return '$count 个单词 · $author';
+  }
+
+  @override
+  String exploreAdds(int count) {
+    return '$count 次添加';
+  }
+
+  @override
+  String get exploreAuthorUnknown => 'hifive 学习者';
+
+  @override
+  String get exploreUnblock => '取消屏蔽你屏蔽的所有人';
+
+  @override
+  String get exploreUnblocked => '已取消屏蔽';
+
+  @override
+  String get reportDeck => '举报';
+
+  @override
+  String get reportTitle => '举报此卡组';
+
+  @override
+  String get reportOffensive => '冒犯或不当';
+
+  @override
+  String get reportSpam => '垃圾信息或广告';
+
+  @override
+  String get reportWrong => '错误很多';
+
+  @override
+  String get reportCopyright => '侵犯版权';
+
+  @override
+  String get reportOther => '其他原因';
+
+  @override
+  String get reportDone => '谢谢。你不会再看到此卡组。';
+
+  @override
+  String get blockOwner => '屏蔽创建者';
+
+  @override
+  String blockTitle(String author) {
+    return '屏蔽 $author？';
+  }
+
+  @override
+  String get blockBody => '你将不会在发现中看到此人的任何卡组。可在发现页面底部取消屏蔽。';
+
+  @override
+  String get blockDone => '已屏蔽';
+
+  @override
+  String get editDeck => '编辑卡组';
+
+  @override
+  String get deckName => '卡组名称';
+
+  @override
+  String get deckIcon => '图标';
+
+  @override
+  String get save => '保存';
+
+  @override
+  String get deckCreate => '创建卡组';
+
+  @override
+  String get deckOrAi => '或者让 AI 按主题生成单词';
+
+  @override
+  String get deckMine => '你的卡组';
+
+  @override
+  String get addWords => '添加单词';
+
+  @override
+  String get addWordTitle => '向卡组添加单词';
+
+  @override
+  String get addWordWord => '单词或短语';
+
+  @override
+  String get addWordMeaning => '释义';
+
+  @override
+  String get addWordExample => '例句（可选）';
+
+  @override
+  String get addWordSave => '添加';
+
+  @override
+  String get addWordDone => '完成';
+
+  @override
+  String addWordAdded(int n) {
+    return '已添加 $n 个';
+  }
+
+  @override
+  String get addWordExists => '此单词已在卡组中。';
+
+  @override
+  String get deckDescription => '描述（可选）';
+
+  @override
+  String get communityTitle => '社区';
+
+  @override
+  String get tabExplore => '发现';
+
+  @override
+  String get tabGroups => '学习小组';
+
+  @override
+  String get tabClasses => '班级';
+
+  @override
+  String get groupsIntro => '和朋友一起学习：设定每周学习天数目标，看看谁今天学了。';
+
+  @override
+  String get classesIntro => '老师布置有截止日期的卡组，并查看每位学生的进度。';
+
+  @override
+  String get groupCreate => '创建小组';
+
+  @override
+  String get classCreate => '创建班级';
+
+  @override
+  String get circleJoin => '用代码加入';
+
+  @override
+  String get groupsEmpty => '你还没有加入小组。创建一个并把代码发给朋友。';
+
+  @override
+  String get classesEmpty => '你还没有加入班级。输入老师发的代码，或者如果你是老师就创建班级。';
+
+  @override
+  String circleMembers(int n) {
+    return '$n 名成员';
+  }
+
+  @override
+  String get circleTeacher => '老师';
+
+  @override
+  String get circleOwner => '组长';
+
+  @override
+  String get circleYou => '你';
+
+  @override
+  String get circleMemberUnknown => '成员';
+
+  @override
+  String circleGoal(int n) {
+    return '目标：每周 $n 天';
+  }
+
+  @override
+  String get circleGoalLabel => '每周目标';
+
+  @override
+  String circleDays(int n) {
+    return '$n 天';
+  }
+
+  @override
+  String get circleNameHint => '名称';
+
+  @override
+  String get groupCreateTitle => '创建学习小组';
+
+  @override
+  String get classCreateTitle => '创建班级';
+
+  @override
+  String get circleEditTitle => '编辑名称和目标';
+
+  @override
+  String get circleJoinTitle => '加入小组或班级';
+
+  @override
+  String get circleJoinHint => '6 位代码';
+
+  @override
+  String get circleCode => '邀请码';
+
+  @override
+  String get circleInvite => '邀请';
+
+  @override
+  String groupInviteMessage(String name, String code) {
+    return '在 hifive 的小组“$name”和我一起学习吧！打开 hifive，进入卡组，选择社区、学习小组、用代码加入：$code';
+  }
+
+  @override
+  String classInviteMessage(String name, String code) {
+    return '加入 hifive 上的班级“$name”：打开 hifive，进入卡组，选择社区、班级、用代码加入：$code';
+  }
+
+  @override
+  String get circleThisWeek => '本周';
+
+  @override
+  String get circleReached => '已达标';
+
+  @override
+  String get circleLeave => '退出小组';
+
+  @override
+  String get classLeave => '退出班级';
+
+  @override
+  String circleLeaveTitle(String name) {
+    return '退出“$name”？';
+  }
+
+  @override
+  String get circleLeaveBody => '你可以用邀请码重新加入。';
+
+  @override
+  String get circleRemove => '移出';
+
+  @override
+  String circleRemoveTitle(String name) {
+    return '将 $name 移出？';
+  }
+
+  @override
+  String get circleRemoveBody => '如果对方还有邀请码，可以重新加入。';
+
+  @override
+  String get circleEdit => '编辑';
+
+  @override
+  String get circleErrorNotFound => '找不到此代码的小组或班级。';
+
+  @override
+  String get circleErrorTooMany => '小组已满，或你加入的小组和班级太多。';
+
+  @override
+  String get classAssign => '布置卡组';
+
+  @override
+  String get classAssignTitle => '为班级布置卡组';
+
+  @override
+  String get classPickDeck => '选择卡组';
+
+  @override
+  String get classDue => '截止日期';
+
+  @override
+  String get classAssignments => '布置的卡组';
+
+  @override
+  String get classNoAssignments => '还没有布置卡组。';
+
+  @override
+  String classDueOn(String date) {
+    return '截止 $date';
+  }
+
+  @override
+  String classProgress(int done, int total) {
+    return '$done/$total 个单词';
+  }
+
+  @override
+  String classDoneCount(int done, int all) {
+    return '$all 名学生中 $done 名已完成';
+  }
+
+  @override
+  String get classStudy => '学习';
+
+  @override
+  String get classDone => '已完成';
+
+  @override
+  String get classLate => '已逾期';
+
+  @override
+  String get classStudents => '学生';
+
+  @override
+  String get classUnassign => '取消布置';
+
+  @override
+  String get classNoStudents => '还没有学生。把邀请码发给班级。';
+
+  @override
+  String get classNoDecks => '请先创建有单词的卡组，再布置给班级。';
 }

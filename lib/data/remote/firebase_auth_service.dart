@@ -112,27 +112,6 @@ class FirebaseAuthService implements AuthService {
   });
 
   @override
-  Future<AuthUser> signInWithEmail(String email, String password) => _run(
-    () => _auth.signInWithEmailAndPassword(email: email, password: password),
-  );
-
-  @override
-  Future<AuthUser> createAccount(String email, String password) => _run(
-    () =>
-        _auth.createUserWithEmailAndPassword(email: email, password: password),
-  );
-
-  @override
-  Future<void> sendPasswordReset(String email) async {
-    try {
-      await _auth.setLanguageCode('vi');
-      await _auth.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (e) {
-      throw AuthException(_error(e.code));
-    }
-  }
-
-  @override
   Future<String?> idToken() async => _auth.currentUser?.getIdToken();
 
   @override

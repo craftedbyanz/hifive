@@ -21,7 +21,9 @@ void main() {
     tester,
   ) async {
     for (final s in species) {
-      for (final g in const [.05, .3, .7, 1.0]) {
+      // Across the sprout, the young plant and the grown one, and the
+      // cross-fades between them.
+      for (final g in const [.05, .13, .3, .45, .7, 1.0]) {
         await tester.pumpWidget(
           _frame(TreeArt(species: s.id, size: 120, growth: g)),
         );
@@ -29,10 +31,12 @@ void main() {
       await tester.pumpWidget(
         _frame(TreeArt(species: s.id, size: 120, bloom: 1)),
       );
+      await tester.pumpWidget(
+        _frame(
+          TreeArt(species: s.id, size: 120, withered: true, island: false),
+        ),
+      );
     }
-    await tester.pumpWidget(
-      _frame(const TreeArt(species: 'oak', size: 120, withered: true)),
-    );
     expect(tester.takeException(), isNull);
   });
 
@@ -64,5 +68,23 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 100));
     expect(tester.binding.hasScheduledFrame, isTrue);
+  });
+
+  testWidgets('a tree in a grid stays still and asks for no frames', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _frame(
+        Wrap(
+          children: [
+            for (final id in ['oak', 'cherry', 'maple'])
+              TreeArt(species: id, size: 92, animate: false),
+          ],
+        ),
+        motion: true,
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(tester.binding.hasScheduledFrame, isFalse);
   });
 }

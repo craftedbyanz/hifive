@@ -55,6 +55,9 @@ class ActionButton extends StatelessWidget {
   final Color color, foreground;
   final IconData? icon;
 
+  /// A mark before the label in place of [icon], such as a brand's logo.
+  final Widget? leading;
+
   /// An icon after the label, such as the arrow on a "Tiếp tục" button.
   final IconData? trailing;
   final bool outlined;
@@ -65,6 +68,7 @@ class ActionButton extends StatelessWidget {
     this.color = D.ink,
     this.foreground = Colors.white,
     this.icon,
+    this.leading,
     this.trailing,
     this.outlined = false,
   });
@@ -95,7 +99,10 @@ class ActionButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (icon != null) ...[
+              if (leading case final mark?) ...[
+                mark,
+                const SizedBox(width: 10),
+              ] else if (icon != null) ...[
                 Icon(icon, color: outlined ? D.ink : foreground, size: 21),
                 const SizedBox(width: 9),
               ],
