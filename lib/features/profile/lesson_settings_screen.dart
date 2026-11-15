@@ -121,28 +121,6 @@ class LessonSettingsScreen extends StatelessWidget {
                     onChanged: s.setNewPerDay,
                   ),
                 ),
-                const SizedBox(height: 10),
-                _SettingRow(
-                  title: context.t.exTypingSetting,
-                  body: context.t.exTypingSettingBody,
-                  trailing: _HintToggle(
-                    id: 'setting-typing',
-                    label: context.t.exTypingSetting,
-                    value: s.exTyping,
-                    onChanged: (v) => s.setExercises(typing: v),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                _SettingRow(
-                  title: context.t.exListeningSetting,
-                  body: context.t.exListeningSettingBody,
-                  trailing: _HintToggle(
-                    id: 'setting-listening',
-                    label: context.t.exListeningSetting,
-                    value: s.exListening,
-                    onChanged: (v) => s.setExercises(listening: v),
-                  ),
-                ),
               ],
             ),
           ),
@@ -254,20 +232,13 @@ class _Swatch extends StatelessWidget {
 class _HintToggle extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
-  final String id;
-  final String? label;
-  const _HintToggle({
-    required this.value,
-    required this.onChanged,
-    this.id = 'hints-toggle',
-    this.label,
-  });
+  const _HintToggle({required this.value, required this.onChanged});
   @override
   Widget build(BuildContext context) => Semantics(
     toggled: value,
-    label: label ?? context.t.alwaysShowHints,
+    label: context.t.alwaysShowHints,
     child: GestureDetector(
-      key: ValueKey(id),
+      key: const ValueKey('hints-toggle'),
       behavior: HitTestBehavior.opaque,
       onTap: () => onChanged(!value),
       child: AnimatedContainer(

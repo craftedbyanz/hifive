@@ -2334,54 +2334,6 @@ abstract class AppLocalizations {
   /// **'Tùy chọn ôn tập'**
   String get reviewOptions;
 
-  /// No description provided for @guideForgot.
-  ///
-  /// In vi, this message translates to:
-  /// **'Quên bài'**
-  String get guideForgot;
-
-  /// No description provided for @guideForgotBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vuốt trái để Hifive sắp xếp học lại ngay'**
-  String get guideForgotBody;
-
-  /// No description provided for @guideHard.
-  ///
-  /// In vi, this message translates to:
-  /// **'Hơi khó nhớ'**
-  String get guideHard;
-
-  /// No description provided for @guideHardBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vuốt xuống nếu bạn thấy từ này còn lạ lẫm'**
-  String get guideHardBody;
-
-  /// No description provided for @guideKnown.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã nhớ'**
-  String get guideKnown;
-
-  /// No description provided for @guideKnownBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vuốt lên khi bạn trả lời đúng nghĩa và phát âm'**
-  String get guideKnownBody;
-
-  /// No description provided for @guideEasy.
-  ///
-  /// In vi, this message translates to:
-  /// **'Quá dễ'**
-  String get guideEasy;
-
-  /// No description provided for @guideEasyBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vuốt phải để ít gặp lại từ này hơn'**
-  String get guideEasyBody;
-
   /// No description provided for @smartLearning.
   ///
   /// In vi, this message translates to:
@@ -5382,113 +5334,17 @@ abstract class AppLocalizations {
   /// **'Hôm nay đã ôn xong'**
   String get todayAllDone;
 
-  /// No description provided for @todayAllDoneBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Quay lại ngày mai để ôn đúng lúc sắp quên.'**
-  String get todayAllDoneBody;
-
-  /// No description provided for @exIntro.
-  ///
-  /// In vi, this message translates to:
-  /// **'Từ mới. Đoán nghĩa trước khi xem.'**
-  String get exIntro;
-
   /// No description provided for @exShowMeaning.
   ///
   /// In vi, this message translates to:
   /// **'Xem nghĩa'**
   String get exShowMeaning;
 
-  /// No description provided for @exChoose.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chọn nghĩa đúng'**
-  String get exChoose;
-
-  /// No description provided for @exType.
-  ///
-  /// In vi, this message translates to:
-  /// **'Gõ từ có nghĩa này'**
-  String get exType;
-
-  /// No description provided for @exListen.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nghe rồi gõ lại'**
-  String get exListen;
-
-  /// No description provided for @exCloze.
-  ///
-  /// In vi, this message translates to:
-  /// **'Điền từ còn thiếu'**
-  String get exCloze;
-
-  /// No description provided for @exAnswerHint.
-  ///
-  /// In vi, this message translates to:
-  /// **'Gõ câu trả lời'**
-  String get exAnswerHint;
-
-  /// No description provided for @exHint.
-  ///
-  /// In vi, this message translates to:
-  /// **'Gợi ý'**
-  String get exHint;
-
-  /// No description provided for @exCheck.
-  ///
-  /// In vi, this message translates to:
-  /// **'Kiểm tra'**
-  String get exCheck;
-
-  /// No description provided for @exDontKnow.
-  ///
-  /// In vi, this message translates to:
-  /// **'Không biết'**
-  String get exDontKnow;
-
-  /// No description provided for @exCorrect.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chính xác'**
-  String get exCorrect;
-
-  /// No description provided for @exAlmost.
-  ///
-  /// In vi, this message translates to:
-  /// **'Gần đúng, chú ý chính tả'**
-  String get exAlmost;
-
-  /// No description provided for @exWrong.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chưa đúng, từ này sẽ quay lại'**
-  String get exWrong;
-
-  /// No description provided for @exNext.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tiếp'**
-  String get exNext;
-
-  /// No description provided for @exTooEasy.
-  ///
-  /// In vi, this message translates to:
-  /// **'Quá dễ'**
-  String get exTooEasy;
-
   /// No description provided for @exPlay.
   ///
   /// In vi, this message translates to:
   /// **'Nghe lại'**
   String get exPlay;
-
-  /// No description provided for @exProgress.
-  ///
-  /// In vi, this message translates to:
-  /// **'{done}/{total}'**
-  String exProgress(int done, int total);
 
   /// No description provided for @newPerDayTitle.
   ///
@@ -5507,30 +5363,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ghi nhớ từ vựng'**
   String get memorySettings;
-
-  /// No description provided for @exTypingSetting.
-  ///
-  /// In vi, this message translates to:
-  /// **'Bài tập gõ từ'**
-  String get exTypingSetting;
-
-  /// No description provided for @exTypingSettingBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nhìn nghĩa rồi gõ từ, điền vào câu'**
-  String get exTypingSettingBody;
-
-  /// No description provided for @exListeningSetting.
-  ///
-  /// In vi, this message translates to:
-  /// **'Bài tập nghe'**
-  String get exListeningSetting;
-
-  /// No description provided for @exListeningSettingBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nghe rồi gõ lại. Tắt khi đang ở nơi công cộng.'**
-  String get exListeningSettingBody;
 
   /// No description provided for @reminderTitle.
   ///
@@ -5694,18 +5526,6 @@ abstract class AppLocalizations {
   /// **'Hôm nay'**
   String get memoryToday;
 
-  /// No description provided for @memorySkills.
-  ///
-  /// In vi, this message translates to:
-  /// **'Kỹ năng'**
-  String get memorySkills;
-
-  /// No description provided for @memorySkillsEmpty.
-  ///
-  /// In vi, this message translates to:
-  /// **'Làm bài trong Ôn hôm nay để thấy kỹ năng nào còn yếu.'**
-  String get memorySkillsEmpty;
-
   /// No description provided for @skillMeaning.
   ///
   /// In vi, this message translates to:
@@ -5829,13 +5649,13 @@ abstract class AppLocalizations {
   /// No description provided for @practiceTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Luyện gõ và nghe'**
+  /// **'Ôn bằng thẻ lật'**
   String get practiceTitle;
 
   /// No description provided for @practiceBody.
   ///
   /// In vi, this message translates to:
-  /// **'Tự gõ, nghe và điền từ vào câu để nhớ chắc hơn.'**
+  /// **'Lật thẻ để xem nghĩa, vuốt phải nếu đã nhớ, vuốt trái nếu chưa.'**
   String get practiceBody;
 
   /// No description provided for @menuListen.
@@ -7361,6 +7181,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đang xóa tài khoản…'**
   String get deleteAccountWorking;
+
+  /// No description provided for @rateForgot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa nhớ'**
+  String get rateForgot;
+
+  /// No description provided for @rateRemembered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhớ'**
+  String get rateRemembered;
+
+  /// No description provided for @guideRememberedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vuốt phải khi bạn nhớ nghĩa và cách đọc'**
+  String get guideRememberedBody;
+
+  /// No description provided for @guideFlip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm để lật thẻ'**
+  String get guideFlip;
+
+  /// No description provided for @guideFlipBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đoán nghĩa trước, rồi lật thẻ để kiểm tra'**
+  String get guideFlipBody;
+
+  /// No description provided for @guideForgotBody2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vuốt trái để Hifive cho bạn gặp lại từ này sớm'**
+  String get guideForgotBody2;
 }
 
 class _AppLocalizationsDelegate

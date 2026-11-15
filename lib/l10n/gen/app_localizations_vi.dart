@@ -1190,30 +1190,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reviewOptions => 'Tùy chọn ôn tập';
 
   @override
-  String get guideForgot => 'Quên bài';
-
-  @override
-  String get guideForgotBody => 'Vuốt trái để Hifive sắp xếp học lại ngay';
-
-  @override
-  String get guideHard => 'Hơi khó nhớ';
-
-  @override
-  String get guideHardBody => 'Vuốt xuống nếu bạn thấy từ này còn lạ lẫm';
-
-  @override
-  String get guideKnown => 'Đã nhớ';
-
-  @override
-  String get guideKnownBody => 'Vuốt lên khi bạn trả lời đúng nghĩa và phát âm';
-
-  @override
-  String get guideEasy => 'Quá dễ';
-
-  @override
-  String get guideEasyBody => 'Vuốt phải để ít gặp lại từ này hơn';
-
-  @override
   String get smartLearning => 'Cơ chế học thông minh';
 
   @override
@@ -2892,60 +2868,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get todayAllDone => 'Hôm nay đã ôn xong';
 
   @override
-  String get todayAllDoneBody => 'Quay lại ngày mai để ôn đúng lúc sắp quên.';
-
-  @override
-  String get exIntro => 'Từ mới. Đoán nghĩa trước khi xem.';
-
-  @override
   String get exShowMeaning => 'Xem nghĩa';
 
   @override
-  String get exChoose => 'Chọn nghĩa đúng';
-
-  @override
-  String get exType => 'Gõ từ có nghĩa này';
-
-  @override
-  String get exListen => 'Nghe rồi gõ lại';
-
-  @override
-  String get exCloze => 'Điền từ còn thiếu';
-
-  @override
-  String get exAnswerHint => 'Gõ câu trả lời';
-
-  @override
-  String get exHint => 'Gợi ý';
-
-  @override
-  String get exCheck => 'Kiểm tra';
-
-  @override
-  String get exDontKnow => 'Không biết';
-
-  @override
-  String get exCorrect => 'Chính xác';
-
-  @override
-  String get exAlmost => 'Gần đúng, chú ý chính tả';
-
-  @override
-  String get exWrong => 'Chưa đúng, từ này sẽ quay lại';
-
-  @override
-  String get exNext => 'Tiếp';
-
-  @override
-  String get exTooEasy => 'Quá dễ';
-
-  @override
   String get exPlay => 'Nghe lại';
-
-  @override
-  String exProgress(int done, int total) {
-    return '$done/$total';
-  }
 
   @override
   String get newPerDayTitle => 'Từ mới mỗi ngày';
@@ -2956,19 +2882,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get memorySettings => 'Ghi nhớ từ vựng';
-
-  @override
-  String get exTypingSetting => 'Bài tập gõ từ';
-
-  @override
-  String get exTypingSettingBody => 'Nhìn nghĩa rồi gõ từ, điền vào câu';
-
-  @override
-  String get exListeningSetting => 'Bài tập nghe';
-
-  @override
-  String get exListeningSettingBody =>
-      'Nghe rồi gõ lại. Tắt khi đang ở nơi công cộng.';
 
   @override
   String get reminderTitle => 'Nhắc ôn từ mỗi ngày';
@@ -3067,13 +2980,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get memoryToday => 'Hôm nay';
 
   @override
-  String get memorySkills => 'Kỹ năng';
-
-  @override
-  String get memorySkillsEmpty =>
-      'Làm bài trong Ôn hôm nay để thấy kỹ năng nào còn yếu.';
-
-  @override
   String get skillMeaning => 'Hiểu nghĩa';
 
   @override
@@ -3143,10 +3049,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get todayDoneBody => 'Quay lại ngày mai nhé';
 
   @override
-  String get practiceTitle => 'Luyện gõ và nghe';
+  String get practiceTitle => 'Ôn bằng thẻ lật';
 
   @override
-  String get practiceBody => 'Tự gõ, nghe và điền từ vào câu để nhớ chắc hơn.';
+  String get practiceBody =>
+      'Lật thẻ để xem nghĩa, vuốt phải nếu đã nhớ, vuốt trái nếu chưa.';
 
   @override
   String get menuListen => 'Nghe';
@@ -4043,4 +3950,23 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deleteAccountWorking => 'Đang xóa tài khoản…';
+
+  @override
+  String get rateForgot => 'Chưa nhớ';
+
+  @override
+  String get rateRemembered => 'Đã nhớ';
+
+  @override
+  String get guideRememberedBody => 'Vuốt phải khi bạn nhớ nghĩa và cách đọc';
+
+  @override
+  String get guideFlip => 'Chạm để lật thẻ';
+
+  @override
+  String get guideFlipBody => 'Đoán nghĩa trước, rồi lật thẻ để kiểm tra';
+
+  @override
+  String get guideForgotBody2 =>
+      'Vuốt trái để Hifive cho bạn gặp lại từ này sớm';
 }

@@ -537,11 +537,9 @@ class AppState extends ChangeNotifier {
     studySpecies = s['studySpecies'] as String? ?? studySpecies;
     focusTag = s['focusTag'] as String? ?? focusTag;
     newPerDay = int.tryParse(s['newPerDay'] as String? ?? '') ?? newPerDay;
-    exTyping = s['exTyping'] as bool? ?? exTyping;
     reminderOn = s['reminderOn'] as bool? ?? reminderOn;
     wordNotesOn = s['wordNotesOn'] as bool? ?? wordNotesOn;
     reminderTime = s['reminderTime'] as String? ?? reminderTime;
-    exListening = s['exListening'] as bool? ?? exListening;
     customTags = s['focusTags'] as List<FocusTag>? ?? customTags;
     focusSessions = [...r.focusSessions];
     listenLog = ListenLog(r.listenDays);
@@ -837,8 +835,6 @@ class AppState extends ChangeNotifier {
     studySpecies = defaultSpecies;
     focusTag = defaultTag;
     newPerDay = 10;
-    exTyping = true;
-    exListening = true;
     reminderOn = false;
     reminderTime = '20:00';
     wordNotesOn = false;
@@ -1027,21 +1023,6 @@ class AppState extends ChangeNotifier {
   int dueBy(DateTime at) => uniqueWords.values
       .where((w) => w.status != 'new' && w.due != null && !w.due!.isAfter(at))
       .length;
-
-  /// Whether exercises may ask the learner to type, or to listen.
-  bool exTyping = true, exListening = true;
-
-  void setExercises({bool? typing, bool? listening}) {
-    if (typing != null) {
-      exTyping = typing;
-      _setting('exTyping', typing);
-    }
-    if (listening != null) {
-      exListening = listening;
-      _setting('exListening', listening);
-    }
-    commit();
-  }
 
   /// Today's reviews and new words. Saved words come first, then the
   /// learner's own decks, then hifive's.

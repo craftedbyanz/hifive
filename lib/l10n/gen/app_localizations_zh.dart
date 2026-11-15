@@ -1157,30 +1157,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reviewOptions => '复习选项';
 
   @override
-  String get guideForgot => '忘了';
-
-  @override
-  String get guideForgotBody => '向左滑，Hifive 会马上安排你重学';
-
-  @override
-  String get guideHard => '有点难记';
-
-  @override
-  String get guideHardBody => '如果觉得这个词还很陌生，就向下滑';
-
-  @override
-  String get guideKnown => '记住了';
-
-  @override
-  String get guideKnownBody => '答对意思和发音时，就向上滑';
-
-  @override
-  String get guideEasy => '太简单';
-
-  @override
-  String get guideEasyBody => '向右滑，这个词会少出现';
-
-  @override
   String get smartLearning => '智能学习机制';
 
   @override
@@ -2810,60 +2786,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get todayAllDone => '今天都复习完了';
 
   @override
-  String get todayAllDoneBody => '明天在快忘之前再回来吧。';
-
-  @override
-  String get exIntro => '新词。先猜猜意思。';
-
-  @override
   String get exShowMeaning => '查看意思';
 
   @override
-  String get exChoose => '选出正确的意思';
-
-  @override
-  String get exType => '输入这个意思对应的词';
-
-  @override
-  String get exListen => '听一听再输入';
-
-  @override
-  String get exCloze => '填入缺少的词';
-
-  @override
-  String get exAnswerHint => '输入答案';
-
-  @override
-  String get exHint => '提示';
-
-  @override
-  String get exCheck => '检查';
-
-  @override
-  String get exDontKnow => '不知道';
-
-  @override
-  String get exCorrect => '正确';
-
-  @override
-  String get exAlmost => '差一点，注意拼写';
-
-  @override
-  String get exWrong => '不对，这个词稍后会再出现';
-
-  @override
-  String get exNext => '下一个';
-
-  @override
-  String get exTooEasy => '太简单';
-
-  @override
   String get exPlay => '再听一遍';
-
-  @override
-  String exProgress(int done, int total) {
-    return '$done/$total';
-  }
 
   @override
   String get newPerDayTitle => '每天新词数';
@@ -2873,18 +2799,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get memorySettings => '单词记忆';
-
-  @override
-  String get exTypingSetting => '输入练习';
-
-  @override
-  String get exTypingSettingBody => '看意思输入单词，填写句子';
-
-  @override
-  String get exListeningSetting => '听力练习';
-
-  @override
-  String get exListeningSettingBody => '听后输入。在公共场所可关闭。';
 
   @override
   String get reminderTitle => '每日复习提醒';
@@ -2980,12 +2894,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get memoryToday => '今天';
 
   @override
-  String get memorySkills => '技能';
-
-  @override
-  String get memorySkillsEmpty => '完成今日复习，看看哪些技能较弱。';
-
-  @override
   String get skillMeaning => '理解意思';
 
   @override
@@ -3054,10 +2962,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get todayDoneBody => '明天见';
 
   @override
-  String get practiceTitle => '输入与听力练习';
+  String get practiceTitle => '用翻卡复习';
 
   @override
-  String get practiceBody => '自己输入、听写、填句，记得更牢。';
+  String get practiceBody => '翻卡看释义，记住了向右滑，没记住向左滑。';
 
   @override
   String get menuListen => '听力';
@@ -3929,4 +3837,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get deleteAccountWorking => '正在删除账号…';
+
+  @override
+  String get rateForgot => '没记住';
+
+  @override
+  String get rateRemembered => '记住了';
+
+  @override
+  String get guideRememberedBody => '记得意思和读音时向右滑';
+
+  @override
+  String get guideFlip => '点击翻面';
+
+  @override
+  String get guideFlipBody => '先猜意思，再翻卡片核对';
+
+  @override
+  String get guideForgotBody2 => '向左滑，Hifive 会很快再让你复习';
 }

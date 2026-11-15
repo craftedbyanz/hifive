@@ -10,7 +10,7 @@ import '../../widgets/common.dart';
 import '../flashcards/flashcards.dart';
 
 /// The learner's word memory: words by level, measured retention, the next
-/// seven days of reviews, skills from graded exercises and the hard words.
+/// seven days of reviews and the hard words.
 class MemoryScreen extends StatelessWidget {
   const MemoryScreen({super.key});
 
@@ -31,7 +31,7 @@ class MemoryScreen extends StatelessWidget {
         children: [
           PressFade(
             key: const ValueKey('memory-practice'),
-            onTap: () => go<void>(context, const TodayScreen()),
+            onTap: () => openTodayReview(context, source: 'practice'),
             child: Container(
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.fromLTRB(18, 16, 14, 16),
@@ -168,60 +168,6 @@ class MemoryScreen extends StatelessWidget {
                       .format(DateTime(now.year, now.month, now.day + i)),
               ],
             ),
-          ),
-          _Section(
-            title: t.memorySkills,
-            child: m.skills.isEmpty
-                ? Text(
-                    t.memorySkillsEmpty,
-                    style: D.text(14, color: D.secondary),
-                  )
-                : Column(
-                    children: [
-                      for (final (id, name) in [
-                        ('meaning', t.skillMeaning),
-                        ('recall', t.skillRecall),
-                        ('form', t.skillForm),
-                        ('use', t.skillUse),
-                      ])
-                        if (m.skills[id] case final share?)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 128,
-                                  child: Text(
-                                    name,
-                                    style: D.text(
-                                      13.5,
-                                      weight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(99),
-                                    child: LinearProgressIndicator(
-                                      value: share,
-                                      minHeight: 8,
-                                      color: share < .7
-                                          ? Palette.menuPlus
-                                          : D.green,
-                                      backgroundColor: D.line,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  '${(share * 100).round()}%',
-                                  style: D.text(13, weight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                          ),
-                    ],
-                  ),
           ),
           _Section(
             title: t.memoryHard,

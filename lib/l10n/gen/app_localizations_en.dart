@@ -1226,32 +1226,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewOptions => 'Review options';
 
   @override
-  String get guideForgot => 'Forgot it';
-
-  @override
-  String get guideForgotBody =>
-      'Swipe left and Hifive brings it back right away';
-
-  @override
-  String get guideHard => 'A bit hard';
-
-  @override
-  String get guideHardBody => 'Swipe down if the word still feels unfamiliar';
-
-  @override
-  String get guideKnown => 'Got it';
-
-  @override
-  String get guideKnownBody =>
-      'Swipe up when you got the meaning and the sound right';
-
-  @override
-  String get guideEasy => 'Too easy';
-
-  @override
-  String get guideEasyBody => 'Swipe right to see this word less often';
-
-  @override
   String get smartLearning => 'How smart review works';
 
   @override
@@ -2964,61 +2938,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get todayAllDone => 'All done for today';
 
   @override
-  String get todayAllDoneBody =>
-      'Come back tomorrow, just before you\'d forget.';
-
-  @override
-  String get exIntro => 'New word. Guess the meaning first.';
-
-  @override
   String get exShowMeaning => 'Show meaning';
 
   @override
-  String get exChoose => 'Pick the right meaning';
-
-  @override
-  String get exType => 'Type the word for this meaning';
-
-  @override
-  String get exListen => 'Listen and type it';
-
-  @override
-  String get exCloze => 'Fill in the missing word';
-
-  @override
-  String get exAnswerHint => 'Type your answer';
-
-  @override
-  String get exHint => 'Hint';
-
-  @override
-  String get exCheck => 'Check';
-
-  @override
-  String get exDontKnow => 'I don\'t know';
-
-  @override
-  String get exCorrect => 'Correct';
-
-  @override
-  String get exAlmost => 'Almost, mind the spelling';
-
-  @override
-  String get exWrong => 'Not quite, this word comes back';
-
-  @override
-  String get exNext => 'Next';
-
-  @override
-  String get exTooEasy => 'Too easy';
-
-  @override
   String get exPlay => 'Play again';
-
-  @override
-  String exProgress(int done, int total) {
-    return '$done/$total';
-  }
 
   @override
   String get newPerDayTitle => 'New words a day';
@@ -3029,20 +2952,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get memorySettings => 'Word memory';
-
-  @override
-  String get exTypingSetting => 'Typing exercises';
-
-  @override
-  String get exTypingSettingBody =>
-      'See the meaning and type the word; fill in sentences';
-
-  @override
-  String get exListeningSetting => 'Listening exercises';
-
-  @override
-  String get exListeningSettingBody =>
-      'Hear and type. Turn off in public places.';
 
   @override
   String get reminderTitle => 'Daily review reminder';
@@ -3142,13 +3051,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get memoryToday => 'Today';
 
   @override
-  String get memorySkills => 'Skills';
-
-  @override
-  String get memorySkillsEmpty =>
-      'Do Today\'s review to see which skills need work.';
-
-  @override
   String get skillMeaning => 'Meaning';
 
   @override
@@ -3218,11 +3120,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get todayDoneBody => 'See you tomorrow';
 
   @override
-  String get practiceTitle => 'Type and listen';
+  String get practiceTitle => 'Review with flip cards';
 
   @override
   String get practiceBody =>
-      'Type, listen and fill words into sentences to remember them for good.';
+      'Flip to see the meaning, swipe right if you know it, left if not.';
 
   @override
   String get menuListen => 'Listen';
@@ -4121,4 +4023,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountWorking => 'Deleting your account…';
+
+  @override
+  String get rateForgot => 'Don\'t know';
+
+  @override
+  String get rateRemembered => 'Know it';
+
+  @override
+  String get guideRememberedBody =>
+      'Swipe right when you remember the meaning and how to say it';
+
+  @override
+  String get guideFlip => 'Tap to flip';
+
+  @override
+  String get guideFlipBody =>
+      'Guess the meaning first, then flip the card to check';
+
+  @override
+  String get guideForgotBody2 =>
+      'Swipe left and Hifive brings the word back soon';
 }

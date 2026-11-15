@@ -31,30 +31,31 @@ void main() {
   }
 
   group('session', () {
-    testWidgets('each direction rates like its button, and sets the schedule', (
+    testWidgets('right is Đã nhớ, left is Chưa nhớ, up and down do nothing', (
       tester,
     ) async {
-      final (state, deck) = await open(tester, words: 4);
-      final words = deck.words.take(4).toList();
-      await swipe(tester, const Offset(0, 200));
-      // Khó on a new card keeps it in learning, back in six minutes.
-      expect(words[0].status, 'learning');
-      expect(words[0].due, state.now().add(const Duration(minutes: 6)));
+      final (state, deck) = await open(tester, words: 3);
+      final words = deck.words.take(3).toList();
       await swipe(tester, const Offset(0, -200));
-      expect(words[1].due, dueAfter(state.now(), const Duration(days: 3)));
+      await swipe(tester, const Offset(0, 200));
+      expect(words[0].status, 'new');
       await swipe(tester, const Offset(200, 0));
-      expect(words[2].due, dueAfter(state.now(), const Duration(days: 16)));
+      // Đã nhớ is Good: a new card waits three days.
+      expect(words[0].due, dueAfter(state.now(), const Duration(days: 3)));
       await swipe(tester, const Offset(-200, 0));
-      expect(words[3].status, 'learning');
-      expect(words[3].due, state.now().add(const Duration(minutes: 1)));
+      // Chưa nhớ is Again: back in a minute.
+      expect(words[1].status, 'learning');
+      expect(words[1].due, state.now().add(const Duration(minutes: 1)));
+      expect(state.historyOf(words[0]).single.rating, 2);
+      expect(state.historyOf(words[1]).single.rating, 0);
     });
 
     testWidgets('the summary shows how much the study tree was watered', (
       tester,
     ) async {
       await open(tester, words: 2);
-      await swipe(tester, const Offset(0, -200));
-      await swipe(tester, const Offset(0, -200));
+      await swipe(tester, const Offset(200, 0));
+      await swipe(tester, const Offset(200, 0));
       expect(find.byKey(const ValueKey('review-watered')), findsOneWidget);
       expect(find.text('Cây học +2 lượt tưới'), findsOneWidget);
     });
@@ -75,7 +76,7 @@ void main() {
       expect(find.text(first.word), findsWidgets);
     });
 
-    testWidgets('dragging fades the other ratings and fills the matching one', (
+    testWidgets('dragging fades the other answer and fills the matching one', (
       tester,
     ) async {
       await open(tester);
@@ -83,7 +84,7 @@ void main() {
           .widget<Opacity>(
             find
                 .descendant(
-                  of: find.byKey(ValueKey('rate-$i')),
+                  of: find.byKey(ValueKey('answer-$i')),
                   matching: find.byType(Opacity),
                 )
                 .first,
@@ -99,53 +100,40 @@ void main() {
       await tester.pump();
       expect(opacity(0), 1);
       expect(opacity(1), 0);
-      expect(opacity(3), 0);
       await gesture.moveBy(const Offset(180, 0));
       await tester.pump();
       await gesture.up();
       await tester.pumpAndSettle();
     });
 
-    testWidgets('again sends the card to the end without advancing progress', (
-      tester,
-    ) async {
-      final (_, deck) = await open(tester, words: 2);
-      double progress() =>
-          tester.getSize(find.byKey(const ValueKey('review-progress'))).width;
-      final zero = progress();
-      await tester.tap(find.byKey(const ValueKey('rate-0')));
-      await tester.pumpAndSettle();
-      expect(progress(), zero);
-      await tester.tap(find.byKey(const ValueKey('rate-2')));
-      await tester.pumpAndSettle();
-      expect(progress(), greaterThan(zero));
-      expect(find.text(deck.words.first.word), findsWidgets);
-      await tester.tap(find.byKey(const ValueKey('rate-2')));
-      await tester.pumpAndSettle();
-      expect(find.byType(ReviewComplete), findsOneWidget);
-      // Two cards seen, both known, one sent back once.
-      final labels = tester
-          .widgetList<Text>(find.byType(Text))
-          .map((t) => t.data)
-          .toList();
-      expect(labels, containsAllInOrder(['2', '2', '1']));
-    });
-
-    testWidgets('Khó on a new card brings it back once', (tester) async {
-      final (_, deck) = await open(tester, words: 1);
-      double progress() =>
-          tester.getSize(find.byKey(const ValueKey('review-progress'))).width;
-      final zero = progress();
-      await tester.tap(find.byKey(const ValueKey('rate-1')));
-      await tester.pumpAndSettle();
-      // Due again in six minutes: asked again before the session ends.
-      expect(deck.words.first.status, 'learning');
-      expect(find.byType(ReviewComplete), findsNothing);
-      expect(progress(), zero);
-      await tester.tap(find.byKey(const ValueKey('rate-1')));
-      await tester.pumpAndSettle();
-      expect(find.byType(ReviewComplete), findsOneWidget);
-    });
+    testWidgets(
+      'Chưa nhớ sends the card to the end without advancing progress',
+      (tester) async {
+        final (_, deck) = await open(tester, words: 2);
+        expect(find.text('Chưa nhớ'), findsOneWidget);
+        expect(find.text('Đã nhớ'), findsOneWidget);
+        expect(find.text('Khó'), findsNothing);
+        double progress() =>
+            tester.getSize(find.byKey(const ValueKey('review-progress'))).width;
+        final zero = progress();
+        await tester.tap(find.byKey(const ValueKey('answer-0')));
+        await tester.pumpAndSettle();
+        expect(progress(), zero);
+        await tester.tap(find.byKey(const ValueKey('answer-1')));
+        await tester.pumpAndSettle();
+        expect(progress(), greaterThan(zero));
+        expect(find.text(deck.words.first.word), findsWidgets);
+        await tester.tap(find.byKey(const ValueKey('answer-1')));
+        await tester.pumpAndSettle();
+        expect(find.byType(ReviewComplete), findsOneWidget);
+        // Two cards seen, both known, one sent back once.
+        final labels = tester
+            .widgetList<Text>(find.byType(Text))
+            .map((t) => t.data)
+            .toList();
+        expect(labels, containsAllInOrder(['2', '2', '1']));
+      },
+    );
 
     testWidgets('a known card shows longer intervals, growing with it', (
       tester,

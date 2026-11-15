@@ -21,10 +21,9 @@ Future<void> showReviewGuide(BuildContext context) => showGeneralDialog<void>(
 class _Guide extends StatelessWidget {
   const _Guide();
   static List<(IconData, String, String)> _rows(AppLocalizations t) => [
-    (CupertinoIcons.arrow_left, t.guideForgot, t.guideForgotBody),
-    (CupertinoIcons.arrow_down, t.guideHard, t.guideHardBody),
-    (CupertinoIcons.arrow_up, t.guideKnown, t.guideKnownBody),
-    (CupertinoIcons.arrow_right, t.guideEasy, t.guideEasyBody),
+    (CupertinoIcons.hand_point_right, t.guideFlip, t.guideFlipBody),
+    (CupertinoIcons.arrow_left, t.rateForgot, t.guideForgotBody2),
+    (CupertinoIcons.arrow_right, t.rateRemembered, t.guideRememberedBody),
   ];
 
   @override

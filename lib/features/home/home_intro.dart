@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../domain/models/models.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -88,20 +87,7 @@ class HomeIntro extends StatelessWidget {
 /// Opens today's review in the flashcard session, from Home and from a
 /// tapped reminder: the next leg of due words and new ones, flipped and
 /// swiped like any deck. With nothing left today it opens the decks.
-Future<void> openToday(BuildContext context) {
-  final leg = AppScope.read(context).today.leg();
-  if (leg.isEmpty) return go<void>(context, const DeckListScreen());
-  final deck = Deck(
-    id: 'today',
-    title: context.t.todayTitle,
-    description: '',
-    words: leg,
-  );
-  return go<void>(
-    context,
-    ReviewScreen(deck: deck, words: leg, source: 'today'),
-  );
-}
+Future<void> openToday(BuildContext context) => openTodayReview(context);
 
 /// Today's review on Home, in the flashcards' own look: what is waiting,
 /// how long it takes, and a small fan of cards showing the next word.

@@ -486,14 +486,6 @@
   "rateEasyCard": "Dễ",
   "closeReview": "Đóng ôn tập",
   "reviewOptions": "Tùy chọn ôn tập",
-  "guideForgot": "Quên bài",
-  "guideForgotBody": "Vuốt trái để Hifive sắp xếp học lại ngay",
-  "guideHard": "Hơi khó nhớ",
-  "guideHardBody": "Vuốt xuống nếu bạn thấy từ này còn lạ lẫm",
-  "guideKnown": "Đã nhớ",
-  "guideKnownBody": "Vuốt lên khi bạn trả lời đúng nghĩa và phát âm",
-  "guideEasy": "Quá dễ",
-  "guideEasyBody": "Vuốt phải để ít gặp lại từ này hơn",
   "smartLearning": "Cơ chế học thông minh",
   "swipeToRate": "Vuốt thẻ bài để đánh giá mức độ ghi nhớ của bạn",
   "gotItStart": "Đã hiểu, bắt đầu học",
@@ -1428,41 +1420,11 @@
   },
   "todayStart": "Bắt đầu",
   "todayAllDone": "Hôm nay đã ôn xong",
-  "todayAllDoneBody": "Quay lại ngày mai để ôn đúng lúc sắp quên.",
-  "exIntro": "Từ mới. Đoán nghĩa trước khi xem.",
   "exShowMeaning": "Xem nghĩa",
-  "exChoose": "Chọn nghĩa đúng",
-  "exType": "Gõ từ có nghĩa này",
-  "exListen": "Nghe rồi gõ lại",
-  "exCloze": "Điền từ còn thiếu",
-  "exAnswerHint": "Gõ câu trả lời",
-  "exHint": "Gợi ý",
-  "exCheck": "Kiểm tra",
-  "exDontKnow": "Không biết",
-  "exCorrect": "Chính xác",
-  "exAlmost": "Gần đúng, chú ý chính tả",
-  "exWrong": "Chưa đúng, từ này sẽ quay lại",
-  "exNext": "Tiếp",
-  "exTooEasy": "Quá dễ",
   "exPlay": "Nghe lại",
-  "exProgress": "{done}/{total}",
-  "@exProgress": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
   "newPerDayTitle": "Từ mới mỗi ngày",
   "newPerDayBody": "Ôn tập không giới hạn. Khi còn nhiều từ cần ôn, app tự giảm từ mới.",
   "memorySettings": "Ghi nhớ từ vựng",
-  "exTypingSetting": "Bài tập gõ từ",
-  "exTypingSettingBody": "Nhìn nghĩa rồi gõ từ, điền vào câu",
-  "exListeningSetting": "Bài tập nghe",
-  "exListeningSettingBody": "Nghe rồi gõ lại. Tắt khi đang ở nơi công cộng.",
   "reminderTitle": "Nhắc ôn từ mỗi ngày",
   "reminderAt": "Lúc {time} · ôn từ sắp quên, hoặc học từ mới",
   "@reminderAt": {
@@ -1538,8 +1500,6 @@
   "memoryRetentionWait": "Ôn thêm vài ngày để đo được tỉ lệ nhớ.",
   "memoryForecast": "Dự báo 7 ngày",
   "memoryToday": "Hôm nay",
-  "memorySkills": "Kỹ năng",
-  "memorySkillsEmpty": "Làm bài trong Ôn hôm nay để thấy kỹ năng nào còn yếu.",
   "skillMeaning": "Hiểu nghĩa",
   "skillRecall": "Nhớ ra từ",
   "skillForm": "Nghe và chính tả",
@@ -1588,8 +1548,8 @@
     }
   },
   "todayDoneBody": "Quay lại ngày mai nhé",
-  "practiceTitle": "Luyện gõ và nghe",
-  "practiceBody": "Tự gõ, nghe và điền từ vào câu để nhớ chắc hơn.",
+  "practiceTitle": "Ôn bằng thẻ lật",
+  "practiceBody": "Lật thẻ để xem nghĩa, vuốt phải nếu đã nhớ, vuốt trái nếu chưa.",
   "menuListen": "Nghe",
   "listenTitle": "Luyện nghe",
   "listenIntro": "Nguồn nghe hifive chọn lọc theo trình độ. Gặp từ lạ thì lưu lại để ôn trong Ôn hôm nay.",
@@ -2238,5 +2198,11 @@
   "deleteAccountPassword": "Nhập mật khẩu để xác nhận",
   "deleteAccountDone": "Đã xóa tài khoản của bạn.",
   "deleteAccountFailed": "Chưa xóa được tài khoản. Kiểm tra kết nối mạng rồi thử lại.",
-  "deleteAccountWorking": "Đang xóa tài khoản…"
+  "deleteAccountWorking": "Đang xóa tài khoản…",
+  "rateForgot": "Chưa nhớ",
+  "rateRemembered": "Đã nhớ",
+  "guideRememberedBody": "Vuốt phải khi bạn nhớ nghĩa và cách đọc",
+  "guideFlip": "Chạm để lật thẻ",
+  "guideFlipBody": "Đoán nghĩa trước, rồi lật thẻ để kiểm tra",
+  "guideForgotBody2": "Vuốt trái để Hifive cho bạn gặp lại từ này sớm"
 }

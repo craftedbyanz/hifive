@@ -34,8 +34,6 @@ const boolSettings = {
   'showHints',
   'chatTipSeen',
   'onboarded',
-  'exTyping',
-  'exListening',
   'reminderOn',
   'wordNotesOn',
 };

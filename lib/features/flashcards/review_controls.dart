@@ -1,15 +1,16 @@
 part of 'review_screen.dart';
 
-/// The ratings, each tied to the direction its card leaves in.
-const _ratings = [
-  (Palette.rateAgain, Offset(-1, 0)),
-  (Palette.rateHard, Offset(0, 1)),
-  (Palette.rateGood, Offset(0, -1)),
-  (Palette.rateEasy, Offset(1, 0)),
+/// The two answers, each with the FSRS rating it records, its color and the
+/// direction its card leaves in: left for "Chưa nhớ" (Again), right for
+/// "Đã nhớ" (Good). Hard and Easy are not asked for: two choices are
+/// quicker, and FSRS schedules well on Again and Good alone.
+const _answers = [
+  (rating: 0, color: Palette.rateAgain, direction: Offset(-1, 0)),
+  (rating: 2, color: D.green, direction: Offset(1, 0)),
 ];
 
-String _ratingName(AppLocalizations t, int index) =>
-    [t.rateAgain, t.rateHardCard, t.rateGood, t.rateEasyCard][index];
+String _answerName(AppLocalizations t, int index) =>
+    [t.rateForgot, t.rateRemembered][index];
 
 String _intervalLabel(Duration d) =>
     d.inDays > 0 ? '${d.inDays}d' : '${d.inMinutes}m';
@@ -174,14 +175,16 @@ class _WordStrip extends StatelessWidget {
 
 class _RatingRow extends StatelessWidget {
   final FlashWord? word;
+
+  /// The answer the card is being dragged toward, 0 or 1.
   final int active;
   final double progress;
-  final ValueChanged<int> onRate;
+  final ValueChanged<int> onAnswer;
   const _RatingRow({
     required this.word,
     required this.active,
     required this.progress,
-    required this.onRate,
+    required this.onAnswer,
   });
   @override
   Widget build(BuildContext context) {
@@ -191,14 +194,16 @@ class _RatingRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          for (var i = 0; i < 4; i++) ...[
-            if (i > 0) const SizedBox(width: 19),
-            _RatingButton(
+          for (var i = 0; i < _answers.length; i++) ...[
+            if (i > 0) const SizedBox(width: 72),
+            _AnswerButton(
               index: i,
-              interval: intervals == null ? '' : _intervalLabel(intervals[i]),
+              interval: intervals == null
+                  ? ''
+                  : _intervalLabel(intervals[_answers[i].rating]),
               progress: i == active ? progress : 0,
               hidden: i == active ? 0 : progress,
-              onTap: () => onRate(i),
+              onTap: () => onAnswer(i),
             ),
           ],
         ],
@@ -207,12 +212,12 @@ class _RatingRow extends StatelessWidget {
   }
 }
 
-class _RatingButton extends StatelessWidget {
+class _AnswerButton extends StatelessWidget {
   final int index;
   final String interval;
   final double progress, hidden;
   final VoidCallback onTap;
-  const _RatingButton({
+  const _AnswerButton({
     required this.index,
     required this.interval,
     required this.progress,
@@ -221,19 +226,19 @@ class _RatingButton extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final (color, _) = _ratings[index];
-    final label = _ratingName(context.t, index);
+    final color = _answers[index].color;
+    final label = _answerName(context.t, index);
     return Semantics(
       button: true,
       label: '$interval, $label',
       child: GestureDetector(
-        key: ValueKey('rate-$index'),
+        key: ValueKey('answer-$index'),
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: Opacity(
           opacity: 1 - hidden,
           child: SizedBox(
-            width: 65,
+            width: 88,
             child: Column(
               children: [
                 Opacity(
@@ -250,7 +255,7 @@ class _RatingButton extends StatelessWidget {
                 ),
                 const SizedBox(height: 1),
                 Transform.scale(
-                  scale: 1 + .37 * progress,
+                  scale: 1 + .3 * progress,
                   child: Container(
                     width: 64,
                     height: 64,
@@ -266,100 +271,33 @@ class _RatingButton extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: _RatingGlyph(index: index, color: color),
+                    child: Icon(
+                      index == 0
+                          ? CupertinoIcons.xmark
+                          : CupertinoIcons.checkmark_alt,
+                      size: 28,
+                      color: Color.lerp(color, Colors.white, progress),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 6),
-                Transform.translate(
-                  offset: Offset(0, 9 * progress),
-                  child: Text(
-                    label,
-                    style: D.text(
-                      12.5,
-                      weight: progress > .5 ? FontWeight.w700 : FontWeight.w600,
-                      color: Color.lerp(Palette.settingsHint, color, progress)!,
-                      height: 15 / 12.5,
-                    ),
+                Text(
+                  label,
+                  style: D.text(
+                    13,
+                    weight: FontWeight.w700,
+                    color: Color.lerp(
+                      Palette.settingsHint,
+                      color,
+                      .6 + .4 * progress,
+                    )!,
+                    height: 15 / 13,
                   ),
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// The "Khó" glyph's two clock hands, without a dial.
-class _ClockHandsPainter extends CustomPainter {
-  const _ClockHandsPainter();
-  @override
-  void paint(Canvas canvas, Size size) {
-    final c = size.center(Offset.zero);
-    final paint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 2.6
-      ..strokeCap = StrokeCap.round;
-    canvas.drawLine(c, c + const Offset(0, -7.5), paint);
-    canvas.drawLine(c, c + const Offset(-7, 0), paint);
-  }
-
-  @override
-  bool shouldRepaint(_ClockHandsPainter oldDelegate) => false;
-}
-
-class _RatingGlyph extends StatelessWidget {
-  final int index;
-  final Color color;
-  const _RatingGlyph({required this.index, required this.color});
-  @override
-  Widget build(BuildContext context) {
-    final icon = const [
-      CupertinoIcons.arrow_uturn_left,
-      null,
-      Icons.check_rounded,
-      CupertinoIcons.star_fill,
-    ][index];
-    return SizedBox(
-      width: 30,
-      height: 30,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 26,
-            height: 26,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            child: icon == null
-                ? const CustomPaint(painter: _ClockHandsPainter())
-                : Icon(icon, size: 18, color: Colors.white, weight: 700),
-          ),
-          if (index == 1)
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: Container(
-                width: 14.5,
-                height: 14.5,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white),
-                ),
-                child: Text(
-                  '!',
-                  style: D.text(
-                    8,
-                    weight: FontWeight.w800,
-                    color: Colors.white,
-                    height: 1,
-                  ),
-                ),
-              ),
-            ),
-        ],
       ),
     );
   }
