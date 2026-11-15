@@ -131,6 +131,22 @@ void main() {
       expect(labels, containsAllInOrder(['2', '2', '1']));
     });
 
+    testWidgets('Khó on a new card brings it back once', (tester) async {
+      final (_, deck) = await open(tester, words: 1);
+      double progress() =>
+          tester.getSize(find.byKey(const ValueKey('review-progress'))).width;
+      final zero = progress();
+      await tester.tap(find.byKey(const ValueKey('rate-1')));
+      await tester.pumpAndSettle();
+      // Due again in six minutes: asked again before the session ends.
+      expect(deck.words.first.status, 'learning');
+      expect(find.byType(ReviewComplete), findsNothing);
+      expect(progress(), zero);
+      await tester.tap(find.byKey(const ValueKey('rate-1')));
+      await tester.pumpAndSettle();
+      expect(find.byType(ReviewComplete), findsOneWidget);
+    });
+
     testWidgets('a known card shows longer intervals, growing with it', (
       tester,
     ) async {

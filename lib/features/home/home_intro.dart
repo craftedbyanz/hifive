@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
-import '../../domain/models/models.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -85,22 +84,14 @@ class HomeIntro extends StatelessWidget {
   }
 }
 
-/// Opens today's review in the flashcard session: the next leg of due words
-/// and new ones, flipped and swiped like any deck.
+/// Opens today's review: the next leg of due words and new ones, each asked
+/// the way its memory calls for, so words climb to Thành thạo by being
+/// typed and used, not only flipped. With nothing left today it opens the
+/// decks.
 Future<void> openToday(BuildContext context) {
-  final state = AppScope.read(context);
-  final leg = state.today.leg();
+  final leg = AppScope.read(context).today.leg();
   if (leg.isEmpty) return go<void>(context, const DeckListScreen());
-  final deck = Deck(
-    id: 'today',
-    title: context.t.todayTitle,
-    description: '',
-    words: leg,
-  );
-  return go<void>(
-    context,
-    ReviewScreen(deck: deck, words: leg, source: 'today'),
-  );
+  return go<void>(context, TodayScreen(words: leg));
 }
 
 /// Today's review on Home, in the flashcards' own look: what is waiting,

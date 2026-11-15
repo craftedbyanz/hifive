@@ -13,7 +13,8 @@ part 'today_exercises.dart';
 
 /// One leg of today's review: due words lowest recall first, new words woven
 /// in, each asked the way its memory calls for (`pickExercise`). A word
-/// answered wrong comes back at the end of the leg.
+/// answered wrong comes back at the end of the leg, and so, once, does a
+/// word rated Khó that is still in its learning steps.
 class TodayScreen extends StatefulWidget {
   /// The words of this leg; null plans one from [AppState.today].
   final List<FlashWord>? words;
@@ -31,6 +32,9 @@ class _TodayScreenState extends State<TodayScreen> {
   late final int _total = _queue.length;
   late final int _wateredBefore = _state.countedStudyCredits.length;
   final _missed = <String>{};
+
+  /// Words brought back once for a Khó still in their learning steps.
+  final _stepped = <String>{};
   var _known = 0, _again = 0;
 
   // The exercise on screen.
@@ -85,7 +89,8 @@ class _TodayScreenState extends State<TodayScreen> {
   }
 
   /// Logs the review and moves on. A wrong answer sends the word to the end
-  /// of the queue, asked as a choice next time.
+  /// of the queue, asked as a choice next time; a Khó that leaves it in its
+  /// learning steps (due again in minutes) sends it there once.
   void _rate(int rating) {
     final w = _queue.first;
     _state.rate(
@@ -102,6 +107,8 @@ class _TodayScreenState extends State<TodayScreen> {
       if (rating == 0) {
         _again++;
         _missed.add(w.id);
+        _queue.add(w);
+      } else if (w.status == 'learning' && _stepped.add(w.id)) {
         _queue.add(w);
       } else if (!_missed.contains(w.id)) {
         _known++;
@@ -151,7 +158,8 @@ class _TodayScreenState extends State<TodayScreen> {
               onContinue: () => Navigator.of(context).pop(),
             );
     }
-    final done = _total - _queue.where((w) => !_missed.contains(w.id)).length;
+    // A word asked again is not done until it is answered.
+    final done = _total - _queue.length;
     return Scaffold(
       backgroundColor: D.background,
       body: SafeArea(

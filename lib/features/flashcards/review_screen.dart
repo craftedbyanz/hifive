@@ -20,7 +20,8 @@ part 'review_controls.dart';
 /// - the card follows the finger at 0.85, tilting about 3.5° per 110 pt;
 /// - the other three buttons fade while the matching one grows and fills;
 /// - a rated card flies off in about 0.35 s, and the next settles over 0.73 s;
-/// - "Học lại" sends the card to the end of the queue without advancing progress.
+/// - "Học lại" sends the card to the end of the queue without advancing progress,
+///   and so, once, does "Khó" on a card still in its learning steps.
 class ReviewScreen extends StatefulWidget with CoverPage {
   final Deck deck;
   final List<FlashWord> words;
@@ -50,6 +51,9 @@ class _ReviewScreenState extends State<ReviewScreen>
   late final _wateredBefore = AppScope.read(context).countedStudyCredits.length;
   FlashWord? previous;
   int passed = 0, again = 0;
+
+  /// Cards brought back once for a Khó still in their learning steps.
+  final stepped = <String>{};
   bool done = false, autoplay = false, colorful = false;
   Timer? autoplayTimer;
   FeedbackService? activeFeedback;
@@ -170,6 +174,8 @@ class _ReviewScreenState extends State<ReviewScreen>
       queue.removeAt(0);
       if (value == 0) {
         again++;
+        queue.add(word);
+      } else if (word.status == 'learning' && stepped.add(word.id)) {
         queue.add(word);
       } else {
         passed++;

@@ -77,26 +77,54 @@ void main() {
     expect(find.byKey(const ValueKey('today-complete')), findsOneWidget);
   });
 
-  testWidgets('Home shows today and opens it as a flashcard session', (
-    tester,
-  ) async {
+  testWidgets('Home shows today and opens it as exercises', (tester) async {
     final state = fresh();
     await mount(tester, state, const HomeScreen(animateAmbient: false));
     expect(find.text('10 từ mới'), findsOneWidget);
     expect(find.text('HÔM NAY · KHOẢNG 2 PHÚT'), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('home-today')));
     await tester.pumpAndSettle();
-    final review = tester.widget<ReviewScreen>(find.byType(ReviewScreen));
-    expect(review.words, hasLength(10));
-    expect(review.source, 'today');
+    final today = tester.widget<TodayScreen>(find.byType(TodayScreen));
+    expect(today.words, hasLength(10));
+    expect(find.byType(ReviewScreen), findsNothing);
 
-    // Swiping a card rates it, logged as today's review.
-    await tester.drag(
-      find.byKey(const ValueKey('review-card')),
-      const Offset(0, -200),
-    );
+    // A new word is met first, and rating it logs today's review.
+    expect(find.byKey(const ValueKey('ex-kind-intro')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('ex-reveal')));
     await tester.pumpAndSettle();
-    expect(review.words.first.status, 'review');
+    await tester.tap(find.byKey(const ValueKey('ex-rate-2')));
+    await tester.pumpAndSettle();
+    expect(today.words!.first.status, 'review');
+    expect(state.rated.single.event.source, 'today');
+  });
+
+  testWidgets('Khó on a new word asks it again, once', (tester) async {
+    final state = fresh();
+    final word = state.decks.first.words.first;
+    await mount(tester, state, TodayScreen(words: [word]));
+    await tester.tap(find.byKey(const ValueKey('ex-reveal')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('ex-rate-1')));
+    await tester.pumpAndSettle();
+    expect(word.status, 'learning');
+    expect(find.byKey(const ValueKey('today-complete')), findsNothing);
+    expect(find.text('0/1'), findsOneWidget);
+    expect(find.byKey(const ValueKey('ex-kind-choice')), findsOneWidget);
+    await tester.tap(find.byKey(ValueKey('ex-choice-${word.meaning}')));
+    await tester.pumpAndSettle();
+    await _next(tester);
+    expect(find.byKey(const ValueKey('today-complete')), findsOneWidget);
+  });
+
+  testWidgets('a word asked again is not counted done', (tester) async {
+    final state = fresh();
+    final word = state.decks.first.words.first;
+    applyRating(word, state.now().subtract(const Duration(days: 4)), 2);
+    await mount(tester, state, TodayScreen(words: [word]));
+    await tester.tap(find.byKey(const ValueKey('ex-dont-know')));
+    await tester.pumpAndSettle();
+    await _next(tester);
+    expect(find.text('0/1'), findsOneWidget);
   });
 
   test('the seed decks give a full first day', () {
