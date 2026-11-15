@@ -169,17 +169,20 @@ void replayReviews(
       applyReview(first, e);
     }
     for (final other in cards.skip(1)) {
-      other
-        ..status = first.status
-        ..due = first.due
-        ..intervalDays = first.intervalDays
-        ..stability = first.stability
-        ..difficulty = first.difficulty
-        ..lapses = first.lapses
-        ..reviews = first.reviews
-        ..firstReview = first.firstReview
-        ..lastReview = first.lastReview
-        ..lastRecall = first.lastRecall;
+      copyMemory(first, other);
     }
   }
 }
+
+/// Gives [to] the memory of [from], another card holding the same word.
+void copyMemory(FlashWord from, FlashWord to) => to
+  ..status = from.status
+  ..due = from.due
+  ..intervalDays = from.intervalDays
+  ..stability = from.stability
+  ..difficulty = from.difficulty
+  ..lapses = from.lapses
+  ..reviews = from.reviews
+  ..firstReview = from.firstReview
+  ..lastReview = from.lastReview
+  ..lastRecall = from.lastRecall;

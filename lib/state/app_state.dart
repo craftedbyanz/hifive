@@ -988,12 +988,13 @@ class AppState extends ChangeNotifier {
       decks.add(deck);
       _put(RecordKind.deck, deck.id, deckData(deck, now()));
     }
-    if (!deck.words.any((w) => w.word.toLowerCase() == word.toLowerCase())) {
+    if (!deck.words.any((w) => wordKey(w.word) == wordKey(word))) {
       final card = FlashWord(
         id: savedWordId(word),
         word: word,
         meaning: meaning,
       );
+      _carryMemory([card]);
       deck.words.add(card);
       _put(RecordKind.word, card.id, wordData(card, deck.id, now()));
       commit();
@@ -1332,6 +1333,7 @@ class AppState extends ChangeNotifier {
 
   void addDeck(Deck deck) {
     deck.createdAt ??= now();
+    _carryMemory(deck.words);
     decks.add(deck);
     _put(RecordKind.deck, deck.id, deckData(deck, deck.createdAt!));
     _putWords(deck, deck.words);
@@ -1339,9 +1341,21 @@ class AppState extends ChangeNotifier {
   }
 
   void addWords(Deck deck, List<FlashWord> words) {
+    _carryMemory(words);
     deck.words.addAll(words);
     _putWords(deck, words);
     commit();
+  }
+
+  /// Gives new [cards] the memory of a card already holding the same word,
+  /// as a reload would, so a word learned elsewhere doesn't come back as
+  /// new until then.
+  void _carryMemory(Iterable<FlashWord> cards) {
+    final known = uniqueWords;
+    for (final card in cards) {
+      final had = known[wordKey(card.word)];
+      if (had != null && !identical(had, card)) copyMemory(had, card);
+    }
   }
 
   void _putWords(Deck deck, List<FlashWord> words) {

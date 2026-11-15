@@ -120,9 +120,11 @@ void main() {
       }),
       isEmpty,
     );
-    // The copy opens, and nothing of the sharer's progress came with it.
+    // The copy opens. The share carries no progress: each word has this
+    // learner's own memory of it, as it would after a reload.
     expect(find.byType(DeckScreen), findsOneWidget);
-    expect(copy.words.first.reviews, 0);
+    expect(copy.words.first.reviews, deck.words.first.reviews);
+    expect(copy.words.skip(1).map((w) => w.reviews), everyElement(0));
   });
 
   testWidgets('a malformed code is caught before asking the server', (

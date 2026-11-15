@@ -299,6 +299,44 @@ void main() {
       expect(saved.words, hasLength(1));
     });
   });
+  group('a word added again keeps its memory', () {
+    test('saving a word learned in a deck', () async {
+      final store = MemoryRecordStore();
+      final state = _state(store);
+      final word = state.today.fresh.first;
+      state.rate(word, 3);
+      state.saveWord(word.word, word.meaning);
+      // The same word with other spacing and case is not a second card.
+      state.saveWord(' ${word.word.toUpperCase()} ', word.meaning);
+      final saved = state.decks.singleWhere((d) => d.id == 'saved').words;
+      expect(saved.single.status, 'review');
+      expect(saved.single.due, word.due);
+      expect(state.today.fresh.map((w) => w.word), isNot(contains(word.word)));
+      await state.flush();
+      final reloaded = await _reload(store);
+      final again = reloaded.decks.singleWhere((d) => d.id == 'saved');
+      expect(again.words.single.due, word.due);
+    });
+
+    test('adding a deck or words that hold a learned word', () {
+      final state = _state(MemoryRecordStore());
+      final word = state.today.fresh.first;
+      state.rate(word, 2);
+      FlashWord copy() =>
+          FlashWord(id: state.newId(), word: word.word, meaning: word.meaning);
+      final deck = Deck(
+        id: state.newId(),
+        title: 'Mine',
+        description: '',
+        words: [copy()],
+      );
+      state.addDeck(deck);
+      expect(deck.words.single.status, 'review');
+      state.addWords(deck, [copy()]);
+      expect(deck.words.last.due, word.due);
+    });
+  });
+
   test('days with hifive count from first use, not the sample results', () {
     final state = createAppState(
       store: MemoryRecordStore(),
