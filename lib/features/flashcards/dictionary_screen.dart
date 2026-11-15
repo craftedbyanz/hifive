@@ -19,10 +19,12 @@ part 'dictionary_rows.dart';
 const savedDeckTitle = 'Từ đã lưu';
 
 /// Looks words up and adds them to [deck] in one tap, or to the deck the
-/// learner picks (saved words by default). docs/dictionary-plan.md.
+/// learner picks (saved words by default), starting with [query] when given.
+/// docs/dictionary-plan.md.
 class DictionaryScreen extends StatefulWidget {
   final Deck? deck;
-  const DictionaryScreen({super.key, this.deck});
+  final String query;
+  const DictionaryScreen({super.key, this.deck, this.query = ''});
 
   @override
   State<DictionaryScreen> createState() => _DictionaryScreenState();
@@ -48,6 +50,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   void initState() {
     super.initState();
     _search.addListener(_onChanged);
+    if (widget.query.isNotEmpty) _search.text = widget.query;
   }
 
   @override

@@ -49,7 +49,6 @@ class _SearchField extends StatelessWidget {
       color: Colors.white,
       borderRadius: BorderRadius.circular(24),
       border: Border.all(color: D.line),
-      boxShadow: D.shadow,
     ),
     child: Row(
       children: [
@@ -237,15 +236,20 @@ class _Start extends StatelessWidget {
                   key: ValueKey('dict-recent-$w'),
                   onTap: () => onLookUp(w),
                   child: Container(
-                    constraints: const BoxConstraints(minHeight: 44),
+                    height: 44,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(22),
                       border: Border.all(color: D.line),
                     ),
-                    child: Text(w, style: D.text(15, weight: FontWeight.w600)),
+                    child: Center(
+                      widthFactor: 1,
+                      child: Text(
+                        w,
+                        style: D.text(15, weight: FontWeight.w600),
+                      ),
+                    ),
                   ),
                 ),
             ],
@@ -313,7 +317,6 @@ class _ResultRow extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 6, 12),
         onTap: onTap,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
@@ -367,6 +370,13 @@ class _ResultRow extends StatelessWidget {
                         color: e.needsMeaning ? D.muted : D.ink,
                       ),
                     ),
+                  if (e.needsMeaning && e.definition.isNotEmpty)
+                    Text(
+                      e.definition,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: D.text(13, color: D.secondary),
+                    ),
                   if (learningIn case final deck?)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
@@ -378,7 +388,8 @@ class _ResultRow extends StatelessWidget {
                 ],
               ),
             ),
-            Column(
+            Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 _IconButton(
                   icon: CupertinoIcons.speaker_2_fill,

@@ -185,7 +185,11 @@ class SqliteDictionaryIndex implements DictionaryIndex {
   @override
   Future<List<DictEntry>> atLevel(String level, {int limit = 60}) async =>
       _entries(
-        'level = ? AND needs = 0 AND pos_rank = 0 ORDER BY coalesce(rank, 1000000000) LIMIT ?',
+        // Content words beyond the very commonest, which learners at any
+        // level already meet everywhere.
+        "level = ? AND needs = 0 AND pos_rank = 0 AND pos IN ('NOUN', 'VERB', "
+        "'ADJECTIVE', 'ADVERB') AND coalesce(rank, 1000000000) > 300 "
+        'ORDER BY coalesce(rank, 1000000000) LIMIT ?',
         [level, limit],
       );
 

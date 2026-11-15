@@ -280,10 +280,26 @@ class DictionaryLookup {
       if (bare != null) foldVietnamese(bare),
     };
     final q = foldVietnamese(bare ?? text);
+    // Typed with diacritics, a meaning must carry them too: "mèo" is not
+    // "méo" or "mẹo", though the index matches all three.
+    final marked = hasVietnamese(text);
+    final exactWords = {
+      for (final t in [text, ?bare]) t.toLowerCase(),
+    };
+    bool spelled(DictEntry e) =>
+        !marked ||
+        e.senses.any(
+          (s) => exactWords.any(
+            (w) => RegExp(
+              '(^|[^\\p{L}])${RegExp.escape(w)}(\$|[^\\p{L}])',
+              unicode: true,
+            ).hasMatch(s.meaning.toLowerCase()),
+          ),
+        );
     final entries = _unique([
       for (final t in [text, ?bare])
         for (final e in await _all((i) => i.withMeaning(t)))
-          DictHit(e, DictMatch.meaning),
+          if (spelled(e)) DictHit(e, DictMatch.meaning),
     ]);
     int place(DictEntry e) {
       for (var i = 0; i < e.senses.length; i++) {
@@ -307,6 +323,7 @@ class DictionaryLookup {
           h,
           [
             h.entry.curated ? 0 : 1,
+            whole(h.entry) && place(h.entry) == 0 ? 0 : 1,
             h.entry.common ? 0 : 1,
             place(h.entry) == 0 ? 0 : 1,
             whole(h.entry) ? 0 : 1,

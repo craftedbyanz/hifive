@@ -118,6 +118,14 @@ void main() {
     },
   );
 
+  testWidgets('a word handed in is looked up at once', (tester) async {
+    final state = await withPack(tester);
+    await mount(tester, state, const DictionaryScreen(query: 'bank'));
+    await tester.pump(const Duration(milliseconds: 250));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('ngân hàng, nhà băng'), findsOneWidget);
+  });
+
   testWidgets('a typo offers the word it meant', (tester) async {
     final state = await withPack(tester);
     await mount(tester, state, const DictionaryScreen());
@@ -230,7 +238,7 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('dict-recent-cat')));
     await tester.pump(const Duration(milliseconds: 250));
     await tester.pumpAndSettle();
-    expect(find.text('mèo'), findsWidgets);
+    expect(find.text('Con mèo'), findsWidgets);
     await tester.tap(find.byKey(const ValueKey('dict-clear')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('dict-clear-recent')));

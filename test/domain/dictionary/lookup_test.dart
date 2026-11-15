@@ -145,6 +145,11 @@ void main() {
     expect((await lookup.lookup('con meo')).hits.first.entry.word, 'cat');
     expect((await hits('xin lỗi')).first.entry.word, 'sorry');
     expect(await words('đẹp'), contains('beautiful'));
+    // With diacritics, "mèo" is not "méo" (bent) or "mẹo" (ruse).
+    final meo = await words('con mèo');
+    expect(meo, isNot(contains('bent')));
+    expect(meo, isNot(contains('ruse')));
+    expect(meo.take(2), contains('cat'));
   });
 
   test('vulgar senses are gone but neutral ones stay', () async {
