@@ -4019,4 +4019,17 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get activityListenDone => 'Đã nghe hết';
+
+  @override
+  String get deleteDeck => 'Xóa bộ thẻ';
+
+  @override
+  String get deleteDeckTitle => 'Xóa bộ thẻ này?';
+
+  @override
+  String get deleteDeckBody =>
+      'Bộ thẻ và các thẻ trong đó sẽ bị xóa trên mọi thiết bị. Từ bạn đã học vẫn giữ lịch sử ôn nếu bạn thêm lại.';
+
+  @override
+  String get deckDeleted => 'Đã xóa bộ thẻ';
 }

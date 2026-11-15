@@ -84,6 +84,9 @@ class RestoredState {
   /// Every rating with the card's status before it, in replay order.
   final List<Rated> rated;
 
+  /// Every review event, including those of words no card holds now.
+  final List<ReviewEvent> reviews;
+
   /// Whether this device already stored its first-use time.
   final bool hasOwnFirstUse;
   final Hlc latest;
@@ -107,6 +110,7 @@ class RestoredState {
     this.publicDecks = const {},
     this.studyCredits = const [],
     this.rated = const [],
+    this.reviews = const [],
     required this.hasOwnFirstUse,
     required this.latest,
   });
@@ -372,6 +376,7 @@ RestoredState restore(
     publicDecks: listed,
     studyCredits: credits,
     rated: rated,
+    reviews: reviews,
     hasOwnFirstUse: hasOwnFirstUse,
     latest: latest,
   );

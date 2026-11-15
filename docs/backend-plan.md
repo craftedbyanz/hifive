@@ -27,7 +27,7 @@ Everything the learner creates is a **record**: `kind`, `id`, a JSON `data` map 
 | `setting` | setting name | yes | One row per setting, so changes to different settings on two devices both survive. Only settings the learner changed are written, so a new device's defaults never overwrite real values. |
 | `session` | session id | yes | Append-only; union. |
 | `historyCleared` | `history` | yes | "Xoá lịch sử" stores a time; sessions dated before it are hidden, so a lesson finished offline afterwards on another device stays. |
-| `deck` | deck id | yes | Learner-made decks only; built-in decks come from content. Deleting a deck, when it exists, wins over edits. |
+| `deck` | deck id | yes | Learner-made decks only; built-in decks come from content. Deleting a deck (deck menu → Xóa bộ thẻ, 16 November 2026) writes a deletion for it and each of its `word` records, and stops sharing it; deletion wins over edits. Its reviews stay, so a word added again keeps its memory (`AppState.reviewLog`). |
 | `word` | word id | yes | Cards the learner added, with their deck id. |
 | `review` | review id | yes | Append-only review log: a rating, a schedule reset or, for migrated data, a state snapshot. A card's schedule is the log replayed in time order, so reviews of one card on two devices both count. |
 | `game` | game id | yes | One row per finished game; played count, XP and best score are derived (count, sum, max). |

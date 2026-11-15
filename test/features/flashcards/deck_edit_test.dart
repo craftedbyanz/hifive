@@ -174,4 +174,42 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('chapter'), findsOneWidget);
   });
+
+  testWidgets('a deck the learner made is deleted after a red confirmation', (
+    tester,
+  ) async {
+    final state = fresh();
+    final deck = _mine(state, 'Du lịch');
+    state.addDeck(deck);
+    await mount(tester, state, const DeckListScreen());
+    await tester.tap(find.text('Du lịch'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Tùy chọn bộ thẻ'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Xóa bộ thẻ'));
+    await tester.pumpAndSettle();
+    expect(find.text('Xóa bộ thẻ này?'), findsOneWidget);
+    await tester.tap(find.text('Huỷ'));
+    await tester.pumpAndSettle();
+    expect(state.decks, contains(deck));
+
+    await tester.tap(find.byTooltip('Tùy chọn bộ thẻ'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Xóa bộ thẻ'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Xóa bộ thẻ').last);
+    await tester.pumpAndSettle();
+    expect(state.decks, isNot(contains(deck)));
+    expect(find.byType(DeckListScreen), findsOneWidget);
+    expect(find.text('Du lịch'), findsNothing);
+    expect(find.text('Đã xóa bộ thẻ'), findsOneWidget);
+  });
+
+  testWidgets("a deck hifive provides has no delete", (tester) async {
+    final state = fresh();
+    await mount(tester, state, DeckScreen(deck: state.decks.first));
+    await tester.tap(find.byTooltip('Tùy chọn bộ thẻ'));
+    await tester.pumpAndSettle();
+    expect(find.text('Xóa bộ thẻ'), findsNothing);
+  });
 }

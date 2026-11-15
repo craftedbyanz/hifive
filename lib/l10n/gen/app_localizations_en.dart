@@ -4094,4 +4094,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityListenDone => 'Finished';
+
+  @override
+  String get deleteDeck => 'Delete deck';
+
+  @override
+  String get deleteDeckTitle => 'Delete this deck?';
+
+  @override
+  String get deleteDeckBody =>
+      'The deck and its cards will be deleted on every device. Words you studied keep their history if you add them again.';
+
+  @override
+  String get deckDeleted => 'Deck deleted';
 }

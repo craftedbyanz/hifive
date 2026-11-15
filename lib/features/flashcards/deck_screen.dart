@@ -75,8 +75,33 @@ class _DeckScreenState extends State<DeckScreen> {
       ),
       if (AppScope.read(context).shares != null && widget.deck.words.isNotEmpty)
         GlassMenuItem('share', context.t.shareDeck, icon: CupertinoIcons.share),
+      if (AppScope.read(context).canDelete(widget.deck))
+        GlassMenuItem(
+          'delete',
+          context.t.deleteDeck,
+          icon: CupertinoIcons.trash,
+          danger: true,
+        ),
     ]);
     if (!mounted || choice == null) return;
+    if (choice == 'delete') {
+      final t = context.t;
+      final sure = await confirm(
+        context,
+        t.deleteDeckTitle,
+        t.deleteDeckBody,
+        action: t.deleteDeck,
+        cancel: t.cancel,
+        destructive: true,
+      );
+      if (!sure || !mounted) return;
+      final messenger = ScaffoldMessenger.of(context);
+      final navigator = Navigator.of(context);
+      await AppScope.read(context).deleteDeck(widget.deck);
+      navigator.pop();
+      messenger.showSnackBar(SnackBar(content: Text(t.deckDeleted)));
+      return;
+    }
     if (choice == 'words') {
       await go<void>(context, DictionaryScreen(deck: widget.deck));
       if (mounted) setState(() {});

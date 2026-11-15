@@ -2249,5 +2249,9 @@
   "activityBest": "Kỷ lục",
   "activityFocusDone": "Cây đã lớn",
   "activityFocusWithered": "Cây bị héo",
-  "activityListenDone": "Đã nghe hết"
+  "activityListenDone": "Đã nghe hết",
+  "deleteDeck": "Xóa bộ thẻ",
+  "deleteDeckTitle": "Xóa bộ thẻ này?",
+  "deleteDeckBody": "Bộ thẻ và các thẻ trong đó sẽ bị xóa trên mọi thiết bị. Từ bạn đã học vẫn giữ lịch sử ôn nếu bạn thêm lại.",
+  "deckDeleted": "Đã xóa bộ thẻ"
 }

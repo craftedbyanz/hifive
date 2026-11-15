@@ -1199,5 +1199,9 @@
   "activityBest": "最高分",
   "activityFocusDone": "树长成了",
   "activityFocusWithered": "树枯萎了",
-  "activityListenDone": "已听完"
+  "activityListenDone": "已听完",
+  "deleteDeck": "删除卡组",
+  "deleteDeckTitle": "删除这个卡组？",
+  "deleteDeckBody": "卡组及其卡片将在所有设备上删除。重新添加学过的单词时，复习记录仍会保留。",
+  "deckDeleted": "卡组已删除"
 }

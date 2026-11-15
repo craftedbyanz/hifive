@@ -3905,4 +3905,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get activityListenDone => '已听完';
+
+  @override
+  String get deleteDeck => '删除卡组';
+
+  @override
+  String get deleteDeckTitle => '删除这个卡组？';
+
+  @override
+  String get deleteDeckBody => '卡组及其卡片将在所有设备上删除。重新添加学过的单词时，复习记录仍会保留。';
+
+  @override
+  String get deckDeleted => '卡组已删除';
 }

@@ -7301,6 +7301,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã nghe hết'**
   String get activityListenDone;
+
+  /// No description provided for @deleteDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa bộ thẻ'**
+  String get deleteDeck;
+
+  /// No description provided for @deleteDeckTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa bộ thẻ này?'**
+  String get deleteDeckTitle;
+
+  /// No description provided for @deleteDeckBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ thẻ và các thẻ trong đó sẽ bị xóa trên mọi thiết bị. Từ bạn đã học vẫn giữ lịch sử ôn nếu bạn thêm lại.'**
+  String get deleteDeckBody;
+
+  /// No description provided for @deckDeleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xóa bộ thẻ'**
+  String get deckDeleted;
 }
 
 class _AppLocalizationsDelegate

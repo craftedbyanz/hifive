@@ -1199,5 +1199,9 @@
   "activityBest": "최고 기록",
   "activityFocusDone": "나무가 자랐어요",
   "activityFocusWithered": "나무가 시들었어요",
-  "activityListenDone": "끝까지 들음"
+  "activityListenDone": "끝까지 들음",
+  "deleteDeck": "묶음 삭제",
+  "deleteDeckTitle": "이 묶음을 삭제할까요?",
+  "deleteDeckBody": "묶음과 카드가 모든 기기에서 삭제돼요. 학습한 단어는 다시 추가하면 복습 기록이 남아 있어요.",
+  "deckDeleted": "묶음을 삭제했어요"
 }

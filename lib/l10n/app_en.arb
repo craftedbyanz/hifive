@@ -1199,5 +1199,9 @@
   "activityBest": "Best",
   "activityFocusDone": "Tree grown",
   "activityFocusWithered": "Tree withered",
-  "activityListenDone": "Finished"
+  "activityListenDone": "Finished",
+  "deleteDeck": "Delete deck",
+  "deleteDeckTitle": "Delete this deck?",
+  "deleteDeckBody": "The deck and its cards will be deleted on every device. Words you studied keep their history if you add them again.",
+  "deckDeleted": "Deck deleted"
 }

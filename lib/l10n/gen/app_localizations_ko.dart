@@ -3928,4 +3928,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get activityListenDone => '끝까지 들음';
+
+  @override
+  String get deleteDeck => '묶음 삭제';
+
+  @override
+  String get deleteDeckTitle => '이 묶음을 삭제할까요?';
+
+  @override
+  String get deleteDeckBody =>
+      '묶음과 카드가 모든 기기에서 삭제돼요. 학습한 단어는 다시 추가하면 복습 기록이 남아 있어요.';
+
+  @override
+  String get deckDeleted => '묶음을 삭제했어요';
 }

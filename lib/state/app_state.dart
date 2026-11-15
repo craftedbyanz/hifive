@@ -104,9 +104,10 @@ class AppState extends ChangeNotifier {
     FeedbackService? feedback,
     SystemActions? system,
     DateTime Function()? now,
-  }) : _builtIn = decks,
+  }) : _builtIn = List.unmodifiable(decks),
        _examples = examples,
-       decks = decks,
+       // A copy: adding a deck must never add it to hifive's own.
+       decks = [...decks],
        history = [...examples],
        feedback = feedback ?? PlatformFeedback(),
        system = system ?? const PlatformSystemActions(),
@@ -166,6 +167,10 @@ class AppState extends ChangeNotifier {
 
   /// Every rating with the card's status before it, for memory insight.
   List<Rated> rated = [];
+
+  /// Every review event, also of words no card holds now (a deleted deck's),
+  /// so a word added again comes back with its memory.
+  List<ReviewEvent> reviewLog = [];
 
   MemoryInsight get memoryInsight =>
       MemoryInsight.of(uniqueWords.values, rated, now());
@@ -552,6 +557,7 @@ class AppState extends ChangeNotifier {
     communityRules = s['communityRules'] as bool? ?? communityRules;
     studyCredits = [...r.studyCredits];
     rated = [...r.rated];
+    reviewLog = [...r.reviews];
     chatFree = s['chatFree'] as bool? ?? chatFree;
     showHints = s['showHints'] as bool? ?? showHints;
     chatTipSeen = s['chatTipSeen'] as bool? ?? chatTipSeen;
@@ -913,6 +919,7 @@ class AppState extends ChangeNotifier {
     );
     if (grows) studyCredits.add(StudyCredit(word.id, at, studySpecies));
     rated.add(Rated(event, word.status));
+    reviewLog.add(event);
     final key = wordKey(word.word);
     for (final w in decks.expand((d) => d.words)) {
       if (!identical(w, word) && wordKey(w.word) == key) applyReview(w, event);
@@ -1005,7 +1012,7 @@ class AppState extends ChangeNotifier {
 
   /// Vocabulary sessions from the review log, newest first, for Ôn tập.
   List<WordSession> get wordSessionLog =>
-      wordSessions(rated.map((r) => r.event));
+      wordSessions(reviewLog);
 
   /// Listening by video and day, newest first, for Ôn tập.
   List<ListenSession> get listenSessionLog =>
@@ -1615,6 +1622,33 @@ class AppState extends ChangeNotifier {
     commit();
   }
 
+  /// Whether the learner may delete [deck]: their own decks and saved
+  /// words, never a deck hifive provides.
+  bool canDelete(Deck deck) => !_allBuiltIn.any((d) => d.id == deck.id);
+
+  /// Deletes one of the learner's decks and its cards. Their reviews stay in
+  /// the log, so the same word added again keeps its memory. A deck shared
+  /// by link stops being shared first; offline, the share stays on the
+  /// server and the deck is deleted anyway.
+  Future<void> deleteDeck(Deck deck) async {
+    if (!canDelete(deck)) return;
+    if (sharedDecks.containsKey(deck.id)) {
+      try {
+        await unshareDeck(deck);
+      } on Object {
+        sharedDecks.remove(deck.id);
+        publicDecks.remove(deck.id);
+        _put(RecordKind.share, deck.id, null);
+      }
+    }
+    decks.removeWhere((d) => d.id == deck.id);
+    for (final w in deck.words) {
+      _put(RecordKind.word, w.id, null);
+    }
+    _put(RecordKind.deck, deck.id, null);
+    commit();
+  }
+
   void addWords(Deck deck, List<FlashWord> words) {
     _carryMemory(words);
     deck.words.addAll(words);
@@ -1628,8 +1662,21 @@ class AppState extends ChangeNotifier {
   void _carryMemory(Iterable<FlashWord> cards) {
     final known = uniqueWords;
     for (final card in cards) {
-      final had = known[wordKey(card.word)];
-      if (had != null && !identical(had, card)) copyMemory(had, card);
+      final key = wordKey(card.word);
+      final had = known[key];
+      if (had != null && !identical(had, card)) {
+        copyMemory(had, card);
+      } else if (had == null) {
+        // No card holds the word now (its deck was deleted): its reviews
+        // are still in the log, so replay them, as a reload would.
+        final events = [
+          for (final e in reviewLog)
+            if (e.word == key) e,
+        ]..sort((a, b) => a.at.compareTo(b.at));
+        for (final e in events) {
+          applyReview(card, e);
+        }
+      }
     }
   }
 
