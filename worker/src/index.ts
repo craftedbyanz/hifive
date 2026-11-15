@@ -1,5 +1,6 @@
 import type { JWTVerifyGetKey } from "jose";
 
+import { deleteAccount } from "./account";
 import { AuthUnavailable, googleKeys, verifyIdToken, type Caller } from "./auth";
 import { serveCatalog } from "./catalog";
 import {
@@ -212,6 +213,15 @@ export function createHandler(keys: JWTVerifyGetKey, now: () => Date = () => new
   return {
     async fetch(request: Request, env: Env): Promise<Response> {
       const url = new URL(request.url);
+      if (url.pathname === "/v1/account") {
+        // Deletes the caller's account data; the app then deletes the
+        // Firebase account (docs/backend-plan.md, account deletion).
+        if (request.method !== "DELETE") return json({ error: "method_not_allowed" }, 405);
+        const caller = await signedIn(request, env);
+        if (caller instanceof Response) return caller;
+        await deleteAccount(env.DB, caller.uid);
+        return json({ ok: true });
+      }
       if (url.pathname === "/v1/circles" || url.pathname.startsWith("/v1/circles/")) {
         return circles(request, env, url);
       }
