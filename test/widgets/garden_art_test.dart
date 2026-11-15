@@ -87,4 +87,32 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
     expect(tester.binding.hasScheduledFrame, isFalse);
   });
+
+  testWidgets('the weather moves with ambient motion and stays still without', (
+    tester,
+  ) async {
+    for (final w in GardenWeather.values) {
+      await tester.pumpWidget(
+        _frame(
+          GardenScene(plants: const [], width: 300, weather: w),
+          motion: true,
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 16));
+      expect(tester.binding.hasScheduledFrame, isTrue, reason: w.name);
+    }
+    // Without weather (past periods) or without motion it draws one frame.
+    await tester.pumpWidget(
+      _frame(const GardenScene(plants: [], width: 300), motion: true),
+    );
+    await tester.pump();
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    await tester.pumpWidget(
+      _frame(
+        const GardenScene(plants: [], width: 300, weather: GardenWeather.rain),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
 }

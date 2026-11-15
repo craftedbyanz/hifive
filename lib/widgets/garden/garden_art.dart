@@ -144,11 +144,13 @@ class GardenScene extends StatelessWidget {
     final h = width / 2, d = width * .035 + 9;
     return _Animated(
       size: Size(width, h + d + width / cells * 1.35),
-      animate: false,
+      // Only the weather moves: the sun's rays, the clouds and the rain.
+      animate: weather != null,
       paint: (canvas, size, t, still) {
         final top = width / cells * 1.25;
         final sky = weather;
-        if (sky != null) _weather(canvas, sky, width, top, behind: true);
+        canvas.clipRect(Offset.zero & size);
+        if (sky != null) _weather(canvas, sky, size, top, t, behind: true);
         _garden(
           canvas,
           width / 2,
@@ -158,7 +160,7 @@ class GardenScene extends StatelessWidget {
           plants,
           decorations,
         );
-        if (sky != null) _weather(canvas, sky, width, top, behind: false);
+        if (sky != null) _weather(canvas, sky, size, top, t, behind: false);
       },
     );
   }
@@ -199,6 +201,18 @@ class _AnimatedState extends State<_Animated>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _follow();
+  }
+
+  /// A scene that stops animating (a past period has no weather) stops its
+  /// ticker too.
+  @override
+  void didUpdateWidget(_Animated old) {
+    super.didUpdateWidget(old);
+    if (old.animate != widget.animate) _follow();
+  }
+
+  void _follow() {
     final on = widget.animate && AmbientMotion.of(context);
     if (on && !_ticker.isActive) {
       _ticker.start();

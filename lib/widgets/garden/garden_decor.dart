@@ -195,58 +195,150 @@ void _decoration(_Pen p, String id) {
   }
 }
 
-/// Clouds and the sun above the garden ([behind]), or rain over it.
+/// The sky over the garden at time [t] (seconds): behind the garden a soft
+/// wash with the sun and its turning rays, or drifting clouds; in front of
+/// it, falling rain. Everything stays inside [size], which the scene clips
+/// to, so nothing reaches the date line above the garden. [top] is where
+/// the garden's back corner sits.
 void _weather(
   Canvas c,
   GardenWeather w,
-  double width,
-  double top, {
+  Size size,
+  double top,
+  double t, {
   required bool behind,
 }) {
+  final width = size.width;
   if (behind) {
+    final wash = switch (w) {
+      GardenWeather.sunny => const Color(0x40FFE7A3),
+      GardenWeather.cloudy => const Color(0x30C3CAD6),
+      GardenWeather.rain => const Color(0x40A9B6C9),
+    };
+    final sky = Rect.fromLTWH(0, 0, width, top * 1.9);
+    c.drawRect(
+      sky,
+      Paint()
+        // Faded at both ends, so the wash has no edge under the date line.
+        ..shader = ui.Gradient.linear(
+          sky.topCenter,
+          sky.bottomCenter,
+          [wash.withValues(alpha: 0), wash, wash.withValues(alpha: 0)],
+          const [0, .35, 1],
+        ),
+    );
     if (w == GardenWeather.sunny) {
-      final o = Offset(width * .86, top * .35);
+      final o = Offset(width * .82, top * .55);
+      final r = math.min(width * .045, top * .24);
       c.drawCircle(
         o,
-        width * .32,
+        r * 4.2,
         Paint()
-          ..shader = ui.Gradient.radial(o, width * .32, const [
-            Color(0x80FFE9A6),
+          ..shader = ui.Gradient.radial(o, r * 4.2, const [
+            Color(0x66FFE9A6),
             Color(0x00FFE9A6),
           ]),
       );
-      c.drawCircle(o, width * .045, Paint()..color = const Color(0xFFFFD86A));
+      final ray = Paint()
+        ..color = const Color(0xCCFFD45C)
+        ..strokeWidth = math.max(2, r * .16)
+        ..strokeCap = StrokeCap.round;
+      for (var i = 0; i < 12; i++) {
+        final a = i * math.pi / 6 + t * .12;
+        final long = i.isEven ? 1.0 : .7;
+        final d = Offset(math.cos(a), math.sin(a));
+        c.drawLine(o + d * r * 1.45, o + d * r * (1.45 + .55 * long), ray);
+      }
+      c.drawCircle(
+        o,
+        r,
+        Paint()
+          ..shader = ui.Gradient.radial(o - Offset(r, r) * .3, r * 1.3, const [
+            Color(0xFFFFF0B0),
+            Color(0xFFFFC94A),
+          ]),
+      );
+      // Two small fair-weather clouds drifting across.
+      for (final (x, y, s, speed) in const [
+        (.18, .42, .75, 5.0),
+        (.5, .3, .55, 3.0),
+      ]) {
+        final dx = (width * x + t * speed) % (width * 1.2) - width * .1;
+        _cloud(
+          c,
+          Offset(dx, top * y),
+          top * .2 * s,
+          const Color(0xF2FFFFFF),
+          null,
+        );
+      }
       return;
     }
-    final grey = w == GardenWeather.rain
-        ? const Color(0xFFB4BCCB)
-        : const Color(0xFFC8CDD6);
-    for (final (x, y, s) in const [
-      (.18, .3, 1.0),
-      (.52, .16, 1.25),
-      (.82, .34, .9),
+    final (body, shade) = w == GardenWeather.rain
+        ? (const Color(0xFFB2BACA), const Color(0xFF98A1B3))
+        : (const Color(0xFFD3D8E0), const Color(0xFFBCC3CE));
+    for (final (x, y, s, phase) in const [
+      (.17, .5, .85, 0.0),
+      (.5, .38, 1.15, 1.7),
+      (.83, .52, .9, 3.1),
     ]) {
-      final o = Offset(width * x, top * y);
-      final r = width * .07 * s;
-      for (final (dx, dy, k) in const [
-        (-1.1, .25, .75),
-        (0.0, 0.0, 1.0),
-        (1.05, .2, .8),
-        (.4, .35, .7),
-      ]) {
-        c.drawCircle(o + Offset(dx * r, dy * r), r * k, Paint()..color = grey);
-      }
+      final drift = math.sin(t * .35 + phase) * width * .015;
+      _cloud(
+        c,
+        Offset(width * x + drift, top * y),
+        math.min(width * .06, top * .3) * s,
+        body,
+        shade,
+      );
     }
     return;
   }
   if (w != GardenWeather.rain) return;
-  final rain = Paint()
-    ..color = const Color(0x667AA7D8)
-    ..strokeWidth = 1.2
+  final drop = Paint()
+    ..strokeWidth = 1.4
     ..strokeCap = StrokeCap.round;
   final rnd = _rng(77);
-  for (var i = 0; i < 46; i++) {
-    final x = rnd() * width, y = top * .45 + rnd() * width * .55;
-    c.drawLine(Offset(x, y), Offset(x - 3, y + 10), rain);
+  final from = top * .75, span = size.height - from;
+  for (var i = 0; i < 70; i++) {
+    final x = rnd() * width;
+    final speed = 120 + rnd() * 80;
+    final len = 8 + rnd() * 6;
+    final y = from + (rnd() * span + t * speed) % span;
+    drop.color = Color.fromRGBO(98, 140, 196, .35 + rnd() * .3);
+    c.drawLine(Offset(x, y), Offset(x - len * .3, y + len), drop);
   }
+}
+
+/// A puffy cloud of four circles around [o], [r] across its middle circle,
+/// with a darker underside when [shade] is given.
+void _cloud(Canvas c, Offset o, double r, Color body, Color? shade) {
+  const puffs = [
+    (-1.1, .25, .72),
+    (0.0, 0.0, 1.0),
+    (1.05, .22, .8),
+    (.45, .38, .7),
+  ];
+  if (shade != null) {
+    for (final (dx, dy, k) in puffs) {
+      c.drawCircle(
+        o + Offset(dx * r, dy * r + r * .14),
+        r * k,
+        Paint()..color = shade,
+      );
+    }
+  }
+  for (final (dx, dy, k) in puffs) {
+    c.drawCircle(o + Offset(dx * r, dy * r), r * k, Paint()..color = body);
+  }
+  // Light on the top of the cloud, soft so it reads as volume, not a spot.
+  final light = o + Offset(-r * .2, -r * .45);
+  c.drawCircle(
+    light,
+    r * .9,
+    Paint()
+      ..shader = ui.Gradient.radial(light, r * .9, [
+        Colors.white.withValues(alpha: .3),
+        Colors.white.withValues(alpha: 0),
+      ]),
+  );
 }
