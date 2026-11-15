@@ -62,10 +62,11 @@ void main() {
     tester,
   ) async {
     await openTimer(tester);
-    expect(find.text('Chặn ứng dụng gây xao nhãng'), findsOneWidget);
-    expect(find.text('Đang tắt'), findsOneWidget);
+    // The sheet's own row is the last one; the focus screen has one too.
+    expect(find.text('Chặn ứng dụng gây xao nhãng'), findsNWidgets(2));
+    expect(find.text('Đang tắt').last, findsOneWidget);
 
-    await tester.tap(find.byKey(const ValueKey('shield-switch')));
+    await tester.tap(find.byKey(const ValueKey('shield-switch')).last);
     await tester.pumpAndSettle();
     expect(shield.calls, contains('enable'));
     expect(find.text('Đã chọn 3 mục · Đổi'), findsOneWidget);
@@ -80,13 +81,13 @@ void main() {
   testWidgets('a build without the entitlement says why', (tester) async {
     shield.enableError = 'unavailable';
     await openTimer(tester);
-    await tester.tap(find.byKey(const ValueKey('shield-switch')));
+    await tester.tap(find.byKey(const ValueKey('shield-switch')).last);
     await tester.pump();
     expect(
       find.text('Bản cài này chưa được Apple cho phép chặn ứng dụng.'),
       findsOneWidget,
     );
-    expect(find.text('Đang tắt'), findsOneWidget);
+    expect(find.text('Đang tắt'), findsWidgets);
     await tester.pumpAndSettle(const Duration(seconds: 4));
   });
 
@@ -101,6 +102,28 @@ void main() {
 
     await tester.tap(find.byKey(const ValueKey('focus-cancel')));
     await tester.pump();
-    expect(shield.calls.last, 'stop');
+    expect(
+      shield.calls.lastIndexOf('stop'),
+      greaterThan(shield.calls.lastIndexOf('start')),
+    );
   });
+
+  testWidgets(
+    'blocking is switched on right above Bắt đầu, and shields on start',
+    (tester) async {
+      await mount(tester, fresh(), FocusScreen(clock: () => clock));
+      await tester.pumpAndSettle();
+      final row = tester.getRect(find.byKey(const ValueKey('shield-switch')));
+      final start = tester.getRect(find.byKey(const ValueKey('focus-start')));
+      expect(row.bottom, lessThan(start.top));
+      await tester.tap(find.byKey(const ValueKey('shield-switch')));
+      await tester.pumpAndSettle();
+      expect(shield.enabled, isTrue);
+      await tester.tap(find.byKey(const ValueKey('focus-start')));
+      await tester.pump();
+      expect(shield.calls.last, 'start');
+      await tester.tap(find.byKey(const ValueKey('focus-cancel')));
+      await tester.pump();
+    },
+  );
 }

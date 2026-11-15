@@ -451,6 +451,11 @@ class _FocusScreenState extends State<FocusScreen>
                 const Spacer(),
                 ...switch (_phase) {
                   _Phase.setup => [
+                    // Blocking where it is decided, above Bắt đầu, not only
+                    // inside the timer sheet, where learners missed it.
+                    const ShieldControl(
+                      padding: EdgeInsets.fromLTRB(4, 0, 4, 14),
+                    ),
                     FocusButton('focus-start', t.focusStart, _start),
                   ],
                   _Phase.running => [
