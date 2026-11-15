@@ -1011,8 +1011,7 @@ class AppState extends ChangeNotifier {
   }
 
   /// Vocabulary sessions from the review log, newest first, for Ôn tập.
-  List<WordSession> get wordSessionLog =>
-      wordSessions(reviewLog);
+  List<WordSession> get wordSessionLog => wordSessions(reviewLog);
 
   /// Listening by video and day, newest first, for Ôn tập.
   List<ListenSession> get listenSessionLog =>
