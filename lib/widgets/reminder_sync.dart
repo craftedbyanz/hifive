@@ -6,16 +6,25 @@ import '../core/services/screen_lock.dart';
 import '../l10n/l10n.dart';
 import '../state/state.dart';
 
-/// Keeps the daily review reminder in step with the learner's words: after
-/// any change, and when the app goes to the background, it schedules one
-/// notification at the reminder time saying how many words will be due, or
-/// cancels it when none will be or the reminder is off.
+/// Keeps the daily review reminders in step with the learner's words: after
+/// any change, and when the app goes to the background, it schedules a
+/// notification at the reminder time on each of the coming [ReminderSync.days]
+/// days: how many words will be due, or on a day with none a nudge to learn
+/// a few new words (skipped once the learner studied that day). Cancels them
+/// all when the reminder is off.
 class ReminderSync extends StatefulWidget {
   final Widget child;
   const ReminderSync({super.key, required this.child});
 
   /// Seconds of review a word takes, for the time estimate.
   static const secondsPerWord = 12;
+
+  /// Seconds a new word takes to learn, for the nudge's estimate.
+  static const secondsPerNewWord = 30;
+
+  /// How many days ahead reminders are scheduled, so they keep coming while
+  /// the app stays closed. Each day's count is the forecast from now.
+  static const days = 7;
 
   @override
   State<ReminderSync> createState() => _ReminderSyncState();
@@ -68,20 +77,59 @@ class _ReminderSyncState extends State<ReminderSync>
       ScreenLock.cancelReminder();
       return;
     }
-    final at = state.nextReminder;
-    final count = state.dueBy(at);
-    if (count == 0) {
-      ScreenLock.cancelReminder();
-      return;
-    }
     final t = context.t;
-    final minutes = (count * ReminderSync.secondsPerWord / 60).ceil();
-    ScreenLock.scheduleReminder(
-      at,
-      t.reminderNoteTitle(count),
-      t.reminderNoteBody(minutes),
+    final first = state.nextReminder;
+    final reminders = [
+      for (var i = 0; i < ReminderSync.days; i++)
+        ?_note(state, t, _at(first, i)),
+    ];
+    if (reminders.isEmpty) {
+      ScreenLock.cancelReminder();
+    } else {
+      ScreenLock.scheduleReminders(reminders);
+    }
+  }
+
+  /// What the reminder at [at] says: the words due by then, or on a day
+  /// with none a nudge to learn a few new ones, unless the learner already
+  /// studied that day or takes no new words.
+  static ({DateTime at, String title, String body})? _note(
+    AppState state,
+    AppLocalizations t,
+    DateTime at,
+  ) {
+    final due = state.dueBy(at);
+    if (due > 0) {
+      return (
+        at: at,
+        title: t.reminderNoteTitle(due),
+        body: t.reminderNoteBody(
+          (due * ReminderSync.secondsPerWord / 60).ceil(),
+        ),
+      );
+    }
+    final fresh = state.newPerDay;
+    if (fresh == 0 || state.studyDays.contains(AppState.dayKey(at))) {
+      return null;
+    }
+    return (
+      at: at,
+      title: t.reminderNudgeTitle,
+      body: t.reminderNudgeBody(
+        fresh,
+        (fresh * ReminderSync.secondsPerNewWord / 60).ceil(),
+      ),
     );
   }
+
+  /// The reminder [days] after [first], at the same wall-clock time.
+  static DateTime _at(DateTime first, int days) => DateTime(
+    first.year,
+    first.month,
+    first.day + days,
+    first.hour,
+    first.minute,
+  );
 
   @override
   Widget build(BuildContext context) => widget.child;

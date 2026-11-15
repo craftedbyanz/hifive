@@ -569,7 +569,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get smartRemindersBody =>
-      'hifive works out which words are fading. At your reminder time you only hear from us if words are due, with how many and about how long it takes.';
+      'hifive works out which words are fading. At your reminder time you hear how many are due and about how long they take; on days with none, hifive suggests a few new words.';
 
   @override
   String get lessonSettingsTitle => 'Lesson settings';
@@ -3031,7 +3031,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String reminderAt(String time) {
-    return 'At $time · only when words are due';
+    return 'At $time · fading words, or new ones';
   }
 
   @override
@@ -3041,6 +3041,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reminderDone => 'Done';
 
   @override
+  String get reminderDenied =>
+      'hifive isn\'t allowed to send notifications. Turn them on in Settings → hifive → Notifications.';
+
+  @override
   String reminderNoteTitle(int count) {
     return '$count words are fading';
   }
@@ -3048,6 +3052,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String reminderNoteBody(int minutes) {
     return 'About $minutes min of review keeps them, and waters your study tree.';
+  }
+
+  @override
+  String get reminderNudgeTitle => 'Learn a few new words today';
+
+  @override
+  String reminderNudgeBody(int count, int minutes) {
+    return '$count new words, about $minutes min, and your study tree gets watered.';
   }
 
   @override

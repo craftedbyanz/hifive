@@ -410,9 +410,16 @@ class _ReminderCard extends StatelessWidget {
           key: const ValueKey('reminder-toggle'),
           value: state.reminderOn,
           activeTrackColor: D.green,
-          onChanged: (on) {
-            if (on) ScreenLock.askPermission();
-            state.setReminder(on: on);
+          onChanged: (on) async {
+            if (!on) return state.setReminder(on: false);
+            // Turned on only if iOS lets hifive send notifications.
+            final t = context.t;
+            final allowed = await ScreenLock.askPermission();
+            if (allowed == false) {
+              if (context.mounted) toast(context, t.reminderDenied);
+              return;
+            }
+            state.setReminder(on: true);
           },
         ),
       ],

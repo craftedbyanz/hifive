@@ -551,7 +551,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get smartRemindersBody =>
-      'hifive가 곧 잊을 단어를 미리 계산해요. 알림 시간에 복습할 단어가 있을 때만, 개수와 예상 시간을 알려 드려요.';
+      'hifive가 곧 잊을 단어를 미리 계산해요. 알림 시간에 복습할 단어가 있으면 개수와 예상 시간을, 없는 날에는 새 단어 몇 개를 추천해 드려요.';
 
   @override
   String get lessonSettingsTitle => '수업 설정';
@@ -2891,7 +2891,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String reminderAt(String time) {
-    return '$time · 잊을 단어가 있을 때만';
+    return '$time · 잊을 단어 복습, 또는 새 단어';
   }
 
   @override
@@ -2901,6 +2901,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get reminderDone => '완료';
 
   @override
+  String get reminderDenied => 'hifive에 알림 권한이 없어요. 설정 → hifive → 알림에서 켜 주세요.';
+
+  @override
   String reminderNoteTitle(int count) {
     return '곧 잊을 단어 $count개';
   }
@@ -2908,6 +2911,14 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String reminderNoteBody(int minutes) {
     return '$minutes분 정도 복습하면 오래 기억하고 공부 나무에도 물을 줘요.';
+  }
+
+  @override
+  String get reminderNudgeTitle => '오늘 새 단어 몇 개 배워 봐요';
+
+  @override
+  String reminderNudgeBody(int count, int minutes) {
+    return '새 단어 $count개, 약 $minutes분이면 공부 나무에도 물을 줄 수 있어요.';
   }
 
   @override

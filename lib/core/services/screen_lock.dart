@@ -36,22 +36,33 @@ abstract final class ScreenLock {
 
   static Future<void> clearWarning() => _call('clearWarning');
 
-  /// The daily review reminder: one notification at [at], replacing any
-  /// earlier one.
-  static Future<void> scheduleReminder(
-    DateTime at,
-    String title,
-    String body,
-  ) => _call('scheduleReminder', {
-    'at': at.millisecondsSinceEpoch.toDouble(),
-    'title': title,
-    'body': body,
-  });
+  /// The daily review reminders for the coming days, each at its time with
+  /// its own text, replacing any scheduled before.
+  static Future<void> scheduleReminders(
+    List<({DateTime at, String title, String body})> reminders,
+  ) => _call('scheduleReminders', [
+    for (final r in reminders)
+      {
+        'at': r.at.millisecondsSinceEpoch.toDouble(),
+        'title': r.title,
+        'body': r.body,
+      },
+  ]);
 
   static Future<void> cancelReminder() => _call('cancelReminder');
 
-  /// Asks for permission to show notifications, once.
-  static Future<void> askPermission() => _call('prepareWarning');
+  /// Asks for permission to show notifications (iOS asks only once) and
+  /// answers whether they are allowed; null where there is no answer
+  /// (tests, Android for now).
+  static Future<bool?> askPermission() async {
+    try {
+      return await _channel.invokeMethod<bool>('prepareWarning');
+    } on MissingPluginException {
+      return null;
+    } on PlatformException {
+      return null;
+    }
+  }
 
   static Future<void> _call(String method, [Object? args]) async {
     try {

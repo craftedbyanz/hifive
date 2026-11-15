@@ -12,7 +12,17 @@ import UserNotifications
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    // Lets review reminders show as banners even while hifive is open.
+    UNUserNotificationCenter.current().delegate = self
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  override func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+  ) {
+    completionHandler([.banner, .list, .sound])
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
@@ -43,8 +53,10 @@ import UserNotifications
     channel.setMethodCallHandler { call, result in
       switch call.method {
       case "prepareWarning":
-        alerts.requestAuthorization(options: [.alert, .sound]) { _, _ in }
-        result(nil)
+        // Answers whether notifications are allowed (asking the first time).
+        alerts.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+          DispatchQueue.main.async { result(granted) }
+        }
       case "warn":
         let args = call.arguments as? [String: String] ?? [:]
         let content = UNMutableNotificationContent()
@@ -69,9 +81,31 @@ import UserNotifications
         alerts.removePendingNotificationRequests(withIdentifiers: ["review-reminder"])
         alerts.add(UNNotificationRequest(identifier: "review-reminder", content: content, trigger: trigger))
         result(nil)
+      case "scheduleReminders":
+        // The coming days' reminders, each with its own count; replaces any
+        // scheduled before, so one still comes on days the app stays closed.
+        let list = call.arguments as? [[String: Any]] ?? []
+        alerts.getPendingNotificationRequests { pending in
+          let old = pending.map(\.identifier).filter { $0.hasPrefix("review-reminder") }
+          alerts.removePendingNotificationRequests(withIdentifiers: old)
+          for (i, item) in list.enumerated() {
+            let content = UNMutableNotificationContent()
+            content.title = item["title"] as? String ?? ""
+            content.body = item["body"] as? String ?? ""
+            content.sound = .default
+            let at = Date(timeIntervalSince1970: (item["at"] as? Double ?? 0) / 1000)
+            let parts = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: at)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
+            alerts.add(UNNotificationRequest(identifier: "review-reminder-\(i)", content: content, trigger: trigger))
+          }
+          DispatchQueue.main.async { result(nil) }
+        }
       case "cancelReminder":
-        alerts.removePendingNotificationRequests(withIdentifiers: ["review-reminder"])
-        result(nil)
+        alerts.getPendingNotificationRequests { pending in
+          let old = pending.map(\.identifier).filter { $0.hasPrefix("review-reminder") }
+          alerts.removePendingNotificationRequests(withIdentifiers: old)
+          DispatchQueue.main.async { result(nil) }
+        }
       case "clearWarning":
         alerts.removePendingNotificationRequests(withIdentifiers: [warningId])
         alerts.removeDeliveredNotifications(withIdentifiers: [warningId])

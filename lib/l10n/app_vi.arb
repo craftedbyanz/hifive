@@ -204,7 +204,7 @@
   "cannotOpenSettings": "Không mở được Cài đặt.",
   "settingsAction": "Cài đặt",
   "smartReminders": "Lịch nhắc thông minh",
-  "smartRemindersBody": "hifive tính trước từ nào sắp quên. Đến giờ nhắc, bạn chỉ nhận thông báo nếu hôm đó có từ cần ôn, kèm số từ và thời gian ôn ước tính.",
+  "smartRemindersBody": "hifive tính trước từ nào sắp quên. Đến giờ nhắc, nếu có từ cần ôn bạn sẽ biết số từ và thời gian ôn ước tính; hôm nào không có, hifive gợi ý học vài từ mới.",
   "lessonSettingsTitle": "Lesson Settings",
   "inputColor": "Màu ô nhập",
   "hintSettings": "Cài đặt gợi ý",
@@ -1409,7 +1409,7 @@
   "exListeningSetting": "Bài tập nghe",
   "exListeningSettingBody": "Nghe rồi gõ lại. Tắt khi đang ở nơi công cộng.",
   "reminderTitle": "Nhắc ôn từ mỗi ngày",
-  "reminderAt": "Lúc {time} · chỉ khi có từ sắp quên",
+  "reminderAt": "Lúc {time} · ôn từ sắp quên, hoặc học từ mới",
   "@reminderAt": {
     "placeholders": {
       "time": {
@@ -1419,6 +1419,7 @@
   },
   "reminderPickTime": "Giờ nhắc",
   "reminderDone": "Xong",
+  "reminderDenied": "hifive chưa được phép gửi thông báo. Bật trong Cài đặt → hifive → Thông báo.",
   "reminderNoteTitle": "{count} từ sắp quên",
   "@reminderNoteTitle": {
     "placeholders": {
@@ -1430,6 +1431,18 @@
   "reminderNoteBody": "Ôn khoảng {minutes} phút để nhớ lâu hơn, và tưới cây học của bạn.",
   "@reminderNoteBody": {
     "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderNudgeTitle": "Học vài từ mới hôm nay nhé",
+  "reminderNudgeBody": "{count} từ mới, khoảng {minutes} phút, và cây học của bạn được tưới.",
+  "@reminderNudgeBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
       "minutes": {
         "type": "int"
       }

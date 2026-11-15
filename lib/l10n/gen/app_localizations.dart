@@ -1161,7 +1161,7 @@ abstract class AppLocalizations {
   /// No description provided for @smartRemindersBody.
   ///
   /// In vi, this message translates to:
-  /// **'hifive tính trước từ nào sắp quên. Đến giờ nhắc, bạn chỉ nhận thông báo nếu hôm đó có từ cần ôn, kèm số từ và thời gian ôn ước tính.'**
+  /// **'hifive tính trước từ nào sắp quên. Đến giờ nhắc, nếu có từ cần ôn bạn sẽ biết số từ và thời gian ôn ước tính; hôm nào không có, hifive gợi ý học vài từ mới.'**
   String get smartRemindersBody;
 
   /// No description provided for @lessonSettingsTitle.
@@ -5529,7 +5529,7 @@ abstract class AppLocalizations {
   /// No description provided for @reminderAt.
   ///
   /// In vi, this message translates to:
-  /// **'Lúc {time} · chỉ khi có từ sắp quên'**
+  /// **'Lúc {time} · ôn từ sắp quên, hoặc học từ mới'**
   String reminderAt(String time);
 
   /// No description provided for @reminderPickTime.
@@ -5544,6 +5544,12 @@ abstract class AppLocalizations {
   /// **'Xong'**
   String get reminderDone;
 
+  /// No description provided for @reminderDenied.
+  ///
+  /// In vi, this message translates to:
+  /// **'hifive chưa được phép gửi thông báo. Bật trong Cài đặt → hifive → Thông báo.'**
+  String get reminderDenied;
+
   /// No description provided for @reminderNoteTitle.
   ///
   /// In vi, this message translates to:
@@ -5555,6 +5561,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ôn khoảng {minutes} phút để nhớ lâu hơn, và tưới cây học của bạn.'**
   String reminderNoteBody(int minutes);
+
+  /// No description provided for @reminderNudgeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học vài từ mới hôm nay nhé'**
+  String get reminderNudgeTitle;
+
+  /// No description provided for @reminderNudgeBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} từ mới, khoảng {minutes} phút, và cây học của bạn được tưới.'**
+  String reminderNudgeBody(int count, int minutes);
 
   /// No description provided for @memoryTitle.
   ///

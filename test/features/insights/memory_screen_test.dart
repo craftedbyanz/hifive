@@ -118,13 +118,16 @@ void main() {
       ),
     );
     await tester.pump(const Duration(seconds: 3));
-    final scheduled = calls.lastWhere((c) => c.method == 'scheduleReminder');
-    final args = Map<String, Object?>.from(scheduled.arguments as Map);
-    expect(args['title'], '1 từ sắp quên');
-    expect(
-      DateTime.fromMillisecondsSinceEpoch((args['at']! as double).round()),
-      state.nextReminder,
-    );
+    final scheduled = calls.lastWhere((c) => c.method == 'scheduleReminders');
+    final list = (scheduled.arguments as List).cast<Map<Object?, Object?>>();
+    // One for each of the coming week's days, so reminders keep coming while
+    // the app stays closed; the word stays due, so every day has one.
+    expect(list, hasLength(ReminderSync.days));
+    expect(list.first['title'], '1 từ sắp quên');
+    DateTime at(Map<Object?, Object?> m) =>
+        DateTime.fromMillisecondsSinceEpoch((m['at']! as double).round());
+    expect(at(list.first), state.nextReminder);
+    expect(at(list[1]), state.nextReminder.add(const Duration(days: 1)));
 
     state.setReminder(on: false);
     await tester.pump(const Duration(seconds: 3));

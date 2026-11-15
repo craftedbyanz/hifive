@@ -562,7 +562,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get smartRemindersBody =>
-      'hifive tính trước từ nào sắp quên. Đến giờ nhắc, bạn chỉ nhận thông báo nếu hôm đó có từ cần ôn, kèm số từ và thời gian ôn ước tính.';
+      'hifive tính trước từ nào sắp quên. Đến giờ nhắc, nếu có từ cần ôn bạn sẽ biết số từ và thời gian ôn ước tính; hôm nào không có, hifive gợi ý học vài từ mới.';
 
   @override
   String get lessonSettingsTitle => 'Lesson Settings';
@@ -2957,7 +2957,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String reminderAt(String time) {
-    return 'Lúc $time · chỉ khi có từ sắp quên';
+    return 'Lúc $time · ôn từ sắp quên, hoặc học từ mới';
   }
 
   @override
@@ -2967,6 +2967,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reminderDone => 'Xong';
 
   @override
+  String get reminderDenied =>
+      'hifive chưa được phép gửi thông báo. Bật trong Cài đặt → hifive → Thông báo.';
+
+  @override
   String reminderNoteTitle(int count) {
     return '$count từ sắp quên';
   }
@@ -2974,6 +2978,14 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String reminderNoteBody(int minutes) {
     return 'Ôn khoảng $minutes phút để nhớ lâu hơn, và tưới cây học của bạn.';
+  }
+
+  @override
+  String get reminderNudgeTitle => 'Học vài từ mới hôm nay nhé';
+
+  @override
+  String reminderNudgeBody(int count, int minutes) {
+    return '$count từ mới, khoảng $minutes phút, và cây học của bạn được tưới.';
   }
 
   @override

@@ -547,7 +547,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get smartRemindersBody =>
-      'hifive 会预先算出哪些词快忘了。到了提醒时间，只有当天有词需要复习时才会通知你，并告诉你数量和大约需要的时间。';
+      'hifive 会预先算出哪些词快忘了。到了提醒时间，有词要复习时会告诉你数量和大约需要的时间；没有的话，hifive 会建议你学几个新词。';
 
   @override
   String get lessonSettingsTitle => '课程设置';
@@ -2873,7 +2873,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String reminderAt(String time) {
-    return '$time · 仅在有快忘的词时';
+    return '$time · 复习快忘的词，或学新词';
   }
 
   @override
@@ -2883,6 +2883,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reminderDone => '完成';
 
   @override
+  String get reminderDenied => 'hifive 尚未获准发送通知。请在“设置 → hifive → 通知”中打开。';
+
+  @override
   String reminderNoteTitle(int count) {
     return '$count 个词快忘了';
   }
@@ -2890,6 +2893,14 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String reminderNoteBody(int minutes) {
     return '复习约 $minutes 分钟就能记牢，还能给学习树浇水。';
+  }
+
+  @override
+  String get reminderNudgeTitle => '今天学几个新词吧';
+
+  @override
+  String reminderNudgeBody(int count, int minutes) {
+    return '$count 个新词，约 $minutes 分钟，还能给学习树浇水。';
   }
 
   @override
