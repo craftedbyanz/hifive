@@ -1,3 +1,4 @@
+import '../domain/activity/activity.dart';
 import '../domain/garden/garden.dart';
 import '../domain/listening/listening.dart';
 import '../domain/models/models.dart';
@@ -62,6 +63,9 @@ class RestoredState {
   final List<Deck> decks;
   final List<StudySession> history;
   final int gamesPlayed, totalXp, bestScore;
+
+  /// Each finished game, oldest first.
+  final List<GameResult> games;
   final DateTime? firstUse;
   final List<FocusSession> focusSessions;
 
@@ -93,6 +97,7 @@ class RestoredState {
     required this.decks,
     required this.history,
     required this.gamesPlayed,
+    this.games = const [],
     required this.totalXp,
     required this.bestScore,
     required this.firstUse,
@@ -197,6 +202,7 @@ RestoredState restore(
   final sessions = <(Hlc, StudySession)>[];
   final focus = <FocusSession>[];
   final listen = <ListenDay>[];
+  final games = <GameResult>[];
   final shared = <String, String>{};
   final listed = <String>{};
   DateTime? clearedAt, firstUse;
@@ -274,6 +280,9 @@ RestoredState restore(
         reviews.add(ReviewEvent.fromJson(r.id, d, stamp: r.hlc));
       case RecordKind.game:
         final score = d['score'] as int;
+        if (DateTime.tryParse(d['at'] as String? ?? '') case final at?) {
+          games.add(GameResult(at, score));
+        }
         played++;
         xp += score;
         if (score > best) best = score;
@@ -353,6 +362,7 @@ RestoredState restore(
     decks: decks,
     history: history,
     gamesPlayed: played,
+    games: games..sort((a, b) => a.at.compareTo(b.at)),
     totalXp: xp,
     bestScore: best,
     firstUse: firstUse,

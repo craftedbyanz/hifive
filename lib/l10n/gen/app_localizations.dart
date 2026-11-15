@@ -7223,6 +7223,84 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Tra từ để thêm vào bộ'**
   String get dictSearchBar;
+
+  /// No description provided for @activityWords.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ vựng'**
+  String get activityWords;
+
+  /// No description provided for @activityListening.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe'**
+  String get activityListening;
+
+  /// No description provided for @activityGames.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trò chơi'**
+  String get activityGames;
+
+  /// No description provided for @activityFocus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập trung'**
+  String get activityFocus;
+
+  /// No description provided for @activityFocusBreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giờ nghỉ tập trung'**
+  String get activityFocusBreak;
+
+  /// No description provided for @activityWordsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} từ'**
+  String activityWordsCount(int n);
+
+  /// No description provided for @activityKnown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhớ {known}/{total}'**
+  String activityKnown(int known, int total);
+
+  /// No description provided for @activityMinutes.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} phút'**
+  String activityMinutes(int n);
+
+  /// No description provided for @activityScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} điểm'**
+  String activityScore(int n);
+
+  /// No description provided for @activityBest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỷ lục'**
+  String get activityBest;
+
+  /// No description provided for @activityFocusDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây đã lớn'**
+  String get activityFocusDone;
+
+  /// No description provided for @activityFocusWithered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây bị héo'**
+  String get activityFocusWithered;
+
+  /// No description provided for @activityListenDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nghe hết'**
+  String get activityListenDone;
 }
 
 class _AppLocalizationsDelegate

@@ -3858,4 +3858,51 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get dictSearchBar => '查词并加入卡组';
+
+  @override
+  String get activityWords => '词汇';
+
+  @override
+  String get activityListening => '听力';
+
+  @override
+  String get activityGames => '游戏';
+
+  @override
+  String get activityFocus => '专注';
+
+  @override
+  String get activityFocusBreak => '专注间隙';
+
+  @override
+  String activityWordsCount(int n) {
+    return '$n 个词';
+  }
+
+  @override
+  String activityKnown(int known, int total) {
+    return '记住 $known/$total';
+  }
+
+  @override
+  String activityMinutes(int n) {
+    return '$n 分钟';
+  }
+
+  @override
+  String activityScore(int n) {
+    return '$n 分';
+  }
+
+  @override
+  String get activityBest => '最高分';
+
+  @override
+  String get activityFocusDone => '树长成了';
+
+  @override
+  String get activityFocusWithered => '树枯萎了';
+
+  @override
+  String get activityListenDone => '已听完';
 }

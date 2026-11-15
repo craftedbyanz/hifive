@@ -2205,5 +2205,49 @@
   "guideFlip": "Chạm để lật thẻ",
   "guideFlipBody": "Đoán nghĩa trước, rồi lật thẻ để kiểm tra",
   "guideForgotBody2": "Vuốt trái để Hifive cho bạn gặp lại từ này sớm",
-  "dictSearchBar": "Tra từ để thêm vào bộ"
+  "dictSearchBar": "Tra từ để thêm vào bộ",
+  "activityWords": "Từ vựng",
+  "activityListening": "Nghe",
+  "activityGames": "Trò chơi",
+  "activityFocus": "Tập trung",
+  "activityFocusBreak": "Giờ nghỉ tập trung",
+  "activityWordsCount": "{n} từ",
+  "@activityWordsCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "activityKnown": "Nhớ {known}/{total}",
+  "@activityKnown": {
+    "placeholders": {
+      "known": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "activityMinutes": "{n} phút",
+  "@activityMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "activityScore": "{n} điểm",
+  "@activityScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "activityBest": "Kỷ lục",
+  "activityFocusDone": "Cây đã lớn",
+  "activityFocusWithered": "Cây bị héo",
+  "activityListenDone": "Đã nghe hết"
 }

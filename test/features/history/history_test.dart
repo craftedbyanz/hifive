@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/domain/garden/garden.dart';
+import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/history/history.dart';
 import 'package:hifive/features/learning/learning.dart';
 
@@ -103,5 +105,61 @@ void focusTest() {
     // Hiding the title row must not rebuild the field and drop its focus.
     expect(tester.testTextInput.hasAnyClients, isTrue);
     expect(find.byKey(const ValueKey('history-close')), findsOneWidget);
+  });
+
+  testWidgets('vocabulary, games and focus show beside the lessons', (
+    tester,
+  ) async {
+    final state = fresh();
+    final words = state.decks.first.words.take(3).toList();
+    state
+      ..rate(words[0], 2)
+      ..rate(words[1], 0)
+      ..rate(words[2], 2)
+      ..finishGame(42, clearResume: false)
+      ..recordFocus(
+        FocusSession(
+          id: 'f1',
+          start: state.now().subtract(const Duration(minutes: 25)),
+          end: state.now(),
+          plannedMinutes: 25,
+          species: 'oak',
+          outcome: FocusOutcome.done,
+        ),
+      );
+    await mount(tester, state, const HistoryScreen(), size: tall);
+    expect(find.text('Từ vựng'), findsOneWidget);
+    expect(find.text('3 từ'), findsOneWidget);
+    expect(find.text('Nhớ 2/3'), findsOneWidget);
+    expect(find.text('Trò chơi'), findsWidgets);
+    expect(find.text('42 điểm'), findsOneWidget);
+    expect(find.text('Tập trung'), findsOneWidget);
+    expect(find.text('25 phút'), findsOneWidget);
+    expect(find.text('Cây đã lớn'), findsOneWidget);
+
+    // A vocabulary card studies those words again on flip cards.
+    await tester.tap(find.text('3 từ'));
+    await tester.pumpAndSettle();
+    final review = tester.widget<ReviewScreen>(find.byType(ReviewScreen));
+    expect(review.words.map((w) => w.word), words.map((w) => w.word));
+  });
+
+  testWidgets('search reaches the vocabulary cards by word', (tester) async {
+    final state = fresh();
+    final word = state.decks.first.words.first;
+    state.rate(word, 2);
+    await mount(tester, state, const HistoryScreen(), size: tall);
+    await tester.enterText(
+      find.byKey(const ValueKey('history-search')),
+      word.word.toLowerCase(),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('1 từ'), findsOneWidget);
+    await tester.enterText(
+      find.byKey(const ValueKey('history-search')),
+      'zzz-not-a-word',
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('1 từ'), findsNothing);
   });
 }

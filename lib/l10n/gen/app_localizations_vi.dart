@@ -3972,4 +3972,51 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get dictSearchBar => 'Tra từ để thêm vào bộ';
+
+  @override
+  String get activityWords => 'Từ vựng';
+
+  @override
+  String get activityListening => 'Nghe';
+
+  @override
+  String get activityGames => 'Trò chơi';
+
+  @override
+  String get activityFocus => 'Tập trung';
+
+  @override
+  String get activityFocusBreak => 'Giờ nghỉ tập trung';
+
+  @override
+  String activityWordsCount(int n) {
+    return '$n từ';
+  }
+
+  @override
+  String activityKnown(int known, int total) {
+    return 'Nhớ $known/$total';
+  }
+
+  @override
+  String activityMinutes(int n) {
+    return '$n phút';
+  }
+
+  @override
+  String activityScore(int n) {
+    return '$n điểm';
+  }
+
+  @override
+  String get activityBest => 'Kỷ lục';
+
+  @override
+  String get activityFocusDone => 'Cây đã lớn';
+
+  @override
+  String get activityFocusWithered => 'Cây bị héo';
+
+  @override
+  String get activityListenDone => 'Đã nghe hết';
 }

@@ -1186,5 +1186,18 @@
   "guideFlip": "Tap to flip",
   "guideFlipBody": "Guess the meaning first, then flip the card to check",
   "guideForgotBody2": "Swipe left and Hifive brings the word back soon",
-  "dictSearchBar": "Look up a word to add"
+  "dictSearchBar": "Look up a word to add",
+  "activityWords": "Vocabulary",
+  "activityListening": "Listening",
+  "activityGames": "Games",
+  "activityFocus": "Focus",
+  "activityFocusBreak": "Focus break",
+  "activityWordsCount": "{n} words",
+  "activityKnown": "Knew {known}/{total}",
+  "activityMinutes": "{n} min",
+  "activityScore": "{n} points",
+  "activityBest": "Best",
+  "activityFocusDone": "Tree grown",
+  "activityFocusWithered": "Tree withered",
+  "activityListenDone": "Finished"
 }

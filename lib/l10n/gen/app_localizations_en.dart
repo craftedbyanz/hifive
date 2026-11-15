@@ -4047,4 +4047,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dictSearchBar => 'Look up a word to add';
+
+  @override
+  String get activityWords => 'Vocabulary';
+
+  @override
+  String get activityListening => 'Listening';
+
+  @override
+  String get activityGames => 'Games';
+
+  @override
+  String get activityFocus => 'Focus';
+
+  @override
+  String get activityFocusBreak => 'Focus break';
+
+  @override
+  String activityWordsCount(int n) {
+    return '$n words';
+  }
+
+  @override
+  String activityKnown(int known, int total) {
+    return 'Knew $known/$total';
+  }
+
+  @override
+  String activityMinutes(int n) {
+    return '$n min';
+  }
+
+  @override
+  String activityScore(int n) {
+    return '$n points';
+  }
+
+  @override
+  String get activityBest => 'Best';
+
+  @override
+  String get activityFocusDone => 'Tree grown';
+
+  @override
+  String get activityFocusWithered => 'Tree withered';
+
+  @override
+  String get activityListenDone => 'Finished';
 }

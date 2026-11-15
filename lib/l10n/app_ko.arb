@@ -1186,5 +1186,18 @@
   "guideFlip": "탭해서 뒤집기",
   "guideFlipBody": "먼저 뜻을 떠올린 뒤 카드를 뒤집어 확인해요",
   "guideForgotBody2": "왼쪽으로 밀면 Hifive가 곧 다시 보여줘요",
-  "dictSearchBar": "단어를 찾아 묶음에 추가"
+  "dictSearchBar": "단어를 찾아 묶음에 추가",
+  "activityWords": "어휘",
+  "activityListening": "듣기",
+  "activityGames": "게임",
+  "activityFocus": "집중",
+  "activityFocusBreak": "집중 쉬는 시간",
+  "activityWordsCount": "단어 {n}개",
+  "activityKnown": "{total}개 중 {known}개 기억",
+  "activityMinutes": "{n}분",
+  "activityScore": "{n}점",
+  "activityBest": "최고 기록",
+  "activityFocusDone": "나무가 자랐어요",
+  "activityFocusWithered": "나무가 시들었어요",
+  "activityListenDone": "끝까지 들음"
 }

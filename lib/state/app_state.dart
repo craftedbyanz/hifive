@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../core/services/feedback_service.dart';
 import '../core/services/system_actions.dart';
+import '../domain/activity/activity.dart';
 import '../domain/community/community.dart';
 import '../domain/dictionary/dictionary.dart';
 import '../domain/garden/garden.dart';
@@ -137,6 +138,9 @@ class AppState extends ChangeNotifier {
   /// and not on a later one, so it stays dismissed once closed.
   bool chatTipSeen = false;
   int bestScore = 0, gamesPlayed = 0, totalXp = 0;
+
+  /// Each finished game, oldest first, for Ôn tập.
+  List<GameResult> gameResults = [];
   List<StudyMode> modeOrder = [
     StudyMode.writing,
     StudyMode.grammar,
@@ -561,6 +565,7 @@ class AppState extends ChangeNotifier {
     decks = r.decks;
     history = r.history;
     gamesPlayed = r.gamesPlayed;
+    gameResults = [...r.games];
     totalXp = r.totalXp;
     bestScore = r.bestScore;
     if (r.firstUse != null) firstUse = r.firstUse!;
@@ -996,6 +1001,21 @@ class AppState extends ChangeNotifier {
             )
           : null,
     );
+  }
+
+  /// Vocabulary sessions from the review log, newest first, for Ôn tập.
+  List<WordSession> get wordSessionLog =>
+      wordSessions(rated.map((r) => r.event));
+
+  /// Listening by video and day, newest first, for Ôn tập.
+  List<ListenSession> get listenSessionLog =>
+      listenSessions(listenLog, listening);
+
+  /// The cards holding [words] ([wordKey]s), one per word, for studying a
+  /// past session again.
+  List<FlashWord> cardsFor(Iterable<String> words) {
+    final cards = uniqueWords;
+    return [for (final w in words) ?(cards[w] ?? wordById(w))];
   }
 
   /// The card a word note names, by id, from any deck.
@@ -1659,6 +1679,7 @@ class AppState extends ChangeNotifier {
       'score': score,
       'at': now().toIso8601String(),
     });
+    gameResults.add(GameResult(now(), score));
     if (clearResume) {
       gameResume = null;
       _device('gameResume', null);

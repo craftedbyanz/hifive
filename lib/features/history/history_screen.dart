@@ -3,13 +3,20 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
+import '../../domain/garden/garden.dart';
 import '../../domain/models/models.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../flashcards/flashcards.dart';
+import '../garden/garden.dart';
 import '../learning/learning.dart';
+import '../listening/listening.dart';
+
+part 'history_activity.dart';
 
 /// Saved results, laid out from survey 75/82/124/125 (iPhone): sections of
 /// sideways cards under a title, a hairline and "Xem thêm ›", and a frosted
@@ -115,9 +122,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final keyboard = MediaQuery.viewInsetsOf(context).bottom;
     final searching = focus.hasFocus || query.isNotEmpty;
     final count = sessions.length;
+    // Vocabulary, listening, games and focus, after the lessons.
+    final activity = mode == null
+        ? _ActivitySections.of(context, query)
+        : const _ActivitySections([]);
 
     final Widget body;
-    if (sessions.isEmpty) {
+    if (sessions.isEmpty && activity.isEmpty) {
       body = Padding(
         padding: EdgeInsets.only(top: top + 54),
         child: EmptyView(
@@ -161,6 +172,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     if (s.lesson.mode == m) s,
                 ],
                 onMore: () => go<void>(context, HistoryScreen(mode: m)),
+              ),
+          for (final (title, items) in activity.sections)
+            if (items.isNotEmpty)
+              _ActivitySection(
+                title: title,
+                items: items,
+                searching: query.isNotEmpty,
               ),
         ],
       );

@@ -3881,4 +3881,51 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get dictSearchBar => '단어를 찾아 묶음에 추가';
+
+  @override
+  String get activityWords => '어휘';
+
+  @override
+  String get activityListening => '듣기';
+
+  @override
+  String get activityGames => '게임';
+
+  @override
+  String get activityFocus => '집중';
+
+  @override
+  String get activityFocusBreak => '집중 쉬는 시간';
+
+  @override
+  String activityWordsCount(int n) {
+    return '단어 $n개';
+  }
+
+  @override
+  String activityKnown(int known, int total) {
+    return '$total개 중 $known개 기억';
+  }
+
+  @override
+  String activityMinutes(int n) {
+    return '$n분';
+  }
+
+  @override
+  String activityScore(int n) {
+    return '$n점';
+  }
+
+  @override
+  String get activityBest => '최고 기록';
+
+  @override
+  String get activityFocusDone => '나무가 자랐어요';
+
+  @override
+  String get activityFocusWithered => '나무가 시들었어요';
+
+  @override
+  String get activityListenDone => '끝까지 들음';
 }
