@@ -1760,21 +1760,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your privacy comes first. Our business runs on your support (subscriptions), not your data. Your information is stored safely in our encrypted database. We never share your personal data or what you use with AI with any third party, and we don\'t use it to train public AI models.';
 
   @override
-  String get contactUs => 'Contact us';
-
-  @override
-  String get alwaysListening => 'We\'re always happy to hear from you.';
-
-  @override
-  String get noSupportEmailLocal => 'This build has no support email.';
-
-  @override
-  String get supportEmail => 'Support email';
-
-  @override
-  String get notInLocalBuild => 'Not in this build';
-
-  @override
   String get done => 'Done';
 
   @override

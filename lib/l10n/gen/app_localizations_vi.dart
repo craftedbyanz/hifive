@@ -1692,21 +1692,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Quyền riêng tư của bạn là ưu tiên hàng đầu. Chúng tôi kinh doanh dựa trên sự ủng hộ (đăng ký) của bạn, không phải dữ liệu của bạn. Thông tin của bạn được lưu trữ an toàn trong cơ sở dữ liệu được mã hóa của chúng tôi. Chúng tôi tuyệt đối không chia sẻ dữ liệu cá nhân hay nội dung bạn sử dụng với AI cho bất kỳ bên thứ ba nào, và không sử dụng chúng để huấn luyện các mô hình AI công cộng.';
 
   @override
-  String get contactUs => 'Liên hệ với chúng tôi';
-
-  @override
-  String get alwaysListening => 'Chúng mình luôn sẵn sàng lắng nghe bạn.';
-
-  @override
-  String get noSupportEmailLocal => 'Bản cục bộ không có email hỗ trợ.';
-
-  @override
-  String get supportEmail => 'Email Hỗ trợ';
-
-  @override
-  String get notInLocalBuild => 'Không có ở bản cục bộ';
-
-  @override
   String get done => 'Done';
 
   @override

@@ -121,7 +121,6 @@ abstract final class Palette {
   static const sheetEdge = Color(0xffe5e5ea);
   static const sheetGlass = Color(0xb3f5f5f7);
   static const sheetBarrier = Color(0x33000000);
-  static const policyLink = Color(0xff0088fe);
   static const policyHighlight = Color(0xff3b82f6);
   static const yellow = Color(0xffeab308);
   static const iconGrey = Color(0xff4b5563);

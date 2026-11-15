@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
@@ -91,72 +90,6 @@ class PrivacyScreen extends StatelessWidget {
           const SizedBox(height: 11),
           Text(text, style: body),
         ],
-        const SizedBox(height: 23),
-        Text(
-          context.t.contactUs,
-          style: D.text(23.2, weight: FontWeight.w700, height: 30 / 23.2),
-        ),
-        const SizedBox(height: 15),
-        Text(
-          context.t.alwaysListening,
-          style: D.text(15.1, color: Palette.settingsMuted, height: 20 / 15.1),
-        ),
-        const SizedBox(height: 15),
-        PressFade(
-          key: const ValueKey('privacy-support'),
-          // Never routes to the original app's developer.
-          onTap: () => toast(context, context.t.noSupportEmailLocal),
-          child: Container(
-            height: 69,
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-            decoration: ShapeDecoration(
-              color: Colors.white,
-              shape: RoundedSuperellipseBorder(
-                borderRadius: BorderRadius.circular(20),
-                side: const BorderSide(color: Palette.settingsPanel),
-              ),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  CupertinoIcons.envelope_fill,
-                  size: 26,
-                  color: Palette.policyLink,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        context.t.supportEmail,
-                        style: D.text(
-                          13,
-                          weight: FontWeight.w600,
-                          height: 18 / 13,
-                        ),
-                      ),
-                      Text(
-                        context.t.notInLocalBuild,
-                        style: D.text(
-                          13.5,
-                          color: Palette.policyLink,
-                          height: 19 / 13.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(
-                  CupertinoIcons.arrow_up_right,
-                  size: 16,
-                  color: Palette.settingsMuted,
-                ),
-              ],
-            ),
-          ),
-        ),
       ],
     );
     if (!asSheet) {

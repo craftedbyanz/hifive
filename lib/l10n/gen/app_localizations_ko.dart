@@ -1663,21 +1663,6 @@ class AppLocalizationsKo extends AppLocalizations {
       '개인정보 보호가 최우선이에요. 저희는 데이터가 아니라 여러분의 응원(구독)으로 운영돼요. 정보는 암호화된 데이터베이스에 안전하게 저장돼요. 개인 데이터나 AI와 사용한 내용을 어떤 제3자와도 공유하지 않으며, 공개 AI 모델 학습에 쓰지 않아요.';
 
   @override
-  String get contactUs => '문의하기';
-
-  @override
-  String get alwaysListening => '언제든 이야기를 들을 준비가 되어 있어요.';
-
-  @override
-  String get noSupportEmailLocal => '이 버전에는 지원 이메일이 없어요.';
-
-  @override
-  String get supportEmail => '지원 이메일';
-
-  @override
-  String get notInLocalBuild => '이 버전에는 없어요';
-
-  @override
   String get done => '완료';
 
   @override

@@ -3240,36 +3240,6 @@ abstract class AppLocalizations {
   /// **'Quyền riêng tư của bạn là ưu tiên hàng đầu. Chúng tôi kinh doanh dựa trên sự ủng hộ (đăng ký) của bạn, không phải dữ liệu của bạn. Thông tin của bạn được lưu trữ an toàn trong cơ sở dữ liệu được mã hóa của chúng tôi. Chúng tôi tuyệt đối không chia sẻ dữ liệu cá nhân hay nội dung bạn sử dụng với AI cho bất kỳ bên thứ ba nào, và không sử dụng chúng để huấn luyện các mô hình AI công cộng.'**
   String get privacyIntro;
 
-  /// No description provided for @contactUs.
-  ///
-  /// In vi, this message translates to:
-  /// **'Liên hệ với chúng tôi'**
-  String get contactUs;
-
-  /// No description provided for @alwaysListening.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chúng mình luôn sẵn sàng lắng nghe bạn.'**
-  String get alwaysListening;
-
-  /// No description provided for @noSupportEmailLocal.
-  ///
-  /// In vi, this message translates to:
-  /// **'Bản cục bộ không có email hỗ trợ.'**
-  String get noSupportEmailLocal;
-
-  /// No description provided for @supportEmail.
-  ///
-  /// In vi, this message translates to:
-  /// **'Email Hỗ trợ'**
-  String get supportEmail;
-
-  /// No description provided for @notInLocalBuild.
-  ///
-  /// In vi, this message translates to:
-  /// **'Không có ở bản cục bộ'**
-  String get notInLocalBuild;
-
   /// No description provided for @done.
   ///
   /// In vi, this message translates to:

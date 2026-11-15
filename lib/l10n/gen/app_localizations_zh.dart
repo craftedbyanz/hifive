@@ -1654,21 +1654,6 @@ class AppLocalizationsZh extends AppLocalizations {
       '你的隐私是我们的首要任务。我们的业务依靠你的支持（订阅），而不是你的数据。你的信息安全地存储在我们的加密数据库中。我们绝不会与任何第三方分享你的个人数据或你与 AI 使用的内容，也不会用它们训练公共 AI 模型。';
 
   @override
-  String get contactUs => '联系我们';
-
-  @override
-  String get alwaysListening => '我们随时愿意倾听你的声音。';
-
-  @override
-  String get noSupportEmailLocal => '此版本没有支持邮箱。';
-
-  @override
-  String get supportEmail => '支持邮箱';
-
-  @override
-  String get notInLocalBuild => '此版本不提供';
-
-  @override
   String get done => '完成';
 
   @override
