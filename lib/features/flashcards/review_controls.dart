@@ -135,19 +135,15 @@ class _WordStrip extends StatelessWidget {
         opacity:
             (1 - distance * .62) *
             (position.abs() > 1 ? (2 - position.abs()).clamp(0.0, 1.0) : 1),
-        child: ImageFiltered(
-          imageFilter: ImageFilter.blur(
-            sigmaX: distance * 1.5,
-            sigmaY: distance * 1.5,
-          ),
-          child: Transform.scale(
-            scale: 1 - distance * .32,
-            child: Center(
-              child: Text(
-                text,
-                maxLines: 1,
-                style: D.text(14, weight: FontWeight.w700, height: 18 / 14),
-              ),
+        // Faded and shrunk, not blurred: a blur filter on every frame of a
+        // swipe was the costliest thing on screen.
+        child: Transform.scale(
+          scale: 1 - distance * .32,
+          child: Center(
+            child: Text(
+              text,
+              maxLines: 1,
+              style: D.text(14, weight: FontWeight.w700, height: 18 / 14),
             ),
           ),
         ),
@@ -173,19 +169,20 @@ class _WordStrip extends StatelessWidget {
 }
 
 class _RatingRow extends StatelessWidget {
-  final FlashWord? word;
+  /// The top card's next intervals, worked out once per card rather than on
+  /// every frame of a drag.
+  final List<Duration>? intervals;
   final int active;
   final double progress;
   final ValueChanged<int> onRate;
   const _RatingRow({
-    required this.word,
+    required this.intervals,
     required this.active,
     required this.progress,
     required this.onRate,
   });
   @override
   Widget build(BuildContext context) {
-    final intervals = word?.nextIntervals(AppScope.read(context).now());
     return SizedBox(
       height: 101,
       child: Row(
@@ -195,7 +192,10 @@ class _RatingRow extends StatelessWidget {
             if (i > 0) const SizedBox(width: 19),
             _RatingButton(
               index: i,
-              interval: intervals == null ? '' : _intervalLabel(intervals[i]),
+              interval: switch (intervals) {
+                final list? => _intervalLabel(list[i]),
+                null => '',
+              },
               progress: i == active ? progress : 0,
               hidden: i == active ? 0 : progress,
               onTap: () => onRate(i),

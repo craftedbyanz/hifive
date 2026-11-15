@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +127,19 @@ class _ReviewScreenState extends State<ReviewScreen>
     super.dispose();
   }
 
+  FlashWord? _intervalsWord;
+  List<Duration>? _intervals;
+
+  /// [word]'s next intervals, kept until the top card changes.
+  List<Duration>? _intervalsFor(FlashWord? word) {
+    if (word == null) return null;
+    if (!identical(word, _intervalsWord) || _intervals == null) {
+      _intervalsWord = word;
+      _intervals = word.nextIntervals(AppScope.read(context).now());
+    }
+    return _intervals;
+  }
+
   void toggleFlip() {
     AppScope.read(context).feedback.tap();
     flip.value < .5 ? flip.forward() : flip.reverse();
@@ -176,6 +188,8 @@ class _ReviewScreenState extends State<ReviewScreen>
     final word = queue.first;
     state.feedback.tap();
     state.rate(word, value, source: widget.source);
+    // Rated, the card's next intervals change even if it comes straight back.
+    _intervals = null;
     activeRating = value;
     final direction = _ratings[value].$2;
     final size = MediaQuery.sizeOf(context);
@@ -371,7 +385,7 @@ class _ReviewScreenState extends State<ReviewScreen>
                 right: 0,
                 bottom: 82,
                 child: _RatingRow(
-                  word: queue.isEmpty ? null : queue.first,
+                  intervals: _intervalsFor(queue.isEmpty ? null : queue.first),
                   active: activeRating,
                   progress: badge.value,
                   onRate: rate,
@@ -435,7 +449,9 @@ class _ReviewScreenState extends State<ReviewScreen>
             child: Transform.scale(
               alignment: Alignment.topCenter,
               scale: _depthScale(depth),
-              child: _CardFront(word: word, color: _cardColor(word)),
+              child: RepaintBoundary(
+                child: _CardFront(word: word, color: _cardColor(word)),
+              ),
             ),
           ),
         ),
@@ -465,8 +481,14 @@ class _ReviewScreenState extends State<ReviewScreen>
             onPanEnd: _onDragEnd,
             child: _FlipCard(
               turn: Curves.easeOut.transform(flip.value),
-              front: _CardFront(word: word, color: _cardColor(word)),
-              back: _CardBack(word: word, color: _cardColor(word)),
+              // Each face is painted once and moved, tilted and turned as a
+              // layer, instead of being repainted on every frame.
+              front: RepaintBoundary(
+                child: _CardFront(word: word, color: _cardColor(word)),
+              ),
+              back: RepaintBoundary(
+                child: _CardBack(word: word, color: _cardColor(word)),
+              ),
             ),
           ),
         ),
