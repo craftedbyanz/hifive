@@ -9,8 +9,8 @@ abstract interface class SystemActions {
   /// The in-app browser, showing the terms page the reference points to.
   Future<bool> openTerms();
 
-  /// The mail composer. It has no recipient: nothing here may reach the
-  /// original app's developer.
+  /// The mail composer, addressed to hifive's feedback inbox
+  /// ([PlatformSystemActions.feedbackEmail]).
   Future<bool> composeFeedback();
 
   /// The share sheet.
@@ -35,6 +35,9 @@ class PlatformSystemActions implements SystemActions {
     'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
   );
   static final inviteUrl = Uri.parse('https://apps.apple.com/');
+
+  /// Where "Hifive Feedback" mail goes.
+  static const feedbackEmail = 'anznguyen.dev@gmail.com';
   static final dictionaryLicenseUrl = Uri.parse(
     'https://creativecommons.org/licenses/by-sa/4.0/',
   );
@@ -52,7 +55,11 @@ class PlatformSystemActions implements SystemActions {
   @override
   Future<bool> composeFeedback() => _guard(() async {
     await FlutterEmailSender.send(
-      const Email(subject: 'Hifive Feedback', isHTML: false),
+      const Email(
+        subject: 'Hifive Feedback',
+        recipients: [feedbackEmail],
+        isHTML: false,
+      ),
     );
     return true;
   });
