@@ -1,6 +1,6 @@
 # Garden and focus mode plan
 
-Goal: a garden that grows from two sources, studying vocabulary and general focus sessions (study, writing, work), so hifive is opened every day. The approved look is `docs/mockups/garden.html` (open it in a browser; append `#still` for a still frame). Product context is in `docs/product-notes.md` (Vietnamese). Each step lands as its own commits and is reviewed before the next one starts.
+Goal: a garden that grows from two sources, studying vocabulary and general focus sessions (study, writing, work), so hifive is opened every day. The look approved on 15 November 2026 is described in "Garden art" in `docs/design-system.md` (step 8); `docs/mockups/garden.html` is the earlier mockup, kept for its layout and mechanics only. Product context is in `docs/product-notes.md` (Vietnamese). Each step lands as its own commits and is reviewed before the next one starts.
 
 Status values: todo, in progress, done.
 
@@ -8,7 +8,7 @@ Status values: todo, in progress, done.
 
 - Layout and mechanics follow the focus-tree genre: one tree on a floating isometric tile and one big timer on the focus screen; the garden is an isometric grid with Day/Week/Month/Year tabs. Trees, colors and copy are hifive's own. Everything outside these screens keeps the current design system.
 - Focus screens use the indigo palette from the logo; the garden screen keeps the app's light background and stat cards.
-- 28 species in four groups (start, study, Vietnamese, legend), drawn in code like the streak flame and menu icons; no image assets. Each has five forms: sprout, sapling, young, grown, in bloom.
+- 30 species from Vietnam and other countries (each with an `Origin`), shown in six sections by how they unlock (start, memory, diligence, focus, season, legend), drawn in code like the streak flame and menu icons; no image assets. Forms: sprout, young, grown, in bloom, withered. (Until 15 November 2026: 28 species in four groups.)
 - Species unlock through learning milestones, not coins. The milestones in the mockup are proposals.
 - Leaving the app for more than 30 seconds withers the session's tree. Locking the screen does not. Using hifive during a session does not count as leaving.
 - The first 10 seconds of a session can be cancelled without a withered tree.
@@ -70,3 +70,7 @@ Not done: the home screen widget (study tree and words due). A widget is a separ
 ### 7. Timer ruler, stopwatch and session title - done
 
 Done on 13 November 2026, after the reference video of the focus setup: the tag ("• Học tiếng Anh ›") and an editable session title sit at the top left; tapping the timer opens a frosted sheet (`showTimerSheet`, `lib/features/garden/timer_sheet.dart`) with a ruler of marks every 5 minutes up to 180, which coasts after a flick, settles on a mark and knocks once per mark crossed (`FeedbackService.tap`). Its left end is the stopwatch: it counts up, is fully grown at an hour, stops at 180 minutes, and stopping before 10 minutes plants nothing (after a confirm). The tag picker is a column of frosted pills over the blurred, darkened screen (`showTagSheet`). The sheet's "Deep focus" (blocking other apps) from the reference is left out, as decided.
+
+### 8. New art, 30 species and the misty focus screen - done
+
+Done on 15 November 2026, after reviewing directions on local pages: the plants are redrawn in a soft illustrated manner (see "Garden art" in `docs/design-system.md`), replacing both earlier manners. Two species were appended, `olive` (Greece) and `mugunghwa` (Korea), for 30; each species has an `Origin` (Vietnamese and foreign plants side by side; the galaxy tree has none). The Dalat pine (`pine`) and the snowy Norway spruce (`snowpine`) are now told apart. The collection is grouped by how species unlock (`SpeciesGroup`: start, memory, diligence, focus, season, legend); baobab and banyan moved to legends. The focus screen drops the progress ring and the floating tile for a misty indigo sky, a sunbeam, rising motes and a pool of sunlit grass where the plant grows from two seed leaves to a tree. Tests: `test/domain/garden_test.dart`, `test/widgets/garden_art_test.dart`, `test/features/garden/`.

@@ -60,7 +60,7 @@ Cùng một từ ở cả hai nguồn chỉ có một hồ sơ trí nhớ.
 
 ## 4. Giữ thói quen và niềm vui
 
-Kế hoạch kỹ thuật và chi tiết từng bước: `docs/garden-plan.md`. Bản mẫu đã duyệt: `docs/mockups/garden.html`.
+Kế hoạch kỹ thuật và chi tiết từng bước: `docs/garden-plan.md`. Hình cây và màn tập trung đã duyệt ngày 15/11/2026: xem mục "Garden art" trong `docs/design-system.md` (`docs/mockups/garden.html` là bản mẫu cũ, chỉ còn giá trị về bố cục).
 
 ### Đã làm
 
@@ -68,7 +68,7 @@ Kế hoạch kỹ thuật và chi tiết từng bước: `docs/garden-plan.md`. 
 |---|---|---|
 | Khu vườn | Màn Vườn nhìn chéo chia ô, tab Ngày/Tuần/Tháng/Năm, số cây sống và héo, thống kê thời gian tập trung, lượt tưới, ngày học | xong, đã cài lên iPhone |
 | Cây học | Mỗi thẻ mới hoặc đến hạn được ôn là một lượt tưới (mỗi thẻ một lần một ngày); 10 lượt thành một cây; chọn loài cho cây học tiếp theo | xong |
-| 28 loài cây | 4 nhóm: Khởi đầu, Vườn học, Cây Việt Nam, Huyền thoại; vẽ bằng code, có gió, hoa rơi, chim, ong, bướm; 5 hình thái từ mầm đến nở hoa | xong |
+| 30 loài cây | Cây Việt Nam và cây nhiều nước, mỗi cây ghi quốc gia; 6 mục theo cách mở khoá: Khởi đầu, Ghi nhớ, Chuyên cần, Tập trung, Theo mùa, Huyền thoại; vẽ bằng code theo lối minh hoạ mềm, có gió; mầm, cây non, trưởng thành, nở hoa, héo | xong |
 | Mở khoá loài | Theo thành tích: số từ thuộc, chuỗi ngày, giờ tập trung, số phiên, học buổi tối, học trong tháng Tết… Bộ sưu tập ghi rõ điều kiện từng loài | xong; các mốc là đề xuất, chỉnh được |
 | Chế độ tập trung | Thước kéo chọn phút (mỗi vạch 5 phút, tối đa 180, rung mỗi vạch), chế độ Bấm giờ đếm lên, 10 giây đầu huỷ miễn phí, bỏ cuộc thì cây héo | xong |
 | Nhãn và tiêu đề phiên | Nhãn ở góc trên trái, tiêu đề phiên ngay dưới; 4 nhãn sẵn và nhãn tự tạo (tên, 8 màu, sửa, xoá); danh sách nhãn dạng viên bo tròn trên nền mờ | xong |
@@ -182,3 +182,5 @@ Kênh tăng trưởng: bộ thẻ chia sẻ bằng liên kết, nhóm học mờ
 5. Ranh giới miễn phí và Plus ở mục 7.
 6. Cụm từ là một loại thẻ ngang hàng với từ đơn, hay phần gắn kèm mỗi từ.
 7. Số từ mới mỗi ngày mặc định; bài tập gõ từ bật sẵn hay không; kho từ đầu tiên phủ trình độ nào và ai soạn.
+
+Email/password sign-in, account creation and password reset were restored for build 4 (14 November 2026), alongside Apple and Google. App Review uses a separate Firebase email/password account with ordinary app access.
