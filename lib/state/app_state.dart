@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../core/services/feedback_service.dart';
 import '../core/services/system_actions.dart';
 import '../domain/community/community.dart';
+import '../domain/dictionary/dictionary.dart';
 import '../domain/garden/garden.dart';
 import '../domain/listening/listening.dart';
 import '../domain/models/models.dart';
@@ -28,6 +30,14 @@ class AppState extends ChangeNotifier {
 
   /// hifive's word catalog on the server; null keeps only the bundled decks.
   final CatalogRepository? catalog;
+
+  /// Installed dictionary packs (docs/dictionary-plan.md); null in tests
+  /// that don't look words up.
+  final DictionaryStore? dictionaryStore;
+
+  /// The server's dictionary packs; null when the build has no server, so
+  /// only hifive's own words are found.
+  final DictionaryPacks? dictionaryPacks;
 
   /// Decks shared by link or code; null when the build has no server, which
   /// hides sharing.
@@ -79,6 +89,8 @@ class AppState extends ChangeNotifier {
     required this.auth,
     this.syncService,
     this.catalog,
+    this.dictionaryStore,
+    this.dictionaryPacks,
     this.shares,
     this.circles,
     required this.lessons,
@@ -257,8 +269,10 @@ class AppState extends ChangeNotifier {
         lastSyncedAt = at == null ? null : DateTime.tryParse(at);
       }
       _loaded = true;
+      await _openDictionary();
       if (user != null) _startSyncing();
       unawaited(refreshCatalog());
+      unawaited(refreshDictionary());
     } catch (_) {
       // Unreadable or mistyped data must not stop the app from opening.
       _pending.clear();
@@ -331,6 +345,182 @@ class AppState extends ChangeNotifier {
     } on Object {
       // The catalog is extra; the bundled decks keep working without it.
     }
+  }
+
+  // ---- Dictionary (docs/dictionary-plan.md) ----
+
+  /// The installed pack for the studied language, once opened.
+  DictionaryIndex? _pack;
+
+  /// Whether a pack is being downloaded or installed now.
+  bool dictionaryDownloading = false;
+
+  /// Words looked up lately on this device, newest first. Not synced.
+  List<String> recentLookups = const [];
+
+  static const dictionaryCheckEvery = Duration(hours: 20);
+  static const _recentKey = 'dictionaryRecent';
+
+  /// The pack pair for the studied language: hifive explains words in
+  /// Vietnamese.
+  String get dictionaryPair => '${language.code}-vi';
+
+  /// Whether the full dictionary is on the device; without it only hifive's
+  /// own words are found.
+  bool get dictionaryReady => _pack != null;
+
+  Future<void> _openDictionary() async {
+    try {
+      final raw = await store.meta(_recentKey);
+      if (raw != null) {
+        recentLookups = (jsonDecode(raw) as List).cast<String>();
+      }
+      _pack?.close();
+      _pack = await dictionaryStore?.open(dictionaryPair);
+    } on Object {
+      // The pack is reference data: unreadable, it is downloaded again.
+      _pack = null;
+    }
+  }
+
+  /// Downloads a newer dictionary pack about once a day, or when none is
+  /// installed. Offline or failing, it keeps the installed one.
+  Future<void> refreshDictionary({bool force = false}) =>
+      _dictionaryRefresh ??= _refreshDictionary(force: force)
+          .whenComplete(() => _dictionaryRefresh = null);
+  Future<void>? _dictionaryRefresh;
+
+  Future<void> _refreshDictionary({required bool force}) async {
+    final packs = dictionaryPacks, local = dictionaryStore;
+    if (packs == null || local == null) return;
+    final pair = dictionaryPair;
+    try {
+      final checked = DateTime.tryParse(
+        await store.meta('dictionaryChecked:$pair') ?? '',
+      );
+      if (!force &&
+          _pack != null &&
+          checked != null &&
+          now().difference(checked) < dictionaryCheckEvery) {
+        return;
+      }
+      final latest = await packs.latest(pair);
+      if (latest == null) return;
+      await store.setMeta('dictionaryChecked:$pair', now().toIso8601String());
+      if (_pack != null && await local.version(pair) == latest.version) return;
+      dictionaryDownloading = true;
+      notifyListeners();
+      final bytes = await packs.download(latest);
+      await local.install(latest, bytes);
+      await _openDictionary();
+    } on Object {
+      // Offline or a bad download: the installed pack, if any, stays.
+    } finally {
+      if (dictionaryDownloading) {
+        dictionaryDownloading = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  /// hifive's own words, found before the pack and ranked above it.
+  DeckDictionaryIndex get _curated => DeckDictionaryIndex(
+    _allBuiltIn,
+    levels: {
+      for (final d in _catalogDecks)
+        if (RegExp(r'-(a1|a2|b1|b2|c1|c2)-').firstMatch(d.id) case final m?)
+          d.id: m.group(1)!.toUpperCase(),
+    },
+  );
+
+  /// Whether the chosen voice speaks American English, so cards take the
+  /// American IPA.
+  bool get americanVoice => const {'Aaron', 'Nicky'}.contains(voice);
+
+  /// Looks [query] up in hifive's words and the installed pack.
+  Future<DictResult> lookupWord(String query) =>
+      DictionaryLookup([_curated, ?_pack]).lookup(query);
+
+  /// Frequent words at the learner's level that no deck has yet.
+  Future<List<DictEntry>> wordsToLearn({int count = 6}) async {
+    final pack = _pack;
+    if (pack == null) return const [];
+    final have = uniqueWords;
+    final out = <DictEntry>[];
+    final seen = <String>{};
+    for (final e in await pack.atLevel(level)) {
+      final key = wordKey(e.word);
+      if (have.containsKey(key) || !seen.add(key)) continue;
+      out.add(e);
+      if (out.length == count) break;
+    }
+    return out;
+  }
+
+  /// Puts [word] first in [recentLookups].
+  void rememberLookup(String word) {
+    recentLookups = [
+      word,
+      ...recentLookups.where((w) => wordKey(w) != wordKey(word)),
+    ].take(8).toList();
+    unawaited(
+      store.setMeta(_recentKey, jsonEncode(recentLookups)).catchError((_) {}),
+    );
+    notifyListeners();
+  }
+
+  void clearRecentLookups() {
+    recentLookups = const [];
+    unawaited(store.setMeta(_recentKey, '[]').catchError((_) {}));
+    notifyListeners();
+  }
+
+  /// The deck that already holds [word], [deck] first, if any.
+  Deck? deckWith(String word, {Deck? deck}) {
+    final key = wordKey(word);
+    bool has(Deck d) => d.words.any((w) => wordKey(w.word) == key);
+    if (deck != null && has(deck)) return deck;
+    return decks.where(has).firstOrNull;
+  }
+
+  /// The learner's own decks, which dictionary words can be added to:
+  /// saved words first, never hifive's.
+  List<Deck> get ownDecks {
+    final builtIn = {for (final d in _allBuiltIn) d.id};
+    return [
+      ...decks.where((d) => d.id == 'saved'),
+      ...decks.where((d) => d.id != 'saved' && !builtIn.contains(d.id)),
+    ];
+  }
+
+  /// Adds [entry] to [deck], or to saved words, as a card with the meanings
+  /// at [picked] or the learner's own [meaning]. Returns the card, or the
+  /// deck's existing card for the same word.
+  FlashWord addFromDictionary(
+    DictEntry entry, {
+    Deck? deck,
+    List<int> picked = const [0],
+    String? meaning,
+  }) {
+    final target = deck ?? _savedDeck();
+    final key = wordKey(entry.word);
+    final had = target.words.where((w) => wordKey(w.word) == key).firstOrNull;
+    if (had != null) return had;
+    final card = entry.toCard(
+      id: newId(),
+      picked: picked,
+      meaning: meaning,
+      american: americanVoice,
+    );
+    addWords(target, [card]);
+    return card;
+  }
+
+  /// Takes [card] out of [deck]; its reviews stay, as for any card.
+  void removeWord(Deck deck, FlashWord card) {
+    if (!deck.words.remove(card)) return;
+    _put(RecordKind.word, card.id, null);
+    commit();
   }
 
   void _apply(RestoredState r) {
@@ -974,20 +1164,31 @@ class AppState extends ChangeNotifier {
     commit();
   }
 
-  void saveWord(String word, String meaning) {
+  /// The saved words deck, made (and queued) the first time it is needed.
+  Deck _savedDeck() {
     final saved = decks.where((d) => d.id == 'saved').firstOrNull;
-    final deck =
-        saved ??
-        Deck(
-          id: 'saved',
-          title: 'Từ đã lưu',
-          description: 'Từ vựng của riêng bạn',
-          words: [],
-        );
-    if (saved == null) {
-      decks.add(deck);
-      _put(RecordKind.deck, deck.id, deckData(deck, now()));
-    }
+    if (saved != null) return saved;
+    final deck = Deck(
+      id: 'saved',
+      title: 'Từ đã lưu',
+      description: 'Từ vựng của riêng bạn',
+      words: [],
+    );
+    decks.add(deck);
+    _put(RecordKind.deck, deck.id, deckData(deck, now()));
+    return deck;
+  }
+
+  /// The saved words deck, made the first time it is asked for.
+  Deck savedDeck() {
+    final had = decks.any((d) => d.id == 'saved');
+    final deck = _savedDeck();
+    if (!had) commit();
+    return deck;
+  }
+
+  void saveWord(String word, String meaning) {
+    final deck = _savedDeck();
     if (!deck.words.any((w) => wordKey(w.word) == wordKey(word))) {
       final card = FlashWord(
         id: savedWordId(word),

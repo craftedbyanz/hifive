@@ -33,6 +33,7 @@ AppState fresh({
   InsightRepository? insights,
   ShareRepository? shares,
   CircleRepository? circles,
+  DictionaryStore? dictionaryStore,
   bool onboarded = true,
   // Tests read the Vietnamese copy (see flutter_test_config.dart).
   String appLanguage = 'vi',
@@ -53,6 +54,7 @@ AppState fresh({
         insights: insights,
         shares: shares,
         circles: circles,
+        dictionaryStore: dictionaryStore,
         now: () => DateTime(2026, 11, 1, 1, 43),
       )
       ..onboarded = onboarded
