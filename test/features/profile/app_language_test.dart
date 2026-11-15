@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/app/app.dart';
+import 'package:hifive/data/data.dart';
 import 'package:hifive/features/profile/profile.dart';
 import 'package:hifive/l10n/l10n.dart';
 
@@ -46,5 +47,25 @@ void main() {
     expect(state.appLanguage, '');
     // Following the device, which now speaks English.
     expect(find.text('App language'), findsOneWidget);
+  });
+
+  testWidgets('a new install speaks Vietnamese even on an English phone', (
+    tester,
+  ) async {
+    tester.platformDispatcher.localesTestValue = const [Locale('en', 'US')];
+    addTearDown(
+      () => tester.platformDispatcher.localesTestValue = const [Locale('vi')],
+    );
+    final state = createAppState(store: MemoryRecordStore(), auth: signedIn())
+      ..onboarded = true;
+    expect(state.appLanguage, 'vi');
+    await tester.pumpWidget(HifiveApp(state: state, animateAmbient: false));
+    await tester.pumpAndSettle();
+    final nav = tester.state<NavigatorState>(find.byType(Navigator).first);
+    nav.push(
+      MaterialPageRoute<void>(builder: (_) => const AppLanguageScreen()),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Ngôn ngữ ứng dụng'), findsOneWidget);
   });
 }

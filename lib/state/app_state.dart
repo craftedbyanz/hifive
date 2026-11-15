@@ -124,8 +124,9 @@ class AppState extends ChangeNotifier {
       difficulty = 'Dễ',
       chatTone = 'Thoải mái',
           // The interface language code, or empty to follow the device.
+          // Vietnamese until the learner picks another (15 November 2026).
           appLanguage =
-          '';
+          'vi';
   bool showHints = false, chatFree = true, sound = true, haptic = true;
 
   /// The language being studied. Only languages whose course has content
@@ -832,7 +833,7 @@ class AppState extends ChangeNotifier {
     voice = 'Aaron';
     difficulty = 'Dễ';
     chatTone = 'Thoải mái';
-    appLanguage = '';
+    appLanguage = 'vi';
     studySpecies = defaultSpecies;
     focusTag = defaultTag;
     newPerDay = 10;
