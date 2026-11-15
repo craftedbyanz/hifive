@@ -4044,4 +4044,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get guideForgotBody2 =>
       'Swipe left and Hifive brings the word back soon';
+
+  @override
+  String get dictSearchBar => 'Look up a word to add';
 }

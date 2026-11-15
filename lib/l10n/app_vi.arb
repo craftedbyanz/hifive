@@ -2204,5 +2204,6 @@
   "guideRememberedBody": "Vuốt phải khi bạn nhớ nghĩa và cách đọc",
   "guideFlip": "Chạm để lật thẻ",
   "guideFlipBody": "Đoán nghĩa trước, rồi lật thẻ để kiểm tra",
-  "guideForgotBody2": "Vuốt trái để Hifive cho bạn gặp lại từ này sớm"
+  "guideForgotBody2": "Vuốt trái để Hifive cho bạn gặp lại từ này sớm",
+  "dictSearchBar": "Tra từ để thêm vào bộ"
 }

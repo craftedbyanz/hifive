@@ -3855,4 +3855,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get guideForgotBody2 => '向左滑，Hifive 会很快再让你复习';
+
+  @override
+  String get dictSearchBar => '查词并加入卡组';
 }

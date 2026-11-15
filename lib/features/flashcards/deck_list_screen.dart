@@ -34,53 +34,53 @@ class DeckListScreen extends StatelessWidget {
           child: HeaderScrollPage(
             title: context.t.menuFlashcards,
             titleSize: 16.5,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                HeaderRoundButton(
-                  key: const ValueKey('deck-dictionary'),
-                  icon: CupertinoIcons.search,
-                  iconSize: 21,
-                  label: context.t.dictTitle,
-                  onTap: () => go<void>(context, const DictionaryScreen()),
-                ),
-                if (state.shares != null) ...[
-                  const SizedBox(width: 8),
-                  HeaderRoundButton(
-                    key: const ValueKey('deck-explore'),
-                    icon: CupertinoIcons.globe,
-                    iconSize: 22,
-                    label: context.t.communityTitle,
-                    onTap: () => go<void>(
-                      context,
-                      CommunityScreen(
-                        onOpenDeck: (c, deck) =>
-                            go<void>(c, DeckScreen(deck: deck)),
+            trailing: state.shares == null
+                ? null
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      HeaderRoundButton(
+                        key: const ValueKey('deck-explore'),
+                        icon: CupertinoIcons.globe,
+                        iconSize: 22,
+                        label: context.t.communityTitle,
+                        onTap: () => go<void>(
+                          context,
+                          CommunityScreen(
+                            onOpenDeck: (c, deck) =>
+                                go<void>(c, DeckScreen(deck: deck)),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      HeaderRoundButton(
+                        key: const ValueKey('deck-import'),
+                        icon: CupertinoIcons.tray_arrow_down,
+                        iconSize: 22,
+                        label: context.t.importDeck,
+                        onTap: () => _import(context),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  HeaderRoundButton(
-                    key: const ValueKey('deck-import'),
-                    icon: CupertinoIcons.tray_arrow_down,
-                    iconSize: 22,
-                    label: context.t.importDeck,
-                    onTap: () => _import(context),
-                  ),
-                ],
-              ],
-            ),
             background: Palette.settingsPage,
             padding: const EdgeInsets.fromLTRB(24, 137, 24, 120),
-            child: state.decks.isEmpty
-                ? SizedBox(
-                    height: 500,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // The dictionary, under the title rather than as a fourth
+                // header button, which covered the title.
+                const _DictionaryBar(),
+                const SizedBox(height: 20),
+                if (state.decks.isEmpty)
+                  SizedBox(
+                    height: 440,
                     child: EmptyView(
                       title: context.t.noDecks,
                       subtitle: context.t.noDecksBody,
                     ),
                   )
-                : LayoutBuilder(
+                else
+                  LayoutBuilder(
                     builder: (context, c) => Wrap(
                       spacing: 15,
                       runSpacing: 20,
@@ -93,6 +93,8 @@ class DeckListScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+              ],
+            ),
           ),
         ),
         Positioned(
@@ -745,4 +747,41 @@ class _RulerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_RulerPainter oldDelegate) => max != oldDelegate.max;
+}
+
+/// A search field look-alike that opens the dictionary.
+class _DictionaryBar extends StatelessWidget {
+  const _DictionaryBar();
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    label: context.t.dictTitle,
+    child: PressFade(
+      key: const ValueKey('deck-dictionary'),
+      onTap: () => go<void>(context, const DictionaryScreen()),
+      child: Container(
+        height: 48,
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: D.line),
+        ),
+        child: Row(
+          children: [
+            const Icon(CupertinoIcons.search, size: 21, color: D.ink),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                context.t.dictSearchBar,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: D.text(16, color: D.muted),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }

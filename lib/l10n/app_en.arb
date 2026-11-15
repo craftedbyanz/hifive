@@ -1185,5 +1185,6 @@
   "guideRememberedBody": "Swipe right when you remember the meaning and how to say it",
   "guideFlip": "Tap to flip",
   "guideFlipBody": "Guess the meaning first, then flip the card to check",
-  "guideForgotBody2": "Swipe left and Hifive brings the word back soon"
+  "guideForgotBody2": "Swipe left and Hifive brings the word back soon",
+  "dictSearchBar": "Look up a word to add"
 }

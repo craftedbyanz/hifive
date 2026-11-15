@@ -3969,4 +3969,7 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get guideForgotBody2 =>
       'Vuốt trái để Hifive cho bạn gặp lại từ này sớm';
+
+  @override
+  String get dictSearchBar => 'Tra từ để thêm vào bộ';
 }

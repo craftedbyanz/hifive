@@ -249,6 +249,10 @@ void main() {
   testWidgets('the deck list opens the dictionary', (tester) async {
     final state = fresh();
     await mount(tester, state, const DeckListScreen());
+    // A search bar under the title, not a header button beside it.
+    final bar = tester.getRect(find.byKey(const ValueKey('deck-dictionary')));
+    expect(bar.width, greaterThan(300));
+    expect(bar.top, greaterThan(100));
     await tester.tap(find.byKey(const ValueKey('deck-dictionary')));
     await tester.pumpAndSettle();
     expect(find.byType(DictionaryScreen), findsOneWidget);

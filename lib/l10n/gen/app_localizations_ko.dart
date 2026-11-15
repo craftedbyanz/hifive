@@ -3878,4 +3878,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get guideForgotBody2 => '왼쪽으로 밀면 Hifive가 곧 다시 보여줘요';
+
+  @override
+  String get dictSearchBar => '단어를 찾아 묶음에 추가';
 }

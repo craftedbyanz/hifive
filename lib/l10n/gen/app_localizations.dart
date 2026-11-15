@@ -7217,6 +7217,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Vuốt trái để Hifive cho bạn gặp lại từ này sớm'**
   String get guideForgotBody2;
+
+  /// No description provided for @dictSearchBar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tra từ để thêm vào bộ'**
+  String get dictSearchBar;
 }
 
 class _AppLocalizationsDelegate

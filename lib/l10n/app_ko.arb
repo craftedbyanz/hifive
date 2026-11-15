@@ -1185,5 +1185,6 @@
   "guideRememberedBody": "뜻과 발음이 기억나면 오른쪽으로 밀어요",
   "guideFlip": "탭해서 뒤집기",
   "guideFlipBody": "먼저 뜻을 떠올린 뒤 카드를 뒤집어 확인해요",
-  "guideForgotBody2": "왼쪽으로 밀면 Hifive가 곧 다시 보여줘요"
+  "guideForgotBody2": "왼쪽으로 밀면 Hifive가 곧 다시 보여줘요",
+  "dictSearchBar": "단어를 찾아 묶음에 추가"
 }
