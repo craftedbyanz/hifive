@@ -74,11 +74,9 @@ def fold(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn').lower()
 
 
-PROFANITY_FOLDED = {fold(w) for w in PROFANITY}
-
-
 def profane(text):
-    return bool(set(fold(text).split()) & PROFANITY_FOLDED)
+    # Compared with diacritics: folded, "đĩ" would match "đi" and "cặc" would match "các".
+    return bool(set(re.findall(r'\w+', text.lower())) & PROFANITY)
 
 
 def overlap(a, b):
@@ -147,7 +145,8 @@ def build(version):
                 if h:
                     # A word listed in several parts of speech takes its lowest level.
                     level[h] = min(level.get(h, 'C2'), r['CEFR'])
-                    cefr_pos[h].append(r['pos'])
+                    # "be-verb", "have-verb", "modal verb" are verbs here.
+                    cefr_pos[h].append((r['CEFR'], 'verb' if 'verb' in r['pos'] else r['pos']))
     rank = {}
     for i, line in enumerate(open(src('en_50k.txt'), encoding='utf-8')):
         rank.setdefault(line.split()[0], i + 1)
@@ -254,7 +253,7 @@ def build(version):
                        if t.get('code') == 'vi' and t.get('word') and not profane(t['word'])]
                 ex = next((x['text'] for x in s.get('examples', []) if x.get('text') and len(x['text']) < 120
                            and w.lower() in x['text'].lower() and not profane(x['text'])), '')
-                out.append({'en': gl[:140], 'vi': vis, 'ex': ex, 'off': bool(tags & OFFENSIVE),
+                out.append({'idx': len(out), 'en': gl[:140], 'vi': vis, 'ex': ex, 'off': bool(tags & OFFENSIVE),
                             'labels': sorted({LABEL_TAGS[t] for t in tags if t in LABEL_TAGS})})
             if out:
                 en[(w, pos, int(e.get('etymology_number') or 1))].append(
@@ -263,6 +262,11 @@ def build(version):
     # Merge into entries.
     entries, first_src = [], collections.Counter()
     english_words = {norm(w) for (w, _, _) in en} | {norm(w) for (w, _) in vi}
+    # How many senses en.wikt gives a word in each part of speech: breaks ties between parts of
+    # speech CEFR-J lists at the same level (*look* the verb before *look* the noun).
+    pos_weight = collections.Counter()
+    for (w, pos, _), ps in en.items():
+        pos_weight[(norm(w), pos.lower())] += sum(len(p['senses']) for p in ps)
     # Words with a Vietnamese meaning in some part of speech never get an English-only row.
     with_vietnamese = {norm(w) for w, _ in vi} | {norm(w) for (w, _, _), ps in en.items()
                                                     if any(s['vi'] for p in ps for s in p['senses']) or any(p['loose'] for p in ps)}
@@ -279,7 +283,7 @@ def build(version):
                         continue
                     if s['vi']:
                         senses.append({'vi': ', '.join(dict.fromkeys(s['vi']))[:80], 'en': s['en'], 'ex': s['ex'],
-                                       'labels': s['labels'], 'src': 'en'})
+                                       'labels': s['labels'], 'src': 'en', 'idx': s['idx']})
                     elif p['common']:
                         en_only.append({'vi': '', 'en': s['en'], 'ex': s['ex'][:100], 'labels': s['labels'], 'src': 'en'})
             if not senses:
@@ -302,9 +306,11 @@ def build(version):
                 top = fv[:3]
                 agree = [x for x in senses if any(overlap(x['vi'], g['vi']) for g in top)]
                 senses = agree + [x for x in senses if x not in agree]
-                # When FVDP has none of en.wikt's meanings at all, its first gloss leads.
-                if not any(overlap(x['vi'], g['vi']) for x in senses for g in fv):
-                    senses = [fv[0]] + senses
+                # FVDP's first gloss leads when FVDP has none of en.wikt's meanings, or when
+                # en.wikt translates only rarer senses (*go*: "chạy, vận hành" but not "đi").
+                first_translated = min(x.get('idx', 99) for x in senses)
+                if first_translated > 1 or not any(overlap(x['vi'], g['vi']) for x in senses for g in fv):
+                    senses = [fv[0]] + [x for x in senses if not overlap(x['vi'], fv[0]['vi'])]
                 senses += [x for m, x in placed[et] if not m and x not in senses]
             elif not senses:
                 senses = fv
@@ -352,7 +358,11 @@ def build(version):
                 'level': level.get(n), 'rank': rank.get(n), 'uk': ipa_uk, 'us': ipa_us,
                 'senses': senses_out, 'en': clean[0]['en'] if needs_meaning or not clean[0]['vi'] else '',
                 'ex': example, 'ex_vi': ex_vi, 'ex_src': ex_src, 'needs': needs_meaning,
-                'pos_rank': (cefr_pos.get(n) or []).index(pos.lower()) if pos.lower() in (cefr_pos.get(n) or []) else 9,
+                # The part of speech CEFR-J lists at the lowest level comes first (*go* the verb, A1,
+                # before *go* the noun, B1).
+                'pos_rank': next((i for i, (_, p) in enumerate(sorted(cefr_pos.get(n) or [],
+                                                                       key=lambda lp: (lp[0], -pos_weight[(n, lp[1])])))
+                                  if p == pos.lower()), 9),
             })
             first_src['english only' if needs_meaning else clean[0]['src']] += 1
 

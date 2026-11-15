@@ -6,7 +6,7 @@ Status: **P0 and P1 built on 15 November 2026** with the proposed answers to the
 
 What exists:
 
-- `tool/dictionary/build.py`: `fetch` downloads the sources to `build/dictionary/sources`; `build <version>` writes `worker/catalog/dictionary/en-vi/<version>.sqlite.gz`, adds it to `worker/catalog/manifest.json` under `dictionaries` with its size and SHA-256, and writes `build/dictionary/report.md`. Pack 1: 49,866 entries, 5.6 MB gzip.
+- `tool/dictionary/build.py`: `fetch` downloads the sources to `build/dictionary/sources`; `build <version>` writes `worker/catalog/dictionary/en-vi/<version>.sqlite.gz`, adds it to `worker/catalog/manifest.json` under `dictionaries` with its size and SHA-256, and writes `build/dictionary/report.md`. Pack 2 (pack 1 was withdrawn before release): 50,219 entries, 5.6 MB gzip.
 - The Worker serves it from its static assets at `/v1/catalog/dictionary/en-vi/<version>.sqlite.gz`, cached for good.
 - The app checks the manifest about once a day (`AppState.refreshDictionary`), verifies size and SHA-256, inflates it to `dictionary-en-vi.db` and opens it read-only. A failed download or check keeps the installed pack.
 - `DictionaryScreen` (from "Thêm từ" in a deck and from the deck list's search button) and `DictionaryEntryScreen`; credits under Profile → "Nguồn dữ liệu từ điển".

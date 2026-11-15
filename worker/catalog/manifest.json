@@ -7,10 +7,10 @@
   },
   "dictionaries": {
     "en-vi": {
-      "version": 1,
-      "path": "dictionary/en-vi/1.sqlite.gz",
-      "bytes": 5556277,
-      "sha256": "91f1054555a923c05c784a1e2ba12827bef2f1b7bfe74b9755402cb191149e8d"
+      "version": 2,
+      "path": "dictionary/en-vi/2.sqlite.gz",
+      "bytes": 5644530,
+      "sha256": "a33f0d1bb86ed439b75d0334f3d6d35fdee34f9bf880f3bf356d727092740abf"
     }
   }
 }
