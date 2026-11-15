@@ -6,6 +6,7 @@ import 'package:flutter/physics.dart';
 
 import '../../core/design/design.dart';
 import '../../core/services/focus_shield.dart';
+import '../../domain/garden/garden.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -139,7 +140,14 @@ class _TimerSheetState extends State<_TimerSheet> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          stopwatch ? t.stopwatchSubtitle : t.timerSubtitle,
+                          stopwatch
+                              ? t.stopwatchSubtitle
+                              : _minutes < matureMinutes
+                              ? t.timerSizeYoung
+                              : _minutes >= ancientMinutes
+                              ? t.timerSizeAncient
+                              : t.timerSubtitle,
+                          key: const ValueKey('timer-subtitle'),
                           style: D.text(13, color: D.secondary),
                         ),
                         const SizedBox(height: 14),

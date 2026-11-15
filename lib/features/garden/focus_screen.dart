@@ -69,10 +69,28 @@ class _FocusScreenState extends State<FocusScreen>
   /// How grown the session's plant is: from a seed to full at the end (an
   /// hour for the stopwatch).
   double get _growth {
-    final growTo = _stopwatch ? const Duration(minutes: 60) : _planned;
-    return .05 +
-        .95 * (_elapsed.inMilliseconds / growTo.inMilliseconds).clamp(0.0, 1.0);
+    if (_stopwatch) {
+      // The stopwatch grows up to a large tree at 45 minutes, and turns
+      // ancient at 90.
+      if (_elapsed.inMinutes >= ancientMinutes) return 1;
+      final share =
+          _elapsed.inMilliseconds /
+          const Duration(minutes: largeMinutes).inMilliseconds;
+      return .05 + (growthOf(PlantSize.large) - .05) * share.clamp(0.0, 1.0);
+    }
+    final share = _elapsed.inMilliseconds / _planned.inMilliseconds;
+    return .05 + (_target - .05) * share.clamp(0.0, 1.0);
   }
+
+  /// How grown the chosen length leaves the plant: a young plant under
+  /// [matureMinutes], up to an ancient tree from [ancientMinutes].
+  double get _target =>
+      growthOf(_stopwatch ? PlantSize.large : sizeFor(_minutes));
+
+  /// The plant the finished or withered session left.
+  Plant? get _left => _session == null
+      ? null
+      : focusTree(_session!, sessions: AppScope.read(context).focusSessions);
 
   /// The step of growth the lock screen's picture last showed.
   var _plantStep = -1;
@@ -284,7 +302,9 @@ class _FocusScreenState extends State<FocusScreen>
       context,
       ReviewScreen(deck: deck, words: words, source: 'focusBreak'),
     );
-    if (!mounted || state.studyCredits.length == before) return;
+    // Blooms once enough words were really reviewed in the break.
+    final need = math.min(bloomWords, words.length);
+    if (!mounted || state.studyCredits.length - before < need) return;
     state.recordFocus(_session!.copyWith(bloomed: true));
     _bloom.forward(from: 0);
     setState(() {});
@@ -326,7 +346,10 @@ class _FocusScreenState extends State<FocusScreen>
     final state = AppScope.of(context);
     final running = _phase == _Phase.running;
     final shown = _stopwatch ? _elapsed : _planned - _elapsed;
-    final due = _phase == _Phase.done ? _dueWords(state).length : 0;
+    final left = _left;
+    // Only a mature tree can bloom, so a short session offers no review.
+    final mature = left?.mature ?? false;
+    final due = _phase == _Phase.done && mature ? _dueWords(state).length : 0;
     final bloomed = _session?.bloomed ?? false;
 
     return PopScope(
@@ -371,11 +394,16 @@ class _FocusScreenState extends State<FocusScreen>
                               species: _species,
                               size: 330,
                               growth: switch (_phase) {
-                                _Phase.setup => 1,
+                                _Phase.setup => _target,
                                 _Phase.running => _growth,
-                                _Phase.done || _Phase.withered => 1,
+                                _Phase.done => left?.growth ?? 1,
+                                _Phase.withered => 1,
                               },
                               withered: _phase == _Phase.withered,
+                              ancient:
+                                  (_phase == _Phase.done &&
+                                      (left?.ancient ?? false)) ||
+                                  (_phase == _Phase.running && _growth >= 1),
                               bloom: bloomed ? math.max(_bloom.value, .001) : 0,
                             ),
                           ),
@@ -403,6 +431,10 @@ class _FocusScreenState extends State<FocusScreen>
                       FocusNote(
                         bloomed
                             ? t.focusBloomed
+                            : !mature
+                            ? t.focusDoneYoung(matureMinutes)
+                            : left?.ancient ?? false
+                            ? t.focusDoneAncient
                             : due > 0
                             ? t.focusDoneReview(due)
                             : t.focusDoneRest,

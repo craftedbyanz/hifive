@@ -667,7 +667,7 @@ class AppState extends ChangeNotifier {
     int hints = 0,
   }) {
     final at = now();
-    final grows = word.isDue(at);
+    final grows = word.isDue(at) && _waters(word, at, ms);
     final event = ReviewEvent(
       id: newId(),
       wordId: word.id,
@@ -694,6 +694,29 @@ class AppState extends ChangeNotifier {
 
   /// Ratings that grow the garden: one per card per day.
   List<StudyCredit> get countedStudyCredits => countedCredits(studyCredits);
+
+  /// Answers faster than this don't water the garden: a card tapped through
+  /// without thinking.
+  static const quickestWatering = 1500;
+
+  /// Whether rating [word] at [at] waters the garden. Under the garden's
+  /// second rules a rating answered in under [quickestWatering] ms doesn't,
+  /// nor does a new word beyond today's [newPerDay].
+  bool _waters(FlashWord word, DateTime at, int? ms) {
+    if (at.isBefore(gardenRulesSince)) return true;
+    if (ms != null && ms < quickestWatering) return false;
+    if (word.status != 'new') return true;
+    final today = gardenDay(at);
+    final newToday = rated
+        .where(
+          (r) =>
+              r.before == 'new' &&
+              r.event.tree != null &&
+              gardenDay(r.event.at) == today,
+        )
+        .length;
+    return newToday < newPerDay;
+  }
 
   /// Cards whose memory lasts three weeks or more.
   int get wordsKnown => uniqueWords.values.where((w) {
@@ -791,11 +814,35 @@ class AppState extends ChangeNotifier {
     reviews: studyCredits.length,
     wordsKnown: wordsKnown,
     streak: streak,
+    now: now(),
   );
 
   /// Trees planted from [from] (inclusive) to [to] (exclusive).
   List<Plant> plants(DateTime from, DateTime to) =>
-      plantsBetween(countedStudyCredits, focusSessions, from, to);
+      plantsBetween(countedStudyCredits, focusSessions, from, to, now: now());
+
+  /// The garden's weather now: rain just after watering, clouds while
+  /// [cloudyAt] or more words wait, sun otherwise.
+  GardenWeather get weather => gardenWeather(
+    overdue: dueBy(now()),
+    lastWater: countedStudyCredits.lastOrNull?.at,
+    now: now(),
+  );
+
+  /// This week's quests.
+  WeekQuests get weekQuests {
+    final n = now();
+    return questsFor(
+      DateTime(n.year, n.month, n.day - n.weekday + 1),
+      countedStudyCredits,
+      focusSessions,
+    );
+  }
+
+  /// Decorations earned so far, one per week whose quests were all done.
+  List<String> get earnedDecorations => decorations
+      .take(questWeeks(countedStudyCredits, focusSessions, now()))
+      .toList();
 
   /// Chooses the species of the next study tree; ignored while locked.
   void setStudySpecies(String id) {

@@ -248,6 +248,7 @@ Chosen on 15 November 2026 after a review of several directions (low-poly, voxel
 - **The focus screen** (`FocusBackdrop` in `features/garden/focus_parts.dart`) keeps the logo's indigo, softened by drifting mist (`Palette.focusMist`, `focusMistDeep`), with a warm sunbeam slanting onto the plant (`focusBeam`) and motes rising in it (`focusMote`). No ring around the plant; a large timer and a quiet text button ("Huỷ (n)", then "Bỏ cuộc").
 - Each species's colors are part of its illustration and stay in its drawing, like vector geometry, instead of in `Palette`. Screens around the art use the design system as usual.
 - Wind, the sunbeam and motes move only under `AmbientMotion`; without it the art draws one still frame.
+- **Ancient trees** (`TreeArt.ancient`, `Plant.ancient`): the grown drawing 8% larger in a warm gold halo with drifting motes. **Thirsty** study trees (`TreeArt.thirsty`) lean a little and lose half their colour. **Decorations** (`garden_decor.dart`) are small props in the plant box, earned by weekly quests and set on the garden's edge cells. **Weather** (`GardenScene.weather`) draws the sun and its glow, grey clouds above the grid, or rain over it.
 - The collection groups species by how they unlock (`SpeciesGroup`: first steps, memory, diligence, focus, seasons, legends), easiest first (`speciesInGroup`), and shows each one's country (`Origin`).
 
 ## Hifive 101 art

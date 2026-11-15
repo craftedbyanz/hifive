@@ -3,6 +3,9 @@ import 'package:hifive/domain/garden/garden.dart';
 
 final _day = DateTime(2026, 11, 10, 9);
 
+/// A day under the garden's second rules.
+final _new = DateTime(2026, 11, 17, 9);
+
 StudyCredit _credit(String word, DateTime at, [String tree = 'oak']) =>
     StudyCredit(word, at, tree);
 
@@ -43,7 +46,7 @@ void main() {
             i < 1 ? 'cherry' : 'oak',
           ),
       ];
-      final trees = studyTrees(counted);
+      final trees = growStudyTrees(counted).trees;
       expect(trees, hasLength(2));
       expect(trees[0].species, 'cherry');
       expect(trees[0].at, counted[9].at);
@@ -204,6 +207,151 @@ void main() {
         species.map((s) => s.origin).whereType<Origin>().toSet().length,
         greaterThan(12),
       );
+    });
+  });
+
+  group('second rules', () {
+    test('a session grows a plant by its length', () {
+      final young = focusTree(_focus('y', _new, 10))!;
+      final small = focusTree(_focus('s', _new, 25))!;
+      final large = focusTree(_focus('l', _new, 50))!;
+      final old = focusTree(_focus('o', _new, 95))!;
+      expect(young.size, PlantSize.young);
+      expect(young.mature, isFalse);
+      expect(small.mature, isTrue);
+      expect(young.growth, lessThan(small.growth));
+      expect(small.growth, lessThan(large.growth));
+      expect(old.ancient, isTrue);
+      // Under the first rules a short session still made a tree.
+      expect(focusTree(_focus('f', _day, 10))!.mature, isTrue);
+    });
+
+    test('a bloomed tree turns ancient after a month in the garden', () {
+      final s = _focus('b', _new, 30, bloomed: true);
+      expect(
+        focusTree(s, now: _new.add(const Duration(days: 29)))!.ancient,
+        isFalse,
+      );
+      expect(
+        focusTree(s, now: _new.add(const Duration(days: 31)))!.ancient,
+        isTrue,
+      );
+    });
+
+    test('a withered tree comes back after a mature session within 48 h', () {
+      final dead = _focus('w', _new, 8, outcome: FocusOutcome.withered);
+      final soon = _focus('s', _new.add(const Duration(hours: 20)), 25);
+      final late = _focus('l', _new.add(const Duration(days: 3)), 25);
+      final short = _focus('t', _new.add(const Duration(hours: 2)), 15);
+      expect(focusTree(dead, sessions: [dead, soon])!.revived, isTrue);
+      expect(focusTree(dead, sessions: [dead, late])!.withered, isTrue);
+      expect(focusTree(dead, sessions: [dead, short])!.withered, isTrue);
+    });
+
+    test('a study tree needs water on three days, five drops a day', () {
+      List<StudyCredit> day(int d, int n) => [
+        for (var i = 0; i < n; i++)
+          _credit('d$d-$i', _new.add(Duration(days: d, minutes: i))),
+      ];
+      // Twelve drops in one sitting grow nothing yet.
+      var g = growStudyTrees(day(0, 12));
+      expect(g.trees, isEmpty);
+      expect(g.water, 5);
+      expect(g.days, 1);
+      g = growStudyTrees([...day(0, 5), ...day(1, 5)]);
+      expect(g.trees, isEmpty);
+      expect(g.days, 2);
+      g = growStudyTrees([...day(0, 5), ...day(1, 5), ...day(2, 1)]);
+      expect(g.trees, hasLength(1));
+    });
+
+    test('a study tree droops after three days without water', () {
+      final g = growStudyTrees([_credit('a', _new)]);
+      expect(g.wilting(_new.add(const Duration(days: 2))), isFalse);
+      expect(g.wilting(_new.add(const Duration(days: 4))), isTrue);
+    });
+
+    test('a study tree watered on a sunny day blooms', () {
+      final credits = [
+        for (var d = 0; d < 3; d++)
+          for (var i = 0; i < 4; i++)
+            _credit('w$d$i', _new.add(Duration(days: d, minutes: i))),
+      ];
+      final sun = sunDays([_focus('f', _new.add(const Duration(days: 1)), 30)]);
+      expect(growStudyTrees(credits).trees.single.bloomed, isFalse);
+      expect(growStudyTrees(credits, sun: sun).trees.single.bloomed, isTrue);
+    });
+
+    test('focus milestones count only mature sessions', () {
+      final sessions = [
+        for (var i = 0; i < 4; i++)
+          _focus('s$i', _new.add(Duration(hours: i)), 10, bloomed: true),
+        _focus('m', _new.add(const Duration(hours: 5)), 25, bloomed: true),
+        _focus('old', _day, 10, bloomed: true),
+      ];
+      final stats = GardenStats.from(
+        counted: const [],
+        sessions: sessions,
+        reviews: 0,
+        wordsKnown: 0,
+        streak: 0,
+      );
+      expect(stats.focusSessions, 2);
+      expect(stats.blooms, 2);
+    });
+
+    test('a comeback counts mature sessions within a week', () {
+      final sessions = [
+        _focus('w', _new, 5, outcome: FocusOutcome.withered),
+        _focus('a', _new.add(const Duration(hours: 1)), 10),
+        _focus('b', _new.add(const Duration(hours: 2)), 25),
+        _focus('c', _new.add(const Duration(days: 2)), 30),
+        _focus('d', _new.add(const Duration(days: 9)), 30),
+      ];
+      final stats = GardenStats.from(
+        counted: const [],
+        sessions: sessions,
+        reviews: 0,
+        wordsKnown: 0,
+        streak: 0,
+      );
+      expect(stats.comeback, 2);
+    });
+
+    test('weather: rain after watering, clouds while words wait', () {
+      expect(
+        gardenWeather(overdue: 40, lastWater: _new, now: _new),
+        GardenWeather.rain,
+      );
+      expect(
+        gardenWeather(overdue: cloudyAt, lastWater: null, now: _new),
+        GardenWeather.cloudy,
+      );
+      expect(
+        gardenWeather(overdue: 2, lastWater: null, now: _new),
+        GardenWeather.sunny,
+      );
+    });
+
+    test('a week with every quest done earns a decoration', () {
+      final monday = DateTime(2026, 11, 16);
+      final credits = [
+        for (var d = 0; d < 5; d++)
+          _credit('w$d', monday.add(Duration(days: d, hours: 9))),
+      ];
+      final sessions = [
+        for (var d = 0; d < 3; d++)
+          _focus(
+            'f$d',
+            monday.add(Duration(days: d, hours: 14)),
+            25,
+            bloomed: d == 0,
+          ),
+      ];
+      final quests = questsFor(monday, credits, sessions);
+      expect(quests.done, isTrue);
+      expect(questWeeks(credits, sessions, DateTime(2026, 11, 30)), 1);
+      expect(questsFor(monday, credits, sessions.take(2)).done, isFalse);
     });
   });
 }

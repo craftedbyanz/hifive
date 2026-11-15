@@ -122,4 +122,19 @@ void main() {
       expect(after.$2, 30);
     },
   );
+
+  test('under the second rules a quick tap or a new word past the day\'s '
+      'allowance waters nothing', () async {
+    _now = DateTime(2026, 11, 17, 9);
+    state = _state(store);
+    await state.load();
+    state.setNewPerDay(2);
+    final words = state.decks.first.words;
+    state.rate(words[0], 3, ms: 400);
+    expect(state.countedStudyCredits, isEmpty);
+    state.rate(words[1], 3, ms: 4000);
+    state.rate(words[2], 3, ms: 4000);
+    state.rate(words[3], 3, ms: 4000);
+    expect(state.countedStudyCredits, hasLength(2));
+  });
 }

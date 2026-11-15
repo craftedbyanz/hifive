@@ -100,6 +100,8 @@ class _GardenScreenState extends State<GardenScreen> {
     final (from, to) = periodRange(_period, _at);
     final plants = state.plants(from, to);
     final withered = plants.where((p) => p.withered).length;
+    final mature = plants.where((p) => p.mature).length;
+    final decor = state.earnedDecorations;
     bool inRange(DateTime d) => !d.isBefore(from) && d.isBefore(to);
     final focusMinutes = state.focusSessions
         .where((s) => s.outcome == FocusOutcome.done && inRange(s.end))
@@ -119,7 +121,7 @@ class _GardenScreenState extends State<GardenScreen> {
       title: t.gardenTitle,
       trailing: PressFade(
         key: const ValueKey('garden-share'),
-        onTap: () => _share(plants.length - withered),
+        onTap: () => _share(mature),
         child: Semantics(
           button: true,
           label: t.gardenShare,
@@ -172,13 +174,15 @@ class _GardenScreenState extends State<GardenScreen> {
                       ),
                       plants: plants,
                       width: box.maxWidth,
-                      cells: GardenScene.cellsFor(plants.length),
+                      cells: GardenScene.cellsFor(plants.length, decor.length),
+                      weather: isNow ? state.weather : null,
+                      decorations: decor,
                     ),
                   ),
                   Text(
                     plants.isEmpty
                         ? t.gardenEmpty
-                        : t.gardenCounts(plants.length - withered, withered),
+                        : t.gardenCounts(mature, withered),
                     key: const ValueKey('garden-counts'),
                     textAlign: TextAlign.center,
                     style: D.text(
@@ -187,6 +191,13 @@ class _GardenScreenState extends State<GardenScreen> {
                       color: D.secondary,
                     ),
                   ),
+                  if (isNow) ...[
+                    const SizedBox(height: 4),
+                    _WeatherNote(
+                      weather: state.weather,
+                      waiting: state.dueBy(state.now()),
+                    ),
+                  ],
                   const SizedBox(height: 6),
                 ],
               ),
@@ -200,12 +211,17 @@ class _GardenScreenState extends State<GardenScreen> {
               children: [
                 _Stat(
                   t.gardenHoursMinutes(focusMinutes ~/ 60, focusMinutes % 60),
-                  t.gardenFocusTime,
+                  t.gardenSunLabel,
                 ),
-                _Stat('${credits.length}', t.gardenReviews),
+                _Stat('${credits.length}', t.gardenWaterLabel),
                 _Stat('$days', t.gardenStudyDays),
               ],
             ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            t.gardenSunWater,
+            style: D.text(11.5, color: D.secondary, height: 1.4),
           ),
           const SizedBox(height: 10),
           Surface(
@@ -246,6 +262,7 @@ class _GardenScreenState extends State<GardenScreen> {
                     species: state.studySpecies,
                     size: 76,
                     growth: .05 + .95 * stats.growing / reviewsPerTree,
+                    thirsty: stats.wilting,
                     island: false,
                   ),
                   const SizedBox(width: 8),
@@ -254,7 +271,13 @@ class _GardenScreenState extends State<GardenScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          t.gardenGrowing(stats.growing, reviewsPerTree),
+                          t.gardenGrowingDays(
+                            stats.growing,
+                            reviewsPerTree,
+                            stats.growingDays,
+                            waterDays,
+                          ),
+                          key: const ValueKey('garden-growing'),
                           style: D.text(13, weight: FontWeight.w700),
                         ),
                         const SizedBox(height: 7),
@@ -269,8 +292,16 @@ class _GardenScreenState extends State<GardenScreen> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          t.gardenGrowingHint,
-                          style: D.text(11, color: D.secondary, height: 1.35),
+                          stats.wilting
+                              ? t.gardenWilting
+                              : t.gardenGrowingDaysHint,
+                          style: D.text(
+                            11,
+                            color: stats.wilting
+                                ? Palette.menuFocus
+                                : D.secondary,
+                            height: 1.35,
+                          ),
                         ),
                       ],
                     ),
@@ -304,6 +335,8 @@ class _GardenScreenState extends State<GardenScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 18),
+          _QuestsCard(quests: state.weekQuests, earned: decor.length),
           const SizedBox(height: 26),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -319,6 +352,12 @@ class _GardenScreenState extends State<GardenScreen> {
                 style: D.text(12, weight: FontWeight.w600, color: D.muted),
               ),
             ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            t.gardenSeeds(stats.wordsKnown),
+            key: const ValueKey('garden-seeds'),
+            style: D.text(12, color: D.secondary, height: 1.4),
           ),
           for (final g in SpeciesGroup.values) ...[
             const SizedBox(height: 18),
@@ -648,4 +687,127 @@ class _TagShare extends StatelessWidget {
       ],
     ),
   );
+}
+
+/// A line under the garden on what its weather says about the learner's
+/// words.
+class _WeatherNote extends StatelessWidget {
+  final GardenWeather weather;
+  final int waiting;
+  const _WeatherNote({required this.weather, required this.waiting});
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final (icon, text) = switch (weather) {
+      GardenWeather.sunny => (
+        CupertinoIcons.sun_max_fill,
+        t.gardenWeatherSunny,
+      ),
+      GardenWeather.cloudy => (
+        CupertinoIcons.cloud_fill,
+        t.gardenWeatherCloudy(waiting),
+      ),
+      GardenWeather.rain => (
+        CupertinoIcons.cloud_rain_fill,
+        t.gardenWeatherRain,
+      ),
+    };
+    return Padding(
+      key: ValueKey('garden-weather-${weather.name}'),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 15, color: D.secondary),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: D.text(12, color: D.secondary, height: 1.35),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// This week's three quests and the decorations they earn.
+class _QuestsCard extends StatelessWidget {
+  final WeekQuests quests;
+  final int earned;
+  const _QuestsCard({required this.quests, required this.earned});
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final rows = [
+      (
+        quests.focus >= WeekQuests.focusGoal,
+        t.questFocus(
+          quests.focus.clamp(0, WeekQuests.focusGoal),
+          WeekQuests.focusGoal,
+        ),
+      ),
+      (
+        quests.studyDays >= WeekQuests.studyGoal,
+        t.questStudy(
+          quests.studyDays.clamp(0, WeekQuests.studyGoal),
+          WeekQuests.studyGoal,
+        ),
+      ),
+      (
+        quests.blooms >= WeekQuests.bloomGoal,
+        t.questBloom(
+          quests.blooms.clamp(0, WeekQuests.bloomGoal),
+          WeekQuests.bloomGoal,
+        ),
+      ),
+    ];
+    return Surface(
+      key: const ValueKey('garden-quests'),
+      radius: 20,
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(t.gardenQuests, style: D.text(14, weight: FontWeight.w700)),
+          const SizedBox(height: 8),
+          for (final (done, text) in rows)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  Icon(
+                    done
+                        ? CupertinoIcons.checkmark_circle_fill
+                        : CupertinoIcons.circle,
+                    size: 18,
+                    color: done ? D.green : D.muted,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      text,
+                      style: D.text(
+                        12.5,
+                        weight: FontWeight.w600,
+                        color: done ? D.ink : D.secondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 6),
+          Text(
+            t.questReward(earned, decorations.length),
+            style: D.text(11.5, color: D.secondary, height: 1.4),
+          ),
+        ],
+      ),
+    );
+  }
 }

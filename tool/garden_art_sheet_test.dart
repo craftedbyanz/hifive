@@ -18,7 +18,7 @@ void main() {
   testWidgets('garden art sheet', (tester) async {
     if (out.isEmpty) return;
     tester.view
-      ..physicalSize = const Size(1200, 2280)
+      ..physicalSize = const Size(1200, 2560)
       ..devicePixelRatio = 1;
     final key = GlobalKey();
     final plants = [
@@ -72,7 +72,34 @@ void main() {
                     ],
                   ),
                 ),
-                GardenScene(plants: plants, width: 520),
+                Container(
+                  color: const Color(0xFF4C52D2),
+                  child: Row(
+                    children: [
+                      for (final id in const ['oak', 'cherry', 'pine'])
+                        TreeArt(species: id, size: 170, ancient: true),
+                      const TreeArt(
+                        species: 'oak',
+                        size: 170,
+                        growth: .6,
+                        thirsty: true,
+                      ),
+                      const TreeArt(species: 'oak', size: 170, growth: .6),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    for (final w in GardenWeather.values)
+                      GardenScene(
+                        plants: plants.take(12).toList(),
+                        width: 390,
+                        weather: w,
+                        decorations: decorations,
+                        cells: GardenScene.cellsFor(12, decorations.length),
+                      ),
+                  ],
+                ),
               ],
             ),
           ),

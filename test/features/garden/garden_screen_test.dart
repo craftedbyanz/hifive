@@ -105,4 +105,24 @@ void main() {
     expect(find.text('Huyền thoại'), findsOneWidget);
     expect(find.text('Truyền thuyết'), findsOneWidget);
   });
+
+  testWidgets('the garden shows its weather, the week\'s quests and seeds', (
+    tester,
+  ) async {
+    await mount(tester, fresh(), const GardenScreen());
+    expect(find.byKey(const ValueKey('garden-weather-sunny')), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('garden-quests')),
+      300,
+      scrollable: find
+          .descendant(
+            of: find.byKey(const ValueKey('garden-list')),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+    expect(find.text('0/3 phiên tập trung từ 25 phút'), findsOneWidget);
+    expect(find.text('0/5 ngày ôn từ'), findsOneWidget);
+    expect(find.textContaining('đã có 0/6'), findsOneWidget);
+  });
 }

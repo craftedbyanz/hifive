@@ -107,3 +107,20 @@ Before the next TestFlight build (developer.apple.com, Certificates, IDs & Profi
 3. Identifiers: register an App ID `com.anznguyen.hifive.release.FocusActivity` with App Groups on (same group).
 4. Profiles: regenerate "HiFive AppStore Distribution" (it must now carry the App Group), and make a new App Store profile named "HiFive FocusActivity AppStore Distribution" for the extension's App ID; download both and open them so Xcode has them.
 5. Archive and upload as before. Debug and Profile builds sign automatically and need only steps 1 to 3.
+
+### 11. Second garden rules: sun and water, no farming short sessions - done
+
+Done on 15 November 2026, for sessions and waterings from 16 November 2026 (`gardenRulesSince`); earlier ones keep the first rules, so nothing already planted shrinks and no species locks again. All of it is derived from the existing focus and review records; nothing new is stored.
+
+- A focus session grows a plant by its length (`sizeFor`): under 25 minutes a young plant that doesn't count as a tree, 25 a small tree, 45 a large one, 90 an ancient tree (`PlantSize`). The garden counts mature trees. The focus screen previews the size for the chosen length, and the timer sheet says when it is under 25 or from 90 minutes.
+- Milestones count mature sessions only: "20 phiên từ 25 phút" (willow), blooms (lavender) and the comeback (cactus: mature sessions within a week of a withered tree).
+- A tree blooms only after a mature session whose break reviewed at least `bloomWords` (5) words, or all of them if fewer were due.
+- A withered tree followed within 48 hours by a mature session comes back as a sprout (`revived`).
+- Sun and water: focus minutes are sun, counted reviews are water. A study tree takes at most 5 drops a day and grows once it has 10 on 3 different days, the rhythm of spaced review; more water that day starts the next tree. A study tree watered on a day with 25 minutes of focus blooms. A growing study tree left 3 days without water droops (paler, leaning) until watered.
+- A rating waters the garden only if it took at least 1.5 s (when timed) and, for a new word, only up to the day's `newPerDay`.
+- A tree that bloomed and has stood 30 days in the garden turns ancient: larger, in a warm halo, with drifting motes.
+- Weather over the garden (current period only): rain within an hour of watering, clouds while 10 or more words wait, sun otherwise, with a line saying why.
+- Weekly quests: 3 mature sessions, 5 days of review and 1 bloom. Each week with all three done earns the next of six decorations (stone lantern, bench, pond, birdhouse, red lantern, flower bed), set along the garden's edges.
+- Seeds: every word remembered three weeks or more is a seed; the "known words" unlocks read as seeds.
+
+Not done: unlocking species by deck topic (decks carry no topic yet), and the shared group tree, which needs live presence in circles through the Worker.

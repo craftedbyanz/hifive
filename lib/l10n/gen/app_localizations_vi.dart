@@ -2353,6 +2353,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get focusStart => 'Bắt đầu tập trung';
 
   @override
+  String focusDoneYoung(int minutes) {
+    return 'Phiên ngắn mọc một cây non. Tập trung từ $minutes phút để cây trưởng thành và nở hoa được.';
+  }
+
+  @override
+  String get focusDoneAncient =>
+      'Một cây cổ thụ hiếm! Hơn 90 phút tập trung làm cây toả sáng.';
+
+  @override
+  String get timerSizeYoung => 'Dưới 25 phút chỉ mọc cây non';
+
+  @override
+  String get timerSizeAncient => 'Từ 90 phút: cây cổ thụ hiếm';
+
+  @override
   String get focusShieldTitle => 'Chặn ứng dụng gây xao nhãng';
 
   @override
@@ -2659,27 +2674,12 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chưa có cây nào. Tập trung hoặc ôn từ để trồng cây đầu tiên.';
 
   @override
-  String get gardenFocusTime => 'Tập trung';
-
-  @override
-  String get gardenReviews => 'Lượt tưới';
-
-  @override
   String get gardenStudyDays => 'Ngày học';
 
   @override
   String gardenHoursMinutes(int hours, int minutes) {
     return '${hours}g ${minutes}p';
   }
-
-  @override
-  String gardenGrowing(int count, int total) {
-    return 'Cây học đang lớn · $count/$total lượt tưới';
-  }
-
-  @override
-  String get gardenGrowingHint =>
-      'Mỗi thẻ mới hoặc đến hạn bạn ôn là một lượt tưới. Chạm để đổi loài cây.';
 
   @override
   String get gardenCollection => 'Bộ sưu tập';
@@ -2693,6 +2693,68 @@ class AppLocalizationsVi extends AppLocalizations {
   String get gardenStartFocus => 'Bắt đầu tập trung';
 
   @override
+  String get gardenSunLabel => 'Nắng · tập trung';
+
+  @override
+  String get gardenWaterLabel => 'Nước · lượt tưới';
+
+  @override
+  String get gardenSunWater =>
+      'Nắng đến từ tập trung, nước từ ôn từ. Cây tập trung được tưới trong giờ nghỉ thì nở hoa; cây học có ngày tập trung từ 25 phút cũng nở hoa.';
+
+  @override
+  String gardenGrowingDays(int count, int total, int days, int totalDays) {
+    return 'Cây học đang lớn · $count/$total giọt nước · $days/$totalDays ngày';
+  }
+
+  @override
+  String get gardenGrowingDaysHint =>
+      'Mỗi thẻ mới hoặc đến hạn bạn ôn là một giọt nước, tối đa 5 giọt mỗi ngày. Cây lớn khi được tưới vào 3 ngày khác nhau, đúng nhịp ôn cách quãng. Chạm để đổi loài.';
+
+  @override
+  String get gardenWilting =>
+      'Cây học đang rũ vì 3 ngày chưa được tưới. Ôn vài từ để cây tươi lại.';
+
+  @override
+  String get gardenWeatherSunny => 'Trời nắng: không còn nhiều từ chờ ôn.';
+
+  @override
+  String gardenWeatherCloudy(int count) {
+    return 'Trời âm u: $count từ đang chờ ôn. Ôn để vườn nắng lại.';
+  }
+
+  @override
+  String get gardenWeatherRain => 'Vừa có mưa: bạn vừa tưới vườn.';
+
+  @override
+  String get gardenQuests => 'Nhiệm vụ tuần';
+
+  @override
+  String questFocus(int count, int goal) {
+    return '$count/$goal phiên tập trung từ 25 phút';
+  }
+
+  @override
+  String questStudy(int count, int goal) {
+    return '$count/$goal ngày ôn từ';
+  }
+
+  @override
+  String questBloom(int count, int goal) {
+    return '$count/$goal cây nở hoa';
+  }
+
+  @override
+  String questReward(int earned, int total) {
+    return 'Xong cả 3 nhiệm vụ để nhận một đồ trang trí cho vườn · đã có $earned/$total';
+  }
+
+  @override
+  String gardenSeeds(int count) {
+    return '$count hạt giống · mỗi từ nhớ lâu là một hạt, gieo đủ hạt để mở loài mới';
+  }
+
+  @override
   String get unlockAlways => 'Có sẵn';
 
   @override
@@ -2702,7 +2764,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String unlockWordsKnown(int n) {
-    return 'Thuộc $n từ';
+    return '$n hạt giống';
   }
 
   @override
@@ -2717,7 +2779,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String unlockFocusSessions(int n) {
-    return '$n phiên tập trung';
+    return '$n phiên từ 25 phút';
   }
 
   @override
@@ -2747,7 +2809,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String unlockComeback(int n) {
-    return '$n phiên liền sau một cây héo';
+    return '$n phiên từ 25 phút sau cây héo';
   }
 
   @override

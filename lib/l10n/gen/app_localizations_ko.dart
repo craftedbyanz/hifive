@@ -2299,6 +2299,20 @@ class AppLocalizationsKo extends AppLocalizations {
   String get focusStart => '집중 시작';
 
   @override
+  String focusDoneYoung(int minutes) {
+    return '짧은 세션은 어린 나무만 자라요. $minutes분 이상 집중하면 다 자라고 꽃도 피울 수 있어요.';
+  }
+
+  @override
+  String get focusDoneAncient => '희귀한 고목이에요! 90분 넘게 집중해서 나무가 빛나요.';
+
+  @override
+  String get timerSizeYoung => '25분 미만이면 어린 나무만 자라요';
+
+  @override
+  String get timerSizeAncient => '90분 이상: 희귀한 고목';
+
+  @override
   String get focusShieldTitle => '방해되는 앱 차단';
 
   @override
@@ -2600,26 +2614,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gardenEmpty => '아직 나무가 없어요. 집중하거나 단어를 복습해 첫 나무를 심어요.';
 
   @override
-  String get gardenFocusTime => '집중';
-
-  @override
-  String get gardenReviews => '물주기';
-
-  @override
   String get gardenStudyDays => '공부한 날';
 
   @override
   String gardenHoursMinutes(int hours, int minutes) {
     return '$hours시간 $minutes분';
   }
-
-  @override
-  String gardenGrowing(int count, int total) {
-    return '공부 나무 성장 중 · 물주기 $count/$total';
-  }
-
-  @override
-  String get gardenGrowingHint => '새 카드나 복습할 카드를 볼 때마다 물을 줘요. 눌러서 나무를 바꿔요.';
 
   @override
   String get gardenCollection => '컬렉션';
@@ -2633,6 +2633,67 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gardenStartFocus => '집중 시작';
 
   @override
+  String get gardenSunLabel => '햇빛 · 집중';
+
+  @override
+  String get gardenWaterLabel => '물 · 물주기';
+
+  @override
+  String get gardenSunWater =>
+      '햇빛은 집중에서, 물은 복습에서 와요. 집중 나무는 쉬는 시간에 물을 주면 꽃이 피고, 공부 나무는 25분 이상 집중한 날에 물을 받으면 꽃이 펴요.';
+
+  @override
+  String gardenGrowingDays(int count, int total, int days, int totalDays) {
+    return '공부 나무 자라는 중 · 물 $count/$total · $days/$totalDays일';
+  }
+
+  @override
+  String get gardenGrowingDaysHint =>
+      '새 카드나 복습할 카드 하나가 물 한 방울이에요. 하루 최대 5방울. 서로 다른 3일 동안 물을 받으면 나무가 자라요. 간격 복습의 리듬이에요. 탭해서 종류를 바꿔요.';
+
+  @override
+  String get gardenWilting => '공부 나무가 3일 동안 물을 못 받아 시들었어요. 단어 몇 개를 복습해 살려 주세요.';
+
+  @override
+  String get gardenWeatherSunny => '맑음: 기다리는 단어가 거의 없어요.';
+
+  @override
+  String gardenWeatherCloudy(int count) {
+    return '흐림: 단어 $count개가 기다리고 있어요. 복습하면 다시 맑아져요.';
+  }
+
+  @override
+  String get gardenWeatherRain => '비가 와요: 방금 정원에 물을 줬어요.';
+
+  @override
+  String get gardenQuests => '이번 주 과제';
+
+  @override
+  String questFocus(int count, int goal) {
+    return '25분 이상 집중 $count/$goal회';
+  }
+
+  @override
+  String questStudy(int count, int goal) {
+    return '복습한 날 $count/$goal일';
+  }
+
+  @override
+  String questBloom(int count, int goal) {
+    return '꽃 핀 나무 $count/$goal그루';
+  }
+
+  @override
+  String questReward(int earned, int total) {
+    return '세 가지를 모두 하면 정원 장식을 하나 받아요 · $earned/$total개 획득';
+  }
+
+  @override
+  String gardenSeeds(int count) {
+    return '씨앗 $count개 · 오래 기억한 단어 하나가 씨앗이에요. 충분히 모으면 새 종류가 열려요';
+  }
+
+  @override
   String get unlockAlways => '기본 제공';
 
   @override
@@ -2642,7 +2703,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String unlockWordsKnown(int n) {
-    return '단어 $n개 익히기';
+    return '씨앗 $n개';
   }
 
   @override
@@ -2657,7 +2718,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String unlockFocusSessions(int n) {
-    return '집중 $n회';
+    return '25분 세션 $n회';
   }
 
   @override
@@ -2687,7 +2748,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String unlockComeback(int n) {
-    return '시든 뒤 연속 집중 $n회';
+    return '시든 뒤 25분 세션 $n회';
   }
 
   @override

@@ -4458,6 +4458,30 @@ abstract class AppLocalizations {
   /// **'Bắt đầu tập trung'**
   String get focusStart;
 
+  /// No description provided for @focusDoneYoung.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên ngắn mọc một cây non. Tập trung từ {minutes} phút để cây trưởng thành và nở hoa được.'**
+  String focusDoneYoung(int minutes);
+
+  /// No description provided for @focusDoneAncient.
+  ///
+  /// In vi, this message translates to:
+  /// **'Một cây cổ thụ hiếm! Hơn 90 phút tập trung làm cây toả sáng.'**
+  String get focusDoneAncient;
+
+  /// No description provided for @timerSizeYoung.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dưới 25 phút chỉ mọc cây non'**
+  String get timerSizeYoung;
+
+  /// No description provided for @timerSizeAncient.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ 90 phút: cây cổ thụ hiếm'**
+  String get timerSizeAncient;
+
   /// No description provided for @focusShieldTitle.
   ///
   /// In vi, this message translates to:
@@ -5028,18 +5052,6 @@ abstract class AppLocalizations {
   /// **'Chưa có cây nào. Tập trung hoặc ôn từ để trồng cây đầu tiên.'**
   String get gardenEmpty;
 
-  /// No description provided for @gardenFocusTime.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tập trung'**
-  String get gardenFocusTime;
-
-  /// No description provided for @gardenReviews.
-  ///
-  /// In vi, this message translates to:
-  /// **'Lượt tưới'**
-  String get gardenReviews;
-
   /// No description provided for @gardenStudyDays.
   ///
   /// In vi, this message translates to:
@@ -5051,18 +5063,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'{hours}g {minutes}p'**
   String gardenHoursMinutes(int hours, int minutes);
-
-  /// No description provided for @gardenGrowing.
-  ///
-  /// In vi, this message translates to:
-  /// **'Cây học đang lớn · {count}/{total} lượt tưới'**
-  String gardenGrowing(int count, int total);
-
-  /// No description provided for @gardenGrowingHint.
-  ///
-  /// In vi, this message translates to:
-  /// **'Mỗi thẻ mới hoặc đến hạn bạn ôn là một lượt tưới. Chạm để đổi loài cây.'**
-  String get gardenGrowingHint;
 
   /// No description provided for @gardenCollection.
   ///
@@ -5082,6 +5082,96 @@ abstract class AppLocalizations {
   /// **'Bắt đầu tập trung'**
   String get gardenStartFocus;
 
+  /// No description provided for @gardenSunLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nắng · tập trung'**
+  String get gardenSunLabel;
+
+  /// No description provided for @gardenWaterLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nước · lượt tưới'**
+  String get gardenWaterLabel;
+
+  /// No description provided for @gardenSunWater.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nắng đến từ tập trung, nước từ ôn từ. Cây tập trung được tưới trong giờ nghỉ thì nở hoa; cây học có ngày tập trung từ 25 phút cũng nở hoa.'**
+  String get gardenSunWater;
+
+  /// No description provided for @gardenGrowingDays.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây học đang lớn · {count}/{total} giọt nước · {days}/{totalDays} ngày'**
+  String gardenGrowingDays(int count, int total, int days, int totalDays);
+
+  /// No description provided for @gardenGrowingDaysHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi thẻ mới hoặc đến hạn bạn ôn là một giọt nước, tối đa 5 giọt mỗi ngày. Cây lớn khi được tưới vào 3 ngày khác nhau, đúng nhịp ôn cách quãng. Chạm để đổi loài.'**
+  String get gardenGrowingDaysHint;
+
+  /// No description provided for @gardenWilting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cây học đang rũ vì 3 ngày chưa được tưới. Ôn vài từ để cây tươi lại.'**
+  String get gardenWilting;
+
+  /// No description provided for @gardenWeatherSunny.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trời nắng: không còn nhiều từ chờ ôn.'**
+  String get gardenWeatherSunny;
+
+  /// No description provided for @gardenWeatherCloudy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trời âm u: {count} từ đang chờ ôn. Ôn để vườn nắng lại.'**
+  String gardenWeatherCloudy(int count);
+
+  /// No description provided for @gardenWeatherRain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vừa có mưa: bạn vừa tưới vườn.'**
+  String get gardenWeatherRain;
+
+  /// No description provided for @gardenQuests.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ tuần'**
+  String get gardenQuests;
+
+  /// No description provided for @questFocus.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count}/{goal} phiên tập trung từ 25 phút'**
+  String questFocus(int count, int goal);
+
+  /// No description provided for @questStudy.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count}/{goal} ngày ôn từ'**
+  String questStudy(int count, int goal);
+
+  /// No description provided for @questBloom.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count}/{goal} cây nở hoa'**
+  String questBloom(int count, int goal);
+
+  /// No description provided for @questReward.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong cả 3 nhiệm vụ để nhận một đồ trang trí cho vườn · đã có {earned}/{total}'**
+  String questReward(int earned, int total);
+
+  /// No description provided for @gardenSeeds.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} hạt giống · mỗi từ nhớ lâu là một hạt, gieo đủ hạt để mở loài mới'**
+  String gardenSeeds(int count);
+
   /// No description provided for @unlockAlways.
   ///
   /// In vi, this message translates to:
@@ -5097,7 +5187,7 @@ abstract class AppLocalizations {
   /// No description provided for @unlockWordsKnown.
   ///
   /// In vi, this message translates to:
-  /// **'Thuộc {n} từ'**
+  /// **'{n} hạt giống'**
   String unlockWordsKnown(int n);
 
   /// No description provided for @unlockStreak.
@@ -5115,7 +5205,7 @@ abstract class AppLocalizations {
   /// No description provided for @unlockFocusSessions.
   ///
   /// In vi, this message translates to:
-  /// **'{n} phiên tập trung'**
+  /// **'{n} phiên từ 25 phút'**
   String unlockFocusSessions(int n);
 
   /// No description provided for @unlockLongSession.
@@ -5151,7 +5241,7 @@ abstract class AppLocalizations {
   /// No description provided for @unlockComeback.
   ///
   /// In vi, this message translates to:
-  /// **'{n} phiên liền sau một cây héo'**
+  /// **'{n} phiên từ 25 phút sau cây héo'**
   String unlockComeback(int n);
 
   /// No description provided for @unlockWeeks.

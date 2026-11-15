@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
 import 'package:hifive/core/services/screen_lock.dart';
+import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/garden/garden.dart';
 import 'package:hifive/features/garden/garden.dart';
 import 'package:hifive/l10n/l10n.dart';
@@ -253,6 +255,44 @@ void main() {
     await start(tester);
     await wait(tester, const Duration(minutes: 10));
     expect(state.focusSessions.single.title, 'Ôn IELTS');
+  });
+
+  testWidgets('a short session leaves a young plant and offers no bloom', (
+    tester,
+  ) async {
+    // A session under the garden's second rules.
+    clock = DateTime(2026, 11, 17, 9);
+    state = createAppState(
+      store: MemoryRecordStore(),
+      feedback: SilentFeedback(),
+      now: () => clock,
+    );
+    await open(tester);
+    await start(tester, minutes: 10);
+    await wait(tester, const Duration(minutes: 10));
+    expect(state.focusSessions.single.outcome, FocusOutcome.done);
+    expect(
+      find.text(
+        'Phiên ngắn mọc một cây non. Tập trung từ 25 phút để cây trưởng thành và nở hoa được.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('focus-review')), findsNothing);
+  });
+
+  testWidgets('the timer sheet says when a length grows only a young plant', (
+    tester,
+  ) async {
+    await open(tester);
+    await tester.tap(find.byKey(const ValueKey('focus-timer-button')));
+    await tester.pumpAndSettle();
+    await tester.timedDrag(
+      find.byKey(const ValueKey('timer-ruler')),
+      const Offset(2 * MinuteRuler.spacing, 0),
+      const Duration(seconds: 1),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Dưới 25 phút chỉ mọc cây non'), findsOneWidget);
   });
 }
 

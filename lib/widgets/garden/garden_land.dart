@@ -121,6 +121,8 @@ void _plant(
   double bloom = 0,
   bool withered = false,
   bool raster = false,
+  bool ancient = false,
+  bool thirsty = false,
 }) {
   final key = _arts.containsKey(id) ? id : defaultSpecies;
   final art = _arts[key]!;
@@ -160,6 +162,15 @@ void _plant(
     ]);
     return;
   }
+  if (ancient && g >= .99) {
+    _halo(c, t, still);
+    pose(1.08, sway * .6, 1, () {
+      _drawForm(c, '$key/grown', grown, raster);
+      if (bloom > 0) _bloom(c, _bloomSpots['$key/grown']!, bloom, t, still);
+    });
+    _fireflies(c, t, still);
+    return;
+  }
   final small = art.young == _Young.small;
   final sprout = 1 - _step(g, .11, .16);
   final young = small ? 0.0 : _step(g, .11, .16) * (1 - _step(g, .42, .48));
@@ -172,10 +183,68 @@ void _plant(
     _drawForm(c, '$key/young', form, raster);
   });
   final k = small ? .42 + .58 * _step(g, .12, 1) : .62 + .38 * _step(g, .45, 1);
-  pose(k, sway * .8, full, () {
+  pose(k, sway * .8 + (thirsty ? .07 : 0), full, () {
+    if (thirsty) {
+      c.saveLayer(null, Paint()..colorFilter = const ColorFilter.matrix(_pale));
+    }
     _drawForm(c, '$key/grown', grown, raster);
+    if (thirsty) c.restore();
     if (bloom > 0) _bloom(c, _bloomSpots['$key/grown']!, bloom, t, still);
   });
+}
+
+// Half the colour, a little lighter: a study tree drooping for water.
+const _pale = <double>[
+  .62, .30, .08, 0, 14, //
+  .18, .74, .08, 0, 14,
+  .18, .30, .52, 0, 14,
+  0, 0, 0, 1, 0,
+];
+
+/// The warm light behind an ancient tree.
+void _halo(Canvas c, double t, bool still) {
+  final pulse = still ? 1.0 : .9 + .1 * math.sin(t * 1.3);
+  c
+    ..save()
+    ..translate(100, 92)
+    ..scale(1, .92)
+    ..drawCircle(
+      Offset.zero,
+      92 * pulse,
+      Paint()
+        ..shader = ui.Gradient.radial(
+          Offset.zero,
+          92 * pulse,
+          const [Color(0xB3FFE69A), Color(0x59FFD86A), Color(0x00FFD86A)],
+          const [0, .55, 1],
+        ),
+    )
+    ..restore();
+}
+
+/// Motes of gold drifting around an ancient tree's crown.
+void _fireflies(Canvas c, double t, bool still) {
+  for (var i = 0; i < 9; i++) {
+    final a = i * 2.1 + (still ? 0 : t * (.25 + i * .03));
+    final x = 100 + math.cos(a) * (54 + (i % 3) * 10);
+    final y = 86 + math.sin(a * 1.3) * (34 + (i % 2) * 8);
+    final glow = still ? .8 : .55 + .45 * math.sin(t * 2.2 + i);
+    c
+      ..drawCircle(
+        Offset(x, y),
+        4.5,
+        Paint()
+          ..shader = ui.Gradient.radial(Offset(x, y), 4.5, [
+            Color.fromRGBO(255, 230, 140, .55 * glow),
+            const Color(0x00FFE68C),
+          ]),
+      )
+      ..drawCircle(
+        Offset(x, y),
+        1.3,
+        Paint()..color = Color.fromRGBO(255, 248, 210, glow),
+      );
+  }
 }
 
 /// White flowers opening one by one at [spots], each with a glint.
@@ -441,6 +510,16 @@ List<(int, int)> _cellOrder(int n) {
   return cells;
 }
 
+/// The edge cells decorations take, in the order they are earned.
+List<(int, int)> _decorCells(int n) => [
+  (n - 1, n - 1),
+  (0, n - 1),
+  (n - 1, 0),
+  (n - 1, n ~/ 2),
+  (n ~/ 2, n - 1),
+  (0, 0),
+];
+
 void _garden(
   Canvas c,
   double cx,
@@ -448,36 +527,48 @@ void _garden(
   double w,
   int n,
   List<Plant> plants,
+  List<String> decor,
 ) {
   final h = w / 2, d = w * .035 + 9, tw = w / n;
   _land(c, cx, cy, w, h, d, n);
-  final order = _cellOrder(n);
+  final taken = _decorCells(n).take(decor.length).toList();
+  final order = [
+    for (final cell in _cellOrder(n))
+      if (!taken.contains(cell)) cell,
+  ];
+  // Plants and decorations together, back to front.
   final placed =
-      [
+      <((int, int), Object)>[
         for (var i = 0; i < plants.length && i < order.length; i++)
           (order[i], plants[i]),
+        for (var i = 0; i < taken.length; i++) (taken[i], decor[i]),
       ]..sort((a, b) {
         final s = (a.$1.$1 + a.$1.$2).compareTo(b.$1.$1 + b.$1.$2);
         return s != 0 ? s : a.$1.$1.compareTo(b.$1.$1);
       });
-  for (final ((i, j), p) in placed) {
+  for (final ((i, j), item) in placed) {
     final q = _iso(cx, cy, w, h, (i + .5) / n, (j + .5) / n);
-    final s = tw / 140;
     c
       ..save()
       ..translate(q.dx, q.dy + tw * .04)
-      ..scale(s)
+      ..scale(tw / 140)
       ..translate(-100, -182);
-    _plant(
-      c,
-      p.species,
-      p.growth,
-      7.3,
-      true,
-      bloom: p.bloomed ? 1 : 0,
-      withered: p.withered,
-      raster: true,
-    );
+    switch (item) {
+      case final Plant p:
+        _plant(
+          c,
+          p.species,
+          p.growth,
+          7.3,
+          true,
+          bloom: p.bloomed ? 1 : 0,
+          withered: p.withered,
+          raster: true,
+          ancient: p.ancient,
+        );
+      case final String id:
+        c.drawPicture(_record('decor/$id', (pen) => _decoration(pen, id)));
+    }
     c.restore();
   }
 }

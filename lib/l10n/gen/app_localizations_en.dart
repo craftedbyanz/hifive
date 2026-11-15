@@ -2426,6 +2426,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get focusStart => 'Start focusing';
 
   @override
+  String focusDoneYoung(int minutes) {
+    return 'A short session grows a young plant. Focus for $minutes minutes or more for a full tree that can bloom.';
+  }
+
+  @override
+  String get focusDoneAncient =>
+      'A rare ancient tree! Over 90 minutes of focus made it glow.';
+
+  @override
+  String get timerSizeYoung => 'Under 25 minutes grows only a young plant';
+
+  @override
+  String get timerSizeAncient => '90 minutes or more: a rare ancient tree';
+
+  @override
   String get focusShieldTitle => 'Block distracting apps';
 
   @override
@@ -2732,27 +2747,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'No trees yet. Focus or review words to plant your first.';
 
   @override
-  String get gardenFocusTime => 'Focused';
-
-  @override
-  String get gardenReviews => 'Waterings';
-
-  @override
   String get gardenStudyDays => 'Study days';
 
   @override
   String gardenHoursMinutes(int hours, int minutes) {
     return '${hours}h ${minutes}m';
   }
-
-  @override
-  String gardenGrowing(int count, int total) {
-    return 'Study tree growing · $count/$total waterings';
-  }
-
-  @override
-  String get gardenGrowingHint =>
-      'Each new or due card you review waters it. Tap to change the species.';
 
   @override
   String get gardenCollection => 'Collection';
@@ -2766,6 +2766,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gardenStartFocus => 'Start focusing';
 
   @override
+  String get gardenSunLabel => 'Sun · focus';
+
+  @override
+  String get gardenWaterLabel => 'Water · waterings';
+
+  @override
+  String get gardenSunWater =>
+      'Sun comes from focusing, water from reviewing. A focus tree watered in its break blooms; a study tree blooms when one of its days had 25 minutes of focus.';
+
+  @override
+  String gardenGrowingDays(int count, int total, int days, int totalDays) {
+    return 'Study tree growing · $count/$total drops · $days/$totalDays days';
+  }
+
+  @override
+  String get gardenGrowingDaysHint =>
+      'Each new or due card you review is a drop, up to 5 a day. The tree grows once watered on 3 different days, the rhythm of spaced review. Tap to change the species.';
+
+  @override
+  String get gardenWilting =>
+      'Your study tree is drooping after 3 days without water. Review a few words to perk it up.';
+
+  @override
+  String get gardenWeatherSunny => 'Sunny: few words are waiting.';
+
+  @override
+  String gardenWeatherCloudy(int count) {
+    return 'Cloudy: $count words are waiting. Review to bring the sun back.';
+  }
+
+  @override
+  String get gardenWeatherRain => 'Rain: you just watered the garden.';
+
+  @override
+  String get gardenQuests => 'This week';
+
+  @override
+  String questFocus(int count, int goal) {
+    return '$count/$goal focus sessions of 25 minutes';
+  }
+
+  @override
+  String questStudy(int count, int goal) {
+    return '$count/$goal days of review';
+  }
+
+  @override
+  String questBloom(int count, int goal) {
+    return '$count/$goal trees in bloom';
+  }
+
+  @override
+  String questReward(int earned, int total) {
+    return 'Finish all three to earn a decoration for your garden · $earned/$total earned';
+  }
+
+  @override
+  String gardenSeeds(int count) {
+    return '$count seeds · each long-remembered word is a seed; sow enough to unlock species';
+  }
+
+  @override
   String get unlockAlways => 'Ready';
 
   @override
@@ -2775,7 +2837,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String unlockWordsKnown(int n) {
-    return 'Know $n words';
+    return '$n seeds';
   }
 
   @override
@@ -2790,7 +2852,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String unlockFocusSessions(int n) {
-    return '$n focus sessions';
+    return '$n sessions of 25 min';
   }
 
   @override
@@ -2820,7 +2882,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String unlockComeback(int n) {
-    return '$n sessions in a row after a withered tree';
+    return '$n sessions of 25 min after a withered tree';
   }
 
   @override

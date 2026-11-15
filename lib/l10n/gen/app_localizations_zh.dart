@@ -2281,6 +2281,20 @@ class AppLocalizationsZh extends AppLocalizations {
   String get focusStart => '开始专注';
 
   @override
+  String focusDoneYoung(int minutes) {
+    return '短时专注只长出一株小苗。专注 $minutes 分钟以上，树才会长大并能开花。';
+  }
+
+  @override
+  String get focusDoneAncient => '一棵稀有的古树！专注超过 90 分钟让它发出光芒。';
+
+  @override
+  String get timerSizeYoung => '少于 25 分钟只会长出小苗';
+
+  @override
+  String get timerSizeAncient => '90 分钟以上：稀有古树';
+
+  @override
   String get focusShieldTitle => '屏蔽分心应用';
 
   @override
@@ -2582,26 +2596,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gardenEmpty => '还没有树。专注或复习单词来种下第一棵吧。';
 
   @override
-  String get gardenFocusTime => '专注';
-
-  @override
-  String get gardenReviews => '浇水';
-
-  @override
   String get gardenStudyDays => '学习天数';
 
   @override
   String gardenHoursMinutes(int hours, int minutes) {
     return '$hours小时$minutes分';
   }
-
-  @override
-  String gardenGrowing(int count, int total) {
-    return '学习树正在长大 · $count/$total 次浇水';
-  }
-
-  @override
-  String get gardenGrowingHint => '每复习一张新卡或到期卡就浇一次水。点按可更换树种。';
 
   @override
   String get gardenCollection => '收藏';
@@ -2615,6 +2615,67 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gardenStartFocus => '开始专注';
 
   @override
+  String get gardenSunLabel => '阳光 · 专注';
+
+  @override
+  String get gardenWaterLabel => '水 · 浇水';
+
+  @override
+  String get gardenSunWater =>
+      '阳光来自专注，水来自复习。专注树在休息时浇水会开花；学习树在有 25 分钟专注的日子里浇过水也会开花。';
+
+  @override
+  String gardenGrowingDays(int count, int total, int days, int totalDays) {
+    return '学习树成长中 · $count/$total 滴水 · $days/$totalDays 天';
+  }
+
+  @override
+  String get gardenGrowingDaysHint =>
+      '每复习一张新卡或到期卡就是一滴水，每天最多 5 滴。在 3 个不同的日子浇过水后树就长成，正好是间隔复习的节奏。轻点更换树种。';
+
+  @override
+  String get gardenWilting => '学习树已 3 天没浇水，有点蔫了。复习几个词让它重新精神起来。';
+
+  @override
+  String get gardenWeatherSunny => '晴天：待复习的词不多。';
+
+  @override
+  String gardenWeatherCloudy(int count) {
+    return '阴天：有 $count 个词等待复习。复习一下，让花园重见阳光。';
+  }
+
+  @override
+  String get gardenWeatherRain => '下雨了：你刚给花园浇过水。';
+
+  @override
+  String get gardenQuests => '本周任务';
+
+  @override
+  String questFocus(int count, int goal) {
+    return '$count/$goal 次 25 分钟以上的专注';
+  }
+
+  @override
+  String questStudy(int count, int goal) {
+    return '复习 $count/$goal 天';
+  }
+
+  @override
+  String questBloom(int count, int goal) {
+    return '$count/$goal 棵树开花';
+  }
+
+  @override
+  String questReward(int earned, int total) {
+    return '完成全部三项可获得一件花园装饰 · 已获得 $earned/$total';
+  }
+
+  @override
+  String gardenSeeds(int count) {
+    return '$count 颗种子 · 每个记牢的词是一颗种子，攒够就能解锁新树种';
+  }
+
+  @override
   String get unlockAlways => '已拥有';
 
   @override
@@ -2624,7 +2685,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String unlockWordsKnown(int n) {
-    return '掌握 $n 个词';
+    return '$n 颗种子';
   }
 
   @override
@@ -2639,7 +2700,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String unlockFocusSessions(int n) {
-    return '$n 次专注';
+    return '$n 次 25 分钟专注';
   }
 
   @override
@@ -2669,7 +2730,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String unlockComeback(int n) {
-    return '枯萎后连续 $n 次专注';
+    return '枯树后 $n 次 25 分钟专注';
   }
 
   @override

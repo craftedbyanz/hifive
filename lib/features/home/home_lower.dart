@@ -601,6 +601,7 @@ class HomeGardenBanner extends StatelessWidget {
                       species: state.studySpecies,
                       size: 132,
                       growth: .05 + .95 * growing / reviewsPerTree,
+                      thirsty: state.gardenStats.wilting,
                     ),
                   ),
                 ),

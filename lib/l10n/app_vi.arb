@@ -1017,6 +1017,17 @@
   "closeTip": "Đóng gợi ý",
   "menuFocus": "Vườn",
   "focusStart": "Bắt đầu tập trung",
+  "focusDoneYoung": "Phiên ngắn mọc một cây non. Tập trung từ {minutes} phút để cây trưởng thành và nở hoa được.",
+  "@focusDoneYoung": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "focusDoneAncient": "Một cây cổ thụ hiếm! Hơn 90 phút tập trung làm cây toả sáng.",
+  "timerSizeYoung": "Dưới 25 phút chỉ mọc cây non",
+  "timerSizeAncient": "Từ 90 phút: cây cổ thụ hiếm",
   "focusShieldTitle": "Chặn ứng dụng gây xao nhãng",
   "focusShieldOff": "Đang tắt",
   "focusShieldPicked": "Đã chọn {count} mục · Đổi",
@@ -1171,8 +1182,6 @@
     }
   },
   "gardenEmpty": "Chưa có cây nào. Tập trung hoặc ôn từ để trồng cây đầu tiên.",
-  "gardenFocusTime": "Tập trung",
-  "gardenReviews": "Lượt tưới",
   "gardenStudyDays": "Ngày học",
   "gardenHoursMinutes": "{hours}g {minutes}p",
   "@gardenHoursMinutes": {
@@ -1185,18 +1194,6 @@
       }
     }
   },
-  "gardenGrowing": "Cây học đang lớn · {count}/{total} lượt tưới",
-  "@gardenGrowing": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "gardenGrowingHint": "Mỗi thẻ mới hoặc đến hạn bạn ôn là một lượt tưới. Chạm để đổi loài cây.",
   "gardenCollection": "Bộ sưu tập",
   "gardenUnlocked": "Đã mở {count}/{total} loài",
   "@gardenUnlocked": {
@@ -1210,6 +1207,91 @@
     }
   },
   "gardenStartFocus": "Bắt đầu tập trung",
+  "gardenSunLabel": "Nắng · tập trung",
+  "gardenWaterLabel": "Nước · lượt tưới",
+  "gardenSunWater": "Nắng đến từ tập trung, nước từ ôn từ. Cây tập trung được tưới trong giờ nghỉ thì nở hoa; cây học có ngày tập trung từ 25 phút cũng nở hoa.",
+  "gardenGrowingDays": "Cây học đang lớn · {count}/{total} giọt nước · {days}/{totalDays} ngày",
+  "@gardenGrowingDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      },
+      "totalDays": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenGrowingDaysHint": "Mỗi thẻ mới hoặc đến hạn bạn ôn là một giọt nước, tối đa 5 giọt mỗi ngày. Cây lớn khi được tưới vào 3 ngày khác nhau, đúng nhịp ôn cách quãng. Chạm để đổi loài.",
+  "gardenWilting": "Cây học đang rũ vì 3 ngày chưa được tưới. Ôn vài từ để cây tươi lại.",
+  "gardenWeatherSunny": "Trời nắng: không còn nhiều từ chờ ôn.",
+  "gardenWeatherCloudy": "Trời âm u: {count} từ đang chờ ôn. Ôn để vườn nắng lại.",
+  "@gardenWeatherCloudy": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenWeatherRain": "Vừa có mưa: bạn vừa tưới vườn.",
+  "gardenQuests": "Nhiệm vụ tuần",
+  "questFocus": "{count}/{goal} phiên tập trung từ 25 phút",
+  "@questFocus": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "questStudy": "{count}/{goal} ngày ôn từ",
+  "@questStudy": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "questBloom": "{count}/{goal} cây nở hoa",
+  "@questBloom": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "questReward": "Xong cả 3 nhiệm vụ để nhận một đồ trang trí cho vườn · đã có {earned}/{total}",
+  "@questReward": {
+    "placeholders": {
+      "earned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenSeeds": "{count} hạt giống · mỗi từ nhớ lâu là một hạt, gieo đủ hạt để mở loài mới",
+  "@gardenSeeds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "unlockAlways": "Có sẵn",
   "unlockStudyTrees": "Trồng {n} cây học",
   "@unlockStudyTrees": {
@@ -1219,7 +1301,7 @@
       }
     }
   },
-  "unlockWordsKnown": "Thuộc {n} từ",
+  "unlockWordsKnown": "{n} hạt giống",
   "@unlockWordsKnown": {
     "placeholders": {
       "n": {
@@ -1243,7 +1325,7 @@
       }
     }
   },
-  "unlockFocusSessions": "{n} phiên tập trung",
+  "unlockFocusSessions": "{n} phiên từ 25 phút",
   "@unlockFocusSessions": {
     "placeholders": {
       "n": {
@@ -1291,7 +1373,7 @@
       }
     }
   },
-  "unlockComeback": "{n} phiên liền sau một cây héo",
+  "unlockComeback": "{n} phiên từ 25 phút sau cây héo",
   "@unlockComeback": {
     "placeholders": {
       "n": {

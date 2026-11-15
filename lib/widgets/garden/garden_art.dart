@@ -9,6 +9,7 @@ import '../../domain/garden/garden.dart';
 import '../ambient.dart';
 
 part 'garden_blooms.dart';
+part 'garden_decor.dart';
 part 'garden_kit.dart';
 part 'garden_land.dart';
 part 'garden_plants.dart';
@@ -54,6 +55,12 @@ class TreeArt extends StatelessWidget {
   final double growth, bloom, size;
   final bool withered;
 
+  /// A rare ancient tree: larger, in a warm halo, with drifting motes.
+  final bool ancient;
+
+  /// A study tree drooping, paler, for want of water.
+  final bool thirsty;
+
   /// True stands the plant on a sunlit patch of grass.
   final bool island;
 
@@ -67,6 +74,8 @@ class TreeArt extends StatelessWidget {
     this.growth = 1,
     this.bloom = 0,
     this.withered = false,
+    this.ancient = false,
+    this.thirsty = false,
     this.island = true,
     this.animate = true,
   });
@@ -94,6 +103,8 @@ class TreeArt extends StatelessWidget {
         bloom: bloom,
         withered: withered,
         raster: !animate,
+        ancient: ancient,
+        thirsty: thirsty,
       );
       if (island) canvas.restore();
     },
@@ -108,15 +119,25 @@ class GardenScene extends StatelessWidget {
   final List<Plant> plants;
   final int cells;
   final double width;
+
+  /// The sky over the garden; null draws none, as for past periods.
+  final GardenWeather? weather;
+
+  /// Decorations earned, by id from `decorations`, set along the edges.
+  final List<String> decorations;
   const GardenScene({
     super.key,
     required this.plants,
     required this.width,
     this.cells = 5,
+    this.weather,
+    this.decorations = const [],
   });
 
-  /// The grid side that fits [count] plants: at least 5.
-  static int cellsFor(int count) => math.max(5, math.sqrt(count).ceil());
+  /// The grid side that fits [count] plants and [decor] decorations: at
+  /// least 5.
+  static int cellsFor(int count, [int decor = 0]) =>
+      math.max(5, math.sqrt(count + decor).ceil());
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +147,18 @@ class GardenScene extends StatelessWidget {
       animate: false,
       paint: (canvas, size, t, still) {
         final top = width / cells * 1.25;
-        _garden(canvas, width / 2, top + h / 2, width, cells, plants);
+        final sky = weather;
+        if (sky != null) _weather(canvas, sky, width, top, behind: true);
+        _garden(
+          canvas,
+          width / 2,
+          top + h / 2,
+          width,
+          cells,
+          plants,
+          decorations,
+        );
+        if (sky != null) _weather(canvas, sky, width, top, behind: false);
       },
     );
   }
