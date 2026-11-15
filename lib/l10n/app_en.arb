@@ -125,7 +125,6 @@
   "notSignedInShort": "Not signed in",
   "connected": "Connected",
   "dangerZone": "Danger zone",
-  "deleteAccountLater": "Account deletion is coming in the official release.",
   "deleteAccount": "Delete account",
   "deleteAccountBody": "Permanently delete all your data",
   "countryUS": "United States",
@@ -1203,5 +1202,12 @@
   "dictSourceTatoeba": "Tatoeba: English–Vietnamese example sentences, credited to each contributor. CC BY 2.0 FR.",
   "dictTatoebaBy": "Tatoeba · {authors}",
   "wordNotesTitle": "Words on the lock screen",
-  "wordNotesBody": "{n} words a day, spread from {from} to {to}: the words you are about to forget and new ones you added."
+  "wordNotesBody": "{n} words a day, spread from {from} to {to}: the words you are about to forget and new ones you added.",
+  "deleteAccountTitle": "Delete your account?",
+  "deleteAccountConfirm": "Your account, words, study history, garden and shared decks will be deleted for good on every device. This cannot be undone.",
+  "deleteAccountAction": "Delete for good",
+  "deleteAccountPassword": "Enter your password to confirm",
+  "deleteAccountDone": "Your account was deleted.",
+  "deleteAccountFailed": "The account couldn't be deleted. Check your connection and try again.",
+  "deleteAccountWorking": "Deleting your account…"
 }

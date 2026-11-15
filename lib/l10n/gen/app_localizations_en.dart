@@ -403,10 +403,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dangerZone => 'Danger zone';
 
   @override
-  String get deleteAccountLater =>
-      'Account deletion is coming in the official release.';
-
-  @override
   String get deleteAccount => 'Delete account';
 
   @override
@@ -4102,4 +4098,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String wordNotesBody(int n, String from, String to) {
     return '$n words a day, spread from $from to $to: the words you are about to forget and new ones you added.';
   }
+
+  @override
+  String get deleteAccountTitle => 'Delete your account?';
+
+  @override
+  String get deleteAccountConfirm =>
+      'Your account, words, study history, garden and shared decks will be deleted for good on every device. This cannot be undone.';
+
+  @override
+  String get deleteAccountAction => 'Delete for good';
+
+  @override
+  String get deleteAccountPassword => 'Enter your password to confirm';
+
+  @override
+  String get deleteAccountDone => 'Your account was deleted.';
+
+  @override
+  String get deleteAccountFailed =>
+      'The account couldn\'t be deleted. Check your connection and try again.';
+
+  @override
+  String get deleteAccountWorking => 'Deleting your account…';
 }

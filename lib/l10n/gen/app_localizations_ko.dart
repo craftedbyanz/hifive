@@ -388,9 +388,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dangerZone => '위험 구역';
 
   @override
-  String get deleteAccountLater => '계정 삭제는 정식 출시 버전에서 제공돼요.';
-
-  @override
   String get deleteAccount => '계정 삭제';
 
   @override
@@ -3933,4 +3930,26 @@ class AppLocalizationsKo extends AppLocalizations {
   String wordNotesBody(int n, String from, String to) {
     return '하루 $n개 단어를 $from부터 $to까지 나눠 보여줘요: 곧 잊을 단어와 직접 추가한 새 단어.';
   }
+
+  @override
+  String get deleteAccountTitle => '계정을 삭제할까요?';
+
+  @override
+  String get deleteAccountConfirm =>
+      '계정, 단어, 학습 기록, 정원, 공유한 묶음이 모든 기기에서 영구 삭제돼요. 되돌릴 수 없어요.';
+
+  @override
+  String get deleteAccountAction => '영구 삭제';
+
+  @override
+  String get deleteAccountPassword => '확인을 위해 비밀번호를 입력하세요';
+
+  @override
+  String get deleteAccountDone => '계정이 삭제되었어요.';
+
+  @override
+  String get deleteAccountFailed => '계정을 삭제하지 못했어요. 연결을 확인하고 다시 시도하세요.';
+
+  @override
+  String get deleteAccountWorking => '계정을 삭제하는 중…';
 }

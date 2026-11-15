@@ -763,6 +763,42 @@ class AppState extends ChangeNotifier {
     return syncError == null && (await store.dirtyRecords(limit: 1)).isEmpty;
   }
 
+  /// Deletes the account for good: confirms the learner again ([password]
+  /// for an email account), deletes the server's data, then the account,
+  /// then this device's copy, and starts again as a fresh install. A failure
+  /// before the account goes (cancelled, wrong password, offline) leaves
+  /// everything as it was and throws [AuthException] or [SyncException];
+  /// trying again is safe.
+  Future<void> deleteAccount({String? password}) async {
+    final account = user;
+    if (account == null) return;
+    await auth.reauthenticate(password: password);
+    _stopSyncing();
+    try {
+      if (syncService case final server?) {
+        final token = await auth.idToken();
+        if (token != null) await server.deleteAccount(token);
+      }
+      await auth.deleteAccount();
+    } catch (_) {
+      _startSyncing();
+      rethrow;
+    }
+    await flush();
+    _pending.clear();
+    await store.clearRecords();
+    for (final key in [
+      'accountUid',
+      Syncer.cursorKey(account.uid),
+      _lastSyncKey(account.uid),
+    ]) {
+      await store.deleteMeta(key);
+    }
+    _resetToDefaults();
+    _put(AppKinds.firstUse, _deviceId, {'at': firstUse.toIso8601String()});
+    commit();
+  }
+
   /// Signs out. With sync set up, the account's data is on the server, so
   /// this device deletes it and starts again as a guest; without sync,
   /// local data stays, since it exists nowhere else.

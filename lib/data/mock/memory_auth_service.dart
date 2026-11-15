@@ -89,4 +89,29 @@ class MemoryAuthService implements AuthService {
     _current = null;
     _changes.add(null);
   }
+
+  /// Accounts deleted, by uid.
+  final deleted = <String>[];
+
+  @override
+  Future<void> reauthenticate({String? password}) async {
+    _check();
+    final user = _current;
+    if (user == null) throw const AuthException(AuthError.unknown);
+    if (user.method == AuthMethod.email &&
+        accounts.containsKey(user.email) &&
+        accounts[user.email] != password) {
+      throw const AuthException(AuthError.wrongCredentials);
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    _check();
+    final user = _current;
+    if (user == null) return;
+    deleted.add(user.uid);
+    accounts.remove(user.email);
+    await signOut();
+  }
 }

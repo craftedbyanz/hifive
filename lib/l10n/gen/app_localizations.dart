@@ -852,12 +852,6 @@ abstract class AppLocalizations {
   /// **'Vùng nguy hiểm'**
   String get dangerZone;
 
-  /// No description provided for @deleteAccountLater.
-  ///
-  /// In vi, this message translates to:
-  /// **'Xóa tài khoản sẽ có trong bản phát hành chính thức.'**
-  String get deleteAccountLater;
-
   /// No description provided for @deleteAccount.
   ///
   /// In vi, this message translates to:
@@ -7325,6 +7319,48 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'{n} từ mỗi ngày, rải từ {from} đến {to}: những từ bạn sắp quên và từ mới bạn tự thêm.'**
   String wordNotesBody(int n, String from, String to);
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa tài khoản?'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản, từ vựng, lịch sử học, khu vườn và các bộ thẻ bạn đã chia sẻ sẽ bị xóa vĩnh viễn trên mọi thiết bị. Không thể khôi phục.'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @deleteAccountAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa vĩnh viễn'**
+  String get deleteAccountAction;
+
+  /// No description provided for @deleteAccountPassword.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mật khẩu để xác nhận'**
+  String get deleteAccountPassword;
+
+  /// No description provided for @deleteAccountDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xóa tài khoản của bạn.'**
+  String get deleteAccountDone;
+
+  /// No description provided for @deleteAccountFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa xóa được tài khoản. Kiểm tra kết nối mạng rồi thử lại.'**
+  String get deleteAccountFailed;
+
+  /// No description provided for @deleteAccountWorking.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang xóa tài khoản…'**
+  String get deleteAccountWorking;
 }
 
 class _AppLocalizationsDelegate

@@ -55,4 +55,12 @@ abstract interface class AuthService {
 
   /// A fresh ID token for the API, or null when signed out.
   Future<String?> idToken();
+
+  /// Confirms the signed-in learner again before deleting the account:
+  /// Google and Apple show their sign-in sheet, an email account checks
+  /// [password]. Firebase only deletes an account signed in recently.
+  Future<void> reauthenticate({String? password});
+
+  /// Deletes the signed-in account; call [reauthenticate] first. Signs out.
+  Future<void> deleteAccount();
 }

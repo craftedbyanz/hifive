@@ -70,4 +70,8 @@ class SyncException implements Exception {
 /// The sync API (`worker/`). Throws [SyncException] on failure.
 abstract interface class SyncService {
   Future<SyncResponse> exchange(String idToken, SyncRequest request);
+
+  /// Deletes everything the server keeps for the account (`DELETE
+  /// /v1/account`). Doing it twice is harmless.
+  Future<void> deleteAccount(String idToken);
 }

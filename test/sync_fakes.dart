@@ -25,6 +25,26 @@ class FakeSyncServer implements SyncService {
     for (final (r, _) in (_records[uid] ?? {}).values) r,
   ];
 
+  /// Accounts whose data was deleted, by uid.
+  final deletedAccounts = <String>[];
+
+  @override
+  Future<void> deleteAccount(String idToken) async {
+    requests++;
+    if (!idToken.startsWith('token-')) {
+      throw const SyncException(SyncError.unauthorized);
+    }
+    final failure = failBefore;
+    if (failure != null) {
+      failBefore = null;
+      throw SyncException(failure);
+    }
+    final uid = idToken.substring('token-'.length);
+    _records.remove(uid);
+    _seq.remove(uid);
+    deletedAccounts.add(uid);
+  }
+
   @override
   Future<SyncResponse> exchange(String idToken, SyncRequest request) async {
     requests++;

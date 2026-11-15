@@ -132,7 +132,6 @@
   "notSignedInShort": "Chưa đăng nhập",
   "connected": "Đã kết nối",
   "dangerZone": "Vùng nguy hiểm",
-  "deleteAccountLater": "Xóa tài khoản sẽ có trong bản phát hành chính thức.",
   "deleteAccount": "Xóa tài khoản",
   "deleteAccountBody": "Xóa vĩnh viễn tất cả dữ liệu của bạn",
   "countryUS": "United States",
@@ -2232,5 +2231,12 @@
         "type": "String"
       }
     }
-  }
+  },
+  "deleteAccountTitle": "Xóa tài khoản?",
+  "deleteAccountConfirm": "Tài khoản, từ vựng, lịch sử học, khu vườn và các bộ thẻ bạn đã chia sẻ sẽ bị xóa vĩnh viễn trên mọi thiết bị. Không thể khôi phục.",
+  "deleteAccountAction": "Xóa vĩnh viễn",
+  "deleteAccountPassword": "Nhập mật khẩu để xác nhận",
+  "deleteAccountDone": "Đã xóa tài khoản của bạn.",
+  "deleteAccountFailed": "Chưa xóa được tài khoản. Kiểm tra kết nối mạng rồi thử lại.",
+  "deleteAccountWorking": "Đang xóa tài khoản…"
 }

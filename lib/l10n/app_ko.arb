@@ -125,7 +125,6 @@
   "notSignedInShort": "로그인 안 됨",
   "connected": "연결됨",
   "dangerZone": "위험 구역",
-  "deleteAccountLater": "계정 삭제는 정식 출시 버전에서 제공돼요.",
   "deleteAccount": "계정 삭제",
   "deleteAccountBody": "모든 데이터를 영구 삭제해요",
   "countryUS": "미국",
@@ -1203,5 +1202,12 @@
   "dictSourceTatoeba": "Tatoeba: 영어-베트남어 예문, 문장마다 기여자 표기. CC BY 2.0 FR.",
   "dictTatoebaBy": "Tatoeba · {authors}",
   "wordNotesTitle": "잠금 화면 단어",
-  "wordNotesBody": "하루 {n}개 단어를 {from}부터 {to}까지 나눠 보여줘요: 곧 잊을 단어와 직접 추가한 새 단어."
+  "wordNotesBody": "하루 {n}개 단어를 {from}부터 {to}까지 나눠 보여줘요: 곧 잊을 단어와 직접 추가한 새 단어.",
+  "deleteAccountTitle": "계정을 삭제할까요?",
+  "deleteAccountConfirm": "계정, 단어, 학습 기록, 정원, 공유한 묶음이 모든 기기에서 영구 삭제돼요. 되돌릴 수 없어요.",
+  "deleteAccountAction": "영구 삭제",
+  "deleteAccountPassword": "확인을 위해 비밀번호를 입력하세요",
+  "deleteAccountDone": "계정이 삭제되었어요.",
+  "deleteAccountFailed": "계정을 삭제하지 못했어요. 연결을 확인하고 다시 시도하세요.",
+  "deleteAccountWorking": "계정을 삭제하는 중…"
 }

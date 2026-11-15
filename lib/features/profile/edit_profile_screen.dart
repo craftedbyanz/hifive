@@ -20,6 +20,45 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   static const _maxName = 12;
   TextEditingController? name;
+  var _deleting = false;
+
+  /// Deletes the account after a red confirmation; an email account types
+  /// its password, Google and Apple sign in again in their sheet. On
+  /// success the learner lands on sign-in, as after signing out.
+  Future<void> _delete(AppState s) async {
+    final t = context.t;
+    final sure = await confirm(
+      context,
+      t.deleteAccountTitle,
+      t.deleteAccountConfirm,
+      action: t.deleteAccountAction,
+      cancel: t.cancel,
+      destructive: true,
+    );
+    if (!sure || !mounted) return;
+    String? password;
+    if (s.user?.method == AuthMethod.email) {
+      password = await sheet<String>(context, const _PasswordSheet());
+      if (password == null || !mounted) return;
+    }
+    setState(() => _deleting = true);
+    try {
+      await s.deleteAccount(password: password);
+      if (!mounted) return;
+      final messenger = ScaffoldMessenger.of(context);
+      Navigator.of(context).popUntil((r) => r.isFirst);
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(t.deleteAccountDone)));
+    } on AuthException catch (e) {
+      final message = authMessage(e.error, t);
+      if (mounted && message != null) toast(context, message);
+    } on Object {
+      if (mounted) toast(context, t.deleteAccountFailed);
+    } finally {
+      if (mounted) setState(() => _deleting = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -150,8 +189,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const SizedBox(height: 11),
           PressFade(
             key: const ValueKey('profile-delete'),
-            // Deletion comes before release (docs/backend-plan.md).
-            onTap: () => toast(context, context.t.deleteAccountLater),
+            onTap: s.user == null || _deleting ? null : () => _delete(s),
             child: Container(
               height: 68,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -195,11 +233,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     ),
                   ),
-                  Icon(
-                    CupertinoIcons.chevron_forward,
-                    size: 16,
-                    color: Palette.dangerInk.withValues(alpha: .7),
-                  ),
+                  if (_deleting)
+                    Semantics(
+                      label: context.t.deleteAccountWorking,
+                      child: const CupertinoActivityIndicator(),
+                    )
+                  else
+                    Icon(
+                      CupertinoIcons.chevron_forward,
+                      size: 16,
+                      color: Palette.dangerInk.withValues(alpha: .7),
+                    ),
                 ],
               ),
             ),
@@ -316,4 +360,70 @@ class _BigAvatar extends StatelessWidget {
       ],
     ),
   );
+}
+
+/// Asks an email account for its password before deleting it; pops with
+/// the password, or nothing when closed.
+class _PasswordSheet extends StatefulWidget {
+  const _PasswordSheet();
+  @override
+  State<_PasswordSheet> createState() => _PasswordSheetState();
+}
+
+class _PasswordSheetState extends State<_PasswordSheet> {
+  final _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _password.dispose();
+    super.dispose();
+  }
+
+  void _done() {
+    if (_password.text.isEmpty) return;
+    Navigator.of(context).pop(_password.text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            t.deleteAccountPassword,
+            style: D.text(18, weight: FontWeight.w800),
+          ),
+          const SizedBox(height: 14),
+          TextField(
+            key: const ValueKey('delete-password'),
+            controller: _password,
+            autofocus: true,
+            obscureText: true,
+            autocorrect: false,
+            enableSuggestions: false,
+            textInputAction: TextInputAction.done,
+            onChanged: (_) => setState(() {}),
+            onSubmitted: (_) => _done(),
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 14,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          ActionButton(
+            t.deleteAccountAction,
+            key: const ValueKey('delete-confirm'),
+            color: Palette.dangerInk,
+            onTap: _password.text.isEmpty ? null : _done,
+          ),
+        ],
+      ),
+    );
+  }
 }

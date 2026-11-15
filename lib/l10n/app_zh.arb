@@ -125,7 +125,6 @@
   "notSignedInShort": "未登录",
   "connected": "已连接",
   "dangerZone": "危险操作",
-  "deleteAccountLater": "删除账户功能将在正式版中推出。",
   "deleteAccount": "删除账户",
   "deleteAccountBody": "永久删除你的所有数据",
   "countryUS": "美国",
@@ -1203,5 +1202,12 @@
   "dictSourceTatoeba": "Tatoeba：英越例句，每句注明贡献者。CC BY 2.0 FR。",
   "dictTatoebaBy": "Tatoeba · {authors}",
   "wordNotesTitle": "锁屏单词",
-  "wordNotesBody": "每天 {n} 个单词，{from} 到 {to} 之间分散推送：快要忘记的单词和你自己添加的新词。"
+  "wordNotesBody": "每天 {n} 个单词，{from} 到 {to} 之间分散推送：快要忘记的单词和你自己添加的新词。",
+  "deleteAccountTitle": "删除账号？",
+  "deleteAccountConfirm": "你的账号、单词、学习记录、花园和分享的卡组将在所有设备上被永久删除，且无法恢复。",
+  "deleteAccountAction": "永久删除",
+  "deleteAccountPassword": "输入密码以确认",
+  "deleteAccountDone": "你的账号已删除。",
+  "deleteAccountFailed": "无法删除账号。请检查网络后重试。",
+  "deleteAccountWorking": "正在删除账号…"
 }

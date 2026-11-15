@@ -136,6 +136,48 @@ class FirebaseAuthService implements AuthService {
   Future<String?> idToken() async => _auth.currentUser?.getIdToken();
 
   @override
+  Future<void> reauthenticate({String? password}) async {
+    final user = _auth.currentUser;
+    if (user == null) throw const AuthException(AuthError.unknown);
+    await _run(() async {
+      switch (_user(user)!.method) {
+        case AuthMethod.google:
+          final google = GoogleSignIn.instance;
+          await (_googleReady ??= google.initialize(
+            clientId: Platform.isIOS ? iosClientId : null,
+            serverClientId: webClientId,
+          ));
+          final token = (await google.authenticate()).authentication.idToken;
+          if (token == null) {
+            throw FirebaseAuthException(code: 'missing-id-token');
+          }
+          return user.reauthenticateWithCredential(
+            GoogleAuthProvider.credential(idToken: token),
+          );
+        case AuthMethod.apple:
+          return user.reauthenticateWithProvider(AppleAuthProvider());
+        case AuthMethod.email:
+          return user.reauthenticateWithCredential(
+            EmailAuthProvider.credential(
+              email: user.email ?? '',
+              password: password ?? '',
+            ),
+          );
+      }
+    });
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      await _auth.currentUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(_error(e.code));
+    }
+    await signOut();
+  }
+
+  @override
   Future<void> signOut() async {
     await _auth.signOut();
     if (_googleReady != null) {

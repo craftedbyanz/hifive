@@ -395,10 +395,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get dangerZone => 'Vùng nguy hiểm';
 
   @override
-  String get deleteAccountLater =>
-      'Xóa tài khoản sẽ có trong bản phát hành chính thức.';
-
-  @override
   String get deleteAccount => 'Xóa tài khoản';
 
   @override
@@ -4024,4 +4020,27 @@ class AppLocalizationsVi extends AppLocalizations {
   String wordNotesBody(int n, String from, String to) {
     return '$n từ mỗi ngày, rải từ $from đến $to: những từ bạn sắp quên và từ mới bạn tự thêm.';
   }
+
+  @override
+  String get deleteAccountTitle => 'Xóa tài khoản?';
+
+  @override
+  String get deleteAccountConfirm =>
+      'Tài khoản, từ vựng, lịch sử học, khu vườn và các bộ thẻ bạn đã chia sẻ sẽ bị xóa vĩnh viễn trên mọi thiết bị. Không thể khôi phục.';
+
+  @override
+  String get deleteAccountAction => 'Xóa vĩnh viễn';
+
+  @override
+  String get deleteAccountPassword => 'Nhập mật khẩu để xác nhận';
+
+  @override
+  String get deleteAccountDone => 'Đã xóa tài khoản của bạn.';
+
+  @override
+  String get deleteAccountFailed =>
+      'Chưa xóa được tài khoản. Kiểm tra kết nối mạng rồi thử lại.';
+
+  @override
+  String get deleteAccountWorking => 'Đang xóa tài khoản…';
 }

@@ -159,4 +159,73 @@ void main() {
     expect(find.text('Email'), findsOneWidget);
     expect(find.byKey(const ValueKey('profile-sync-now')), findsNothing);
   });
+
+  testWidgets('deleting an email account asks twice, then removes it', (
+    tester,
+  ) async {
+    final auth = MemoryAuthService(
+      signedIn: const AuthUser(
+        uid: 'u1',
+        method: AuthMethod.email,
+        email: 'lan@x.vn',
+      ),
+    )..accounts['lan@x.vn'] = 'secret1';
+    final server = FakeSyncServer();
+    final state = createAppState(
+      store: MemoryRecordStore(),
+      auth: auth,
+      sync: server,
+      feedback: SilentFeedback(),
+      now: () => DateTime(2026, 11, 15, 9),
+    )..onboarded = true;
+    await state.load();
+    await mount(tester, state, const EditProfileScreen(), size: tall);
+
+    await tester.tap(find.byKey(const ValueKey('profile-delete')));
+    await tester.pumpAndSettle();
+    expect(find.text('Xóa tài khoản?'), findsOneWidget);
+    await tester.tap(find.text('Xóa vĩnh viễn'));
+    await tester.pumpAndSettle();
+    // A wrong password deletes nothing.
+    await tester.enterText(
+      find.byKey(const ValueKey('delete-password')),
+      'nope',
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('delete-confirm')));
+    await tester.pumpAndSettle();
+    expect(auth.deleted, isEmpty);
+    expect(state.user, isNotNull);
+
+    await tester.tap(find.byKey(const ValueKey('profile-delete')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Xóa vĩnh viễn'));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const ValueKey('delete-password')),
+      'secret1',
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('delete-confirm')));
+    await tester.pumpAndSettle();
+    expect(auth.deleted, ['u1']);
+    expect(server.deletedAccounts, ['u1']);
+    expect(state.user, isNull);
+    expect(find.text('Đã xóa tài khoản của bạn.'), findsOneWidget);
+    state.dispose();
+  });
+
+  testWidgets('cancelling the confirmation keeps the account', (tester) async {
+    final auth = MemoryAuthService(
+      signedIn: const AuthUser(uid: 'g1', method: AuthMethod.google),
+    );
+    final state = fresh(auth: auth);
+    await mount(tester, state, const EditProfileScreen(), size: tall);
+    await tester.tap(find.byKey(const ValueKey('profile-delete')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Huỷ'));
+    await tester.pumpAndSettle();
+    expect(auth.deleted, isEmpty);
+    expect(state.user, isNotNull);
+  });
 }

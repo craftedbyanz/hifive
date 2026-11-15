@@ -387,9 +387,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dangerZone => '危险操作';
 
   @override
-  String get deleteAccountLater => '删除账户功能将在正式版中推出。';
-
-  @override
   String get deleteAccount => '删除账户';
 
   @override
@@ -3911,4 +3908,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String wordNotesBody(int n, String from, String to) {
     return '每天 $n 个单词，$from 到 $to 之间分散推送：快要忘记的单词和你自己添加的新词。';
   }
+
+  @override
+  String get deleteAccountTitle => '删除账号？';
+
+  @override
+  String get deleteAccountConfirm => '你的账号、单词、学习记录、花园和分享的卡组将在所有设备上被永久删除，且无法恢复。';
+
+  @override
+  String get deleteAccountAction => '永久删除';
+
+  @override
+  String get deleteAccountPassword => '输入密码以确认';
+
+  @override
+  String get deleteAccountDone => '你的账号已删除。';
+
+  @override
+  String get deleteAccountFailed => '无法删除账号。请检查网络后重试。';
+
+  @override
+  String get deleteAccountWorking => '正在删除账号…';
 }

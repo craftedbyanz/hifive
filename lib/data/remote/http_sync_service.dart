@@ -57,4 +57,33 @@ class HttpSyncService implements SyncService {
         throw SyncException(SyncError.unknown, '${res.statusCode}');
     }
   }
+
+  @override
+  Future<void> deleteAccount(String idToken) async {
+    final http.Response res;
+    try {
+      res = await _client
+          .delete(
+            baseUrl.resolve('/v1/account'),
+            headers: {'authorization': 'Bearer $idToken'},
+          )
+          .timeout(timeout);
+    } on TimeoutException {
+      throw const SyncException(SyncError.unavailable, 'timeout');
+    } on SocketException catch (e) {
+      throw SyncException(SyncError.unavailable, e.message);
+    } on http.ClientException catch (e) {
+      throw SyncException(SyncError.unavailable, e.message);
+    }
+    switch (res.statusCode) {
+      case 200:
+        return;
+      case 401:
+        throw const SyncException(SyncError.unauthorized);
+      case 429 || >= 500:
+        throw SyncException(SyncError.unavailable, '${res.statusCode}');
+      default:
+        throw SyncException(SyncError.unknown, '${res.statusCode}');
+    }
+  }
 }
