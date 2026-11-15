@@ -558,7 +558,7 @@ class HomeHelpCard extends StatelessWidget {
 }
 
 /// The way into the garden, where Home used to offer Hifive Plus: the study
-/// tree growing now on a floating tile, over the logo's indigo.
+/// tree growing now on a patch of sunlit grass, over the logo's indigo.
 class HomeGardenBanner extends StatelessWidget {
   final VoidCallback onTap;
   const HomeGardenBanner({super.key, required this.onTap});
@@ -593,10 +593,13 @@ class HomeGardenBanner extends StatelessWidget {
                 SizedBox(
                   width: 96,
                   child: OverflowBox(
-                    maxHeight: 120,
+                    // Raised so the sunlit patch sits inside the banner.
+                    alignment: const Alignment(0, .6),
+                    maxWidth: 132,
+                    maxHeight: 132,
                     child: TreeArt(
                       species: state.studySpecies,
-                      size: 112,
+                      size: 132,
                       growth: .05 + .95 * growing / reviewsPerTree,
                     ),
                   ),

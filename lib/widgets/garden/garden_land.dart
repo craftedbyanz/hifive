@@ -164,7 +164,7 @@ void _plant(
   final sprout = 1 - _step(g, .11, .16);
   final young = small ? 0.0 : _step(g, .11, .16) * (1 - _step(g, .42, .48));
   final full = small ? _step(g, .11, .16) : _step(g, .42, .48);
-  pose(.45 + .55 * _step(g, 0, .12), sway * 1.6, sprout, () {
+  pose(.75 + .25 * _step(g, 0, .12), sway * 1.6, sprout, () {
     _drawForm(c, 'sprout', _record('sprout', _sprout), raster);
   });
   pose(.75 + .25 * _step(g, .14, .45), sway, young, () {
