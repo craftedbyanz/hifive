@@ -2281,6 +2281,32 @@ class AppLocalizationsZh extends AppLocalizations {
   String get focusStart => '开始专注';
 
   @override
+  String get focusShieldTitle => '屏蔽分心应用';
+
+  @override
+  String get focusShieldOff => '已关闭';
+
+  @override
+  String focusShieldPicked(int count) {
+    return '已选 $count 项 · 更改';
+  }
+
+  @override
+  String get focusShieldNone => '未选择应用 · 选择';
+
+  @override
+  String get focusShieldPickerTitle => '专注时屏蔽';
+
+  @override
+  String get focusShieldDone => '完成';
+
+  @override
+  String get focusShieldUnavailable => '此版本尚未获得 Apple 授权屏蔽应用。';
+
+  @override
+  String get focusShieldDenied => '请在设置中允许“屏幕使用时间”访问以屏蔽应用。';
+
+  @override
   String get focusChangeTree => '换一棵树';
 
   @override

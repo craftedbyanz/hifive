@@ -14,7 +14,7 @@ Status values: todo, in progress, done.
 - The first 10 seconds of a session can be cancelled without a withered tree.
 - After a finished session, the break offers a review of due words; doing it makes the tree bloom.
 - Trees are derived on the device from session and review records and synced; days are local days.
-- Later, not now: blocking other apps (needs Apple's Family Controls entitlement), relaxation and ambient sound, coins and a store, challenges. Never: ads or paywall screens inside the flow.
+- Blocking other apps during a session is built for iOS (step 9); it needs Apple's Family Controls distribution entitlement before it can ship. Later, not now: relaxation and ambient sound, coins and a store, challenges. Never: ads or paywall screens inside the flow.
 
 ## Open questions
 
@@ -74,3 +74,16 @@ Done on 13 November 2026, after the reference video of the focus setup: the tag 
 ### 8. New art, 30 species and the misty focus screen - done
 
 Done on 15 November 2026, after reviewing directions on local pages: the plants are redrawn in a soft illustrated manner (see "Garden art" in `docs/design-system.md`), replacing both earlier manners. Two species were appended, `olive` (Greece) and `mugunghwa` (Korea), for 30; each species has an `Origin` (Vietnamese and foreign plants side by side; the galaxy tree has none). The Dalat pine (`pine`) and the snowy Norway spruce (`snowpine`) are now told apart. The collection is grouped by how species unlock (`SpeciesGroup`: start, memory, diligence, focus, season, legend); baobab and banyan moved to legends. The focus screen drops the progress ring and the floating tile for a misty indigo sky, a sunbeam, rising motes and a pool of sunlit grass where the plant grows from two seed leaves to a tree. Tests: `test/domain/garden_test.dart`, `test/widgets/garden_art_test.dart`, `test/features/garden/`.
+
+### 9. Blocking distracting apps - built, waiting for Apple
+
+Done on 15 November 2026, iOS only: the timer sheet has "Chặn ứng dụng gây xao nhãng" (`ShieldRow`), shown on iOS 16 and later. Turning it on asks for Screen Time access (`AuthorizationCenter`, `.individual`) and opens Apple's app picker (`FamilyActivityPicker`) when nothing is chosen; the row then shows how many apps, categories and sites are chosen and opens the picker again. While a session runs, the chosen ones are shielded (`ManagedSettingsStore` named `hifive.focus`); every way a session ends lifts the shield, and so does every app launch, since a session never outlives the app. The switch and the choice stay on the phone (UserDefaults), because Apple's app tokens only mean something there. Dart: `FocusShield` (`lib/core/services/focus_shield.dart`, channel `hifive/shield`); iOS: `FocusShield` in `ios/Runner/AppDelegate.swift`. Tests: `test/features/garden/focus_shield_test.dart`.
+
+Signing: the entitlement `com.apple.developer.family-controls` is only in `ios/Runner/RunnerDev.entitlements`, used by the Debug and Profile builds, so TestFlight builds keep signing as before. To ship it:
+
+1. Request the Family Controls (Distribution) entitlement for `com.anznguyen.hifive.release` from Apple (Account → Certificates, IDs & Profiles, or developer.apple.com/contact/request/family-controls-distribution) and wait for approval.
+2. Enable Family Controls on the App ID, regenerate the App Store provisioning profile, and add the key to `ios/Runner/Runner.entitlements`.
+
+Until then a Release build shows the switch but answers "Bản cài này chưa được Apple cho phép chặn ứng dụng." Try it now with a development build on a device: `flutter run --profile -d <iPhone>`.
+
+Not done: Android (it would need an accessibility service and usage access, which Play reviews strictly), a custom shield screen (a ShieldConfiguration extension), and lifting the shield at the planned end even if the app was killed (a DeviceActivityMonitor extension; for now the next launch lifts it).

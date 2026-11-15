@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
 import '../../core/design/design.dart';
+import '../../core/services/focus_shield.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -48,6 +49,43 @@ class _TimerSheet extends StatefulWidget {
 
 class _TimerSheetState extends State<_TimerSheet> {
   late var _minutes = widget.minutes;
+  ShieldStatus _shield = FocusShield.off;
+
+  @override
+  void initState() {
+    super.initState();
+    FocusShield.status().then((s) {
+      if (mounted) setState(() => _shield = s);
+    });
+  }
+
+  Future<void> _switchShield(bool on) async {
+    final t = context.t;
+    final (status, error) = await FocusShield.setEnabled(
+      on,
+      title: t.focusShieldPickerTitle,
+      done: t.focusShieldDone,
+    );
+    if (!mounted) return;
+    setState(() => _shield = status);
+    if (error != null) {
+      toast(
+        context,
+        error == ShieldError.denied
+            ? t.focusShieldDenied
+            : t.focusShieldUnavailable,
+      );
+    }
+  }
+
+  Future<void> _pickApps() async {
+    final t = context.t;
+    final status = await FocusShield.pick(
+      title: t.focusShieldPickerTitle,
+      done: t.focusShieldDone,
+    );
+    if (mounted) setState(() => _shield = status);
+  }
 
   void _close({bool start = false}) =>
       Navigator.of(context).pop((minutes: _minutes, start: start));
@@ -130,7 +168,16 @@ class _TimerSheetState extends State<_TimerSheet> {
                           minutes: _minutes,
                           onChanged: (m) => setState(() => _minutes = m),
                         ),
-                        const SizedBox(height: 26),
+                        if (_shield.available) ...[
+                          const SizedBox(height: 18),
+                          ShieldRow(
+                            status: _shield,
+                            onSwitch: _switchShield,
+                            onPick: _pickApps,
+                          ),
+                          const SizedBox(height: 18),
+                        ] else
+                          const SizedBox(height: 26),
                         PressFade(
                           key: const ValueKey('timer-start'),
                           onTap: () => _close(start: true),
@@ -158,6 +205,70 @@ class _TimerSheetState extends State<_TimerSheet> {
                 ),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The switch that blocks the chosen apps while a session runs, with how
+/// many are chosen and a way to change them.
+class ShieldRow extends StatelessWidget {
+  final ShieldStatus status;
+  final ValueChanged<bool> onSwitch;
+  final VoidCallback onPick;
+  const ShieldRow({
+    super.key,
+    required this.status,
+    required this.onSwitch,
+    required this.onPick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final detail = !status.enabled
+        ? t.focusShieldOff
+        : status.picked == 0
+        ? t.focusShieldNone
+        : t.focusShieldPicked(status.picked);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 8, 10, 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: .7),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            CupertinoIcons.shield_lefthalf_fill,
+            size: 22,
+            color: Palette.focusInk,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: PressFade(
+              key: const ValueKey('shield-pick'),
+              onTap: status.enabled ? onPick : null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    t.focusShieldTitle,
+                    style: D.text(14, weight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(detail, style: D.text(12, color: D.secondary)),
+                ],
+              ),
+            ),
+          ),
+          CupertinoSwitch(
+            key: const ValueKey('shield-switch'),
+            value: status.enabled,
+            activeTrackColor: Palette.focusInk,
+            onChanged: onSwitch,
           ),
         ],
       ),

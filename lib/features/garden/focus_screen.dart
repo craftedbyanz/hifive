@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../../core/design/design.dart';
+import '../../core/services/focus_shield.dart';
 import '../../core/services/screen_lock.dart';
 import '../../domain/garden/garden.dart';
 import '../../domain/models/models.dart';
@@ -81,7 +82,10 @@ class _FocusScreenState extends State<FocusScreen>
     WidgetsBinding.instance.removeObserver(this);
     ScreenLock.locked.removeListener(_onLock);
     _timer?.cancel();
-    if (_phase == _Phase.running) ScreenLock.clearWarning();
+    if (_phase == _Phase.running) {
+      ScreenLock.clearWarning();
+      FocusShield.stop();
+    }
     _bloom.dispose();
     super.dispose();
   }
@@ -99,6 +103,7 @@ class _FocusScreenState extends State<FocusScreen>
     });
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
     ScreenLock.prepareWarning();
+    FocusShield.start();
   }
 
   void _tick() {
@@ -110,6 +115,7 @@ class _FocusScreenState extends State<FocusScreen>
   void _end(FocusOutcome outcome, Duration focused) {
     _timer?.cancel();
     ScreenLock.clearWarning();
+    FocusShield.stop();
     final state = AppScope.read(context);
     if (outcome == FocusOutcome.cancelled) {
       setState(() => _phase = _Phase.setup);
