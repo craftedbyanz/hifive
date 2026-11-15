@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../domain/vocab/vocab.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -101,7 +102,8 @@ class _DeckScreenState extends State<DeckScreen> {
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
     final deck = widget.deck, list = words;
-    final due = list.where((w) => w.isDue(state.now())).toList();
+    final due = deckReview(list, state.now(), state.today.newLeft);
+    final inReview = due.toSet();
     // With nothing due, an unfiltered deck offers to review everything.
     final reviewAll = due.isEmpty && list.isNotEmpty && filter == 'All';
     final review = reviewAll ? list : due;
@@ -201,7 +203,7 @@ class _DeckScreenState extends State<DeckScreen> {
                     child: PressFade(
                       key: ValueKey('deck-word-${w.id}'),
                       onTap: () => go<void>(context, WordScreen(word: w)),
-                      child: _WordRow(word: w, due: w.isDue(state.now())),
+                      child: _WordRow(word: w, due: inReview.contains(w)),
                     ),
                   ),
               ],

@@ -83,3 +83,16 @@ TodayPlan planToday({
   }
   return TodayPlan(due: due, fresh: fresh, newLeft: left);
 }
+
+/// A deck's session now: its words due, then as many of its new words as
+/// today still allows ([newLeft], from [TodayPlan.newLeft]), so studying a
+/// deck keeps to the same daily limit as today's review.
+List<FlashWord> deckReview(
+  Iterable<FlashWord> words,
+  DateTime now,
+  int newLeft,
+) => [
+  for (final w in words)
+    if (w.status != 'new' && w.isDue(now)) w,
+  ...words.where((w) => w.status == 'new').take(newLeft),
+];

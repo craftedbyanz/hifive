@@ -247,6 +247,21 @@ void main() {
       );
     });
 
+    testWidgets('review takes only the new words today still allows', (
+      tester,
+    ) async {
+      final state = fresh()..setNewPerDay(4);
+      final deck = state.decks.firstWhere((d) => d.id == 'cooking');
+      expect(deck.words.length, greaterThan(4));
+      await mount(tester, state, DeckScreen(deck: deck), size: _tall);
+      expect(find.text('Ôn tập (4)'), findsOneWidget);
+      expect(find.byKey(ValueKey('due-${deck.words[4].id}')), findsNothing);
+      await tester.tap(find.text('Ôn tập (4)'));
+      await tester.pumpAndSettle();
+      final review = tester.widget<ReviewScreen>(find.byType(ReviewScreen));
+      expect(review.words, deck.words.take(4));
+    });
+
     testWidgets('filters show their name and an empty result disables review', (
       tester,
     ) async {
