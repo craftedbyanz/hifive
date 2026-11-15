@@ -137,8 +137,9 @@ void main() {
       expect(next.decks.first.words.first.status, 'review');
       expect(
         next.decks.first.words.first.due,
-        // FSRS: a new card rated Tốt starts at about 3 days.
-        now.add(const Duration(days: 3)),
+        // FSRS: a new card rated Tốt starts at about 3 days, due from the
+        // start of that day.
+        DateTime(2026, 11, 4, 4),
       );
     },
   );

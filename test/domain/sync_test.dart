@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/sync/sync.dart';
+import 'package:hifive/domain/vocab/vocab.dart';
 
 FlashWord _word(String id) => FlashWord(id: id, word: id, meaning: id);
 
@@ -93,7 +94,7 @@ void main() {
       );
       expect(word.status, 'review');
       expect(word.intervalDays, 3);
-      expect(word.due, t.add(const Duration(days: 3)));
+      expect(word.due, dueAfter(t, const Duration(days: 3)));
     });
 
     test('reviews made on two devices both count, in time order', () {
@@ -109,7 +110,7 @@ void main() {
       replayReviews([word], [ipad, iphone]);
       // Good after Good: the second review grows the three-day interval.
       expect(word.intervalDays, greaterThan(3));
-      expect(word.due, ipad.at.add(Duration(days: word.intervalDays)));
+      expect(word.due, dueAfter(ipad.at, Duration(days: word.intervalDays)));
     });
 
     test('a reset clears earlier reviews but not later ones', () {

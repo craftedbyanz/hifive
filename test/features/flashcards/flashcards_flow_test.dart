@@ -41,9 +41,9 @@ void main() {
       expect(words[0].status, 'learning');
       expect(words[0].due, state.now().add(const Duration(minutes: 6)));
       await swipe(tester, const Offset(0, -200));
-      expect(words[1].due, state.now().add(const Duration(days: 3)));
+      expect(words[1].due, dueAfter(state.now(), const Duration(days: 3)));
       await swipe(tester, const Offset(200, 0));
-      expect(words[2].due, state.now().add(const Duration(days: 16)));
+      expect(words[2].due, dueAfter(state.now(), const Duration(days: 16)));
       await swipe(tester, const Offset(-200, 0));
       expect(words[3].status, 'learning');
       expect(words[3].due, state.now().add(const Duration(minutes: 1)));

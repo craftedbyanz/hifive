@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/app/app.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/domain/vocab/vocab.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/game/game.dart';
 import 'package:hifive/features/home/home.dart';
@@ -183,7 +184,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Xuất sắc!'), findsOneWidget);
     // FSRS: a new card rated Dễ starts at about 16 days of stability.
-    expect(deck.words.first.due, state.now().add(const Duration(days: 16)));
+    expect(
+      deck.words.first.due,
+      dueAfter(state.now(), const Duration(days: 16)),
+    );
   });
   testWidgets('Flow Letter long press drag solves a word and awards XP', (
     tester,

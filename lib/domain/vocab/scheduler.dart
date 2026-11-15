@@ -24,6 +24,21 @@ const againStep = Duration(minutes: 1), hardStep = Duration(minutes: 6);
 
 const _day = Duration(days: 1);
 
+/// The hour a study day starts. A card put away for a day or more comes due
+/// at this hour of its day, and work done before it counts for the day
+/// before, as it does for someone studying past midnight.
+const dayStartHour = 4;
+
+/// When a card put away for [interval] at [at] comes due: a learning step
+/// to the minute, a day or more at the start of the study day it lands on,
+/// so a word learned in the evening is ready all of the day it is due, and
+/// the reminder that day counts it.
+DateTime dueAfter(DateTime at, Duration interval) {
+  if (interval < _day) return at.add(interval);
+  final day = at.subtract(const Duration(hours: dayStartHour));
+  return DateTime(day.year, day.month, day.day + interval.inDays, dayStartHour);
+}
+
 double _days(Duration d) => d.inSeconds / Duration.secondsPerDay;
 
 Duration _toDays(double s) =>
@@ -110,7 +125,7 @@ void applyRating(FlashWord word, DateTime at, int rating) {
     ..difficulty = o.difficulty
     ..lapses = o.lapses
     ..intervalDays = o.interval.inDays
-    ..due = at.add(o.interval)
+    ..due = dueAfter(at, o.interval)
     ..firstReview ??= at
     ..lastReview = at
     ..reviews += 1;

@@ -14,6 +14,31 @@ FlashWord _w(String word, {String example = ''}) => FlashWord(
 
 void main() {
   group('today', () {
+    test('a word learned in the evening is due all of its day', () {
+      final w = _w('evening');
+      applyRating(w, DateTime(2026, 11, 1, 21), 2);
+      expect(w.intervalDays, 3);
+      expect(w.due, DateTime(2026, 11, 4, 4));
+      final morning = DateTime(2026, 11, 4, 8);
+      final plan = planToday(
+        words: {'evening': w},
+        decks: const [],
+        now: morning,
+        perDay: 10,
+      );
+      expect(plan.due, [w]);
+      // Learning steps stay to the minute.
+      final step = _w('step');
+      applyRating(step, DateTime(2026, 11, 1, 21), 0);
+      expect(step.due, DateTime(2026, 11, 1, 21, 1));
+    });
+
+    test('work past midnight counts for the day before', () {
+      final w = _w('late');
+      applyRating(w, DateTime(2026, 11, 2, 1, 30), 2);
+      expect(w.due, DateTime(2026, 11, 4, 4));
+    });
+
     test('new words slow down while reviews pile up', () {
       expect(newWordsLeft(perDay: 10, metToday: 0, dueCount: 5), 10);
       expect(newWordsLeft(perDay: 10, metToday: 4, dueCount: 5), 6);
