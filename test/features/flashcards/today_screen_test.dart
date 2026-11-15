@@ -77,24 +77,27 @@ void main() {
     expect(find.byKey(const ValueKey('today-complete')), findsOneWidget);
   });
 
-  testWidgets('Home shows today and opens it as exercises', (tester) async {
+  testWidgets('Home shows today and opens it as a flashcard session', (
+    tester,
+  ) async {
     final state = fresh();
     await mount(tester, state, const HomeScreen(animateAmbient: false));
     expect(find.text('10 từ mới'), findsOneWidget);
     expect(find.text('HÔM NAY · KHOẢNG 2 PHÚT'), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('home-today')));
     await tester.pumpAndSettle();
-    final today = tester.widget<TodayScreen>(find.byType(TodayScreen));
-    expect(today.words, hasLength(10));
-    expect(find.byType(ReviewScreen), findsNothing);
+    final review = tester.widget<ReviewScreen>(find.byType(ReviewScreen));
+    expect(review.words, hasLength(10));
+    expect(review.source, 'today');
+    expect(find.byType(TodayScreen), findsNothing);
 
-    // A new word is met first, and rating it logs today's review.
-    expect(find.byKey(const ValueKey('ex-kind-intro')), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('ex-reveal')));
+    // Swiping a card rates it, logged as today's review.
+    await tester.drag(
+      find.byKey(const ValueKey('review-card')),
+      const Offset(0, -200),
+    );
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('ex-rate-2')));
-    await tester.pumpAndSettle();
-    expect(today.words!.first.status, 'review');
+    expect(review.words.first.status, 'review');
     expect(state.rated.single.event.source, 'today');
   });
 

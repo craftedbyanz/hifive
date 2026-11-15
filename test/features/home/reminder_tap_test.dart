@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
@@ -26,10 +25,11 @@ void main() {
     // The tap that launched the app opens the review once Home is up.
     await mount(tester, fresh(), const HomeScreen(animateAmbient: false));
     await tester.pumpAndSettle();
-    expect(find.byType(TodayScreen), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('today-close')));
+    final review = tester.widget<ReviewScreen>(find.byType(ReviewScreen));
+    expect(review.source, 'today');
+    await tester.tap(find.byTooltip('Đóng ôn tập'));
     await tester.pumpAndSettle();
-    expect(find.byType(TodayScreen), findsNothing);
+    expect(find.byType(ReviewScreen), findsNothing);
 
     // A tap while the app runs opens it again.
     tapped = true;
@@ -40,6 +40,6 @@ void main() {
           (_) {},
         );
     await tester.pumpAndSettle();
-    expect(find.byType(TodayScreen), findsOneWidget);
+    expect(find.byType(ReviewScreen), findsOneWidget);
   });
 }
