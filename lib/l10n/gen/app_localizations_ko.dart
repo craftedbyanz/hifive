@@ -2984,7 +2984,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get practiceTitle => '플립 카드로 복습';
 
   @override
-  String get practiceBody => '뒤집어 뜻을 보고, 알면 오른쪽, 모르면 왼쪽으로 밀어요.';
+  String get practiceBody => '뒤집어 뜻을 보고, 밀어서 기억 정도를 매겨요: 다시, 어려움, 좋음, 쉬움.';
 
   @override
   String get menuListen => '듣기';
@@ -3862,24 +3862,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get deleteAccountWorking => '계정을 삭제하는 중…';
 
   @override
-  String get rateForgot => '모르겠어요';
-
-  @override
-  String get rateRemembered => '알아요';
-
-  @override
-  String get guideRememberedBody => '뜻과 발음이 기억나면 오른쪽으로 밀어요';
-
-  @override
-  String get guideFlip => '탭해서 뒤집기';
-
-  @override
-  String get guideFlipBody => '먼저 뜻을 떠올린 뒤 카드를 뒤집어 확인해요';
-
-  @override
-  String get guideForgotBody2 => '왼쪽으로 밀면 Hifive가 곧 다시 보여줘요';
-
-  @override
   String get dictSearchBar => '단어를 찾아 묶음에 추가';
 
   @override
@@ -3941,4 +3923,28 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get deckDeleted => '묶음을 삭제했어요';
+
+  @override
+  String get guideForgot => '잊어버렸어요';
+
+  @override
+  String get guideForgotBody => '왼쪽으로 밀면 Hifive가 바로 다시 보여 줘요';
+
+  @override
+  String get guideHard => '조금 어려워요';
+
+  @override
+  String get guideHardBody => '아직 낯선 단어라면 아래로 밀어요';
+
+  @override
+  String get guideKnown => '기억해요';
+
+  @override
+  String get guideKnownBody => '뜻과 발음을 맞혔다면 위로 밀어요';
+
+  @override
+  String get guideEasy => '너무 쉬워요';
+
+  @override
+  String get guideEasyBody => '오른쪽으로 밀면 이 단어가 덜 나와요';
 }

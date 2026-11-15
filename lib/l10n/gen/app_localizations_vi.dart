@@ -3053,7 +3053,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get practiceBody =>
-      'Lật thẻ để xem nghĩa, vuốt phải nếu đã nhớ, vuốt trái nếu chưa.';
+      'Lật thẻ để xem nghĩa, rồi vuốt để chấm mức độ nhớ: Học lại, Khó, Tốt hoặc Dễ.';
 
   @override
   String get menuListen => 'Nghe';
@@ -3952,25 +3952,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deleteAccountWorking => 'Đang xóa tài khoản…';
 
   @override
-  String get rateForgot => 'Chưa nhớ';
-
-  @override
-  String get rateRemembered => 'Đã nhớ';
-
-  @override
-  String get guideRememberedBody => 'Vuốt phải khi bạn nhớ nghĩa và cách đọc';
-
-  @override
-  String get guideFlip => 'Chạm để lật thẻ';
-
-  @override
-  String get guideFlipBody => 'Đoán nghĩa trước, rồi lật thẻ để kiểm tra';
-
-  @override
-  String get guideForgotBody2 =>
-      'Vuốt trái để Hifive cho bạn gặp lại từ này sớm';
-
-  @override
   String get dictSearchBar => 'Tra từ để thêm vào bộ';
 
   @override
@@ -4032,4 +4013,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deckDeleted => 'Đã xóa bộ thẻ';
+
+  @override
+  String get guideForgot => 'Quên bài';
+
+  @override
+  String get guideForgotBody => 'Vuốt trái để Hifive sắp xếp học lại ngay';
+
+  @override
+  String get guideHard => 'Hơi khó nhớ';
+
+  @override
+  String get guideHardBody => 'Vuốt xuống nếu bạn thấy từ này còn lạ lẫm';
+
+  @override
+  String get guideKnown => 'Đã nhớ';
+
+  @override
+  String get guideKnownBody => 'Vuốt lên khi bạn trả lời đúng nghĩa và phát âm';
+
+  @override
+  String get guideEasy => 'Quá dễ';
+
+  @override
+  String get guideEasyBody => 'Vuốt phải để ít gặp lại từ này hơn';
 }

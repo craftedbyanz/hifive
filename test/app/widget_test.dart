@@ -108,7 +108,7 @@ void main() {
         find.text('"Guava juice is popular in the summer."'),
         findsOneWidget,
       );
-      await tester.tap(find.text('Đã nhớ'));
+      await tester.tap(find.text('Tốt'));
       await tester.pumpAndSettle();
       expect(find.text('Xuất sắc!'), findsOneWidget);
       expect(deck.words.first.status, 'review');
@@ -170,9 +170,7 @@ void main() {
     expect(find.byType(GameScreen), findsNothing);
     expect(tester.takeException(), isNull);
   });
-  testWidgets('flashcard swipe right says Đã nhớ and schedules a known card', (
-    tester,
-  ) async {
+  testWidgets('flashcard swipe right schedules an easy card', (tester) async {
     final state = fresh(), deck = seedDecks().last;
     await mount(
       tester,
@@ -185,10 +183,10 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Xuất sắc!'), findsOneWidget);
-    // FSRS: a new card rated Good (Đã nhớ) comes back in three days.
+    // FSRS: a new card rated Dễ starts at about 16 days of stability.
     expect(
       deck.words.first.due,
-      dueAfter(state.now(), const Duration(days: 3)),
+      dueAfter(state.now(), const Duration(days: 16)),
     );
   });
   testWidgets('Flow Letter long press drag solves a word and awards XP', (

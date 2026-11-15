@@ -2965,7 +2965,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get practiceTitle => '用翻卡复习';
 
   @override
-  String get practiceBody => '翻卡看释义，记住了向右滑，没记住向左滑。';
+  String get practiceBody => '翻卡看释义，再滑动评分：重来、困难、良好或简单。';
 
   @override
   String get menuListen => '听力';
@@ -3839,24 +3839,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deleteAccountWorking => '正在删除账号…';
 
   @override
-  String get rateForgot => '没记住';
-
-  @override
-  String get rateRemembered => '记住了';
-
-  @override
-  String get guideRememberedBody => '记得意思和读音时向右滑';
-
-  @override
-  String get guideFlip => '点击翻面';
-
-  @override
-  String get guideFlipBody => '先猜意思，再翻卡片核对';
-
-  @override
-  String get guideForgotBody2 => '向左滑，Hifive 会很快再让你复习';
-
-  @override
   String get dictSearchBar => '查词并加入卡组';
 
   @override
@@ -3917,4 +3899,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get deckDeleted => '卡组已删除';
+
+  @override
+  String get guideForgot => '忘了';
+
+  @override
+  String get guideForgotBody => '向左滑，Hifive 会马上安排你重学';
+
+  @override
+  String get guideHard => '有点难记';
+
+  @override
+  String get guideHardBody => '如果觉得这个词还很陌生，就向下滑';
+
+  @override
+  String get guideKnown => '记住了';
+
+  @override
+  String get guideKnownBody => '答对意思和发音时，就向上滑';
+
+  @override
+  String get guideEasy => '太简单';
+
+  @override
+  String get guideEasyBody => '向右滑，这个词会少出现';
 }

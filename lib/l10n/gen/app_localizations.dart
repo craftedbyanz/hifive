@@ -5655,7 +5655,7 @@ abstract class AppLocalizations {
   /// No description provided for @practiceBody.
   ///
   /// In vi, this message translates to:
-  /// **'Lật thẻ để xem nghĩa, vuốt phải nếu đã nhớ, vuốt trái nếu chưa.'**
+  /// **'Lật thẻ để xem nghĩa, rồi vuốt để chấm mức độ nhớ: Học lại, Khó, Tốt hoặc Dễ.'**
   String get practiceBody;
 
   /// No description provided for @menuListen.
@@ -7182,42 +7182,6 @@ abstract class AppLocalizations {
   /// **'Đang xóa tài khoản…'**
   String get deleteAccountWorking;
 
-  /// No description provided for @rateForgot.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chưa nhớ'**
-  String get rateForgot;
-
-  /// No description provided for @rateRemembered.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã nhớ'**
-  String get rateRemembered;
-
-  /// No description provided for @guideRememberedBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vuốt phải khi bạn nhớ nghĩa và cách đọc'**
-  String get guideRememberedBody;
-
-  /// No description provided for @guideFlip.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chạm để lật thẻ'**
-  String get guideFlip;
-
-  /// No description provided for @guideFlipBody.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đoán nghĩa trước, rồi lật thẻ để kiểm tra'**
-  String get guideFlipBody;
-
-  /// No description provided for @guideForgotBody2.
-  ///
-  /// In vi, this message translates to:
-  /// **'Vuốt trái để Hifive cho bạn gặp lại từ này sớm'**
-  String get guideForgotBody2;
-
   /// No description provided for @dictSearchBar.
   ///
   /// In vi, this message translates to:
@@ -7325,6 +7289,54 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã xóa bộ thẻ'**
   String get deckDeleted;
+
+  /// No description provided for @guideForgot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quên bài'**
+  String get guideForgot;
+
+  /// No description provided for @guideForgotBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vuốt trái để Hifive sắp xếp học lại ngay'**
+  String get guideForgotBody;
+
+  /// No description provided for @guideHard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hơi khó nhớ'**
+  String get guideHard;
+
+  /// No description provided for @guideHardBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vuốt xuống nếu bạn thấy từ này còn lạ lẫm'**
+  String get guideHardBody;
+
+  /// No description provided for @guideKnown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhớ'**
+  String get guideKnown;
+
+  /// No description provided for @guideKnownBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vuốt lên khi bạn trả lời đúng nghĩa và phát âm'**
+  String get guideKnownBody;
+
+  /// No description provided for @guideEasy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quá dễ'**
+  String get guideEasy;
+
+  /// No description provided for @guideEasyBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vuốt phải để ít gặp lại từ này hơn'**
+  String get guideEasyBody;
 }
 
 class _AppLocalizationsDelegate

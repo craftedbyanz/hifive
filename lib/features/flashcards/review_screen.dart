@@ -35,15 +35,12 @@ Future<void> openTodayReview(BuildContext context, {String source = 'today'}) {
   );
 }
 
-/// One study session on flip cards, the one way hifive studies words: tap to
-/// flip, then swipe right for "Đã nhớ" or left for "Chưa nhớ", or tap the
-/// matching button.
+/// One study session, measured from video on the reference:
 /// - the card follows the finger at 0.85, tilting about 3.5° per 110 pt;
-/// - the other button fades while the matching one grows and fills;
-/// - an answered card flies off in about 0.35 s, and the next settles over 0.73 s;
-/// - "Chưa nhớ" sends the card to the end of the queue without advancing
-///   progress, and so, once, does "Đã nhớ" on a card still in its learning
-///   steps.
+/// - the other three buttons fade while the matching one grows and fills;
+/// - a rated card flies off in about 0.35 s, and the next settles over 0.73 s;
+/// - "Học lại" sends the card to the end of the queue without advancing progress,
+///   and so, once, does "Khó" on a card still in its learning steps.
 class ReviewScreen extends StatefulWidget with CoverPage {
   final Deck deck;
   final List<FlashWord> words;
@@ -151,8 +148,9 @@ class _ReviewScreenState extends State<ReviewScreen>
     snap.stop();
     setState(() {
       drag += d.delta * .85;
-      activeRating = drag.dx < 0 ? 0 : 1;
-      dragBadge = (drag.dx.abs() / 80).clamp(0, 1);
+      final horizontal = drag.dx.abs() >= drag.dy.abs();
+      activeRating = horizontal ? (drag.dx < 0 ? 0 : 3) : (drag.dy > 0 ? 1 : 2);
+      dragBadge = (max(drag.dx.abs(), drag.dy.abs()) / 80).clamp(0, 1);
       badge.value = dragBadge;
     });
   }
@@ -160,9 +158,9 @@ class _ReviewScreenState extends State<ReviewScreen>
   void _onDragEnd(DragEndDetails d) {
     if (flying != null) return;
     final speed = d.velocity.pixelsPerSecond.distance;
-    final distance = drag.dx.abs();
+    final distance = max(drag.dx.abs(), drag.dy.abs());
     if (distance > ReviewScreen.commitDistance ||
-        (speed > 700 && distance > 30 && drag.dx.abs() > drag.dy.abs())) {
+        (speed > 700 && distance > 30)) {
       rate(activeRating);
       return;
     }
@@ -172,16 +170,14 @@ class _ReviewScreenState extends State<ReviewScreen>
     badge.reverse();
   }
 
-  /// Answers the top card: 0 "Chưa nhớ", 1 "Đã nhớ" (`_answers`).
-  void rate(int answer) {
+  void rate(int value) {
     if (flying != null || queue.isEmpty) return;
     final state = AppScope.read(context);
     final word = queue.first;
-    final value = _answers[answer].rating;
     state.feedback.tap();
     state.rate(word, value, source: widget.source);
-    activeRating = answer;
-    final direction = _answers[answer].direction;
+    activeRating = value;
+    final direction = _ratings[value].$2;
     final size = MediaQuery.sizeOf(context);
     setState(() {
       flyFrom = drag;
@@ -378,7 +374,7 @@ class _ReviewScreenState extends State<ReviewScreen>
                   word: queue.isEmpty ? null : queue.first,
                   active: activeRating,
                   progress: badge.value,
-                  onAnswer: rate,
+                  onRate: rate,
                 ),
               ),
               if (flying != null)

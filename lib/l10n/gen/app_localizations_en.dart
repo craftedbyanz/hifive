@@ -3124,7 +3124,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get practiceBody =>
-      'Flip to see the meaning, swipe right if you know it, left if not.';
+      'Flip to see the meaning, then swipe to rate it: Again, Hard, Good or Easy.';
 
   @override
   String get menuListen => 'Listen';
@@ -4025,27 +4025,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteAccountWorking => 'Deleting your account…';
 
   @override
-  String get rateForgot => 'Don\'t know';
-
-  @override
-  String get rateRemembered => 'Know it';
-
-  @override
-  String get guideRememberedBody =>
-      'Swipe right when you remember the meaning and how to say it';
-
-  @override
-  String get guideFlip => 'Tap to flip';
-
-  @override
-  String get guideFlipBody =>
-      'Guess the meaning first, then flip the card to check';
-
-  @override
-  String get guideForgotBody2 =>
-      'Swipe left and Hifive brings the word back soon';
-
-  @override
   String get dictSearchBar => 'Look up a word to add';
 
   @override
@@ -4107,4 +4086,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deckDeleted => 'Deck deleted';
+
+  @override
+  String get guideForgot => 'Forgot it';
+
+  @override
+  String get guideForgotBody =>
+      'Swipe left and Hifive brings it back right away';
+
+  @override
+  String get guideHard => 'A bit hard';
+
+  @override
+  String get guideHardBody => 'Swipe down if the word still feels unfamiliar';
+
+  @override
+  String get guideKnown => 'Got it';
+
+  @override
+  String get guideKnownBody =>
+      'Swipe up when you got the meaning and the sound right';
+
+  @override
+  String get guideEasy => 'Too easy';
+
+  @override
+  String get guideEasyBody => 'Swipe right to see this word less often';
 }
