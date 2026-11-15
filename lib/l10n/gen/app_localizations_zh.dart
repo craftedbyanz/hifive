@@ -384,12 +384,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get connected => '已连接';
 
   @override
-  String get syncLabel => '同步';
-
-  @override
-  String get syncNow => '立即同步';
-
-  @override
   String get dangerZone => '危险操作';
 
   @override
@@ -400,25 +394,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get deleteAccountBody => '永久删除你的所有数据';
-
-  @override
-  String get syncing => '正在同步…';
-
-  @override
-  String get syncFailed => '同步失败';
-
-  @override
-  String get neverSynced => '尚未同步';
-
-  @override
-  String syncedAtTime(String time) {
-    return '已于 $time 同步';
-  }
-
-  @override
-  String syncedOnDate(String date) {
-    return '已于 $date 同步';
-  }
 
   @override
   String get countryUS => '美国';

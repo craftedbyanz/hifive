@@ -6,8 +6,6 @@ import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/domain/sync/sync.dart';
 import 'package:hifive/features/profile/profile.dart';
-import 'package:hifive/features/welcome/welcome.dart';
-import 'package:hifive/l10n/l10n.dart';
 import 'package:hifive/state/state.dart';
 
 import '../helpers.dart';
@@ -228,32 +226,6 @@ void main() {
         size: const Size(393, 2100),
       );
       expect(find.text('Email'), findsNothing);
-      expect(syncStatus(s, lookupAppLocalizations(const Locale('vi'))), isNull);
-    });
-
-    test('status reads naturally', () {
-      final s = _device(server);
-      opened.add(s);
-      s.lastSyncedAt = _t.subtract(const Duration(minutes: 3));
-      expect(
-        syncStatus(s, lookupAppLocalizations(const Locale('vi'))),
-        'Đã đồng bộ lúc 08:57',
-      );
-      s.lastSyncedAt = DateTime(2026, 11, 8, 20);
-      expect(
-        syncStatus(s, lookupAppLocalizations(const Locale('vi'))),
-        'Đã đồng bộ 8/11',
-      );
-      s.syncError = SyncError.unavailable;
-      expect(
-        syncStatus(s, lookupAppLocalizations(const Locale('vi'))),
-        'Chưa đồng bộ được',
-      );
-      s.syncing = true;
-      expect(
-        syncStatus(s, lookupAppLocalizations(const Locale('vi'))),
-        'Đang đồng bộ...',
-      );
     });
 
     testWidgets('a failed push asks again before signing out', (tester) async {

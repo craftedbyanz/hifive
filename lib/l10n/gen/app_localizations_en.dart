@@ -400,12 +400,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get connected => 'Connected';
 
   @override
-  String get syncLabel => 'Sync';
-
-  @override
-  String get syncNow => 'Sync now';
-
-  @override
   String get dangerZone => 'Danger zone';
 
   @override
@@ -417,25 +411,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountBody => 'Permanently delete all your data';
-
-  @override
-  String get syncing => 'Syncing...';
-
-  @override
-  String get syncFailed => 'Couldn\'t sync';
-
-  @override
-  String get neverSynced => 'Not synced yet';
-
-  @override
-  String syncedAtTime(String time) {
-    return 'Synced at $time';
-  }
-
-  @override
-  String syncedOnDate(String date) {
-    return 'Synced $date';
-  }
 
   @override
   String get countryUS => 'United States';

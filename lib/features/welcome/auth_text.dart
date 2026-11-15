@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../domain/repositories/repositories.dart';
 import '../../l10n/l10n.dart';
-import '../../state/state.dart';
 import '../../widgets/common.dart';
 
 /// What each sign-in failure tells the learner. Cancelling says nothing.
@@ -53,19 +51,3 @@ IconData accountIcon(AuthUser? user) => switch (user?.method) {
   AuthMethod.google => Icons.g_mobiledata_rounded,
   AuthMethod.email => CupertinoIcons.mail_solid,
 };
-
-/// The sync line under the account, or null when there is nothing to say:
-/// signed out, or a build without the sync API.
-String? syncStatus(AppState s, AppLocalizations t) {
-  if (s.user == null || s.syncService == null) return null;
-  if (s.syncing) return t.syncing;
-  if (s.syncError != null) return t.syncFailed;
-  final at = s.lastSyncedAt;
-  if (at == null) return t.neverSynced;
-  final now = s.now();
-  final hm =
-      '${at.hour.toString().padLeft(2, '0')}:${at.minute.toString().padLeft(2, '0')}';
-  return DateUtils.isSameDay(at, now)
-      ? t.syncedAtTime(hm)
-      : t.syncedOnDate(DateFormat.Md(t.localeName).format(at));
-}

@@ -846,18 +846,6 @@ abstract class AppLocalizations {
   /// **'Đã kết nối'**
   String get connected;
 
-  /// No description provided for @syncLabel.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đồng bộ'**
-  String get syncLabel;
-
-  /// No description provided for @syncNow.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đồng bộ ngay'**
-  String get syncNow;
-
   /// No description provided for @dangerZone.
   ///
   /// In vi, this message translates to:
@@ -881,36 +869,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xóa vĩnh viễn tất cả dữ liệu của bạn'**
   String get deleteAccountBody;
-
-  /// No description provided for @syncing.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đang đồng bộ...'**
-  String get syncing;
-
-  /// No description provided for @syncFailed.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chưa đồng bộ được'**
-  String get syncFailed;
-
-  /// No description provided for @neverSynced.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chưa đồng bộ'**
-  String get neverSynced;
-
-  /// No description provided for @syncedAtTime.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã đồng bộ lúc {time}'**
-  String syncedAtTime(String time);
-
-  /// No description provided for @syncedOnDate.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã đồng bộ {date}'**
-  String syncedOnDate(String date);
 
   /// No description provided for @countryUS.
   ///

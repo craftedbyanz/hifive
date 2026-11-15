@@ -392,12 +392,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get connected => 'Đã kết nối';
 
   @override
-  String get syncLabel => 'Đồng bộ';
-
-  @override
-  String get syncNow => 'Đồng bộ ngay';
-
-  @override
   String get dangerZone => 'Vùng nguy hiểm';
 
   @override
@@ -409,25 +403,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deleteAccountBody => 'Xóa vĩnh viễn tất cả dữ liệu của bạn';
-
-  @override
-  String get syncing => 'Đang đồng bộ...';
-
-  @override
-  String get syncFailed => 'Chưa đồng bộ được';
-
-  @override
-  String get neverSynced => 'Chưa đồng bộ';
-
-  @override
-  String syncedAtTime(String time) {
-    return 'Đã đồng bộ lúc $time';
-  }
-
-  @override
-  String syncedOnDate(String date) {
-    return 'Đã đồng bộ $date';
-  }
 
   @override
   String get countryUS => 'United States';

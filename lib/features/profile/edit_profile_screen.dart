@@ -9,8 +9,8 @@ import '../../widgets/common.dart';
 import '../welcome/welcome.dart';
 import 'settings_kit.dart';
 
-/// The display name, the account (its email, how it signs in and when it
-/// last synced), and account deletion, which isn't built yet.
+/// The display name, the account (its email and how it signs in), and
+/// account deletion. Sync runs on its own, so there is no sync row.
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
   @override
@@ -137,50 +137,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ],
             ),
           ),
-          if (syncStatus(s, context.t) case final String status) ...[
-            const SizedBox(height: 24),
-            _FieldLabel(context.t.syncLabel),
-            const SizedBox(height: 11),
-            _Box(
-              height: 61,
-              child: Row(
-                children: [
-                  const Icon(
-                    CupertinoIcons.arrow_2_circlepath,
-                    size: 22,
-                    color: D.ink,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      status,
-                      key: const ValueKey('profile-sync-status'),
-                      style: D.text(15.5, height: 20 / 15.5),
-                    ),
-                  ),
-                  if (!s.syncing)
-                    PressFade(
-                      key: const ValueKey('profile-sync-now'),
-                      onTap: s.sync,
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(minHeight: 44),
-                        child: Center(
-                          widthFactor: 1,
-                          child: Text(
-                            context.t.syncNow,
-                            style: D.text(
-                              13,
-                              weight: FontWeight.w700,
-                              color: Palette.chatBlue,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
           const SizedBox(height: 48),
           Text(
             context.t.dangerZone,

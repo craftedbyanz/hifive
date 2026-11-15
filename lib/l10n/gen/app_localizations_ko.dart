@@ -385,12 +385,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get connected => '연결됨';
 
   @override
-  String get syncLabel => '동기화';
-
-  @override
-  String get syncNow => '지금 동기화';
-
-  @override
   String get dangerZone => '위험 구역';
 
   @override
@@ -401,25 +395,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get deleteAccountBody => '모든 데이터를 영구 삭제해요';
-
-  @override
-  String get syncing => '동기화 중...';
-
-  @override
-  String get syncFailed => '동기화하지 못했어요';
-
-  @override
-  String get neverSynced => '아직 동기화 안 됨';
-
-  @override
-  String syncedAtTime(String time) {
-    return '$time에 동기화됨';
-  }
-
-  @override
-  String syncedOnDate(String date) {
-    return '$date에 동기화됨';
-  }
 
   @override
   String get countryUS => '미국';

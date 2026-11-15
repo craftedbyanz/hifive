@@ -138,36 +138,34 @@ void main() {
     expect(find.text('Chưa bật trong Cài đặt'), findsOneWidget);
   });
 
-  testWidgets('Edit Profile shows the account and syncs on request', (
-    tester,
-  ) async {
-    final server = FakeSyncServer();
-    final state = createAppState(
-      store: MemoryRecordStore(),
-      auth: MemoryAuthService(
-        signedIn: const AuthUser(
-          uid: 'g1',
-          method: AuthMethod.google,
-          email: 'lan@gmail.com',
+  testWidgets(
+    'Edit Profile shows the account and no sync row: sync runs on its own',
+    (tester) async {
+      final server = FakeSyncServer();
+      final state = createAppState(
+        store: MemoryRecordStore(),
+        auth: MemoryAuthService(
+          signedIn: const AuthUser(
+            uid: 'g1',
+            method: AuthMethod.google,
+            email: 'lan@gmail.com',
+          ),
         ),
-      ),
-      sync: server,
-      feedback: SilentFeedback(),
-      now: () => DateTime(2026, 11, 11, 10, 20),
-    )..onboarded = true;
-    await state.load();
-    await state.sync();
-    await mount(tester, state, const EditProfileScreen(), size: tall);
-    expect(find.text('lan@gmail.com'), findsOneWidget);
-    expect(find.text('Google'), findsOneWidget);
-    expect(find.byKey(const ValueKey('profile-linked')), findsOneWidget);
-    expect(find.text('Đã đồng bộ lúc 10:20'), findsOneWidget);
-    final before = server.requests;
-    await tester.tap(find.byKey(const ValueKey('profile-sync-now')));
-    await tester.pumpAndSettle();
-    expect(server.requests, greaterThan(before));
-    state.dispose();
-  });
+        sync: server,
+        feedback: SilentFeedback(),
+        now: () => DateTime(2026, 11, 11, 10, 20),
+      )..onboarded = true;
+      await state.load();
+      await state.sync();
+      await mount(tester, state, const EditProfileScreen(), size: tall);
+      expect(find.text('lan@gmail.com'), findsOneWidget);
+      expect(find.text('Google'), findsOneWidget);
+      expect(find.byKey(const ValueKey('profile-linked')), findsOneWidget);
+      expect(find.byKey(const ValueKey('profile-sync-now')), findsNothing);
+      expect(find.textContaining('Đã đồng bộ'), findsNothing);
+      state.dispose();
+    },
+  );
 
   testWidgets('without the sync API Edit Profile has no sync row', (
     tester,

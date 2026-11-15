@@ -131,31 +131,10 @@
   "signedInWith": "Kết nối qua",
   "notSignedInShort": "Chưa đăng nhập",
   "connected": "Đã kết nối",
-  "syncLabel": "Đồng bộ",
-  "syncNow": "Đồng bộ ngay",
   "dangerZone": "Vùng nguy hiểm",
   "deleteAccountLater": "Xóa tài khoản sẽ có trong bản phát hành chính thức.",
   "deleteAccount": "Xóa tài khoản",
   "deleteAccountBody": "Xóa vĩnh viễn tất cả dữ liệu của bạn",
-  "syncing": "Đang đồng bộ...",
-  "syncFailed": "Chưa đồng bộ được",
-  "neverSynced": "Chưa đồng bộ",
-  "syncedAtTime": "Đã đồng bộ lúc {time}",
-  "@syncedAtTime": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "syncedOnDate": "Đã đồng bộ {date}",
-  "@syncedOnDate": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
   "countryUS": "United States",
   "countryUK": "United Kingdom",
   "countryAU": "Australia",
