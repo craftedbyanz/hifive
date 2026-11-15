@@ -28,13 +28,11 @@ scripts/make_icons.sh                                         # render the app i
 (cd worker && npx wrangler dev)                               # run the Worker locally; first `npx wrangler d1 migrations apply hifive --local`
 ```
 
-Project skills in `.claude/skills/`: `testflight`, `deploy-worker`, `install-iphone` and `review-checklist`.
-
 Devices: iOS Simulator `87E929A8-9364-4443-AC07-69345651B181` (393 × 852); Android emulator `Flutter_API_36`. `flutter_tts` Swift Package Manager notices during iOS builds are expected.
 
 Never use `flutter install` on the iPhone: it uninstalls first and erases the app's data.
 
-Firebase project `hifive-3371b` (Spark plan). `lib/firebase_options.dart`, `ios/Runner/GoogleService-Info.plist` and `android/app/google-services.json` come from `flutterfire configure --project=hifive-3371b --platforms=ios,android`; re-run it after adding an app or provider, and register new Android signing keys with `firebase apps:android:sha:create`. The `xcodeproj` Ruby gem it needs is installed with `gem install --user-install`.
+Firebase project `hifive-3371b` (Spark plan); the `firebase-config` skill has the setup.
 
 `tool/pixel_snapshot_test.dart` renders every screen to PNG; its header has the command.
 
@@ -59,8 +57,6 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 - **Vocabulary core:** `lib/domain/vocab/` holds FSRS, memory levels, today's plan, exercises, memory insight and the catalog parser. A card's memory is derived by replaying `review` events grouped by `wordKey`, never stored, and one word in several decks is one memory. Cards put away for a day or more come due at 04:00 of their day (`dueAfter`). Home's today, reminders and decks open the flashcard session (`ReviewScreen`); Trí nhớ's Luyện tập opens the exercises (`TodayScreen`). The word catalog comes from the Worker (`/v1/catalog`) and is cached. Plan: `docs/memory-plan.md`.
 - **Reminders:** `ReminderSync` schedules the daily review reminders 30 days ahead over the `hifive/screen` channel (`ScreenLock`); the iOS delegate also answers notification permission and opens today's review when a reminder is tapped. Android has no native side yet.
 - **Garden:** `lib/domain/garden/` derives trees from `focus` records and from reviews of new or due cards; nothing else is stored. Art in `lib/widgets/garden/`, screens in `lib/features/garden/`. Over `hifive/screen` the iOS delegate reports the phone locking and shows the wither warning; `FocusShield` (`hifive/shield`, iOS 16+) blocks chosen apps, with Family Controls only in Debug and Profile until Apple approves it. The Live Activity (`FocusLive`, `ios/FocusActivity/`) is parked until the developer account holder creates its App IDs. Plan: `docs/garden-plan.md`.
-- **Mock content:** `lib/data/content/en/lessons.dart` gives every topic its own sentences. Conversation lines alternate partner (`Question.partner`) and learner; partner lines are excluded from scores.
-- **Sample data:** `main.dart` passes `includeExamples: true` to `createAppState` to seed three sample results. Tests don't.
 
 ## Conventions
 
@@ -89,6 +85,6 @@ After every Dart change, run `scripts/check.sh` and fix any failures before repo
 
 ## Worker
 
-`worker/` is the sync API on Cloudflare Workers (TypeScript, D1 `hifive` in APAC), deployed to `https://hifive-api.hifive-worker.workers.dev`; the `deploy-worker` skill has the steps. The app syncs only when built with `--dart-define=HIFIVE_API=<that address>`, which `scripts/install_iphone.sh` and the TestFlight build pass; plain `flutter run` stays offline. `src/auth.ts` verifies Firebase ID tokens, `src/sync.ts` applies `POST /v1/sync` in one D1 batch, `src/shares.ts` serves shared decks and Explore, `src/circles.ts` study groups and classes. A new table or column is a new numbered migration in `migrations/`, never an edit to an applied one. Tests use `@cloudflare/vitest-plugin`, which isolates storage per file only, so `test/setup.ts` empties the tables before each test.
+`worker/` is the sync API on Cloudflare Workers; `worker/CLAUDE.md` has its rules and the `deploy-worker` skill its deploy. The app syncs only when built with `--dart-define=HIFIVE_API=https://hifive-api.hifive-worker.workers.dev`, which `scripts/install_iphone.sh` and the TestFlight build pass; plain `flutter run` stays offline.
 
 `docs/backend-plan.md` holds the offline-first and sync design (records, HLC, merge rules per kind). Follow its local data model when changing what the app stores.
