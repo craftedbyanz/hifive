@@ -54,6 +54,33 @@ ui.Picture _record(String key, void Function(_Pen) draw) =>
       return recorder.endRecording();
     }();
 
+final _images = <String, ui.Image>{};
+
+/// How many pixels a rasterised form has per unit of its 200 box: 320 a
+/// side, sharp in a grid tile up to about 110 points on a 3× screen.
+const _rasterScale = 1.6;
+
+/// Draws the form [pic] (cached as [key]). With [raster] it draws an image
+/// of it made once instead: replaying hundreds of leaves for every frame of
+/// a scrolling grid costs too much.
+void _drawForm(Canvas c, String key, ui.Picture pic, bool raster) {
+  if (!raster) return c.drawPicture(pic);
+  final side = (200 * _rasterScale).round();
+  final image = _images[key] ??= () {
+    final recorder = ui.PictureRecorder();
+    Canvas(recorder)
+      ..scale(_rasterScale)
+      ..drawPicture(pic);
+    return recorder.endRecording().toImageSync(side, side);
+  }();
+  c.drawImageRect(
+    image,
+    Rect.fromLTWH(0, 0, side.toDouble(), side.toDouble()),
+    const Rect.fromLTWH(0, 0, 200, 200),
+    Paint()..filterQuality = FilterQuality.medium,
+  );
+}
+
 /// Up to nine places for bloom flowers, spread over the crown.
 List<Offset> _pickSpots(List<Offset> spots, int seed) {
   if (spots.isEmpty) {
@@ -84,6 +111,7 @@ double _step(double v, double a, double b) {
 }
 
 /// Draws species [id] at growth [g] in its 200 box, swaying with time [t].
+/// [raster] draws images of its forms, for plants that hold still in grids.
 void _plant(
   Canvas c,
   String id,
@@ -92,6 +120,7 @@ void _plant(
   bool still, {
   double bloom = 0,
   bool withered = false,
+  bool raster = false,
 }) {
   final key = _arts.containsKey(id) ? id : defaultSpecies;
   final art = _arts[key]!;
@@ -119,10 +148,9 @@ void _plant(
 
   if (withered) {
     pose(1, -.06, 1, () {
-      c
-        ..saveLayer(null, Paint()..colorFilter = const ColorFilter.matrix(_dry))
-        ..drawPicture(grown)
-        ..restore();
+      c.saveLayer(null, Paint()..colorFilter = const ColorFilter.matrix(_dry));
+      _drawForm(c, '$key/grown', grown, raster);
+      c.restore();
     });
     final pen = _Pen(c), rnd = _rng(key.length * 7 + 3);
     pen.litter(rnd, 7, 90, const [
@@ -137,14 +165,15 @@ void _plant(
   final young = small ? 0.0 : _step(g, .11, .16) * (1 - _step(g, .42, .48));
   final full = small ? _step(g, .11, .16) : _step(g, .42, .48);
   pose(.45 + .55 * _step(g, 0, .12), sway * 1.6, sprout, () {
-    c.drawPicture(_record('sprout', _sprout));
+    _drawForm(c, 'sprout', _record('sprout', _sprout), raster);
   });
   pose(.75 + .25 * _step(g, .14, .45), sway, young, () {
-    c.drawPicture(_record('$key/young', (p) => _youngForm(p, art)));
+    final form = _record('$key/young', (p) => _youngForm(p, art));
+    _drawForm(c, '$key/young', form, raster);
   });
   final k = small ? .42 + .58 * _step(g, .12, 1) : .62 + .38 * _step(g, .45, 1);
   pose(k, sway * .8, full, () {
-    c.drawPicture(grown);
+    _drawForm(c, '$key/grown', grown, raster);
     if (bloom > 0) _bloom(c, _bloomSpots['$key/grown']!, bloom, t, still);
   });
 }
@@ -447,6 +476,7 @@ void _garden(
       true,
       bloom: p.bloomed ? 1 : 0,
       withered: p.withered,
+      raster: true,
     );
     c.restore();
   }

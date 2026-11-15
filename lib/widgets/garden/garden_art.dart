@@ -65,6 +65,7 @@ class TreeArt extends StatelessWidget {
         still,
         bloom: bloom,
         withered: withered,
+        raster: !animate,
       );
       if (island) canvas.restore();
     },
