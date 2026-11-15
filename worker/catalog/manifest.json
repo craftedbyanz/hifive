@@ -4,5 +4,13 @@
       "version": 3,
       "path": "en/3.json"
     }
+  },
+  "dictionaries": {
+    "en-vi": {
+      "version": 1,
+      "path": "dictionary/en-vi/1.sqlite.gz",
+      "bytes": 5556277,
+      "sha256": "91f1054555a923c05c784a1e2ba12827bef2f1b7bfe74b9755402cb191149e8d"
+    }
   }
 }
