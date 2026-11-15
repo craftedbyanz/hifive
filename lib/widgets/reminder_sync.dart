@@ -24,8 +24,10 @@ class ReminderSync extends StatefulWidget {
   static const secondsPerNewWord = 30;
 
   /// How many days ahead reminders are scheduled, so they keep coming while
-  /// the app stays closed. Each day's count is the forecast from now.
-  static const days = 7;
+  /// the app stays closed, the time a learner drifting away needs them most.
+  /// Each day's count is the forecast from now. iOS keeps at most 64
+  /// pending notifications per app.
+  static const days = 30;
 
   @override
   State<ReminderSync> createState() => _ReminderSyncState();

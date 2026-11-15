@@ -25,6 +25,24 @@ import UserNotifications
     completionHandler([.banner, .list, .sound])
   }
 
+  /// Set when the learner taps a review reminder, until Flutter takes it
+  /// (`takeReviewTap`), so a tap that launches the app still opens the
+  /// review once Home is up.
+  private var reviewTapped = false
+  private var screenChannel: FlutterMethodChannel?
+
+  override func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+  ) {
+    if response.notification.request.identifier.hasPrefix("review-reminder") {
+      reviewTapped = true
+      screenChannel?.invokeMethod("reviewTapped", arguments: nil)
+    }
+    completionHandler()
+  }
+
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
     if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "ScreenLock") {
@@ -42,6 +60,7 @@ import UserNotifications
   /// going while it lies locked on the desk. Protected data becomes
   /// unavailable only on a passcode-locked phone.
   private func watchScreenLock(_ channel: FlutterMethodChannel) {
+    screenChannel = channel
     let center = NotificationCenter.default
     let alerts = UNUserNotificationCenter.current()
     let warningId = "focus-warning"
@@ -50,8 +69,11 @@ import UserNotifications
       alerts.removePendingNotificationRequests(withIdentifiers: [warningId])
       channel.invokeMethod("locked", arguments: true)
     }
-    channel.setMethodCallHandler { call, result in
+    channel.setMethodCallHandler { [weak self] call, result in
       switch call.method {
+      case "takeReviewTap":
+        result(self?.reviewTapped ?? false)
+        self?.reviewTapped = false
       case "prepareWarning":
         // Answers whether notifications are allowed (asking the first time).
         alerts.requestAuthorization(options: [.alert, .sound]) { granted, _ in

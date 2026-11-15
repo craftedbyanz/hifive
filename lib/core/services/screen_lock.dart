@@ -18,6 +18,10 @@ import 'package:flutter/services.dart';
 abstract final class ScreenLock {
   static const _channel = MethodChannel('hifive/screen');
   static final locked = ValueNotifier<bool>(false);
+
+  /// Counts taps on a review reminder while the app runs; see
+  /// [takeReviewTap].
+  static final reviewTaps = ValueNotifier<int>(0);
   static var _listening = false;
 
   static void listen() {
@@ -25,7 +29,20 @@ abstract final class ScreenLock {
     _listening = true;
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'locked') locked.value = call.arguments == true;
+      if (call.method == 'reviewTapped') reviewTaps.value++;
     });
+  }
+
+  /// Whether a review reminder was tapped since the last call, including
+  /// the tap that launched the app; answering clears it.
+  static Future<bool> takeReviewTap() async {
+    try {
+      return await _channel.invokeMethod<bool>('takeReviewTap') ?? false;
+    } on MissingPluginException {
+      return false;
+    } on PlatformException {
+      return false;
+    }
   }
 
   /// Asks once for permission to show the warning.

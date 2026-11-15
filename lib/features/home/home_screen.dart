@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../core/design/design.dart';
+import '../../core/services/screen_lock.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../profile/profile.dart';
@@ -60,6 +61,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    ScreenLock.listen();
+    ScreenLock.reviewTaps.addListener(_openTappedReview);
+    _openTappedReview();
     _refreshMenuBackdrop();
     _homeScroll.addListener(() {
       final next = _homeScroll.offset > 40;
@@ -67,6 +71,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         setState(() => _scrolledAway = next);
       }
     });
+  }
+
+  /// A tapped review reminder opens today's review, also when the tap
+  /// launched the app.
+  Future<void> _openTappedReview() async {
+    if (await ScreenLock.takeReviewTap() && mounted) await openToday(context);
   }
 
   int selected = 0;
@@ -107,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    ScreenLock.reviewTaps.removeListener(_openTappedReview);
     _menuBackdrop?.dispose();
     _ambient.dispose();
     _menuMotion.dispose();
