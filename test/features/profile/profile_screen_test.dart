@@ -49,14 +49,21 @@ void main() {
     expect(find.byType(EditProfileScreen), findsOneWidget);
   });
 
-  testWidgets('the upgrade banner only opens the local Plus screen', (
-    tester,
-  ) async {
-    await mount(tester, fresh(), const ProfileScreen(), size: _tall);
-    await tester.tap(find.text('Upgrade'));
-    await tester.pumpAndSettle();
-    expect(find.byType(PlusScreen), findsOneWidget);
-  });
+  testWidgets(
+    'Plus, its plans and offer codes are coming soon and open nothing',
+    (tester) async {
+      await mount(tester, fresh(), const ProfileScreen(), size: _tall);
+      expect(find.text('Upgrade'), findsNothing);
+      expect(find.text('Sắp ra mắt'), findsNWidgets(3));
+      for (final text in ['Sắp ra mắt', 'Gói đăng ký', 'Nhập mã ưu đãi']) {
+        await tester.tap(find.text(text).first);
+        await tester.pumpAndSettle();
+        expect(find.byType(PlusScreen), findsNothing);
+        expect(find.byType(RedemptionForm), findsNothing);
+        expect(find.byType(ProfileScreen), findsOneWidget);
+      }
+    },
+  );
 
   testWidgets('logout without an account changes nothing', (tester) async {
     final store = MemoryRecordStore();
@@ -76,7 +83,6 @@ void main() {
   ) async {
     await mount(tester, fresh(), const ProfileScreen(), size: _tall);
     const rows = [
-      'Chỉnh sửa hồ sơ',
       'Cài đặt bài học',
       'Giọng đọc',
       'Giao diện',

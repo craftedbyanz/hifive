@@ -22,23 +22,16 @@ Future<(AppState, RecordingSystemActions)> _profile(WidgetTester tester) async {
 void main() {
   setUpAll(loadAppFonts);
 
-  testWidgets(
-    'only Upgrade responds on the trial banner, and it opens a cover',
-    (tester) async {
-      await _profile(tester);
-      await tester.tap(find.text('Dùng thử Hifive Plus'));
-      await tester.pumpAndSettle();
-      expect(find.byType(PlusScreen), findsNothing);
-
-      await tester.tap(find.text('Upgrade'));
-      await tester.pumpAndSettle();
-      expect(find.byType(PlusScreen), findsOneWidget);
-      expect(
-        ModalRoute.of(tester.element(find.byType(PlusScreen))),
-        isA<CoverRoute<void>>(),
-      );
-    },
-  );
+  testWidgets('the trial banner says Plus is coming soon and opens nothing', (
+    tester,
+  ) async {
+    await _profile(tester);
+    await tester.tap(find.text('Dùng thử Hifive Plus'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('profile-trial')));
+    await tester.pumpAndSettle();
+    expect(find.byType(PlusScreen), findsNothing);
+  });
 
   testWidgets('a long hold on the header button still goes back', (
     tester,

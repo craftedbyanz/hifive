@@ -54,7 +54,8 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15.5),
-          _TrialBanner(onTap: () => open(const PlusScreen())),
+          // Plus is not on sale yet: the banner says so and opens nothing.
+          const _TrialBanner(),
           const SizedBox(height: 49),
           _Label(context.t.profileStudying),
           _Card(
@@ -70,11 +71,6 @@ class ProfileScreen extends StatelessWidget {
           _Label(context.t.profileGeneral),
           _Card(
             children: [
-              _Row(
-                context.t.profileEdit,
-                const _RowIcon(CupertinoIcons.person_crop_circle_fill),
-                () => open(const EditProfileScreen()),
-              ),
               _Row(
                 context.t.profileLessonSettings,
                 const CustomPaint(
@@ -115,12 +111,12 @@ class ProfileScreen extends StatelessWidget {
                   size: Size.square(20),
                   painter: _CardsGlyphPainter(),
                 ),
-                () => open(const PlusScreen()),
+                null,
               ),
               _Row(
                 context.t.profileRedeem,
                 const _RowIcon(CupertinoIcons.gift_fill),
-                () => pageSheet<void>(context, const RedemptionForm()),
+                null,
               ),
               _Row(
                 context.t.profileInvite,
@@ -278,9 +274,9 @@ class _Avatar extends StatelessWidget {
 
 /// The reference's trial banner: its second line changes every three seconds,
 /// the old text sinking and fading as the new one rises into place.
+/// Hifive Plus, shown as coming soon until it goes on sale.
 class _TrialBanner extends StatefulWidget {
-  final VoidCallback onTap;
-  const _TrialBanner({required this.onTap});
+  const _TrialBanner();
   static const lineCount = 3;
   static List<String> lines(AppLocalizations t) => [
     t.trialLine1,
@@ -382,11 +378,10 @@ class _TrialBannerState extends State<_TrialBanner>
           Positioned(
             right: 12,
             top: 26,
-            child: PressFade(
+            child: Semantics(
               key: const ValueKey('profile-trial'),
-              onTap: widget.onTap,
               child: Container(
-                width: 88,
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 height: 38,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -398,7 +393,7 @@ class _TrialBannerState extends State<_TrialBanner>
                   ),
                 ),
                 child: Text(
-                  context.t.upgrade,
+                  context.t.comingSoon,
                   style: D.text(
                     13,
                     weight: FontWeight.w700,
@@ -473,10 +468,12 @@ class _RowIcon extends StatelessWidget {
       Icon(icon, size: size, color: Palette.iconGrey);
 }
 
+/// A settings row. Without [onTap] it is not available yet: muted, with a
+/// "Sắp ra mắt" tag in place of the chevron.
 class _Row extends StatelessWidget {
   final String title;
   final Widget icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   const _Row(this.title, this.icon, this.onTap);
   @override
   Widget build(BuildContext context) => PressFade(
@@ -500,14 +497,32 @@ class _Row extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: D.text(13, weight: FontWeight.w700, height: 18 / 13),
+              style: D.text(
+                13,
+                weight: FontWeight.w700,
+                height: 18 / 13,
+                color: onTap == null ? D.muted : D.ink,
+              ),
             ),
           ),
-          const Icon(
-            CupertinoIcons.chevron_forward,
-            size: 16,
-            color: Palette.profileChevron,
-          ),
+          if (onTap == null)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Palette.profileIconDisc,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                context.t.comingSoon,
+                style: D.text(11, weight: FontWeight.w700, color: D.secondary),
+              ),
+            )
+          else
+            const Icon(
+              CupertinoIcons.chevron_forward,
+              size: 16,
+              color: Palette.profileChevron,
+            ),
           const SizedBox(width: 17),
         ],
       ),

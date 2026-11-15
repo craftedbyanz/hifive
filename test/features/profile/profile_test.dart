@@ -99,36 +99,15 @@ void main() {
     expect(state.level, 'A1');
   });
 
-  testWidgets('profile opens its settings screens', (tester) async {
+  testWidgets('the avatar opens Edit Profile; there is no separate row', (
+    tester,
+  ) async {
     final state = fresh();
     await mount(tester, state, const ProfileScreen(), size: tall);
-    await tester.tap(find.text('Chỉnh sửa hồ sơ'));
+    expect(find.text('Chỉnh sửa hồ sơ'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('profile-avatar')));
     await tester.pumpAndSettle();
     expect(find.byType(EditProfileScreen), findsOneWidget);
-  });
-
-  testWidgets('an offer code goes nowhere and says so', (tester) async {
-    final state = fresh();
-    await mount(
-      tester,
-      state,
-      const ProfileScreen(),
-      size: const Size(393, 2100),
-    );
-    await tester.tap(find.text('Nhập mã ưu đãi'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('redeem-continue')));
-    await tester.pumpAndSettle();
-    expect(find.byType(RedemptionForm), findsOneWidget, reason: 'needs a code');
-    await tester.enterText(find.byKey(const ValueKey('redeem-code')), 'ABC');
-    await tester.pump();
-    await tester.tap(find.byKey(const ValueKey('redeem-continue')));
-    await tester.pumpAndSettle();
-    expect(find.byType(RedemptionForm), findsNothing);
-    expect(
-      find.text('Bản cục bộ không kết nối App Store hoặc đổi mã.'),
-      findsOneWidget,
-    );
   });
 
   testWidgets('notifications show the permission state honestly', (
