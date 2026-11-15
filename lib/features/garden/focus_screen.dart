@@ -454,6 +454,8 @@ String speciesName(AppLocalizations t, String id) => switch (id) {
   'banyan' => t.speciesBanyan,
   'snowpine' => t.speciesSnowpine,
   'galaxy' => t.speciesGalaxy,
+  'olive' => t.speciesOlive,
+  'mugunghwa' => t.speciesMugunghwa,
   _ => t.speciesOak,
 };
 

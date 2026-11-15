@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/core/services/screen_lock.dart';
 import 'package:hifive/domain/garden/garden.dart';
 import 'package:hifive/features/garden/garden.dart';
+import 'package:hifive/l10n/l10n.dart';
 import 'package:hifive/state/state.dart';
 
 import '../../helpers.dart';
@@ -170,6 +171,15 @@ void main() {
       ),
       findsOneWidget,
     );
+  });
+
+  testWidgets('every species has its own name', (tester) async {
+    await open(tester);
+    final t = lookupAppLocalizations(const Locale('vi'));
+    final names = species.map((s) => speciesName(t, s.id)).toList();
+    expect(names.toSet(), hasLength(species.length));
+    expect(speciesName(t, 'olive'), 'Ô liu');
+    expect(speciesName(t, 'mugunghwa'), 'Mộc cận');
   });
 
   testWidgets('a locked species cannot be chosen', (tester) async {
