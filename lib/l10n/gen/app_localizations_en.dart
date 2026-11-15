@@ -3900,4 +3900,238 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get dictTitle => 'Look up';
+
+  @override
+  String get dictSearchHint => 'Type an English or Vietnamese word';
+
+  @override
+  String dictAddTo(String deck) {
+    return 'Add to: $deck';
+  }
+
+  @override
+  String get dictNewDeck => 'New deck…';
+
+  @override
+  String get dictRecent => 'Recent';
+
+  @override
+  String get dictClearRecent => 'Clear recent';
+
+  @override
+  String dictForYou(String level) {
+    return 'Suggested for $level';
+  }
+
+  @override
+  String dictAddedCount(int n) {
+    return '$n added';
+  }
+
+  @override
+  String get dictAdd => 'Add';
+
+  @override
+  String dictAddWord(String word, String deck) {
+    return 'Add $word to $deck';
+  }
+
+  @override
+  String dictUndoWord(String word, String deck) {
+    return 'Remove $word from $deck';
+  }
+
+  @override
+  String dictAddToDeck(String deck) {
+    return 'Add to \"$deck\"';
+  }
+
+  @override
+  String get dictInDeck => 'Already in this deck';
+
+  @override
+  String dictLearningIn(String deck) {
+    return 'Learning in \"$deck\"';
+  }
+
+  @override
+  String dictManual(String word) {
+    return 'Enter \"$word\" yourself';
+  }
+
+  @override
+  String get dictManualPlain => 'Enter a word yourself';
+
+  @override
+  String get dictDidYouMean => 'Did you mean';
+
+  @override
+  String get dictMoreWords => 'Words that start like this';
+
+  @override
+  String dictNotFound(String word) {
+    return 'No results for \"$word\"';
+  }
+
+  @override
+  String get dictNotFoundBody =>
+      'Check the spelling, or enter the word and its meaning yourself.';
+
+  @override
+  String get dictTooLong => 'Type one word or a short phrase.';
+
+  @override
+  String get dictFromVietnamese => 'Vietnamese → English';
+
+  @override
+  String dictFormPast(String lemma) {
+    return 'past tense of $lemma';
+  }
+
+  @override
+  String dictFormPastParticiple(String lemma) {
+    return 'past participle of $lemma';
+  }
+
+  @override
+  String dictFormIng(String lemma) {
+    return '-ing form of $lemma';
+  }
+
+  @override
+  String dictFormPlural(String lemma) {
+    return 'plural of $lemma';
+  }
+
+  @override
+  String dictFormComparative(String lemma) {
+    return 'comparative of $lemma';
+  }
+
+  @override
+  String dictFormSuperlative(String lemma) {
+    return 'superlative of $lemma';
+  }
+
+  @override
+  String dictFormThird(String lemma) {
+    return 'third-person singular of $lemma';
+  }
+
+  @override
+  String dictFormOther(String lemma) {
+    return 'a form of $lemma';
+  }
+
+  @override
+  String get dictSpellingOf => 'another spelling';
+
+  @override
+  String dictContraction(String typed, String expansion) {
+    return '$typed = $expansion';
+  }
+
+  @override
+  String get dictNeedsMeaning => 'No Vietnamese meaning yet';
+
+  @override
+  String get dictAddMeaning => 'Add meaning';
+
+  @override
+  String get dictDownloading => 'Downloading the offline dictionary…';
+
+  @override
+  String get dictOffline =>
+      'The offline dictionary isn\'t downloaded yet, so only hifive\'s own words are found.';
+
+  @override
+  String get dictPickMeanings => 'Choose meanings for the card (up to 3)';
+
+  @override
+  String get dictEditMeaning => 'Edit meaning';
+
+  @override
+  String get dictMeaningHint => 'Meaning on the card';
+
+  @override
+  String get dictExample => 'Example';
+
+  @override
+  String get dictDefinition => 'English definition';
+
+  @override
+  String dictSource(String source) {
+    return 'Source: $source';
+  }
+
+  @override
+  String get dictSpeak => 'Play pronunciation';
+
+  @override
+  String get dictClear => 'Clear search';
+
+  @override
+  String get dictLabelSlang => 'slang';
+
+  @override
+  String get dictLabelInformal => 'informal';
+
+  @override
+  String get dictLabelFigurative => 'figurative';
+
+  @override
+  String get dictLabelUs => 'US';
+
+  @override
+  String get dictLabelUk => 'UK';
+
+  @override
+  String get dictLabelLiterary => 'literary';
+
+  @override
+  String get dictLabelHumorous => 'humorous';
+
+  @override
+  String get dictLabelFormal => 'formal';
+
+  @override
+  String get dictSourcesTitle => 'Dictionary sources';
+
+  @override
+  String get dictSourcesIntro =>
+      'hifive\'s dictionary is built from the open sources below. The dictionary data is published under CC BY-SA 4.0; hifive selected, reordered and shortened its content.';
+
+  @override
+  String get dictSourcesLicense => 'Read the CC BY-SA 4.0 licence';
+
+  @override
+  String get dictSourceWiktionaryVi =>
+      'Hồ Ngọc Đức\'s English–Vietnamese dictionary (Free Vietnamese Dictionary Project), via the Vietnamese Wiktionary. CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceWiktionaryEn =>
+      'English Wiktionary: sense order, pronunciation, examples, phrasal verbs and inflections, extracted by kaikki.org (Wiktextract). CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceIpa => 'ipa-dict: additional IPA. MIT licence.';
+
+  @override
+  String get dictSourceCefr =>
+      'The CEFR-J Wordlist Version 1.5, compiled by Yukio Tono, Tokyo University of Foreign Studies; Octanove C1/C2 (CC BY-SA 4.0): word levels.';
+
+  @override
+  String get dictSourceFrequency =>
+      'FrequencyWords (Hermit Dave, OpenSubtitles subtitles): word frequency. CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceTatoeba =>
+      'Tatoeba: English–Vietnamese example sentences, credited to each contributor. CC BY 2.0 FR.';
+
+  @override
+  String dictTatoebaBy(String authors) {
+    return 'Tatoeba · $authors';
+  }
 }

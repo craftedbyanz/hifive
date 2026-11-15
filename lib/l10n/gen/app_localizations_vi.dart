@@ -3822,4 +3822,238 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get forgotPassword => 'Quên mật khẩu?';
+
+  @override
+  String get dictTitle => 'Tra từ';
+
+  @override
+  String get dictSearchHint => 'Nhập từ tiếng Anh hoặc Việt';
+
+  @override
+  String dictAddTo(String deck) {
+    return 'Thêm vào: $deck';
+  }
+
+  @override
+  String get dictNewDeck => 'Bộ mới…';
+
+  @override
+  String get dictRecent => 'Gần đây';
+
+  @override
+  String get dictClearRecent => 'Xóa lịch sử tra';
+
+  @override
+  String dictForYou(String level) {
+    return 'Gợi ý trình độ $level';
+  }
+
+  @override
+  String dictAddedCount(int n) {
+    return 'Đã thêm $n';
+  }
+
+  @override
+  String get dictAdd => 'Thêm';
+
+  @override
+  String dictAddWord(String word, String deck) {
+    return 'Thêm $word vào $deck';
+  }
+
+  @override
+  String dictUndoWord(String word, String deck) {
+    return 'Bỏ $word khỏi $deck';
+  }
+
+  @override
+  String dictAddToDeck(String deck) {
+    return 'Thêm vào \"$deck\"';
+  }
+
+  @override
+  String get dictInDeck => 'Đã có trong bộ này';
+
+  @override
+  String dictLearningIn(String deck) {
+    return 'Đang học ở \"$deck\"';
+  }
+
+  @override
+  String dictManual(String word) {
+    return 'Tự nhập \"$word\"';
+  }
+
+  @override
+  String get dictManualPlain => 'Tự nhập từ mới';
+
+  @override
+  String get dictDidYouMean => 'Có phải bạn muốn tìm';
+
+  @override
+  String get dictMoreWords => 'Các từ bắt đầu như vậy';
+
+  @override
+  String dictNotFound(String word) {
+    return 'Không tìm thấy \"$word\"';
+  }
+
+  @override
+  String get dictNotFoundBody =>
+      'Kiểm tra chính tả, hoặc tự nhập từ này cùng nghĩa của nó.';
+
+  @override
+  String get dictTooLong => 'Hãy nhập một từ hoặc một cụm từ ngắn.';
+
+  @override
+  String get dictFromVietnamese => 'Tiếng Việt → tiếng Anh';
+
+  @override
+  String dictFormPast(String lemma) {
+    return 'quá khứ của $lemma';
+  }
+
+  @override
+  String dictFormPastParticiple(String lemma) {
+    return 'quá khứ phân từ của $lemma';
+  }
+
+  @override
+  String dictFormIng(String lemma) {
+    return 'dạng -ing của $lemma';
+  }
+
+  @override
+  String dictFormPlural(String lemma) {
+    return 'số nhiều của $lemma';
+  }
+
+  @override
+  String dictFormComparative(String lemma) {
+    return 'so sánh hơn của $lemma';
+  }
+
+  @override
+  String dictFormSuperlative(String lemma) {
+    return 'so sánh nhất của $lemma';
+  }
+
+  @override
+  String dictFormThird(String lemma) {
+    return 'ngôi thứ ba số ít của $lemma';
+  }
+
+  @override
+  String dictFormOther(String lemma) {
+    return 'một dạng của $lemma';
+  }
+
+  @override
+  String get dictSpellingOf => 'cách viết khác';
+
+  @override
+  String dictContraction(String typed, String expansion) {
+    return '$typed = $expansion';
+  }
+
+  @override
+  String get dictNeedsMeaning => 'Chưa có nghĩa tiếng Việt';
+
+  @override
+  String get dictAddMeaning => 'Thêm nghĩa';
+
+  @override
+  String get dictDownloading => 'Đang tải từ điển ngoại tuyến…';
+
+  @override
+  String get dictOffline =>
+      'Chưa tải được từ điển ngoại tuyến, nên chỉ tìm được từ có sẵn của hifive.';
+
+  @override
+  String get dictPickMeanings => 'Chọn nghĩa cho thẻ (tối đa 3)';
+
+  @override
+  String get dictEditMeaning => 'Sửa nghĩa';
+
+  @override
+  String get dictMeaningHint => 'Nghĩa trên thẻ';
+
+  @override
+  String get dictExample => 'Ví dụ';
+
+  @override
+  String get dictDefinition => 'Định nghĩa tiếng Anh';
+
+  @override
+  String dictSource(String source) {
+    return 'Nguồn: $source';
+  }
+
+  @override
+  String get dictSpeak => 'Nghe phát âm';
+
+  @override
+  String get dictClear => 'Xóa nội dung tìm';
+
+  @override
+  String get dictLabelSlang => 'tiếng lóng';
+
+  @override
+  String get dictLabelInformal => 'thân mật';
+
+  @override
+  String get dictLabelFigurative => 'nghĩa bóng';
+
+  @override
+  String get dictLabelUs => 'Mỹ';
+
+  @override
+  String get dictLabelUk => 'Anh';
+
+  @override
+  String get dictLabelLiterary => 'văn chương';
+
+  @override
+  String get dictLabelHumorous => 'đùa';
+
+  @override
+  String get dictLabelFormal => 'trang trọng';
+
+  @override
+  String get dictSourcesTitle => 'Nguồn dữ liệu từ điển';
+
+  @override
+  String get dictSourcesIntro =>
+      'Từ điển của hifive được ghép từ các nguồn mở dưới đây. Gói dữ liệu từ điển được phát hành theo giấy phép CC BY-SA 4.0; hifive đã chọn lọc, sắp xếp và lược bớt nội dung.';
+
+  @override
+  String get dictSourcesLicense => 'Xem giấy phép CC BY-SA 4.0';
+
+  @override
+  String get dictSourceWiktionaryVi =>
+      'Từ điển Anh–Việt của Hồ Ngọc Đức (Dự án Từ điển tiếng Việt miễn phí), qua Wiktionary tiếng Việt. CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceWiktionaryEn =>
+      'Wiktionary tiếng Anh: thứ tự nghĩa, phát âm, ví dụ, cụm động từ và dạng biến đổi, trích bởi kaikki.org (Wiktextract). CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceIpa => 'ipa-dict: phiên âm IPA bổ sung. Giấy phép MIT.';
+
+  @override
+  String get dictSourceCefr =>
+      'The CEFR-J Wordlist Version 1.5, Yukio Tono biên soạn, Đại học Ngoại ngữ Tokyo; Octanove C1/C2 (CC BY-SA 4.0): trình độ của từ.';
+
+  @override
+  String get dictSourceFrequency =>
+      'FrequencyWords (Hermit Dave, phụ đề OpenSubtitles): độ phổ biến của từ. CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceTatoeba =>
+      'Tatoeba: câu ví dụ Anh–Việt, ghi tên người đóng góp ở từng câu. CC BY 2.0 FR.';
+
+  @override
+  String dictTatoebaBy(String authors) {
+    return 'Tatoeba · $authors';
+  }
 }

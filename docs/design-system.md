@@ -208,6 +208,7 @@ Use these instead of building a new one.
 | Bottom sheet | `sheet()`; floating sheets inset 9 pt with a 38 pt corner when the reference floats them | `widgets/sheets.dart` |
 | Section label in spaced capitals | `CapsLabel` | `widgets/labels.dart` |
 | Loading, error, empty | `AsyncView`, `LoadingView`, `ErrorView` ("Thử lại"), `EmptyView` | `widgets/async_view.dart` |
+| Search and add words (white 48 pt search capsule on top, result cards with 🔊 and a 34 pt round add button that turns into a green ✓) | `DictionaryScreen` | `features/flashcards/dictionary_screen.dart` |
 | Toast | `toast()` | `widgets/navigation.dart` |
 | Completion medal and confetti | `MedalPainter`, `StillConfettiPainter`, `ConfettiPainter` | `widgets/medal.dart`, `widgets/confetti_painter.dart` |
 | Size that holds text | `context.grow(value)` | `widgets/text_grow.dart` |

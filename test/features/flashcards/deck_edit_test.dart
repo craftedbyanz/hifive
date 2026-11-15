@@ -145,6 +145,11 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Thêm từ'));
     await tester.pumpAndSettle();
+    // "Thêm từ" opens the dictionary; with no word typed, the learner
+    // enters words by hand.
+    expect(find.byType(DictionaryScreen), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('dict-manual')));
+    await tester.pumpAndSettle();
     Future<void> add(String word, String meaning) async {
       await tester.enterText(find.byKey(const ValueKey('add-word-word')), word);
       await tester.enterText(
@@ -165,6 +170,8 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('add-word-done')));
     await tester.pumpAndSettle();
     expect(deck.words.map((w) => w.word), ['novel', 'chapter']);
+    await tester.tap(find.byTooltip('Quay lại'));
+    await tester.pumpAndSettle();
     expect(find.text('chapter'), findsOneWidget);
   });
 }

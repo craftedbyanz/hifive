@@ -2032,5 +2032,216 @@
   "signIn": "Đăng nhập",
   "haveAccountSignIn": "Đã có tài khoản? Đăng nhập",
   "createNewAccount": "Tạo tài khoản mới",
-  "forgotPassword": "Quên mật khẩu?"
+  "forgotPassword": "Quên mật khẩu?",
+  "dictTitle": "Tra từ",
+  "dictSearchHint": "Nhập từ tiếng Anh hoặc Việt",
+  "dictAddTo": "Thêm vào: {deck}",
+  "@dictAddTo": {
+    "placeholders": {
+      "deck": {
+        "type": "String"
+      }
+    }
+  },
+  "dictNewDeck": "Bộ mới…",
+  "dictRecent": "Gần đây",
+  "dictClearRecent": "Xóa lịch sử tra",
+  "dictForYou": "Gợi ý trình độ {level}",
+  "@dictForYou": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "dictAddedCount": "Đã thêm {n}",
+  "@dictAddedCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "dictAdd": "Thêm",
+  "dictAddWord": "Thêm {word} vào {deck}",
+  "@dictAddWord": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      },
+      "deck": {
+        "type": "String"
+      }
+    }
+  },
+  "dictUndoWord": "Bỏ {word} khỏi {deck}",
+  "@dictUndoWord": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      },
+      "deck": {
+        "type": "String"
+      }
+    }
+  },
+  "dictAddToDeck": "Thêm vào \"{deck}\"",
+  "@dictAddToDeck": {
+    "placeholders": {
+      "deck": {
+        "type": "String"
+      }
+    }
+  },
+  "dictInDeck": "Đã có trong bộ này",
+  "dictLearningIn": "Đang học ở \"{deck}\"",
+  "@dictLearningIn": {
+    "placeholders": {
+      "deck": {
+        "type": "String"
+      }
+    }
+  },
+  "dictManual": "Tự nhập \"{word}\"",
+  "@dictManual": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "dictManualPlain": "Tự nhập từ mới",
+  "dictDidYouMean": "Có phải bạn muốn tìm",
+  "dictMoreWords": "Các từ bắt đầu như vậy",
+  "dictNotFound": "Không tìm thấy \"{word}\"",
+  "@dictNotFound": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "dictNotFoundBody": "Kiểm tra chính tả, hoặc tự nhập từ này cùng nghĩa của nó.",
+  "dictTooLong": "Hãy nhập một từ hoặc một cụm từ ngắn.",
+  "dictFromVietnamese": "Tiếng Việt → tiếng Anh",
+  "dictFormPast": "quá khứ của {lemma}",
+  "@dictFormPast": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictFormPastParticiple": "quá khứ phân từ của {lemma}",
+  "@dictFormPastParticiple": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictFormIng": "dạng -ing của {lemma}",
+  "@dictFormIng": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictFormPlural": "số nhiều của {lemma}",
+  "@dictFormPlural": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictFormComparative": "so sánh hơn của {lemma}",
+  "@dictFormComparative": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictFormSuperlative": "so sánh nhất của {lemma}",
+  "@dictFormSuperlative": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictFormThird": "ngôi thứ ba số ít của {lemma}",
+  "@dictFormThird": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictFormOther": "một dạng của {lemma}",
+  "@dictFormOther": {
+    "placeholders": {
+      "lemma": {
+        "type": "String"
+      }
+    }
+  },
+  "dictSpellingOf": "cách viết khác",
+  "dictContraction": "{typed} = {expansion}",
+  "@dictContraction": {
+    "placeholders": {
+      "typed": {
+        "type": "String"
+      },
+      "expansion": {
+        "type": "String"
+      }
+    }
+  },
+  "dictNeedsMeaning": "Chưa có nghĩa tiếng Việt",
+  "dictAddMeaning": "Thêm nghĩa",
+  "dictDownloading": "Đang tải từ điển ngoại tuyến…",
+  "dictOffline": "Chưa tải được từ điển ngoại tuyến, nên chỉ tìm được từ có sẵn của hifive.",
+  "dictPickMeanings": "Chọn nghĩa cho thẻ (tối đa 3)",
+  "dictEditMeaning": "Sửa nghĩa",
+  "dictMeaningHint": "Nghĩa trên thẻ",
+  "dictExample": "Ví dụ",
+  "dictDefinition": "Định nghĩa tiếng Anh",
+  "dictSource": "Nguồn: {source}",
+  "@dictSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "dictSpeak": "Nghe phát âm",
+  "dictClear": "Xóa nội dung tìm",
+  "dictLabelSlang": "tiếng lóng",
+  "dictLabelInformal": "thân mật",
+  "dictLabelFigurative": "nghĩa bóng",
+  "dictLabelUs": "Mỹ",
+  "dictLabelUk": "Anh",
+  "dictLabelLiterary": "văn chương",
+  "dictLabelHumorous": "đùa",
+  "dictLabelFormal": "trang trọng",
+  "dictSourcesTitle": "Nguồn dữ liệu từ điển",
+  "dictSourcesIntro": "Từ điển của hifive được ghép từ các nguồn mở dưới đây. Gói dữ liệu từ điển được phát hành theo giấy phép CC BY-SA 4.0; hifive đã chọn lọc, sắp xếp và lược bớt nội dung.",
+  "dictSourcesLicense": "Xem giấy phép CC BY-SA 4.0",
+  "dictSourceWiktionaryVi": "Từ điển Anh–Việt của Hồ Ngọc Đức (Dự án Từ điển tiếng Việt miễn phí), qua Wiktionary tiếng Việt. CC BY-SA 4.0.",
+  "dictSourceWiktionaryEn": "Wiktionary tiếng Anh: thứ tự nghĩa, phát âm, ví dụ, cụm động từ và dạng biến đổi, trích bởi kaikki.org (Wiktextract). CC BY-SA 4.0.",
+  "dictSourceIpa": "ipa-dict: phiên âm IPA bổ sung. Giấy phép MIT.",
+  "dictSourceCefr": "The CEFR-J Wordlist Version 1.5, Yukio Tono biên soạn, Đại học Ngoại ngữ Tokyo; Octanove C1/C2 (CC BY-SA 4.0): trình độ của từ.",
+  "dictSourceFrequency": "FrequencyWords (Hermit Dave, phụ đề OpenSubtitles): độ phổ biến của từ. CC BY-SA 4.0.",
+  "dictSourceTatoeba": "Tatoeba: câu ví dụ Anh–Việt, ghi tên người đóng góp ở từng câu. CC BY 2.0 FR.",
+  "dictTatoebaBy": "Tatoeba · {authors}",
+  "@dictTatoebaBy": {
+    "placeholders": {
+      "authors": {
+        "type": "String"
+      }
+    }
+  }
 }

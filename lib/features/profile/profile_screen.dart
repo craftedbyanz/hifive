@@ -159,6 +159,11 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 () => open(const PrivacyScreen()),
               ),
+              _Row(
+                context.t.dictSourcesTitle,
+                const _RowIcon(CupertinoIcons.book_fill, size: 20),
+                () => open(const DictionarySourcesScreen()),
+              ),
             ],
           ),
           const SizedBox(height: 32),

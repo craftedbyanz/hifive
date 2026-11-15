@@ -3712,4 +3712,235 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get forgotPassword => '忘记密码？';
+
+  @override
+  String get dictTitle => '查词';
+
+  @override
+  String get dictSearchHint => '输入英语或越南语单词';
+
+  @override
+  String dictAddTo(String deck) {
+    return '添加到：$deck';
+  }
+
+  @override
+  String get dictNewDeck => '新卡组…';
+
+  @override
+  String get dictRecent => '最近';
+
+  @override
+  String get dictClearRecent => '清除记录';
+
+  @override
+  String dictForYou(String level) {
+    return '$level 推荐';
+  }
+
+  @override
+  String dictAddedCount(int n) {
+    return '已添加 $n';
+  }
+
+  @override
+  String get dictAdd => '添加';
+
+  @override
+  String dictAddWord(String word, String deck) {
+    return '将 $word 添加到 $deck';
+  }
+
+  @override
+  String dictUndoWord(String word, String deck) {
+    return '从 $deck 移除 $word';
+  }
+
+  @override
+  String dictAddToDeck(String deck) {
+    return '添加到“$deck”';
+  }
+
+  @override
+  String get dictInDeck => '已在此卡组中';
+
+  @override
+  String dictLearningIn(String deck) {
+    return '正在“$deck”中学习';
+  }
+
+  @override
+  String dictManual(String word) {
+    return '自己输入“$word”';
+  }
+
+  @override
+  String get dictManualPlain => '自己输入单词';
+
+  @override
+  String get dictDidYouMean => '你是不是要找';
+
+  @override
+  String get dictMoreWords => '以此开头的单词';
+
+  @override
+  String dictNotFound(String word) {
+    return '找不到“$word”';
+  }
+
+  @override
+  String get dictNotFoundBody => '请检查拼写，或自己输入这个单词和词义。';
+
+  @override
+  String get dictTooLong => '请输入一个单词或短语。';
+
+  @override
+  String get dictFromVietnamese => '越南语 → 英语';
+
+  @override
+  String dictFormPast(String lemma) {
+    return '$lemma 的过去式';
+  }
+
+  @override
+  String dictFormPastParticiple(String lemma) {
+    return '$lemma 的过去分词';
+  }
+
+  @override
+  String dictFormIng(String lemma) {
+    return '$lemma 的 -ing 形式';
+  }
+
+  @override
+  String dictFormPlural(String lemma) {
+    return '$lemma 的复数';
+  }
+
+  @override
+  String dictFormComparative(String lemma) {
+    return '$lemma 的比较级';
+  }
+
+  @override
+  String dictFormSuperlative(String lemma) {
+    return '$lemma 的最高级';
+  }
+
+  @override
+  String dictFormThird(String lemma) {
+    return '$lemma 的第三人称单数';
+  }
+
+  @override
+  String dictFormOther(String lemma) {
+    return '$lemma 的一种形式';
+  }
+
+  @override
+  String get dictSpellingOf => '另一种拼写';
+
+  @override
+  String dictContraction(String typed, String expansion) {
+    return '$typed = $expansion';
+  }
+
+  @override
+  String get dictNeedsMeaning => '暂无越南语释义';
+
+  @override
+  String get dictAddMeaning => '添加释义';
+
+  @override
+  String get dictDownloading => '正在下载离线词典…';
+
+  @override
+  String get dictOffline => '离线词典尚未下载，目前只能找到 hifive 自带的单词。';
+
+  @override
+  String get dictPickMeanings => '为卡片选择释义（最多 3 个）';
+
+  @override
+  String get dictEditMeaning => '修改释义';
+
+  @override
+  String get dictMeaningHint => '卡片上的释义';
+
+  @override
+  String get dictExample => '例句';
+
+  @override
+  String get dictDefinition => '英文释义';
+
+  @override
+  String dictSource(String source) {
+    return '来源：$source';
+  }
+
+  @override
+  String get dictSpeak => '播放发音';
+
+  @override
+  String get dictClear => '清除搜索';
+
+  @override
+  String get dictLabelSlang => '俚语';
+
+  @override
+  String get dictLabelInformal => '非正式';
+
+  @override
+  String get dictLabelFigurative => '比喻';
+
+  @override
+  String get dictLabelUs => '美式';
+
+  @override
+  String get dictLabelUk => '英式';
+
+  @override
+  String get dictLabelLiterary => '文学';
+
+  @override
+  String get dictLabelHumorous => '幽默';
+
+  @override
+  String get dictLabelFormal => '正式';
+
+  @override
+  String get dictSourcesTitle => '词典数据来源';
+
+  @override
+  String get dictSourcesIntro =>
+      'hifive 的词典由以下开放资源整理而成。词典数据以 CC BY-SA 4.0 许可发布；hifive 对内容做了筛选、排序和删减。';
+
+  @override
+  String get dictSourcesLicense => '查看 CC BY-SA 4.0 许可';
+
+  @override
+  String get dictSourceWiktionaryVi =>
+      '胡玉德的英越词典（越南语免费词典项目），来自越南语维基词典。CC BY-SA 4.0。';
+
+  @override
+  String get dictSourceWiktionaryEn =>
+      '英语维基词典：义项顺序、发音、例句、短语动词和词形变化，由 kaikki.org（Wiktextract）提取。CC BY-SA 4.0。';
+
+  @override
+  String get dictSourceIpa => 'ipa-dict：补充音标。MIT 许可。';
+
+  @override
+  String get dictSourceCefr =>
+      'The CEFR-J Wordlist Version 1.5，东京外国语大学投野由纪夫编；Octanove C1/C2（CC BY-SA 4.0）：单词等级。';
+
+  @override
+  String get dictSourceFrequency =>
+      'FrequencyWords（Hermit Dave，OpenSubtitles 字幕）：词频。CC BY-SA 4.0。';
+
+  @override
+  String get dictSourceTatoeba => 'Tatoeba：英越例句，每句注明贡献者。CC BY 2.0 FR。';
+
+  @override
+  String dictTatoebaBy(String authors) {
+    return 'Tatoeba · $authors';
+  }
 }

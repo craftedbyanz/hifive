@@ -7013,6 +7013,378 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Quên mật khẩu?'**
   String get forgotPassword;
+
+  /// No description provided for @dictTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tra từ'**
+  String get dictTitle;
+
+  /// No description provided for @dictSearchHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập từ tiếng Anh hoặc Việt'**
+  String get dictSearchHint;
+
+  /// No description provided for @dictAddTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm vào: {deck}'**
+  String dictAddTo(String deck);
+
+  /// No description provided for @dictNewDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ mới…'**
+  String get dictNewDeck;
+
+  /// No description provided for @dictRecent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gần đây'**
+  String get dictRecent;
+
+  /// No description provided for @dictClearRecent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa lịch sử tra'**
+  String get dictClearRecent;
+
+  /// No description provided for @dictForYou.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gợi ý trình độ {level}'**
+  String dictForYou(String level);
+
+  /// No description provided for @dictAddedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thêm {n}'**
+  String dictAddedCount(int n);
+
+  /// No description provided for @dictAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm'**
+  String get dictAdd;
+
+  /// No description provided for @dictAddWord.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm {word} vào {deck}'**
+  String dictAddWord(String word, String deck);
+
+  /// No description provided for @dictUndoWord.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ {word} khỏi {deck}'**
+  String dictUndoWord(String word, String deck);
+
+  /// No description provided for @dictAddToDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm vào \"{deck}\"'**
+  String dictAddToDeck(String deck);
+
+  /// No description provided for @dictInDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có trong bộ này'**
+  String get dictInDeck;
+
+  /// No description provided for @dictLearningIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang học ở \"{deck}\"'**
+  String dictLearningIn(String deck);
+
+  /// No description provided for @dictManual.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự nhập \"{word}\"'**
+  String dictManual(String word);
+
+  /// No description provided for @dictManualPlain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự nhập từ mới'**
+  String get dictManualPlain;
+
+  /// No description provided for @dictDidYouMean.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có phải bạn muốn tìm'**
+  String get dictDidYouMean;
+
+  /// No description provided for @dictMoreWords.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các từ bắt đầu như vậy'**
+  String get dictMoreWords;
+
+  /// No description provided for @dictNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy \"{word}\"'**
+  String dictNotFound(String word);
+
+  /// No description provided for @dictNotFoundBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra chính tả, hoặc tự nhập từ này cùng nghĩa của nó.'**
+  String get dictNotFoundBody;
+
+  /// No description provided for @dictTooLong.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy nhập một từ hoặc một cụm từ ngắn.'**
+  String get dictTooLong;
+
+  /// No description provided for @dictFromVietnamese.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếng Việt → tiếng Anh'**
+  String get dictFromVietnamese;
+
+  /// No description provided for @dictFormPast.
+  ///
+  /// In vi, this message translates to:
+  /// **'quá khứ của {lemma}'**
+  String dictFormPast(String lemma);
+
+  /// No description provided for @dictFormPastParticiple.
+  ///
+  /// In vi, this message translates to:
+  /// **'quá khứ phân từ của {lemma}'**
+  String dictFormPastParticiple(String lemma);
+
+  /// No description provided for @dictFormIng.
+  ///
+  /// In vi, this message translates to:
+  /// **'dạng -ing của {lemma}'**
+  String dictFormIng(String lemma);
+
+  /// No description provided for @dictFormPlural.
+  ///
+  /// In vi, this message translates to:
+  /// **'số nhiều của {lemma}'**
+  String dictFormPlural(String lemma);
+
+  /// No description provided for @dictFormComparative.
+  ///
+  /// In vi, this message translates to:
+  /// **'so sánh hơn của {lemma}'**
+  String dictFormComparative(String lemma);
+
+  /// No description provided for @dictFormSuperlative.
+  ///
+  /// In vi, this message translates to:
+  /// **'so sánh nhất của {lemma}'**
+  String dictFormSuperlative(String lemma);
+
+  /// No description provided for @dictFormThird.
+  ///
+  /// In vi, this message translates to:
+  /// **'ngôi thứ ba số ít của {lemma}'**
+  String dictFormThird(String lemma);
+
+  /// No description provided for @dictFormOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'một dạng của {lemma}'**
+  String dictFormOther(String lemma);
+
+  /// No description provided for @dictSpellingOf.
+  ///
+  /// In vi, this message translates to:
+  /// **'cách viết khác'**
+  String get dictSpellingOf;
+
+  /// No description provided for @dictContraction.
+  ///
+  /// In vi, this message translates to:
+  /// **'{typed} = {expansion}'**
+  String dictContraction(String typed, String expansion);
+
+  /// No description provided for @dictNeedsMeaning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có nghĩa tiếng Việt'**
+  String get dictNeedsMeaning;
+
+  /// No description provided for @dictAddMeaning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm nghĩa'**
+  String get dictAddMeaning;
+
+  /// No description provided for @dictDownloading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải từ điển ngoại tuyến…'**
+  String get dictDownloading;
+
+  /// No description provided for @dictOffline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tải được từ điển ngoại tuyến, nên chỉ tìm được từ có sẵn của hifive.'**
+  String get dictOffline;
+
+  /// No description provided for @dictPickMeanings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn nghĩa cho thẻ (tối đa 3)'**
+  String get dictPickMeanings;
+
+  /// No description provided for @dictEditMeaning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa nghĩa'**
+  String get dictEditMeaning;
+
+  /// No description provided for @dictMeaningHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghĩa trên thẻ'**
+  String get dictMeaningHint;
+
+  /// No description provided for @dictExample.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví dụ'**
+  String get dictExample;
+
+  /// No description provided for @dictDefinition.
+  ///
+  /// In vi, this message translates to:
+  /// **'Định nghĩa tiếng Anh'**
+  String get dictDefinition;
+
+  /// No description provided for @dictSource.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguồn: {source}'**
+  String dictSource(String source);
+
+  /// No description provided for @dictSpeak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nghe phát âm'**
+  String get dictSpeak;
+
+  /// No description provided for @dictClear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa nội dung tìm'**
+  String get dictClear;
+
+  /// No description provided for @dictLabelSlang.
+  ///
+  /// In vi, this message translates to:
+  /// **'tiếng lóng'**
+  String get dictLabelSlang;
+
+  /// No description provided for @dictLabelInformal.
+  ///
+  /// In vi, this message translates to:
+  /// **'thân mật'**
+  String get dictLabelInformal;
+
+  /// No description provided for @dictLabelFigurative.
+  ///
+  /// In vi, this message translates to:
+  /// **'nghĩa bóng'**
+  String get dictLabelFigurative;
+
+  /// No description provided for @dictLabelUs.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỹ'**
+  String get dictLabelUs;
+
+  /// No description provided for @dictLabelUk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Anh'**
+  String get dictLabelUk;
+
+  /// No description provided for @dictLabelLiterary.
+  ///
+  /// In vi, this message translates to:
+  /// **'văn chương'**
+  String get dictLabelLiterary;
+
+  /// No description provided for @dictLabelHumorous.
+  ///
+  /// In vi, this message translates to:
+  /// **'đùa'**
+  String get dictLabelHumorous;
+
+  /// No description provided for @dictLabelFormal.
+  ///
+  /// In vi, this message translates to:
+  /// **'trang trọng'**
+  String get dictLabelFormal;
+
+  /// No description provided for @dictSourcesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguồn dữ liệu từ điển'**
+  String get dictSourcesTitle;
+
+  /// No description provided for @dictSourcesIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ điển của hifive được ghép từ các nguồn mở dưới đây. Gói dữ liệu từ điển được phát hành theo giấy phép CC BY-SA 4.0; hifive đã chọn lọc, sắp xếp và lược bớt nội dung.'**
+  String get dictSourcesIntro;
+
+  /// No description provided for @dictSourcesLicense.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem giấy phép CC BY-SA 4.0'**
+  String get dictSourcesLicense;
+
+  /// No description provided for @dictSourceWiktionaryVi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ điển Anh–Việt của Hồ Ngọc Đức (Dự án Từ điển tiếng Việt miễn phí), qua Wiktionary tiếng Việt. CC BY-SA 4.0.'**
+  String get dictSourceWiktionaryVi;
+
+  /// No description provided for @dictSourceWiktionaryEn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Wiktionary tiếng Anh: thứ tự nghĩa, phát âm, ví dụ, cụm động từ và dạng biến đổi, trích bởi kaikki.org (Wiktextract). CC BY-SA 4.0.'**
+  String get dictSourceWiktionaryEn;
+
+  /// No description provided for @dictSourceIpa.
+  ///
+  /// In vi, this message translates to:
+  /// **'ipa-dict: phiên âm IPA bổ sung. Giấy phép MIT.'**
+  String get dictSourceIpa;
+
+  /// No description provided for @dictSourceCefr.
+  ///
+  /// In vi, this message translates to:
+  /// **'The CEFR-J Wordlist Version 1.5, Yukio Tono biên soạn, Đại học Ngoại ngữ Tokyo; Octanove C1/C2 (CC BY-SA 4.0): trình độ của từ.'**
+  String get dictSourceCefr;
+
+  /// No description provided for @dictSourceFrequency.
+  ///
+  /// In vi, this message translates to:
+  /// **'FrequencyWords (Hermit Dave, phụ đề OpenSubtitles): độ phổ biến của từ. CC BY-SA 4.0.'**
+  String get dictSourceFrequency;
+
+  /// No description provided for @dictSourceTatoeba.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tatoeba: câu ví dụ Anh–Việt, ghi tên người đóng góp ở từng câu. CC BY 2.0 FR.'**
+  String get dictSourceTatoeba;
+
+  /// No description provided for @dictTatoebaBy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tatoeba · {authors}'**
+  String dictTatoebaBy(String authors);
 }
 
 class _AppLocalizationsDelegate

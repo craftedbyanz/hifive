@@ -12,6 +12,7 @@ import '../../widgets/common.dart';
 import '../community/community.dart';
 import 'deck_edit_sheet.dart';
 import 'deck_screen.dart';
+import 'dictionary_screen.dart';
 
 class DeckListScreen extends StatelessWidget {
   const DeckListScreen({super.key});
@@ -33,34 +34,42 @@ class DeckListScreen extends StatelessWidget {
           child: HeaderScrollPage(
             title: context.t.menuFlashcards,
             titleSize: 16.5,
-            trailing: state.shares == null
-                ? null
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      HeaderRoundButton(
-                        key: const ValueKey('deck-explore'),
-                        icon: CupertinoIcons.globe,
-                        iconSize: 22,
-                        label: context.t.communityTitle,
-                        onTap: () => go<void>(
-                          context,
-                          CommunityScreen(
-                            onOpenDeck: (c, deck) =>
-                                go<void>(c, DeckScreen(deck: deck)),
-                          ),
-                        ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HeaderRoundButton(
+                  key: const ValueKey('deck-dictionary'),
+                  icon: CupertinoIcons.search,
+                  iconSize: 21,
+                  label: context.t.dictTitle,
+                  onTap: () => go<void>(context, const DictionaryScreen()),
+                ),
+                if (state.shares != null) ...[
+                  const SizedBox(width: 8),
+                  HeaderRoundButton(
+                    key: const ValueKey('deck-explore'),
+                    icon: CupertinoIcons.globe,
+                    iconSize: 22,
+                    label: context.t.communityTitle,
+                    onTap: () => go<void>(
+                      context,
+                      CommunityScreen(
+                        onOpenDeck: (c, deck) =>
+                            go<void>(c, DeckScreen(deck: deck)),
                       ),
-                      const SizedBox(width: 8),
-                      HeaderRoundButton(
-                        key: const ValueKey('deck-import'),
-                        icon: CupertinoIcons.tray_arrow_down,
-                        iconSize: 22,
-                        label: context.t.importDeck,
-                        onTap: () => _import(context),
-                      ),
-                    ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
+                  HeaderRoundButton(
+                    key: const ValueKey('deck-import'),
+                    icon: CupertinoIcons.tray_arrow_down,
+                    iconSize: 22,
+                    label: context.t.importDeck,
+                    onTap: () => _import(context),
+                  ),
+                ],
+              ],
+            ),
             background: Palette.settingsPage,
             padding: const EdgeInsets.fromLTRB(24, 137, 24, 120),
             child: state.decks.isEmpty

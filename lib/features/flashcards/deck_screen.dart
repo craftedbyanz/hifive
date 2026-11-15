@@ -11,6 +11,7 @@ import '../community/community.dart';
 import '../game/game.dart';
 import 'deck_edit_sheet.dart';
 import 'deck_list_screen.dart';
+import 'dictionary_screen.dart';
 import 'review_screen.dart';
 import 'word_screen.dart';
 
@@ -77,7 +78,7 @@ class _DeckScreenState extends State<DeckScreen> {
     ]);
     if (!mounted || choice == null) return;
     if (choice == 'words') {
-      await sheet<void>(context, AddWordSheet(deck: widget.deck));
+      await go<void>(context, DictionaryScreen(deck: widget.deck));
       if (mounted) setState(() {});
     } else if (choice == 'edit') {
       await sheet<void>(context, EditDeckSheet(deck: widget.deck));

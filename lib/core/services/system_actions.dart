@@ -24,6 +24,10 @@ abstract interface class SystemActions {
 
   /// The share sheet with [text].
   Future<bool> shareText(String text);
+
+  /// The in-app browser on the CC BY-SA 4.0 licence the dictionary data
+  /// is published under.
+  Future<bool> openDictionaryLicense();
 }
 
 class PlatformSystemActions implements SystemActions {
@@ -31,7 +35,15 @@ class PlatformSystemActions implements SystemActions {
     'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
   );
   static final inviteUrl = Uri.parse('https://apps.apple.com/');
+  static final dictionaryLicenseUrl = Uri.parse(
+    'https://creativecommons.org/licenses/by-sa/4.0/',
+  );
   const PlatformSystemActions();
+
+  @override
+  Future<bool> openDictionaryLicense() => _guard(
+    () => launchUrl(dictionaryLicenseUrl, mode: LaunchMode.inAppBrowserView),
+  );
 
   @override
   Future<bool> openTerms() =>
@@ -96,6 +108,8 @@ class RecordingSystemActions implements SystemActions {
 
   @override
   Future<bool> openTerms() => _record('terms');
+  @override
+  Future<bool> openDictionaryLicense() => _record('dictionaryLicense');
   @override
   Future<bool> composeFeedback() => _record('feedback');
   @override

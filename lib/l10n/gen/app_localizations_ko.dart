@@ -3733,4 +3733,236 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get forgotPassword => '비밀번호를 잊으셨나요?';
+
+  @override
+  String get dictTitle => '단어 찾기';
+
+  @override
+  String get dictSearchHint => '영어나 베트남어 단어를 입력하세요';
+
+  @override
+  String dictAddTo(String deck) {
+    return '추가할 곳: $deck';
+  }
+
+  @override
+  String get dictNewDeck => '새 묶음…';
+
+  @override
+  String get dictRecent => '최근';
+
+  @override
+  String get dictClearRecent => '기록 지우기';
+
+  @override
+  String dictForYou(String level) {
+    return '$level 추천';
+  }
+
+  @override
+  String dictAddedCount(int n) {
+    return '$n개 추가';
+  }
+
+  @override
+  String get dictAdd => '추가';
+
+  @override
+  String dictAddWord(String word, String deck) {
+    return '$word을(를) $deck에 추가';
+  }
+
+  @override
+  String dictUndoWord(String word, String deck) {
+    return '$deck에서 $word 빼기';
+  }
+
+  @override
+  String dictAddToDeck(String deck) {
+    return '\"$deck\"에 추가';
+  }
+
+  @override
+  String get dictInDeck => '이미 이 묶음에 있어요';
+
+  @override
+  String dictLearningIn(String deck) {
+    return '\"$deck\"에서 학습 중';
+  }
+
+  @override
+  String dictManual(String word) {
+    return '\"$word\" 직접 입력';
+  }
+
+  @override
+  String get dictManualPlain => '단어 직접 입력';
+
+  @override
+  String get dictDidYouMean => '혹시 이 단어인가요';
+
+  @override
+  String get dictMoreWords => '이렇게 시작하는 단어';
+
+  @override
+  String dictNotFound(String word) {
+    return '\"$word\"을(를) 찾지 못했어요';
+  }
+
+  @override
+  String get dictNotFoundBody => '철자를 확인하거나 단어와 뜻을 직접 입력하세요.';
+
+  @override
+  String get dictTooLong => '단어 하나나 짧은 구를 입력하세요.';
+
+  @override
+  String get dictFromVietnamese => '베트남어 → 영어';
+
+  @override
+  String dictFormPast(String lemma) {
+    return '$lemma의 과거형';
+  }
+
+  @override
+  String dictFormPastParticiple(String lemma) {
+    return '$lemma의 과거분사';
+  }
+
+  @override
+  String dictFormIng(String lemma) {
+    return '$lemma의 -ing 형';
+  }
+
+  @override
+  String dictFormPlural(String lemma) {
+    return '$lemma의 복수형';
+  }
+
+  @override
+  String dictFormComparative(String lemma) {
+    return '$lemma의 비교급';
+  }
+
+  @override
+  String dictFormSuperlative(String lemma) {
+    return '$lemma의 최상급';
+  }
+
+  @override
+  String dictFormThird(String lemma) {
+    return '$lemma의 3인칭 단수형';
+  }
+
+  @override
+  String dictFormOther(String lemma) {
+    return '$lemma의 한 형태';
+  }
+
+  @override
+  String get dictSpellingOf => '다른 철자';
+
+  @override
+  String dictContraction(String typed, String expansion) {
+    return '$typed = $expansion';
+  }
+
+  @override
+  String get dictNeedsMeaning => '아직 베트남어 뜻이 없어요';
+
+  @override
+  String get dictAddMeaning => '뜻 추가';
+
+  @override
+  String get dictDownloading => '오프라인 사전을 내려받는 중…';
+
+  @override
+  String get dictOffline => '오프라인 사전을 아직 내려받지 못해 hifive의 기본 단어만 찾을 수 있어요.';
+
+  @override
+  String get dictPickMeanings => '카드에 넣을 뜻 선택(최대 3개)';
+
+  @override
+  String get dictEditMeaning => '뜻 수정';
+
+  @override
+  String get dictMeaningHint => '카드에 들어갈 뜻';
+
+  @override
+  String get dictExample => '예문';
+
+  @override
+  String get dictDefinition => '영어 정의';
+
+  @override
+  String dictSource(String source) {
+    return '출처: $source';
+  }
+
+  @override
+  String get dictSpeak => '발음 듣기';
+
+  @override
+  String get dictClear => '검색어 지우기';
+
+  @override
+  String get dictLabelSlang => '속어';
+
+  @override
+  String get dictLabelInformal => '비격식';
+
+  @override
+  String get dictLabelFigurative => '비유';
+
+  @override
+  String get dictLabelUs => '미국';
+
+  @override
+  String get dictLabelUk => '영국';
+
+  @override
+  String get dictLabelLiterary => '문어';
+
+  @override
+  String get dictLabelHumorous => '익살';
+
+  @override
+  String get dictLabelFormal => '격식';
+
+  @override
+  String get dictSourcesTitle => '사전 데이터 출처';
+
+  @override
+  String get dictSourcesIntro =>
+      'hifive의 사전은 아래 공개 자료로 만들었어요. 사전 데이터는 CC BY-SA 4.0 라이선스로 배포되며, hifive가 내용을 고르고 순서를 바꾸고 줄였어요.';
+
+  @override
+  String get dictSourcesLicense => 'CC BY-SA 4.0 라이선스 보기';
+
+  @override
+  String get dictSourceWiktionaryVi =>
+      '호응옥득의 영어-베트남어 사전(무료 베트남어 사전 프로젝트), 베트남어 위키낱말사전 경유. CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceWiktionaryEn =>
+      '영어 위키낱말사전: 뜻 순서, 발음, 예문, 구동사, 활용형. kaikki.org(Wiktextract) 추출. CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceIpa => 'ipa-dict: 추가 IPA 발음. MIT 라이선스.';
+
+  @override
+  String get dictSourceCefr =>
+      'The CEFR-J Wordlist Version 1.5, 도쿄외국어대학 Yukio Tono 편찬; Octanove C1/C2(CC BY-SA 4.0): 단어 등급.';
+
+  @override
+  String get dictSourceFrequency =>
+      'FrequencyWords(Hermit Dave, OpenSubtitles 자막): 단어 빈도. CC BY-SA 4.0.';
+
+  @override
+  String get dictSourceTatoeba =>
+      'Tatoeba: 영어-베트남어 예문, 문장마다 기여자 표기. CC BY 2.0 FR.';
+
+  @override
+  String dictTatoebaBy(String authors) {
+    return 'Tatoeba · $authors';
+  }
 }

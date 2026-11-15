@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../domain/dictionary/dictionary.dart';
 import '../../domain/models/models.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
@@ -196,18 +197,31 @@ class _EditDeckSheetState extends State<EditDeckSheet> {
 
 /// Adds the learner's own words to [deck], one after another: the word, its
 /// meaning and, if they like, an example. The sheet stays open for the next.
+/// From the dictionary it starts with [word], and with [entry]'s
+/// pronunciation, example and definition when the dictionary had the word
+/// but no meaning for it; then it closes after one word, returning the card.
 class AddWordSheet extends StatefulWidget {
   final Deck deck;
-  const AddWordSheet({super.key, required this.deck});
+  final String word;
+  final DictEntry? entry;
+  const AddWordSheet({
+    super.key,
+    required this.deck,
+    this.word = '',
+    this.entry,
+  });
 
   @override
   State<AddWordSheet> createState() => _AddWordSheetState();
 }
 
 class _AddWordSheetState extends State<AddWordSheet> {
-  final _word = TextEditingController(),
+  late final _word = TextEditingController(
+        text: widget.entry?.word ?? widget.word,
+      ),
       _meaning = TextEditingController(),
-      _example = TextEditingController();
+      _example = TextEditingController(text: widget.entry?.example ?? '');
+  bool get _once => widget.entry != null || widget.word.isNotEmpty;
   final _wordFocus = FocusNode();
   var _added = 0;
   String? _problem;
@@ -234,15 +248,36 @@ class _AddWordSheetState extends State<AddWordSheet> {
       setState(() => _problem = context.t.addWordExists);
       return;
     }
-    state.addWords(widget.deck, [
-      FlashWord(
-        id: state.newId(),
-        word: word,
-        meaning: _meaning.text.trim(),
-        example: _example.text.trim(),
-      ),
-    ]);
+    final entry = widget.entry;
+    final card = entry != null && dictKey(entry.word) == dictKey(word)
+        ? entry.toCard(
+            id: state.newId(),
+            meaning: _meaning.text.trim(),
+            american: state.americanVoice,
+          )
+        : FlashWord(
+            id: state.newId(),
+            word: word,
+            meaning: _meaning.text.trim(),
+            example: _example.text.trim(),
+          );
+    final withExample = card.example == _example.text.trim()
+        ? card
+        : FlashWord(
+            id: card.id,
+            word: card.word,
+            meaning: card.meaning,
+            phonetic: card.phonetic,
+            example: _example.text.trim(),
+            partOfSpeech: card.partOfSpeech,
+            definition: card.definition,
+          );
+    state.addWords(widget.deck, [withExample]);
     state.feedback.tap();
+    if (_once) {
+      Navigator.of(context).pop(withExample);
+      return;
+    }
     _word.clear();
     _meaning.clear();
     _example.clear();
@@ -283,11 +318,20 @@ class _AddWordSheetState extends State<AddWordSheet> {
             ],
           ),
           const SizedBox(height: 14),
+          if (widget.entry case final e? when e.definition.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Text(
+                e.definition,
+                key: const ValueKey('add-word-definition'),
+                style: D.text(13.5, color: D.secondary),
+              ),
+            ),
           TextField(
             key: const ValueKey('add-word-word'),
             controller: _word,
             focusNode: _wordFocus,
-            autofocus: true,
+            autofocus: !_once,
             textInputAction: TextInputAction.next,
             onChanged: (_) => setState(() => _problem = null),
             decoration: field(t.addWordWord),
@@ -296,6 +340,7 @@ class _AddWordSheetState extends State<AddWordSheet> {
           TextField(
             key: const ValueKey('add-word-meaning'),
             controller: _meaning,
+            autofocus: _once,
             textInputAction: TextInputAction.next,
             onChanged: (_) => setState(() {}),
             decoration: field(t.addWordMeaning),
