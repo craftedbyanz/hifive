@@ -2965,6 +2965,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get reminderDenied => 'hifive에 알림 권한이 없어요. 설정 → hifive → 알림에서 켜 주세요.';
 
   @override
+  String get pushAllowed => '켜짐';
+
+  @override
+  String get pushUnasked => '아직 hifive를 허용하지 않았어요';
+
+  @override
+  String get pushAllow => '허용';
+
+  @override
+  String get reminderBlocked => '설정에서 알림이 꺼져 있어 알림을 받을 수 없어요.';
+
+  @override
   String reminderNoteTitle(int count) {
     return '곧 잊을 단어 $count개';
   }

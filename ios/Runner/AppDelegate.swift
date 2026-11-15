@@ -57,6 +57,17 @@ import UserNotifications
         alerts.requestAuthorization(options: [.alert, .sound]) { granted, _ in
           DispatchQueue.main.async { result(granted) }
         }
+      case "notificationStatus":
+        // Whether hifive may notify, without asking.
+        alerts.getNotificationSettings { settings in
+          let status: String
+          switch settings.authorizationStatus {
+          case .notDetermined: status = "unasked"
+          case .denied: status = "denied"
+          default: status = "allowed"
+          }
+          DispatchQueue.main.async { result(status) }
+        }
       case "warn":
         let args = call.arguments as? [String: String] ?? [:]
         let content = UNMutableNotificationContent()

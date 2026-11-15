@@ -64,6 +64,25 @@ abstract final class ScreenLock {
     }
   }
 
+  /// Whether hifive may send notifications, without asking; [unknown]
+  /// where there is no answer (tests, Android for now).
+  static Future<NotificationAccess> access() async {
+    try {
+      return switch (await _channel.invokeMethod<String>(
+        'notificationStatus',
+      )) {
+        'allowed' => NotificationAccess.allowed,
+        'denied' => NotificationAccess.denied,
+        'unasked' => NotificationAccess.unasked,
+        _ => NotificationAccess.unknown,
+      };
+    } on MissingPluginException {
+      return NotificationAccess.unknown;
+    } on PlatformException {
+      return NotificationAccess.unknown;
+    }
+  }
+
   static Future<void> _call(String method, [Object? args]) async {
     try {
       await _channel.invokeMethod<void>(method, args);
@@ -73,4 +92,19 @@ abstract final class ScreenLock {
       // The warning is a courtesy; the session goes on without it.
     }
   }
+}
+
+/// What the phone lets hifive do with notifications.
+enum NotificationAccess {
+  allowed,
+
+  /// Turned off in Settings; only the learner can turn it back on there.
+  denied,
+
+  /// Never asked on this phone, as after installing again or on a second
+  /// device where the synced reminder is already on.
+  unasked,
+
+  /// No answer from the platform.
+  unknown,
 }

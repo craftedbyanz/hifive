@@ -3107,6 +3107,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'hifive isn\'t allowed to send notifications. Turn them on in Settings → hifive → Notifications.';
 
   @override
+  String get pushAllowed => 'On';
+
+  @override
+  String get pushUnasked => 'hifive hasn\'t been allowed yet';
+
+  @override
+  String get pushAllow => 'Allow';
+
+  @override
+  String get reminderBlocked =>
+      'Notifications are off in Settings, so reminders can\'t arrive.';
+
+  @override
   String reminderNoteTitle(int count) {
     return '$count words are fading';
   }

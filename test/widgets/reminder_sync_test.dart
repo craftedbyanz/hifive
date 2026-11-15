@@ -10,14 +10,18 @@ import '../helpers.dart';
 void main() {
   late List<MethodCall> calls;
 
+  /// What the phone says about notifications; null gives no answer.
+  String? status;
+
   setUp(() {
     calls = [];
+    status = null;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(const MethodChannel('hifive/screen'), (
           call,
         ) async {
           calls.add(call);
-          return null;
+          return call.method == 'notificationStatus' ? status : null;
         });
   });
   tearDown(
@@ -89,5 +93,27 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
     expect(calls.map((c) => c.method), isNot(contains('scheduleReminders')));
     expect(calls.last.method, 'cancelReminder');
+  });
+
+  testWidgets('a synced reminder asks a phone that was never asked', (
+    tester,
+  ) async {
+    status = 'unasked';
+    final state = fresh()..setReminder(on: true, time: '20:00');
+    await scheduled(tester, state);
+    expect(calls.where((c) => c.method == 'prepareWarning'), hasLength(1));
+    // Once a run, not after every change.
+    state.setNewPerDay(5);
+    await tester.pump(const Duration(seconds: 3));
+    expect(calls.where((c) => c.method == 'prepareWarning'), hasLength(1));
+  });
+
+  testWidgets('a phone that already answered is not asked again', (
+    tester,
+  ) async {
+    status = 'denied';
+    final state = fresh()..setReminder(on: true, time: '20:00');
+    await scheduled(tester, state);
+    expect(calls.map((c) => c.method), isNot(contains('prepareWarning')));
   });
 }

@@ -3033,6 +3033,19 @@ class AppLocalizationsVi extends AppLocalizations {
       'hifive chưa được phép gửi thông báo. Bật trong Cài đặt → hifive → Thông báo.';
 
   @override
+  String get pushAllowed => 'Đang bật';
+
+  @override
+  String get pushUnasked => 'Chưa cấp quyền cho hifive';
+
+  @override
+  String get pushAllow => 'Cho phép';
+
+  @override
+  String get reminderBlocked =>
+      'Thông báo đang tắt trong Cài đặt nên lời nhắc chưa thể đến.';
+
+  @override
   String reminderNoteTitle(int count) {
     return '$count từ sắp quên';
   }

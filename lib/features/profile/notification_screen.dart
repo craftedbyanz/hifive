@@ -9,11 +9,66 @@ import '../../state/state.dart';
 import '../../widgets/common.dart';
 import 'settings_kit.dart';
 
-class NotificationScreen extends StatelessWidget {
+class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
+
+  static final _boxDecoration = ShapeDecoration(
+    color: Palette.settingsPage,
+    shape: RoundedSuperellipseBorder(
+      borderRadius: BorderRadius.circular(22),
+      side: const BorderSide(color: Palette.settingsPanel),
+    ),
+  );
+
+  @override
+  State<NotificationScreen> createState() => _NotificationScreenState();
+}
+
+/// Reads whether iOS lets hifive notify when the page opens and each time
+/// the learner comes back from Settings, so the switch and the push row
+/// show what will really happen.
+class _NotificationScreenState extends State<NotificationScreen>
+    with WidgetsBindingObserver {
+  var _access = NotificationAccess.unknown;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refresh();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState s) {
+    if (s == AppLifecycleState.resumed) _refresh();
+  }
+
+  Future<void> _refresh() async {
+    final access = await ScreenLock.access();
+    if (mounted && access != _access) setState(() => _access = access);
+  }
+
+  /// Asks iOS when it has never been asked; otherwise only Settings can
+  /// change the answer.
+  Future<void> _allowOrOpenSettings(AppState s) async {
+    if (_access == NotificationAccess.unasked) {
+      await ScreenLock.askPermission();
+      return _refresh();
+    }
+    final shown = await s.system.openAppSettings();
+    if (!shown && mounted) toast(context, context.t.cannotOpenSettings);
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = AppScope.of(context);
+    final unasked = _access == NotificationAccess.unasked;
     final today = s.now();
     return SettingsPage(
       title: context.t.profileNotifications,
@@ -26,12 +81,12 @@ class NotificationScreen extends StatelessWidget {
             date: DateFormat.MMMMEEEEd(context.t.localeName).format(today),
           ),
           const SizedBox(height: 24),
-          _ReminderCard(state: s),
+          _ReminderCard(state: s, access: _access, onAsked: _refresh),
           const SizedBox(height: 16),
           Container(
             height: 76,
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-            decoration: _boxDecoration,
+            decoration: NotificationScreen._boxDecoration,
             child: Row(
               children: [
                 Container(
@@ -63,8 +118,12 @@ class NotificationScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        // This app never asks for notification permission.
-                        context.t.notEnabledInSettings,
+                        switch (_access) {
+                          NotificationAccess.allowed => context.t.pushAllowed,
+                          NotificationAccess.unasked => context.t.pushUnasked,
+                          _ => context.t.notEnabledInSettings,
+                        },
+                        key: const ValueKey('push-status'),
                         style: D.text(
                           12.5,
                           color: Palette.settingsMuted,
@@ -76,12 +135,7 @@ class NotificationScreen extends StatelessWidget {
                 ),
                 PressFade(
                   key: const ValueKey('notification-settings'),
-                  onTap: () async {
-                    final shown = await s.system.openAppSettings();
-                    if (!shown && context.mounted) {
-                      toast(context, context.t.cannotOpenSettings);
-                    }
-                  },
+                  onTap: () => _allowOrOpenSettings(s),
                   child: Container(
                     width: 70,
                     height: 32,
@@ -91,7 +145,7 @@ class NotificationScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
-                      context.t.settingsAction,
+                      unasked ? context.t.pushAllow : context.t.settingsAction,
                       style: D.text(
                         12.5,
                         weight: FontWeight.w600,
@@ -107,7 +161,7 @@ class NotificationScreen extends StatelessWidget {
           const SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.fromLTRB(20, 21, 20, 21),
-            decoration: _boxDecoration,
+            decoration: NotificationScreen._boxDecoration,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -145,14 +199,6 @@ class NotificationScreen extends StatelessWidget {
       ),
     );
   }
-
-  static final _boxDecoration = ShapeDecoration(
-    color: Palette.settingsPage,
-    shape: RoundedSuperellipseBorder(
-      borderRadius: BorderRadius.circular(22),
-      side: const BorderSide(color: Palette.settingsPanel),
-    ),
-  );
 }
 
 /// A lock screen drawn from vector shapes: the reference's wallpaper image and
@@ -323,9 +369,19 @@ class _WallpaperPainter extends CustomPainter {
 }
 
 /// The daily review reminder: on or off, and the time, picked on a wheel.
+/// While notifications are off in Settings the switch shows off and says
+/// why, since no reminder could arrive.
 class _ReminderCard extends StatelessWidget {
   final AppState state;
-  const _ReminderCard({required this.state});
+  final NotificationAccess access;
+  final VoidCallback onAsked;
+  const _ReminderCard({
+    required this.state,
+    required this.access,
+    required this.onAsked,
+  });
+
+  bool get _blocked => state.reminderOn && access == NotificationAccess.denied;
 
   Future<void> _pickTime(BuildContext context) async {
     final parts = state.reminderTime.split(':');
@@ -402,19 +458,28 @@ class _ReminderCard extends StatelessWidget {
                   context.t.reminderAt(state.reminderTime),
                   style: D.text(12.5, color: Palette.settingsMuted),
                 ),
+                if (_blocked) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    context.t.reminderBlocked,
+                    key: const ValueKey('reminder-blocked'),
+                    style: D.text(12.5, color: Palette.wrong),
+                  ),
+                ],
               ],
             ),
           ),
         ),
         CupertinoSwitch(
           key: const ValueKey('reminder-toggle'),
-          value: state.reminderOn,
+          value: state.reminderOn && !_blocked,
           activeTrackColor: D.green,
           onChanged: (on) async {
             if (!on) return state.setReminder(on: false);
             // Turned on only if iOS lets hifive send notifications.
             final t = context.t;
             final allowed = await ScreenLock.askPermission();
+            onAsked();
             if (allowed == false) {
               if (context.mounted) toast(context, t.reminderDenied);
               return;

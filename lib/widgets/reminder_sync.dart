@@ -11,7 +11,8 @@ import '../state/state.dart';
 /// notification at the reminder time on each of the coming [ReminderSync.days]
 /// days: how many words will be due, or on a day with none a nudge to learn
 /// a few new words (skipped once the learner studied that day). Cancels them
-/// all when the reminder is off.
+/// all when the reminder is off. Asks for notification permission on a phone
+/// that never answered while the synced reminder is on.
 class ReminderSync extends StatefulWidget {
   final Widget child;
   const ReminderSync({super.key, required this.child});
@@ -34,6 +35,9 @@ class _ReminderSyncState extends State<ReminderSync>
     with WidgetsBindingObserver {
   AppState? _state;
   Timer? _debounce;
+
+  /// Whether this run already asked for notification permission.
+  var _asked = false;
 
   @override
   void initState() {
@@ -77,6 +81,7 @@ class _ReminderSyncState extends State<ReminderSync>
       ScreenLock.cancelReminder();
       return;
     }
+    _askOnce();
     final t = context.t;
     final first = state.nextReminder;
     final reminders = [
@@ -87,6 +92,18 @@ class _ReminderSyncState extends State<ReminderSync>
       ScreenLock.cancelReminder();
     } else {
       ScreenLock.scheduleReminders(reminders);
+    }
+  }
+
+  /// The reminder is a synced setting but permission belongs to the phone:
+  /// after installing again, or on a second device, the switch comes back on
+  /// while iOS has never been asked and would drop every reminder. Asks
+  /// there, once a run.
+  Future<void> _askOnce() async {
+    if (_asked) return;
+    _asked = true;
+    if (await ScreenLock.access() == NotificationAccess.unasked) {
+      await ScreenLock.askPermission();
     }
   }
 

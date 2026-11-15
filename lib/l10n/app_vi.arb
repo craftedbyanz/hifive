@@ -1502,6 +1502,10 @@
   "reminderPickTime": "Giờ nhắc",
   "reminderDone": "Xong",
   "reminderDenied": "hifive chưa được phép gửi thông báo. Bật trong Cài đặt → hifive → Thông báo.",
+  "pushAllowed": "Đang bật",
+  "pushUnasked": "Chưa cấp quyền cho hifive",
+  "pushAllow": "Cho phép",
+  "reminderBlocked": "Thông báo đang tắt trong Cài đặt nên lời nhắc chưa thể đến.",
   "reminderNoteTitle": "{count} từ sắp quên",
   "@reminderNoteTitle": {
     "placeholders": {

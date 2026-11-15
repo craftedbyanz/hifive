@@ -5640,6 +5640,30 @@ abstract class AppLocalizations {
   /// **'hifive chưa được phép gửi thông báo. Bật trong Cài đặt → hifive → Thông báo.'**
   String get reminderDenied;
 
+  /// No description provided for @pushAllowed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang bật'**
+  String get pushAllowed;
+
+  /// No description provided for @pushUnasked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa cấp quyền cho hifive'**
+  String get pushUnasked;
+
+  /// No description provided for @pushAllow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cho phép'**
+  String get pushAllow;
+
+  /// No description provided for @reminderBlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông báo đang tắt trong Cài đặt nên lời nhắc chưa thể đến.'**
+  String get reminderBlocked;
+
   /// No description provided for @reminderNoteTitle.
   ///
   /// In vi, this message translates to:

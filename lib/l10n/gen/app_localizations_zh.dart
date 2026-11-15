@@ -2947,6 +2947,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reminderDenied => 'hifive 尚未获准发送通知。请在“设置 → hifive → 通知”中打开。';
 
   @override
+  String get pushAllowed => '已开启';
+
+  @override
+  String get pushUnasked => '尚未允许 hifive 发送通知';
+
+  @override
+  String get pushAllow => '允许';
+
+  @override
+  String get reminderBlocked => '通知已在“设置”中关闭，提醒无法送达。';
+
+  @override
   String reminderNoteTitle(int count) {
     return '$count 个词快忘了';
   }
