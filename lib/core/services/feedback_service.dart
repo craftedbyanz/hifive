@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -22,6 +23,21 @@ abstract interface class FeedbackService {
 
 class PlatformFeedback implements FeedbackService {
   final FlutterTts _tts = FlutterTts();
+  Future<void>? _audioReady;
+
+  /// Pronunciation is something the learner asked for, so on iOS it plays
+  /// with the Silent switch on, as dictionary apps do, ducking other audio
+  /// instead of stopping it. The default category is silenced by the switch,
+  /// which made the speaker buttons seem broken.
+  Future<void> _prepareAudio() async {
+    if (!Platform.isIOS) return;
+    await _tts.setSharedInstance(true);
+    await _tts.setIosAudioCategory(IosTextToSpeechAudioCategory.playback, [
+      IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+      IosTextToSpeechAudioCategoryOptions.duckOthers,
+    ], IosTextToSpeechAudioMode.spokenAudio);
+  }
+
   bool sound = true, haptic = true;
 
   /// Two haptics closer together than this feel like one doubled knock.
@@ -31,6 +47,7 @@ class PlatformFeedback implements FeedbackService {
   @override
   Future<void> speak(String text, {required String locale}) async {
     try {
+      await (_audioReady ??= _prepareAudio());
       await _tts.setLanguage(locale);
       await _tts.setSpeechRate(.45);
       await _tts.speak(text);
