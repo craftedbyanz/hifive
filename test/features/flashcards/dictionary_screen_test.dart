@@ -7,6 +7,7 @@ import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/information/information.dart';
 import 'package:hifive/state/state.dart';
+import 'package:hifive/widgets/common.dart';
 
 import '../../domain/dictionary/lookup_test.dart' show packBytes, packInfo;
 import '../../helpers.dart';
@@ -272,4 +273,43 @@ void main() {
       contains('dictionaryLicense'),
     );
   });
+
+  testWidgets(
+    'the keyboard opens after the page slides in and closes on back',
+    (tester) async {
+      final state = await withPack(tester);
+      await mount(
+        tester,
+        state,
+        Builder(
+          builder: (context) => TextButton(
+            onPressed: () => go<void>(context, const DictionaryScreen()),
+            child: const Text('open'),
+          ),
+        ),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      EditableTextState field() =>
+          tester.state<EditableTextState>(find.byType(EditableText));
+      // Mid-transition: no keyboard yet.
+      expect(field().widget.focusNode.hasFocus, isFalse);
+      await tester.pumpAndSettle();
+      expect(field().widget.focusNode.hasFocus, isTrue);
+
+      await tester.tap(find.byTooltip('Quay lại'));
+      await tester.pump();
+      expect(
+        tester
+            .state<EditableTextState>(find.byType(EditableText))
+            .widget
+            .focusNode
+            .hasFocus,
+        isFalse,
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(DictionaryScreen), findsNothing);
+    },
+  );
 }

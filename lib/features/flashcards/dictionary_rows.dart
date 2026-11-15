@@ -60,7 +60,6 @@ class _SearchField extends StatelessWidget {
             key: const ValueKey('dict-search-field'),
             controller: controller,
             focusNode: focus,
-            autofocus: true,
             autocorrect: false,
             enableSuggestions: false,
             textCapitalization: TextCapitalization.none,
@@ -177,7 +176,7 @@ class _Message extends StatelessWidget {
 /// The empty search: recent lookups, then words at the learner's level.
 class _Start extends StatelessWidget {
   final List<String> recent;
-  final Future<List<DictEntry>> toLearn;
+  final Future<List<DictEntry>>? toLearn;
   final String level;
   final ValueChanged<String> onLookUp;
   final VoidCallback onClear, onManual;
@@ -272,6 +271,7 @@ class _Start extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         _ManualRow(label: t.dictManualPlain, onTap: onManual),
+        const _KeyboardSpace(),
       ],
     );
   }
@@ -560,4 +560,13 @@ class _ManualRow extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// Room at the end of a list for the keyboard, so the last rows can scroll
+/// above it. Only this rebuilds as the keyboard moves.
+class _KeyboardSpace extends StatelessWidget {
+  const _KeyboardSpace();
+  @override
+  Widget build(BuildContext context) =>
+      SizedBox(height: MediaQuery.viewInsetsOf(context).bottom);
 }

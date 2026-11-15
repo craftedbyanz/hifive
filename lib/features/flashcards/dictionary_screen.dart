@@ -43,14 +43,55 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
 
   /// Cards added here, by entry id, so a second tap takes them back out.
   final _added = <String, (Deck, FlashWord)>{};
-  late final Future<List<DictEntry>> _toLearn = AppScope.read(context)
-      .wordsToLearn();
+
+  /// Words to learn at the learner's level, asked for once the page is in.
+  Future<List<DictEntry>>? _toLearn;
+  var _settled = false;
 
   @override
   void initState() {
     super.initState();
     _search.addListener(_onChanged);
     if (widget.query.isNotEmpty) _search.text = widget.query;
+  }
+
+  /// The keyboard and the suggestions wait for the push transition to end:
+  /// opening the keyboard while the page slides in made it stutter. The
+  /// route's animation is read after the first frame, once it is attached to
+  /// the transition (before that it reads as already complete).
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_settled) return;
+    _settled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final animation = ModalRoute.of(context)?.animation;
+      if (animation == null || animation.isCompleted) return _arrived();
+      void done(AnimationStatus status) {
+        if (status != AnimationStatus.completed) return;
+        animation.removeStatusListener(done);
+        _arrived();
+      }
+
+      animation.addStatusListener(done);
+    });
+  }
+
+  void _arrived() {
+    if (!mounted) return;
+    _focus.requestFocus();
+    final toLearn = AppScope.read(context).wordsToLearn();
+    setState(() {
+      _toLearn = toLearn;
+    });
+  }
+
+  /// Back: the keyboard goes first, so the page doesn't resize under it
+  /// while it slides away.
+  void _close() {
+    _focus.unfocus();
+    Navigator.of(context).maybePop();
   }
 
   @override
@@ -215,6 +256,10 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     return AppPage(
       title: t.dictTitle,
       background: Palette.settingsPage,
+      // The lists add room for the keyboard themselves (`_KeyboardSpace`):
+      // resizing the whole page with it made going back lag.
+      resizeToAvoidBottomInset: false,
+      onBack: _close,
       trailing: count == 0
           ? null
           : Padding(
@@ -355,6 +400,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
               label: _query.isEmpty ? t.dictManualPlain : t.dictManual(_query),
               onTap: _manual,
             ),
+            const _KeyboardSpace(),
           ],
         ),
         if (_searching)
