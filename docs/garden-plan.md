@@ -88,7 +88,10 @@ Until then a Release build shows the switch but answers "Bản cài này chưa �
 
 Not done: Android (it would need an accessibility service and usage access, which Play reviews strictly), a custom shield screen (a ShieldConfiguration extension), and lifting the shield at the planned end even if the app was killed (a DeviceActivityMonitor extension; for now the next launch lifts it).
 
-### 10. The session on the lock screen and in the Dynamic Island - built
+### 10. The session on the lock screen and in the Dynamic Island - built, parked until the App IDs exist
+
+Parked on 15 November 2026: the developer account is an Individual one, so only its holder can create App IDs, App Groups and profiles, and they could not yet. Until they do, the `FocusActivity` target stays in the project but Runner neither depends on it nor embeds it, and the App Group is out of `Runner.entitlements`, so TestFlight builds sign as before; the Dart and Runner code is harmless without the extension (the request fails quietly). To turn it on once steps 1 to 4 below are done, revert the commit "build(ios): park the lock screen widget until its App IDs exist" (it re-adds the dependency, the "Embed Foundation Extensions" phase before Thin Binary, and the App Group).
+
 
 Done on 15 November 2026, iOS 16.1 and later: a running session shows as a Live Activity. The lock screen has the plant on its sunlit patch in a light circle, the time left counting down (up for the stopwatch), the tag with its colour, a progress bar and, on iOS 17, a ✕ that ends the session (cancelled in the first ten seconds, given up after that, or planted for a stopwatch past its minimum). The Dynamic Island shows a leaf and the time left, and the plant, time, tag and progress when expanded. The timer and bar run by themselves; the app sends a new picture of the plant whenever it grows a tenth of the way, so while the app is suspended the picture waits until it next runs.
 
