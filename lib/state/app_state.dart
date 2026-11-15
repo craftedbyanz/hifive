@@ -443,6 +443,12 @@ class AppState extends ChangeNotifier {
 
   Future<void> signInWithApple() => _signIn(auth.signInWithApple);
   Future<void> signInWithGoogle() => _signIn(auth.signInWithGoogle);
+  Future<void> signInWithEmail(String email, String password) =>
+      _signIn(() => auth.signInWithEmail(email.trim(), password));
+  Future<void> createAccount(String email, String password) =>
+      _signIn(() => auth.createAccount(email.trim(), password));
+  Future<void> sendPasswordReset(String email) =>
+      auth.sendPasswordReset(email.trim());
 
   static String _lastSyncKey(String uid) => 'lastSyncedAt:$uid';
 

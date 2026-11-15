@@ -1115,5 +1115,19 @@
   "classStudents": "Students",
   "classUnassign": "Remove",
   "classNoStudents": "No students yet. Send the class the invite code.",
-  "classNoDecks": "Make a deck with words first, then set it."
+  "classNoDecks": "Make a deck with words first, then set it.",
+  "continueWithEmail": "Continue with email",
+  "resetNeedsEmail": "Enter your email to get a password reset link.",
+  "resetSent": "Password reset email sent.",
+  "createAccountTitle": "Create your Hifive account",
+  "emailSignInTitle": "Sign in with email",
+  "emailSignInBody": "Save your progress and keep learning on any device.",
+  "emailHint": "Email",
+  "passwordHint": "Password",
+  "working": "Working...",
+  "createAccount": "Create account",
+  "signIn": "Sign in",
+  "haveAccountSignIn": "Have an account? Sign in",
+  "createNewAccount": "Create a new account",
+  "forgotPassword": "Forgot password?"
 }

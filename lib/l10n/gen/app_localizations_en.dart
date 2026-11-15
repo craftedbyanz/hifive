@@ -3769,4 +3769,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get classNoDecks => 'Make a deck with words first, then set it.';
+
+  @override
+  String get continueWithEmail => 'Continue with email';
+
+  @override
+  String get resetNeedsEmail =>
+      'Enter your email to get a password reset link.';
+
+  @override
+  String get resetSent => 'Password reset email sent.';
+
+  @override
+  String get createAccountTitle => 'Create your Hifive account';
+
+  @override
+  String get emailSignInTitle => 'Sign in with email';
+
+  @override
+  String get emailSignInBody =>
+      'Save your progress and keep learning on any device.';
+
+  @override
+  String get emailHint => 'Email';
+
+  @override
+  String get passwordHint => 'Password';
+
+  @override
+  String get working => 'Working...';
+
+  @override
+  String get createAccount => 'Create account';
+
+  @override
+  String get signIn => 'Sign in';
+
+  @override
+  String get haveAccountSignIn => 'Have an account? Sign in';
+
+  @override
+  String get createNewAccount => 'Create a new account';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
 }

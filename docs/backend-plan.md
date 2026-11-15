@@ -130,3 +130,5 @@ A manifest lists a content version per language; the app checks it about once a 
 ### 5. AI on the Worker - todo
 
 Grading, conversation, deck generation and insights through AI Gateway, with per-user quotas. The AI provider is still to be chosen.
+
+Email/password sign-in, account creation and password reset were restored for build 4 (14 November 2026), alongside Apple and Google. App Review uses a separate Firebase email/password account with ordinary app access.

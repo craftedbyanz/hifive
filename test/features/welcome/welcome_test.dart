@@ -45,8 +45,7 @@ void main() {
     for (final key in ['sign-in-apple', 'sign-in-google']) {
       expect(find.byKey(ValueKey(key)), findsOneWidget);
     }
-    // Only Apple and Google: no email and password.
-    expect(find.byKey(const ValueKey('sign-in-email-open')), findsNothing);
+    expect(find.byKey(const ValueKey('sign-in-email-open')), findsOneWidget);
     expect(
       find.descendant(
         of: find.byKey(const ValueKey('sign-in-google')),
@@ -104,6 +103,32 @@ void main() {
     await tester.pumpAndSettle();
     expect(s.user?.method, AuthMethod.google);
     expect(find.byType(HomeScreen), findsOneWidget);
+  });
+
+  testWidgets('email sign-in opens its sheet and continues to Home', (
+    tester,
+  ) async {
+    final auth = MemoryAuthService()
+      ..accounts['review@example.com'] = 'review-password';
+    final state = fresh(auth: auth);
+    await _openApp(tester, state);
+    await tester.tap(find.byKey(const ValueKey('sign-in-email-open')));
+    await tester.pumpAndSettle();
+    expect(find.byType(EmailSignInForm), findsOneWidget);
+    await tester.enterText(
+      find.byKey(const ValueKey('sign-in-email')),
+      'review@example.com',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey('sign-in-password')),
+      'review-password',
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('sign-in-submit')));
+    await tester.pumpAndSettle();
+    expect(state.user?.method, AuthMethod.email);
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(EmailSignInForm), findsNothing);
   });
 
   testWidgets('a first sign-in opens onboarding instead of Home', (

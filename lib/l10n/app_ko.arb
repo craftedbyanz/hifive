@@ -1115,5 +1115,19 @@
   "classStudents": "학생",
   "classUnassign": "내기 취소",
   "classNoStudents": "아직 학생이 없어요. 수업에 초대 코드를 보내요.",
-  "classNoDecks": "먼저 단어가 있는 묶음을 만든 뒤 내 주세요."
+  "classNoDecks": "먼저 단어가 있는 묶음을 만든 뒤 내 주세요.",
+  "continueWithEmail": "이메일로 계속하기",
+  "resetNeedsEmail": "비밀번호 재설정 링크를 받을 이메일을 입력하세요.",
+  "resetSent": "비밀번호 재설정 이메일을 보냈어요.",
+  "createAccountTitle": "Hifive 계정 만들기",
+  "emailSignInTitle": "이메일로 로그인",
+  "emailSignInBody": "학습 기록을 저장하고 어느 기기에서든 이어서 공부하세요.",
+  "emailHint": "이메일",
+  "passwordHint": "비밀번호",
+  "working": "처리 중...",
+  "createAccount": "계정 만들기",
+  "signIn": "로그인",
+  "haveAccountSignIn": "계정이 있나요? 로그인",
+  "createNewAccount": "새 계정 만들기",
+  "forgotPassword": "비밀번호를 잊으셨나요?"
 }

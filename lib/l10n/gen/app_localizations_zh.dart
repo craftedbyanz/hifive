@@ -3586,4 +3586,46 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get classNoDecks => '请先创建有单词的卡组，再布置给班级。';
+
+  @override
+  String get continueWithEmail => '通过邮箱继续';
+
+  @override
+  String get resetNeedsEmail => '请输入邮箱以接收重置密码链接。';
+
+  @override
+  String get resetSent => '重置密码邮件已发送。';
+
+  @override
+  String get createAccountTitle => '创建 Hifive 账户';
+
+  @override
+  String get emailSignInTitle => '使用邮箱登录';
+
+  @override
+  String get emailSignInBody => '保存学习进度，在任何设备上继续学习。';
+
+  @override
+  String get emailHint => '邮箱';
+
+  @override
+  String get passwordHint => '密码';
+
+  @override
+  String get working => '处理中…';
+
+  @override
+  String get createAccount => '创建账户';
+
+  @override
+  String get signIn => '登录';
+
+  @override
+  String get haveAccountSignIn => '已有账户？登录';
+
+  @override
+  String get createNewAccount => '创建新账户';
+
+  @override
+  String get forgotPassword => '忘记密码？';
 }

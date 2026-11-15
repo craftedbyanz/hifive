@@ -11,6 +11,7 @@ import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../information/information.dart';
 import 'auth_text.dart';
+import 'email_sign_in.dart';
 import 'welcome_motion.dart';
 
 part 'welcome_scenes.dart';
@@ -127,6 +128,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       foreground: D.ink,
                       outlined: true,
                       onTap: busy ? null : () => _signIn(s.signInWithGoogle),
+                    ),
+                    const SizedBox(height: 12),
+                    ActionButton(
+                      context.t.continueWithEmail,
+                      key: const ValueKey('sign-in-email-open'),
+                      icon: CupertinoIcons.mail,
+                      outlined: true,
+                      color: D.ink,
+                      foreground: D.ink,
+                      onTap: busy ? null : () => showEmailSignIn(context),
                     ),
                     const SizedBox(height: 14),
                     const _Terms(),

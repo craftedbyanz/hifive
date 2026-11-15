@@ -1115,5 +1115,19 @@
   "classStudents": "学生",
   "classUnassign": "取消布置",
   "classNoStudents": "还没有学生。把邀请码发给班级。",
-  "classNoDecks": "请先创建有单词的卡组，再布置给班级。"
+  "classNoDecks": "请先创建有单词的卡组，再布置给班级。",
+  "continueWithEmail": "通过邮箱继续",
+  "resetNeedsEmail": "请输入邮箱以接收重置密码链接。",
+  "resetSent": "重置密码邮件已发送。",
+  "createAccountTitle": "创建 Hifive 账户",
+  "emailSignInTitle": "使用邮箱登录",
+  "emailSignInBody": "保存学习进度，在任何设备上继续学习。",
+  "emailHint": "邮箱",
+  "passwordHint": "密码",
+  "working": "处理中…",
+  "createAccount": "创建账户",
+  "signIn": "登录",
+  "haveAccountSignIn": "已有账户？登录",
+  "createNewAccount": "创建新账户",
+  "forgotPassword": "忘记密码？"
 }

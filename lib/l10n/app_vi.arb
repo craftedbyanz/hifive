@@ -1919,5 +1919,19 @@
   "classStudents": "Học sinh",
   "classUnassign": "Bỏ giao",
   "classNoStudents": "Chưa có học sinh. Gửi mã mời cho lớp.",
-  "classNoDecks": "Hãy tạo một bộ thẻ có từ trước, rồi giao cho lớp."
+  "classNoDecks": "Hãy tạo một bộ thẻ có từ trước, rồi giao cho lớp.",
+  "continueWithEmail": "Tiếp tục với email",
+  "resetNeedsEmail": "Nhập email để nhận liên kết đặt lại mật khẩu.",
+  "resetSent": "Đã gửi email đặt lại mật khẩu.",
+  "createAccountTitle": "Tạo tài khoản Hifive",
+  "emailSignInTitle": "Đăng nhập bằng email",
+  "emailSignInBody": "Lưu tiến độ và học tiếp trên mọi thiết bị.",
+  "emailHint": "Email",
+  "passwordHint": "Mật khẩu",
+  "working": "Đang xử lý...",
+  "createAccount": "Tạo tài khoản",
+  "signIn": "Đăng nhập",
+  "haveAccountSignIn": "Đã có tài khoản? Đăng nhập",
+  "createNewAccount": "Tạo tài khoản mới",
+  "forgotPassword": "Quên mật khẩu?"
 }

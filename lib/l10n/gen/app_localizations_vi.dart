@@ -3693,4 +3693,46 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get classNoDecks =>
       'Hãy tạo một bộ thẻ có từ trước, rồi giao cho lớp.';
+
+  @override
+  String get continueWithEmail => 'Tiếp tục với email';
+
+  @override
+  String get resetNeedsEmail => 'Nhập email để nhận liên kết đặt lại mật khẩu.';
+
+  @override
+  String get resetSent => 'Đã gửi email đặt lại mật khẩu.';
+
+  @override
+  String get createAccountTitle => 'Tạo tài khoản Hifive';
+
+  @override
+  String get emailSignInTitle => 'Đăng nhập bằng email';
+
+  @override
+  String get emailSignInBody => 'Lưu tiến độ và học tiếp trên mọi thiết bị.';
+
+  @override
+  String get emailHint => 'Email';
+
+  @override
+  String get passwordHint => 'Mật khẩu';
+
+  @override
+  String get working => 'Đang xử lý...';
+
+  @override
+  String get createAccount => 'Tạo tài khoản';
+
+  @override
+  String get signIn => 'Đăng nhập';
+
+  @override
+  String get haveAccountSignIn => 'Đã có tài khoản? Đăng nhập';
+
+  @override
+  String get createNewAccount => 'Tạo tài khoản mới';
+
+  @override
+  String get forgotPassword => 'Quên mật khẩu?';
 }

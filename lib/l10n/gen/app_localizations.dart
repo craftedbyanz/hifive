@@ -6797,6 +6797,90 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Hãy tạo một bộ thẻ có từ trước, rồi giao cho lớp.'**
   String get classNoDecks;
+
+  /// No description provided for @continueWithEmail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục với email'**
+  String get continueWithEmail;
+
+  /// No description provided for @resetNeedsEmail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập email để nhận liên kết đặt lại mật khẩu.'**
+  String get resetNeedsEmail;
+
+  /// No description provided for @resetSent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi email đặt lại mật khẩu.'**
+  String get resetSent;
+
+  /// No description provided for @createAccountTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo tài khoản Hifive'**
+  String get createAccountTitle;
+
+  /// No description provided for @emailSignInTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập bằng email'**
+  String get emailSignInTitle;
+
+  /// No description provided for @emailSignInBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu tiến độ và học tiếp trên mọi thiết bị.'**
+  String get emailSignInBody;
+
+  /// No description provided for @emailHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Email'**
+  String get emailHint;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu'**
+  String get passwordHint;
+
+  /// No description provided for @working.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang xử lý...'**
+  String get working;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo tài khoản'**
+  String get createAccount;
+
+  /// No description provided for @signIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập'**
+  String get signIn;
+
+  /// No description provided for @haveAccountSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có tài khoản? Đăng nhập'**
+  String get haveAccountSignIn;
+
+  /// No description provided for @createNewAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo tài khoản mới'**
+  String get createNewAccount;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quên mật khẩu?'**
+  String get forgotPassword;
 }
 
 class _AppLocalizationsDelegate

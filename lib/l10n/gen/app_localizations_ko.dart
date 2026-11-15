@@ -3607,4 +3607,46 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get classNoDecks => '먼저 단어가 있는 묶음을 만든 뒤 내 주세요.';
+
+  @override
+  String get continueWithEmail => '이메일로 계속하기';
+
+  @override
+  String get resetNeedsEmail => '비밀번호 재설정 링크를 받을 이메일을 입력하세요.';
+
+  @override
+  String get resetSent => '비밀번호 재설정 이메일을 보냈어요.';
+
+  @override
+  String get createAccountTitle => 'Hifive 계정 만들기';
+
+  @override
+  String get emailSignInTitle => '이메일로 로그인';
+
+  @override
+  String get emailSignInBody => '학습 기록을 저장하고 어느 기기에서든 이어서 공부하세요.';
+
+  @override
+  String get emailHint => '이메일';
+
+  @override
+  String get passwordHint => '비밀번호';
+
+  @override
+  String get working => '처리 중...';
+
+  @override
+  String get createAccount => '계정 만들기';
+
+  @override
+  String get signIn => '로그인';
+
+  @override
+  String get haveAccountSignIn => '계정이 있나요? 로그인';
+
+  @override
+  String get createNewAccount => '새 계정 만들기';
+
+  @override
+  String get forgotPassword => '비밀번호를 잊으셨나요?';
 }
