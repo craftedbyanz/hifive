@@ -1,3 +1,4 @@
+import ActivityKit
 import FamilyControls
 import Flutter
 import ManagedSettings
@@ -21,6 +22,9 @@ import UserNotifications
     }
     if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "FocusShield") {
       FocusShield.shared.attach(FlutterMethodChannel(name: "hifive/shield", binaryMessenger: registrar.messenger()))
+    }
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "FocusLive") {
+      FocusLive.shared.attach(FlutterMethodChannel(name: "hifive/live", binaryMessenger: registrar.messenger()))
     }
   }
 
@@ -205,6 +209,104 @@ private struct ShieldPicker: View {
             Button(done) { finish(selection) }
           }
         }
+    }
+  }
+}
+
+/// Shows a running focus session on the lock screen and in the Dynamic
+/// Island (the FocusActivity extension draws it). The timer and progress run
+/// by themselves; the app redraws the plant's picture into the shared App
+/// Group whenever it grows a step, and is told when the learner taps ✕.
+final class FocusLive {
+  static let shared = FocusLive()
+  private var version = 0
+
+  func attach(_ channel: FlutterMethodChannel) {
+    // A session never outlives the app, so its Live Activity must not either.
+    if #available(iOS 16.1, *) { endAll() }
+    NotificationCenter.default.addObserver(forName: .hifiveStopFocus, object: nil, queue: .main) { _ in
+      channel.invokeMethod("stop", arguments: nil)
+    }
+    channel.setMethodCallHandler { [weak self] call, result in
+      guard let self, #available(iOS 16.1, *) else { return result(nil) }
+      let args = call.arguments as? [String: Any] ?? [:]
+      switch call.method {
+      case "start":
+        self.endAll()
+        self.clearPlants()
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return result(false) }
+        let start = Date(timeIntervalSince1970: (args["start"] as? Double ?? 0) / 1000)
+        let end = (args["end"] as? Double).map { Date(timeIntervalSince1970: $0 / 1000) }
+        let attributes = FocusAttributes(tag: args["tag"] as? String ?? "", color: args["color"] as? String ?? "")
+        let state = FocusAttributes.ContentState(start: start, end: end, plant: self.version)
+        do {
+          if #available(iOS 16.2, *) {
+            _ = try Activity.request(attributes: attributes, content: .init(state: state, staleDate: end), pushType: nil)
+          } else {
+            _ = try Activity.request(attributes: attributes, contentState: state, pushType: nil)
+          }
+          result(true)
+        } catch {
+          result(false)
+        }
+      case "plant":
+        guard let bytes = args["png"] as? FlutterStandardTypedData else { return result(nil) }
+        self.savePlant(bytes.data)
+        let version = self.version
+        Task {
+          for activity in Activity<FocusAttributes>.activities {
+            if #available(iOS 16.2, *) {
+              var state = activity.content.state
+              state.plant = version
+              await activity.update(.init(state: state, staleDate: state.end))
+            } else {
+              var state = activity.contentState
+              state.plant = version
+              await activity.update(using: state)
+            }
+          }
+          result(nil)
+        }
+      case "end":
+        self.endAll()
+        result(nil)
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+  }
+
+  /// Removes the last session's pictures, so a new one starts with a leaf.
+  private func clearPlants() {
+    guard let folder = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: focusAppGroup),
+      let files = try? FileManager.default.contentsOfDirectory(atPath: folder.path)
+    else { return }
+    for name in files where name.hasPrefix("focus-plant-") {
+      try? FileManager.default.removeItem(at: folder.appendingPathComponent(name))
+    }
+    version = 0
+  }
+
+  /// Writes the plant's picture as a new version and removes older ones.
+  private func savePlant(_ data: Data) {
+    guard let folder = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: focusAppGroup)
+    else { return }
+    let old = version
+    version += 1
+    try? data.write(to: folder.appendingPathComponent(focusPlantFile(version)), options: .atomic)
+    if old > 0 { try? FileManager.default.removeItem(at: folder.appendingPathComponent(focusPlantFile(old))) }
+  }
+
+  @available(iOS 16.1, *)
+  private func endAll() {
+    Task {
+      for activity in Activity<FocusAttributes>.activities {
+        if #available(iOS 16.2, *) {
+          await activity.end(nil, dismissalPolicy: .immediate)
+        } else {
+          await activity.end(dismissalPolicy: .immediate)
+        }
+      }
     }
   }
 }

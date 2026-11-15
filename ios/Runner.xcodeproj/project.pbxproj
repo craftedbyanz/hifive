@@ -8,16 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		245AF4C855303D6E0FBF1DA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AEE2DFED92C59360F31A85 /* Foundation.framework */; };
+		26284883418E085151BBD862 /* FocusAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3C8CAE8A0647C51DEC27CF /* FocusAttributes.swift */; };
 		30F154AAA2E3F70F03E11670 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9572A680FE6C1A8A3A5B002 /* GoogleService-Info.plist */; };
+		3314627917E64EE7CDFAEC68 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C265E999166DE4BA6481C0F2 /* ActivityKit.framework */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		428B1EC2B641F4D22DE62A50 /* FocusAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3C8CAE8A0647C51DEC27CF /* FocusAttributes.swift */; };
 		4C342452D763D15FA05AAB06 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D644BA043BB5ABA6FAF8309 /* Pods_RunnerTests.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		7627347CD557B1CBEA0A8568 /* FocusActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9BAE6A521D35A72E71C4C1C2 /* FocusActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
+		8BE64B322433051D5D8A9F33 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD40C6E0F6CF30EFF9740896 /* SwiftUI.framework */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		9B659A3D835AF7DCB7E72CC4 /* FocusActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E3665D233A9686452DE68E /* FocusActivityWidget.swift */; };
+		AE2C2E9756B200A57626EB64 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15853FB6EE1B6A78F8D76A4 /* AppIntents.framework */; };
+		B2F0E887AAC66F5E87B7ED30 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47B320DC0BF264FCE4B1DAA1 /* WidgetKit.framework */; };
 		B5782A742A4EDBBAB73C6B46 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5290F24910302D714272CC5 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +37,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
+		};
+		A274F1781B1A6A70D94B4C9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8ECE4CC866E865B9629DB8B2;
+			remoteInfo = FocusActivity;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -42,21 +58,36 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CE7D03E6B46FA965E63FE78A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7627347CD557B1CBEA0A8568 /* FocusActivity.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		2CD657D54776F0B9799AAB82 /* FocusActivity.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = FocusActivity.entitlements; sourceTree = "<group>"; };
 		2DBD0CD6C2B8E63B24269338 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		47B320DC0BF264FCE4B1DAA1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
+		55E3665D233A9686452DE68E /* FocusActivityWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FocusActivityWidget.swift; sourceTree = "<group>"; };
 		5D644BA043BB5ABA6FAF8309 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7201D6D6309F4CADE8BF0E5F /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
+		792CED021A38A4EC23B8C70C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7C124A0194972EC16BABCCC5 /* Runner.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -66,15 +97,34 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9BAE6A521D35A72E71C4C1C2 /* FocusActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FocusActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13618937C5D26BC55CC4D03 /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
+		B2AEE2DFED92C59360F31A85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		B7717105A8B9F8A00FCD10F2 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		C265E999166DE4BA6481C0F2 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/ActivityKit.framework; sourceTree = DEVELOPER_DIR; };
+		C32EFA52006B930BC7C872B2 /* FocusActivity.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FocusActivity.xcconfig; sourceTree = "<group>"; };
+		CD40C6E0F6CF30EFF9740896 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
+		D15853FB6EE1B6A78F8D76A4 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/AppIntents.framework; sourceTree = DEVELOPER_DIR; };
 		DEA21AF79E6E167C9AACF451 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		E9572A680FE6C1A8A3A5B002 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		ED3C8CAE8A0647C51DEC27CF /* FocusAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FocusAttributes.swift; sourceTree = "<group>"; };
 		F5290F24910302D714272CC5 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EE1E1664B82EB1CB369CA7 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4E2FFC8A3CB70040666C9C31 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				245AF4C855303D6E0FBF1DA6 /* Foundation.framework in Frameworks */,
+				B2F0E887AAC66F5E87B7ED30 /* WidgetKit.framework in Frameworks */,
+				8BE64B322433051D5D8A9F33 /* SwiftUI.framework in Frameworks */,
+				3314627917E64EE7CDFAEC68 /* ActivityKit.framework in Frameworks */,
+				AE2C2E9756B200A57626EB64 /* AppIntents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		609AC9CC3E7DA1659E616120 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -108,8 +158,21 @@
 			children = (
 				F5290F24910302D714272CC5 /* Pods_Runner.framework */,
 				5D644BA043BB5ABA6FAF8309 /* Pods_RunnerTests.framework */,
+				818B2E95DCF00CEF00DCF1AC /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		818B2E95DCF00CEF00DCF1AC /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B2AEE2DFED92C59360F31A85 /* Foundation.framework */,
+				47B320DC0BF264FCE4B1DAA1 /* WidgetKit.framework */,
+				CD40C6E0F6CF30EFF9740896 /* SwiftUI.framework */,
+				C265E999166DE4BA6481C0F2 /* ActivityKit.framework */,
+				D15853FB6EE1B6A78F8D76A4 /* AppIntents.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
@@ -134,6 +197,7 @@
 				DAC4C85D670911C451947909 /* Pods */,
 				58A2C0651E4E880569CE064F /* Frameworks */,
 				E9572A680FE6C1A8A3A5B002 /* GoogleService-Info.plist */,
+				C3DC35550B1E5B9E5944EF8E /* FocusActivity */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,6 +206,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
+				9BAE6A521D35A72E71C4C1C2 /* FocusActivity.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,6 +226,19 @@
 				7C124A0194972EC16BABCCC5 /* Runner.entitlements */,
 			);
 			path = Runner;
+			sourceTree = "<group>";
+		};
+		C3DC35550B1E5B9E5944EF8E /* FocusActivity */ = {
+			isa = PBXGroup;
+			children = (
+				ED3C8CAE8A0647C51DEC27CF /* FocusAttributes.swift */,
+				55E3665D233A9686452DE68E /* FocusActivityWidget.swift */,
+				792CED021A38A4EC23B8C70C /* Info.plist */,
+				2CD657D54776F0B9799AAB82 /* FocusActivity.entitlements */,
+				C32EFA52006B930BC7C872B2 /* FocusActivity.xcconfig */,
+			);
+			name = FocusActivity;
+			path = FocusActivity;
 			sourceTree = "<group>";
 		};
 		DAC4C85D670911C451947909 /* Pods */ = {
@@ -199,6 +277,23 @@
 			productReference = 331C8081294A63A400263BE5 /* RunnerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		8ECE4CC866E865B9629DB8B2 /* FocusActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F547F866467BAEEEDB37F36 /* Build configuration list for PBXNativeTarget "FocusActivity" */;
+			buildPhases = (
+				02D5F8B197464EB033E3C9D1 /* Sources */,
+				4E2FFC8A3CB70040666C9C31 /* Frameworks */,
+				EF5F41C33137A9E1EAB1305E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FocusActivity;
+			productName = FocusActivity;
+			productReference = 9BAE6A521D35A72E71C4C1C2 /* FocusActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
@@ -209,11 +304,13 @@
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
+				CE7D03E6B46FA965E63FE78A /* Embed Foundation Extensions */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BC46AA2976F353F23719CAD1 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			packageProductDependencies = (
@@ -261,6 +358,7 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
+				8ECE4CC866E865B9629DB8B2 /* FocusActivity */,
 			);
 		};
 /* End PBXProject section */
@@ -282,6 +380,13 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				30F154AAA2E3F70F03E11670 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF5F41C33137A9E1EAB1305E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +471,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		02D5F8B197464EB033E3C9D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26284883418E085151BBD862 /* FocusAttributes.swift in Sources */,
+				9B659A3D835AF7DCB7E72CC4 /* FocusActivityWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		331C807D294A63A400263BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -381,6 +495,7 @@
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
+				428B1EC2B641F4D22DE62A50 /* FocusAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +506,12 @@
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
 			targetProxy = 331C8085294A63A400263BE5 /* PBXContainerItemProxy */;
+		};
+		BC46AA2976F353F23719CAD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FocusActivity;
+			target = 8ECE4CC866E865B9629DB8B2 /* FocusActivity */;
+			targetProxy = A274F1781B1A6A70D94B4C9B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -414,6 +535,35 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1DE9E564DE895912DC54C392 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C32EFA52006B930BC7C872B2 /* FocusActivity.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = FocusActivity/FocusActivity.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 7GH7MJS7R2;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FocusActivity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anznguyen.hifive.release.FocusActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "HiFive FocusActivity AppStore Distribution";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		249021D3217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -683,6 +833,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 7GH7MJS7R2;
 				ENABLE_BITCODE = NO;
@@ -693,15 +846,67 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.anznguyen.hifive.release;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "HiFive AppStore Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
-				CODE_SIGN_STYLE = Manual;
-				CODE_SIGN_IDENTITY = "Apple Distribution";
-				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				PROVISIONING_PROFILE_SPECIFIER = "HiFive AppStore Distribution";
 			};
 			name = Release;
+		};
+		D2A8BD138661D750A8149C36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C32EFA52006B930BC7C872B2 /* FocusActivity.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = FocusActivity/FocusActivity.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7GH7MJS7R2;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FocusActivity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anznguyen.hifive.release.FocusActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D3020D31507C0CEC9DB2FE9E /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C32EFA52006B930BC7C872B2 /* FocusActivity.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = FocusActivity/FocusActivity.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7GH7MJS7R2;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FocusActivity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anznguyen.hifive.release.FocusActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Profile;
 		};
 /* End XCBuildConfiguration section */
 
@@ -712,6 +917,16 @@
 				331C8088294A63A400263BE5 /* Debug */,
 				331C8089294A63A400263BE5 /* Release */,
 				331C808A294A63A400263BE5 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F547F866467BAEEEDB37F36 /* Build configuration list for PBXNativeTarget "FocusActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DE9E564DE895912DC54C392 /* Release */,
+				D2A8BD138661D750A8149C36 /* Debug */,
+				D3020D31507C0CEC9DB2FE9E /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

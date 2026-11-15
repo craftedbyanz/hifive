@@ -87,3 +87,20 @@ Signing: the entitlement `com.apple.developer.family-controls` is only in `ios/R
 Until then a Release build shows the switch but answers "Bản cài này chưa được Apple cho phép chặn ứng dụng." Try it now with a development build on a device: `flutter run --profile -d <iPhone>`.
 
 Not done: Android (it would need an accessibility service and usage access, which Play reviews strictly), a custom shield screen (a ShieldConfiguration extension), and lifting the shield at the planned end even if the app was killed (a DeviceActivityMonitor extension; for now the next launch lifts it).
+
+### 10. The session on the lock screen and in the Dynamic Island - built
+
+Done on 15 November 2026, iOS 16.1 and later: a running session shows as a Live Activity. The lock screen has the plant on its sunlit patch in a light circle, the time left counting down (up for the stopwatch), the tag with its colour, a progress bar and, on iOS 17, a ✕ that ends the session (cancelled in the first ten seconds, given up after that, or planted for a stopwatch past its minimum). The Dynamic Island shows a leaf and the time left, and the plant, time, tag and progress when expanded. The timer and bar run by themselves; the app sends a new picture of the plant whenever it grows a tenth of the way, so while the app is suspended the picture waits until it next runs.
+
+- Widget extension target `FocusActivity` (`ios/FocusActivity/`: `FocusActivityWidget.swift`, `FocusAttributes.swift`, shared with Runner for the attributes and `StopFocusIntent`), embedded in Runner before Flutter's Thin Binary phase. Bundle id `com.anznguyen.hifive.release.FocusActivity`; version and build come from Flutter through `FocusActivity.xcconfig`.
+- App Group `group.com.anznguyen.hifive` in both targets: the app writes `focus-plant-<n>.png` there and bumps `plant` in the activity's state.
+- Runner: `NSSupportsLiveActivities` in Info.plist; `FocusLive` in `AppDelegate.swift` (channel `hifive/live`); every launch ends leftover activities.
+- Dart: `FocusLive` (`lib/core/services/focus_live.dart`) and `plantPicture` (`lib/widgets/garden/garden_art.dart`). Tests: `test/features/garden/focus_live_test.dart`.
+
+Before the next TestFlight build (developer.apple.com, Certificates, IDs & Profiles):
+
+1. Identifiers: register the App Group `group.com.anznguyen.hifive`.
+2. Identifiers: on `com.anznguyen.hifive.release`, turn on App Groups and choose that group; save.
+3. Identifiers: register an App ID `com.anznguyen.hifive.release.FocusActivity` with App Groups on (same group).
+4. Profiles: regenerate "HiFive AppStore Distribution" (it must now carry the App Group), and make a new App Store profile named "HiFive FocusActivity AppStore Distribution" for the extension's App ID; download both and open them so Xcode has them.
+5. Archive and upload as before. Debug and Profile builds sign automatically and need only steps 1 to 3.

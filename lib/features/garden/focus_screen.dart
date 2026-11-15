@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../../core/design/design.dart';
+import '../../core/services/focus_live.dart';
 import '../../core/services/focus_shield.dart';
 import '../../core/services/screen_lock.dart';
 import '../../domain/garden/garden.dart';
@@ -65,6 +66,17 @@ class _FocusScreenState extends State<FocusScreen>
 
   bool get _stopwatch => _minutes == 0;
 
+  /// How grown the session's plant is: from a seed to full at the end (an
+  /// hour for the stopwatch).
+  double get _growth {
+    final growTo = _stopwatch ? const Duration(minutes: 60) : _planned;
+    return .05 +
+        .95 * (_elapsed.inMilliseconds / growTo.inMilliseconds).clamp(0.0, 1.0);
+  }
+
+  /// The step of growth the lock screen's picture last showed.
+  var _plantStep = -1;
+
   /// The countdown's length, or the stopwatch's limit.
   Duration get _planned =>
       Duration(minutes: _stopwatch ? maxMinutes : _minutes);
@@ -75,6 +87,7 @@ class _FocusScreenState extends State<FocusScreen>
     WidgetsBinding.instance.addObserver(this);
     ScreenLock.listen();
     ScreenLock.locked.addListener(_onLock);
+    FocusLive.listen(_stopFromLockScreen);
   }
 
   @override
@@ -82,9 +95,11 @@ class _FocusScreenState extends State<FocusScreen>
     WidgetsBinding.instance.removeObserver(this);
     ScreenLock.locked.removeListener(_onLock);
     _timer?.cancel();
+    FocusLive.listen(null);
     if (_phase == _Phase.running) {
       ScreenLock.clearWarning();
       FocusShield.stop();
+      FocusLive.end();
     }
     _bloom.dispose();
     super.dispose();
@@ -104,18 +119,57 @@ class _FocusScreenState extends State<FocusScreen>
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
     ScreenLock.prepareWarning();
     FocusShield.start();
+    final tag = state.tagById(_tag);
+    FocusLive.start(
+      start: _startedAt!,
+      end: _stopwatch ? null : _startedAt!.add(_planned),
+      tag: tagName(context.t, tag),
+      color: tagColor(tag),
+    );
+    _plantStep = -1;
+    _showPlant();
+  }
+
+  /// Sends the lock screen a new picture of the plant when it has grown a
+  /// step (a tenth of the way).
+  void _showPlant() {
+    final growth = _growth, step = (growth * 10).floor();
+    if (step == _plantStep) return;
+    _plantStep = step;
+    plantPicture(_species, growth).then((png) {
+      if (png != null && mounted && _phase == _Phase.running) {
+        FocusLive.plant(png);
+      }
+    });
+  }
+
+  /// The ✕ on the lock screen: cancels in the first seconds, and otherwise
+  /// ends the session as giving up would, without asking (a stopwatch past
+  /// its minimum plants its tree).
+  void _stopFromLockScreen() {
+    if (_phase != _Phase.running) return;
+    final elapsed = widget.clock().difference(_startedAt!);
+    if (_canCancel) return _end(FocusOutcome.cancelled, _elapsed);
+    if (_stopwatch) {
+      return elapsed >= FocusScreen.stopwatchMinimum
+          ? _end(FocusOutcome.done, elapsed)
+          : _end(FocusOutcome.cancelled, elapsed);
+    }
+    _end(FocusOutcome.withered, elapsed);
   }
 
   void _tick() {
     if (_phase != _Phase.running || _leftAt != null) return;
     setState(() => _elapsed = widget.clock().difference(_startedAt!));
-    if (_elapsed >= _planned) _end(FocusOutcome.done, _planned);
+    if (_elapsed >= _planned) return _end(FocusOutcome.done, _planned);
+    _showPlant();
   }
 
   void _end(FocusOutcome outcome, Duration focused) {
     _timer?.cancel();
     ScreenLock.clearWarning();
     FocusShield.stop();
+    FocusLive.end();
     final state = AppScope.read(context);
     if (outcome == FocusOutcome.cancelled) {
       setState(() => _phase = _Phase.setup);
@@ -271,12 +325,6 @@ class _FocusScreenState extends State<FocusScreen>
     final t = context.t;
     final state = AppScope.of(context);
     final running = _phase == _Phase.running;
-    // A stopwatch tree is fully grown after an hour.
-    final growTo = _stopwatch ? const Duration(minutes: 60) : _planned;
-    final progress = (_elapsed.inMilliseconds / growTo.inMilliseconds).clamp(
-      0.0,
-      1.0,
-    );
     final shown = _stopwatch ? _elapsed : _planned - _elapsed;
     final due = _phase == _Phase.done ? _dueWords(state).length : 0;
     final bloomed = _session?.bloomed ?? false;
@@ -324,7 +372,7 @@ class _FocusScreenState extends State<FocusScreen>
                               size: 330,
                               growth: switch (_phase) {
                                 _Phase.setup => 1,
-                                _Phase.running => .05 + .95 * progress,
+                                _Phase.running => _growth,
                                 _Phase.done || _Phase.withered => 1,
                               },
                               withered: _phase == _Phase.withered,

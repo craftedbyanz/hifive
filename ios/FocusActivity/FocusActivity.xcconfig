@@ -1,0 +1,5 @@
+// The widget extension takes the app's version and build number from
+// Flutter, as App Store Connect requires them to match the app's.
+#include "../Flutter/Generated.xcconfig"
+MARKETING_VERSION = $(FLUTTER_BUILD_NAME)
+CURRENT_PROJECT_VERSION = $(FLUTTER_BUILD_NUMBER)

@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -15,6 +16,33 @@ part 'garden_trees.dart';
 
 /// Whether [id] has a drawing. Every id in `species` has one.
 bool hasTreeArt(String id) => _arts.containsKey(id);
+
+/// A PNG of species [id] at [growth] on its sunlit patch, [size] pixels a
+/// side, for the lock screen's Live Activity. Null if encoding fails.
+Future<Uint8List?> plantPicture(
+  String id,
+  double growth, {
+  int size = 240,
+}) async {
+  final recorder = ui.PictureRecorder();
+  // Young plants are small: frame them closer so they fill the circle.
+  final zoom = growth < .14 ? 2.1 : (growth < .45 ? 1.45 : 1.0);
+  final canvas = Canvas(recorder)
+    ..scale(size / 200)
+    ..translate(100, 150)
+    ..scale(zoom)
+    ..translate(-100, -170);
+  _patch(canvas);
+  canvas
+    ..translate(100, 170)
+    ..scale(.8)
+    ..translate(-100, -182);
+  _plant(canvas, id, growth, 7.3, true);
+  final image = await recorder.endRecording().toImage(size, size);
+  final data = await image.toByteData(format: ui.ImageByteFormat.png);
+  image.dispose();
+  return data?.buffer.asUint8List();
+}
 
 /// One plant. With [island] it stands on a patch of sunlit grass, as on the
 /// focus screen; without, alone on its soft shadow, as in the collection.
