@@ -86,7 +86,7 @@ Kế hoạch kỹ thuật và chi tiết từng bước: `docs/garden-plan.md`. 
 | Widget màn hình chính (cây đang lớn, số từ cần ôn) | Cần App Groups, tài khoản Apple cá nhân không có; chờ Apple Developer Program |
 | Android: nhận biết khoá máy, thông báo sắp héo | Máy này chưa build được Android (lỗi chứng chỉ Gradle) |
 | Khoá máy trên iPhone không đặt mật mã | iOS không báo, nên bị tính như rời app |
-| Khoá các app gây xao nhãng | Cần Apple duyệt quyền Family Controls; ghi lại để làm sau |
+| Khoá các app gây xao nhãng | Đã làm cho iOS; Apple duyệt quyền Family Controls ngày 15/11/2026 |
 | Dòng thời gian các phiên | Danh sách từng phiên theo ngày, kèm nhãn, tiêu đề, kết quả; dữ liệu đã có |
 | Thử trên iPhone | Khoá máy giữa phiên, chuyển app để thấy cảnh báo, độ mượt khi nhiều cây, rung của thước |
 
@@ -101,7 +101,6 @@ Kế hoạch kỹ thuật và chi tiết từng bước: `docs/garden-plan.md`. 
 
 Ghi lại để làm sau:
 
-- Khoá các app gây xao nhãng trong phiên tập trung (Family Controls, cần Apple Developer Program và đơn xin).
 - Không gian thư giãn: bài tập thở, âm thanh nền.
 - Xu, cửa hàng cây và kiểu đất, lựa chọn mỗi ngày, vé mùa, thử thách ngày và tháng.
 

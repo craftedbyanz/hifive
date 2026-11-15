@@ -68,5 +68,5 @@ Success prints `Upload succeeded` and `** EXPORT SUCCEEDED **`.
 ## Known problems
 
 - **Signing fails for `FocusActivity` or the App Group:** Xcode needs both App Store profiles, "HiFive AppStore Distribution" (with the App Group) and "Hi Five Distribution Profile" (the extension), and no stale copy of the same name (`docs/garden-plan.md`, step 10). Only the account holder can regenerate them; ask the user for fresh downloads.
-- **Family Controls** is only in the Debug and Profile entitlements until Apple approves distribution; Release must not carry it.
+- **Signing fails on `com.apple.developer.family-controls`:** the installed "HiFive AppStore Distribution" profile is stale and lacks the entitlement; ask the user for a fresh download.
 - **"Redundant binary upload":** the build number was already used. Bump it again.
