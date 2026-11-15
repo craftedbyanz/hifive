@@ -31,7 +31,8 @@ Future<void> main() async {
     dictionaryPacks: _api.isEmpty ? null : HttpDictionaryPacks(Uri.parse(_api)),
     shares: _api.isEmpty ? null : HttpShareRepository(Uri.parse(_api)),
     circles: _api.isEmpty ? null : HttpCircleRepository(Uri.parse(_api)),
-    includeExamples: true,
+    // No sample decks or results: learners start from hifive's catalog.
+    sampleDecks: false,
   );
   await state.load();
   runApp(HifiveApp(state: state));
