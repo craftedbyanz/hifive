@@ -17,6 +17,7 @@
 		428B1EC2B641F4D22DE62A50 /* FocusAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3C8CAE8A0647C51DEC27CF /* FocusAttributes.swift */; };
 		4C342452D763D15FA05AAB06 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D644BA043BB5ABA6FAF8309 /* Pods_RunnerTests.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		7627347CD557B1CBEA0A8568 /* FocusActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9BAE6A521D35A72E71C4C1C2 /* FocusActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		8BE64B322433051D5D8A9F33 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD40C6E0F6CF30EFF9740896 /* SwiftUI.framework */; };
@@ -37,6 +38,13 @@
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
 		};
+		A274F1781B1A6A70D94B4C9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8ECE4CC866E865B9629DB8B2;
+			remoteInfo = FocusActivity;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +56,17 @@
 			files = (
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE7D03E6B46FA965E63FE78A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7627347CD557B1CBEA0A8568 /* FocusActivity.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -285,11 +304,13 @@
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
+				CE7D03E6B46FA965E63FE78A /* Embed Foundation Extensions */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BC46AA2976F353F23719CAD1 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			packageProductDependencies = (
@@ -486,6 +507,12 @@
 			target = 97C146ED1CF9000F007C117D /* Runner */;
 			targetProxy = 331C8085294A63A400263BE5 /* PBXContainerItemProxy */;
 		};
+		BC46AA2976F353F23719CAD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FocusActivity;
+			target = 8ECE4CC866E865B9629DB8B2 /* FocusActivity */;
+			targetProxy = A274F1781B1A6A70D94B4C9B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -528,7 +555,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.anznguyen.hifive.release.FocusActivity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "HiFive FocusActivity AppStore Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "Hi Five Distribution Profile";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

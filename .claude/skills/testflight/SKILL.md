@@ -29,6 +29,7 @@ Don't go on with a red check. Keep the bump in its own commit.
 
 ```sh
 flutter build ipa --release --target lib/main.dart \
+  --export-options-plist=ios/ExportOptions.plist \
   --dart-define=HIFIVE_API=https://hifive-api.hifive-worker.workers.dev
 ```
 
@@ -38,14 +39,14 @@ Without `HIFIVE_API` the build never syncs. Confirm the archive:
 /usr/libexec/PlistBuddy -c Print build/ios/archive/Runner.xcarchive/Info.plist | grep -E 'CFBundleVersion|CFBundleIdentifier'
 ```
 
-Flutter's own export step may succeed or fail with "Failed to Use Accounts"; either way it does not upload.
+`ios/ExportOptions.plist` names the App Store profile of the app and of the `FocusActivity` widget; Flutter's own generated options name only the app, and their export fails on the widget. Flutter's export step writes `build/ios/ipa/hifive.ipa` but does not upload.
 
 ## 5. Upload
 
 Copy the export options to a temporary file (the job's `tmp` folder when running as a job), set the destination to `upload`, and export with provisioning updates, which lets xcodebuild use the Xcode account (no API key needed):
 
 ```sh
-cp build/ios/ipa/ExportOptions.plist "$TMP/ExportUpload.plist"
+cp ios/ExportOptions.plist "$TMP/ExportUpload.plist"
 /usr/libexec/PlistBuddy -c "Set :destination upload" "$TMP/ExportUpload.plist" \
   || /usr/libexec/PlistBuddy -c "Add :destination string upload" "$TMP/ExportUpload.plist"
 xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive \
@@ -66,6 +67,6 @@ Success prints `Upload succeeded` and `** EXPORT SUCCEEDED **`.
 
 ## Known problems
 
-- **Signing fails for `FocusActivity` or the App Group:** the lock screen widget is parked until the developer account holder creates its App IDs and profiles (`docs/garden-plan.md`, steps 9 and 10). Don't re-embed it in Release.
+- **Signing fails for `FocusActivity` or the App Group:** Xcode needs both App Store profiles, "HiFive AppStore Distribution" (with the App Group) and "Hi Five Distribution Profile" (the extension), and no stale copy of the same name (`docs/garden-plan.md`, step 10). Only the account holder can regenerate them; ask the user for fresh downloads.
 - **Family Controls** is only in the Debug and Profile entitlements until Apple approves distribution; Release must not carry it.
 - **"Redundant binary upload":** the build number was already used. Bump it again.

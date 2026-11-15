@@ -88,10 +88,7 @@ Until then a Release build shows the switch but answers "Bản cài này chưa �
 
 Not done: Android (it would need an accessibility service and usage access, which Play reviews strictly), a custom shield screen (a ShieldConfiguration extension), and lifting the shield at the planned end even if the app was killed (a DeviceActivityMonitor extension; for now the next launch lifts it).
 
-### 10. The session on the lock screen and in the Dynamic Island - built, parked until the App IDs exist
-
-Parked on 15 November 2026: the developer account is an Individual one, so only its holder can create App IDs, App Groups and profiles, and they could not yet. Until they do, the `FocusActivity` target stays in the project but Runner neither depends on it nor embeds it, and the App Group is out of `Runner.entitlements`, so TestFlight builds sign as before; the Dart and Runner code is harmless without the extension (the request fails quietly). To turn it on once steps 1 to 4 below are done, revert the commit "build(ios): park the lock screen widget until its App IDs exist" (it re-adds the dependency, the "Embed Foundation Extensions" phase before Thin Binary, and the App Group).
-
+### 10. The session on the lock screen and in the Dynamic Island - built, signed for release
 
 Done on 15 November 2026, iOS 16.1 and later: a running session shows as a Live Activity. The lock screen has the plant on its sunlit patch in a light circle, the time left counting down (up for the stopwatch), the tag with its colour, a progress bar and, on iOS 17, a ✕ that ends the session (cancelled in the first ten seconds, given up after that, or planted for a stopwatch past its minimum). The Dynamic Island shows a leaf and the time left, and the plant, time, tag and progress when expanded. The timer and bar run by themselves; the app sends a new picture of the plant whenever it grows a tenth of the way, so while the app is suspended the picture waits until it next runs.
 
@@ -100,13 +97,7 @@ Done on 15 November 2026, iOS 16.1 and later: a running session shows as a Live 
 - Runner: `NSSupportsLiveActivities` in Info.plist; `FocusLive` in `AppDelegate.swift` (channel `hifive/live`); every launch ends leftover activities.
 - Dart: `FocusLive` (`lib/core/services/focus_live.dart`) and `plantPicture` (`lib/widgets/garden/garden_art.dart`). Tests: `test/features/garden/focus_live_test.dart`.
 
-Before the next TestFlight build (developer.apple.com, Certificates, IDs & Profiles):
-
-1. Identifiers: register the App Group `group.com.anznguyen.hifive`.
-2. Identifiers: on `com.anznguyen.hifive.release`, turn on App Groups and choose that group; save.
-3. Identifiers: register an App ID `com.anznguyen.hifive.release.FocusActivity` with App Groups on (same group).
-4. Profiles: regenerate "HiFive AppStore Distribution" (it must now carry the App Group), and make a new App Store profile named "HiFive FocusActivity AppStore Distribution" for the extension's App ID; download both and open them so Xcode has them.
-5. Archive and upload as before. Debug and Profile builds sign automatically and need only steps 1 to 3.
+Signing (done on 15 November 2026 by the account holder): the App Group `group.com.anznguyen.hifive` is on `com.anznguyen.hifive.release` and on the App ID `com.anznguyen.hifive.release.FocusActivity`. Release signs Runner with the App Store profile "HiFive AppStore Distribution" (it carries the App Group) and the extension with "Hi Five Distribution Profile". When a profile is regenerated, download it and copy it into `~/Library/Developer/Xcode/UserData/Provisioning Profiles/<UUID>.mobileprovision`, removing the old copy of the same name, or Xcode may pick the stale one. Debug and Profile builds sign automatically.
 
 ### 11. Second garden rules: sun and water, no farming short sessions - done
 
