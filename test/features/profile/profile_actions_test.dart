@@ -227,31 +227,29 @@ void main() {
     }
   });
 
-  testWidgets('save waits for a changed name; delete erases nothing', (
-    tester,
-  ) async {
-    final state = fresh()..name = 'Linh';
-    await mount(tester, state, const EditProfileScreen(), size: _tall);
-    expect(find.text('4/12'), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('profile-save')));
-    await tester.pumpAndSettle();
-    expect(find.byType(EditProfileScreen), findsOneWidget);
+  testWidgets(
+    'save waits for a changed name; signed out, delete does nothing',
+    (tester) async {
+      final state = fresh()..name = 'Linh';
+      await mount(tester, state, const EditProfileScreen(), size: _tall);
+      expect(find.text('4/12'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('profile-save')));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditProfileScreen), findsOneWidget);
 
-    await tester.tap(find.byKey(const ValueKey('profile-delete')));
-    await tester.pump();
-    expect(
-      find.text('Xóa tài khoản sẽ có trong bản phát hành chính thức.'),
-      findsOneWidget,
-    );
-    expect(state.name, 'Linh');
+      await tester.tap(find.byKey(const ValueKey('profile-delete')));
+      await tester.pump();
+      expect(find.text('Xóa tài khoản?'), findsNothing);
+      expect(state.name, 'Linh');
 
-    await tester.enterText(find.byKey(const ValueKey('profile-name')), 'Mai');
-    await tester.pump();
-    expect(find.text('3/12'), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('profile-save')));
-    await tester.pumpAndSettle();
-    expect(state.name, 'Mai');
-  });
+      await tester.enterText(find.byKey(const ValueKey('profile-name')), 'Mai');
+      await tester.pump();
+      expect(find.text('3/12'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('profile-save')));
+      await tester.pumpAndSettle();
+      expect(state.name, 'Mai');
+    },
+  );
 
   testWidgets('the appearance preview swipes to the next card', (tester) async {
     await mount(tester, fresh(), const AppearanceScreen(), size: _tall);
