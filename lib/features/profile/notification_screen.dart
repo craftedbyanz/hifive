@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
 import '../../core/services/screen_lock.dart';
+import '../../domain/vocab/vocab.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -82,6 +83,8 @@ class _NotificationScreenState extends State<NotificationScreen>
           ),
           const SizedBox(height: 24),
           _ReminderCard(state: s, access: _access, onAsked: _refresh),
+          const SizedBox(height: 12),
+          _WordNotesCard(state: s, access: _access, onAsked: _refresh),
           const SizedBox(height: 16),
           Container(
             height: 76,
@@ -485,6 +488,79 @@ class _ReminderCard extends StatelessWidget {
               return;
             }
             state.setReminder(on: true);
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+/// Word notes (`WordNotes`): on or off. Like the reminder, the switch shows
+/// off and says why while notifications are off in Settings.
+class _WordNotesCard extends StatelessWidget {
+  final AppState state;
+  final NotificationAccess access;
+  final VoidCallback onAsked;
+  const _WordNotesCard({
+    required this.state,
+    required this.access,
+    required this.onAsked,
+  });
+
+  bool get _blocked => state.wordNotesOn && access == NotificationAccess.denied;
+
+  static String _clock(int minutes) =>
+      '${minutes ~/ 60}:${(minutes % 60).toString().padLeft(2, '0')}';
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+    decoration: NotificationScreen._boxDecoration,
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.t.wordNotesTitle,
+                style: D.text(14.8, weight: FontWeight.w700),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                context.t.wordNotesBody(
+                  WordNotes.perDay,
+                  _clock(WordNotes.firstMinute),
+                  _clock(WordNotes.lastMinute),
+                ),
+                style: D.text(12.5, color: Palette.settingsMuted),
+              ),
+              if (_blocked) ...[
+                const SizedBox(height: 4),
+                Text(
+                  context.t.reminderBlocked,
+                  key: const ValueKey('word-notes-blocked'),
+                  style: D.text(12.5, color: Palette.wrong),
+                ),
+              ],
+            ],
+          ),
+        ),
+        const SizedBox(width: 8),
+        CupertinoSwitch(
+          key: const ValueKey('word-notes-toggle'),
+          value: state.wordNotesOn && !_blocked,
+          activeTrackColor: D.green,
+          onChanged: (on) async {
+            if (!on) return state.setWordNotes(false);
+            final t = context.t;
+            final allowed = await ScreenLock.askPermission();
+            onAsked();
+            if (allowed == false) {
+              if (context.mounted) toast(context, t.reminderDenied);
+              return;
+            }
+            state.setWordNotes(true);
           },
         ),
       ],

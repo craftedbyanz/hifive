@@ -3943,4 +3943,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String dictTatoebaBy(String authors) {
     return 'Tatoeba · $authors';
   }
+
+  @override
+  String get wordNotesTitle => '锁屏单词';
+
+  @override
+  String wordNotesBody(int n, String from, String to) {
+    return '每天 $n 个单词，$from 到 $to 之间分散推送：快要忘记的单词和你自己添加的新词。';
+  }
 }

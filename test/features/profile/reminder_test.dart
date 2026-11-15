@@ -32,6 +32,35 @@ void main() {
     expect(state.reminderOn, isTrue);
   });
 
+  testWidgets('word notes turn on and off from the notification page', (
+    tester,
+  ) async {
+    allow(true);
+    final state = fresh();
+    await mount(tester, state, const NotificationScreen());
+    expect(find.text('Từ vựng trên màn hình khóa'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const ValueKey('word-notes-toggle')));
+    await tester.tap(find.byKey(const ValueKey('word-notes-toggle')));
+    await tester.pumpAndSettle();
+    expect(state.wordNotesOn, isTrue);
+    await tester.tap(find.byKey(const ValueKey('word-notes-toggle')));
+    await tester.pumpAndSettle();
+    expect(state.wordNotesOn, isFalse);
+  });
+
+  testWidgets('word notes stay off when notifications are refused', (
+    tester,
+  ) async {
+    allow(false);
+    final state = fresh();
+    await mount(tester, state, const NotificationScreen());
+    await tester.ensureVisible(find.byKey(const ValueKey('word-notes-toggle')));
+    await tester.tap(find.byKey(const ValueKey('word-notes-toggle')));
+    await tester.pump();
+    expect(state.wordNotesOn, isFalse);
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+  });
+
   testWidgets('a refused permission says where to turn it on', (tester) async {
     allow(false);
     final state = fresh();

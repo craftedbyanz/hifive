@@ -116,4 +116,45 @@ void main() {
     await scheduled(tester, state);
     expect(calls.map((c) => c.method), isNot(contains('prepareWarning')));
   });
+
+  testWidgets(
+    'word notes put studied words on the lock screen, and stop when off',
+    (tester) async {
+      final state = fresh();
+      final word = state.decks.first.words.first;
+      state.rate(word, 0);
+      state.setWordNotes(true);
+      await tester.pumpWidget(
+        AppScope(
+          state: state,
+          child: MaterialApp(
+            locale: const Locale('vi'),
+            supportedLocales: supportedAppLocales,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            builder: (context, child) => ReminderSync(child: child!),
+            home: const SizedBox(),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(seconds: 3));
+      final call = calls.lastWhere((c) => c.method == 'scheduleWordNotes');
+      final notes = (call.arguments as List).cast<Map<Object?, Object?>>();
+      expect(notes, isNotEmpty);
+      expect(notes.first['word'], word.id);
+      expect(notes.first['title'], startsWith(word.word));
+      expect(notes.first['body'], word.meaning);
+      // The pinned clock is 01:43: the first note is at 08:00 today.
+      expect(
+        DateTime.fromMillisecondsSinceEpoch(
+          (notes.first['at']! as double).round(),
+        ),
+        DateTime(2026, 11, 1, 8),
+      );
+
+      state.setWordNotes(false);
+      await tester.pump(const Duration(seconds: 3));
+      expect(calls.last.method, isIn(['cancelWordNotes', 'cancelReminder']));
+      expect(calls.map((c) => c.method), contains('cancelWordNotes'));
+    },
+  );
 }

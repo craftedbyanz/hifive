@@ -1213,5 +1213,7 @@
   "dictSourceCefr": "The CEFR-J Wordlist Version 1.5，东京外国语大学投野由纪夫编；Octanove C1/C2（CC BY-SA 4.0）：单词等级。",
   "dictSourceFrequency": "FrequencyWords（Hermit Dave，OpenSubtitles 字幕）：词频。CC BY-SA 4.0。",
   "dictSourceTatoeba": "Tatoeba：英越例句，每句注明贡献者。CC BY 2.0 FR。",
-  "dictTatoebaBy": "Tatoeba · {authors}"
+  "dictTatoebaBy": "Tatoeba · {authors}",
+  "wordNotesTitle": "锁屏单词",
+  "wordNotesBody": "每天 {n} 个单词，{from} 到 {to} 之间分散推送：快要忘记的单词和你自己添加的新词。"
 }

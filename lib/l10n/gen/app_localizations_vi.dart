@@ -4056,4 +4056,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String dictTatoebaBy(String authors) {
     return 'Tatoeba · $authors';
   }
+
+  @override
+  String get wordNotesTitle => 'Từ vựng trên màn hình khóa';
+
+  @override
+  String wordNotesBody(int n, String from, String to) {
+    return '$n từ mỗi ngày, rải từ $from đến $to: những từ bạn sắp quên và từ mới bạn tự thêm.';
+  }
 }

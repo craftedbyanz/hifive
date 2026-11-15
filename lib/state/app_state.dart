@@ -538,6 +538,7 @@ class AppState extends ChangeNotifier {
     newPerDay = int.tryParse(s['newPerDay'] as String? ?? '') ?? newPerDay;
     exTyping = s['exTyping'] as bool? ?? exTyping;
     reminderOn = s['reminderOn'] as bool? ?? reminderOn;
+    wordNotesOn = s['wordNotesOn'] as bool? ?? wordNotesOn;
     reminderTime = s['reminderTime'] as String? ?? reminderTime;
     exListening = s['exListening'] as bool? ?? exListening;
     customTags = s['focusTags'] as List<FocusTag>? ?? customTags;
@@ -803,6 +804,7 @@ class AppState extends ChangeNotifier {
     exListening = true;
     reminderOn = false;
     reminderTime = '20:00';
+    wordNotesOn = false;
     customTags = const [];
     showHints = false;
     chatFree = true;
@@ -932,6 +934,40 @@ class AppState extends ChangeNotifier {
     }
     commit();
   }
+
+  /// Words on the lock screen through the day (`WordNotes`).
+  bool wordNotesOn = false;
+
+  void setWordNotes(bool on) {
+    wordNotesOn = on;
+    _setting('wordNotesOn', on);
+    commit();
+  }
+
+  /// The word notes for the coming days: the learner's weakest studied
+  /// words and a few new ones from their own decks, kept clear of the
+  /// daily reminder.
+  List<WordNote> get wordNotes {
+    final parts = reminderTime.split(':');
+    return planWordNotes(
+      words: uniqueWords.values,
+      now: now(),
+      chosen: {
+        for (final d in ownDecks)
+          for (final w in d.words) wordKey(w.word),
+      },
+      reminder: reminderOn
+          ? (
+              hour: int.tryParse(parts.first) ?? 20,
+              minute: int.tryParse(parts.last) ?? 0,
+            )
+          : null,
+    );
+  }
+
+  /// The card a word note names, by id, from any deck.
+  FlashWord? wordById(String id) =>
+      decks.expand((d) => d.words).where((w) => w.id == id).firstOrNull;
 
   /// The next moment the reminder would fire, from now.
   DateTime get nextReminder {

@@ -2243,5 +2243,20 @@
         "type": "String"
       }
     }
+  },
+  "wordNotesTitle": "Từ vựng trên màn hình khóa",
+  "wordNotesBody": "{n} từ mỗi ngày, rải từ {from} đến {to}: những từ bạn sắp quên và từ mới bạn tự thêm.",
+  "@wordNotesBody": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
   }
 }

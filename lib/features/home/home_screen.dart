@@ -8,6 +8,7 @@ import '../../core/design/design.dart';
 import '../../core/services/screen_lock.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../flashcards/flashcards.dart';
 import '../profile/profile.dart';
 import 'home_footer.dart';
 import 'home_intro.dart';
@@ -63,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
     ScreenLock.listen();
     ScreenLock.reviewTaps.addListener(_openTappedReview);
+    ScreenLock.wordTaps.addListener(_openTappedWord);
     _openTappedReview();
+    _openTappedWord();
     _refreshMenuBackdrop();
     _homeScroll.addListener(() {
       final next = _homeScroll.offset > 40;
@@ -77,6 +80,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   /// launched the app.
   Future<void> _openTappedReview() async {
     if (await ScreenLock.takeReviewTap() && mounted) await openToday(context);
+  }
+
+  /// A tapped word note opens that word's page, also when the tap launched
+  /// the app. A word deleted since is skipped.
+  Future<void> _openTappedWord() async {
+    final id = await ScreenLock.takeWordTap();
+    if (id == null || !mounted) return;
+    final word = AppScope.read(context).wordById(id);
+    if (word != null) await go<void>(context, WordScreen(word: word));
   }
 
   int selected = 0;
@@ -118,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     ScreenLock.reviewTaps.removeListener(_openTappedReview);
+    ScreenLock.wordTaps.removeListener(_openTappedWord);
     _menuBackdrop?.dispose();
     _ambient.dispose();
     _menuMotion.dispose();

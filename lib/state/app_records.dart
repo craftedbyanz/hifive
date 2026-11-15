@@ -37,6 +37,7 @@ const boolSettings = {
   'exTyping',
   'exListening',
   'reminderOn',
+  'wordNotesOn',
 };
 
 /// Learning goals offered during onboarding, stored by id in the `goals`

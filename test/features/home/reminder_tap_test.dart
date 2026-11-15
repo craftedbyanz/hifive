@@ -42,4 +42,42 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(ReviewScreen), findsOneWidget);
   });
+
+  testWidgets('tapping a word note opens that word', (tester) async {
+    const channel = MethodChannel('hifive/screen');
+    final state = fresh();
+    final word = state.decks.first.words[2];
+    String? tapped = word.id;
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          if (call.method != 'takeWordTap') return null;
+          final was = tapped;
+          tapped = null;
+          return was;
+        });
+    addTearDown(
+      () => TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, null),
+    );
+    await mount(tester, state, const HomeScreen(animateAmbient: false));
+    await tester.pumpAndSettle();
+    final page = tester.widget<WordScreen>(find.byType(WordScreen));
+    expect(page.word, same(word));
+    await tester.tap(find.byTooltip('Quay lại'));
+    await tester.pumpAndSettle();
+    expect(find.byType(WordScreen), findsNothing);
+
+    // A note for a word deleted since opens nothing.
+    tapped = 'gone';
+    await TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .handlePlatformMessage(
+          channel.name,
+          channel.codec.encodeMethodCall(
+            const MethodCall('wordTapped', 'gone'),
+          ),
+          (_) {},
+        );
+    await tester.pumpAndSettle();
+    expect(find.byType(WordScreen), findsNothing);
+  });
 }

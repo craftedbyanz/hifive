@@ -3965,4 +3965,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String dictTatoebaBy(String authors) {
     return 'Tatoeba · $authors';
   }
+
+  @override
+  String get wordNotesTitle => '잠금 화면 단어';
+
+  @override
+  String wordNotesBody(int n, String from, String to) {
+    return '하루 $n개 단어를 $from부터 $to까지 나눠 보여줘요: 곧 잊을 단어와 직접 추가한 새 단어.';
+  }
 }

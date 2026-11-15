@@ -22,6 +22,9 @@ abstract final class ScreenLock {
   /// Counts taps on a review reminder while the app runs; see
   /// [takeReviewTap].
   static final reviewTaps = ValueNotifier<int>(0);
+
+  /// Counts taps on a word note while the app runs; see [takeWordTap].
+  static final wordTaps = ValueNotifier<int>(0);
   static var _listening = false;
 
   static void listen() {
@@ -30,6 +33,7 @@ abstract final class ScreenLock {
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'locked') locked.value = call.arguments == true;
       if (call.method == 'reviewTapped') reviewTaps.value++;
+      if (call.method == 'wordTapped') wordTaps.value++;
     });
   }
 
@@ -44,6 +48,34 @@ abstract final class ScreenLock {
       return false;
     }
   }
+
+  /// The id of the card whose word note was tapped since the last call,
+  /// including the tap that launched the app; answering clears it.
+  static Future<String?> takeWordTap() async {
+    try {
+      return await _channel.invokeMethod<String>('takeWordTap');
+    } on MissingPluginException {
+      return null;
+    } on PlatformException {
+      return null;
+    }
+  }
+
+  /// The word notes for the coming days, replacing any scheduled before.
+  /// Each names its card by [word] id, which a tap opens.
+  static Future<void> scheduleWordNotes(
+    List<({DateTime at, String title, String body, String word})> notes,
+  ) => _call('scheduleWordNotes', [
+    for (final n in notes)
+      {
+        'at': n.at.millisecondsSinceEpoch.toDouble(),
+        'title': n.title,
+        'body': n.body,
+        'word': n.word,
+      },
+  ]);
+
+  static Future<void> cancelWordNotes() => _call('cancelWordNotes');
 
   /// Asks once for permission to show the warning.
   static Future<void> prepareWarning() => _call('prepareWarning');

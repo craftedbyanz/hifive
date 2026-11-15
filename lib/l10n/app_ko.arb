@@ -1213,5 +1213,7 @@
   "dictSourceCefr": "The CEFR-J Wordlist Version 1.5, 도쿄외국어대학 Yukio Tono 편찬; Octanove C1/C2(CC BY-SA 4.0): 단어 등급.",
   "dictSourceFrequency": "FrequencyWords(Hermit Dave, OpenSubtitles 자막): 단어 빈도. CC BY-SA 4.0.",
   "dictSourceTatoeba": "Tatoeba: 영어-베트남어 예문, 문장마다 기여자 표기. CC BY 2.0 FR.",
-  "dictTatoebaBy": "Tatoeba · {authors}"
+  "dictTatoebaBy": "Tatoeba · {authors}",
+  "wordNotesTitle": "잠금 화면 단어",
+  "wordNotesBody": "하루 {n}개 단어를 {from}부터 {to}까지 나눠 보여줘요: 곧 잊을 단어와 직접 추가한 새 단어."
 }

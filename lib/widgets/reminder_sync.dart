@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 
 import '../core/services/screen_lock.dart';
+import '../domain/vocab/vocab.dart';
 import '../l10n/l10n.dart';
 import '../state/state.dart';
 
@@ -11,8 +12,9 @@ import '../state/state.dart';
 /// notification at the reminder time on each of the coming [ReminderSync.days]
 /// days: how many words will be due, or on a day with none a nudge to learn
 /// a few new words (skipped once the learner studied that day). Cancels them
-/// all when the reminder is off. Asks for notification permission on a phone
-/// that never answered while the synced reminder is on.
+/// all when the reminder is off. Word notes (`WordNotes`) are kept in step the
+/// same way. Asks for notification permission on a phone that never
+/// answered while the synced reminder or word notes are on.
 class ReminderSync extends StatefulWidget {
   final Widget child;
   const ReminderSync({super.key, required this.child});
@@ -79,6 +81,7 @@ class _ReminderSyncState extends State<ReminderSync>
   void _sync() {
     final state = _state;
     if (state == null || !mounted) return;
+    _syncWordNotes(state);
     if (!state.reminderOn) {
       ScreenLock.cancelReminder();
       return;
@@ -95,6 +98,24 @@ class _ReminderSyncState extends State<ReminderSync>
     } else {
       ScreenLock.scheduleReminders(reminders);
     }
+  }
+
+  /// The word notes for the coming days, or none when they are off.
+  void _syncWordNotes(AppState state) {
+    if (!state.wordNotesOn) {
+      ScreenLock.cancelWordNotes();
+      return;
+    }
+    _askOnce();
+    ScreenLock.scheduleWordNotes([
+      for (final n in state.wordNotes)
+        (
+          at: n.at,
+          title: wordNoteText(n.word).title,
+          body: wordNoteText(n.word).body,
+          word: n.word.id,
+        ),
+    ]);
   }
 
   /// The reminder is a synced setting but permission belongs to the phone:

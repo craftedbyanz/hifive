@@ -29,6 +29,10 @@ import UserNotifications
   /// (`takeReviewTap`), so a tap that launches the app still opens the
   /// review once Home is up.
   private var reviewTapped = false
+
+  /// The card id of a tapped word note, until Flutter takes it
+  /// (`takeWordTap`), for the same reason.
+  private var tappedWord: String?
   private var screenChannel: FlutterMethodChannel?
 
   override func userNotificationCenter(
@@ -39,6 +43,11 @@ import UserNotifications
     if response.notification.request.identifier.hasPrefix("review-reminder") {
       reviewTapped = true
       screenChannel?.invokeMethod("reviewTapped", arguments: nil)
+    }
+    if response.notification.request.identifier.hasPrefix("word-note"),
+       let word = response.notification.request.content.userInfo["word"] as? String {
+      tappedWord = word
+      screenChannel?.invokeMethod("wordTapped", arguments: word)
     }
     completionHandler()
   }
@@ -74,6 +83,35 @@ import UserNotifications
       case "takeReviewTap":
         result(self?.reviewTapped ?? false)
         self?.reviewTapped = false
+      case "takeWordTap":
+        result(self?.tappedWord)
+        self?.tappedWord = nil
+      case "scheduleWordNotes":
+        // A word and its meaning on the lock screen through the day. Silent,
+        // grouped in one stack, and replacing any scheduled before.
+        let list = call.arguments as? [[String: Any]] ?? []
+        alerts.getPendingNotificationRequests { pending in
+          let old = pending.map(\.identifier).filter { $0.hasPrefix("word-note") }
+          alerts.removePendingNotificationRequests(withIdentifiers: old)
+          for (i, item) in list.enumerated() {
+            let content = UNMutableNotificationContent()
+            content.title = item["title"] as? String ?? ""
+            content.body = item["body"] as? String ?? ""
+            content.threadIdentifier = "word-notes"
+            content.userInfo = ["word": item["word"] as? String ?? ""]
+            let at = Date(timeIntervalSince1970: (item["at"] as? Double ?? 0) / 1000)
+            let parts = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: at)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
+            alerts.add(UNNotificationRequest(identifier: "word-note-\(i)", content: content, trigger: trigger))
+          }
+          DispatchQueue.main.async { result(nil) }
+        }
+      case "cancelWordNotes":
+        alerts.getPendingNotificationRequests { pending in
+          let old = pending.map(\.identifier).filter { $0.hasPrefix("word-note") }
+          alerts.removePendingNotificationRequests(withIdentifiers: old)
+          DispatchQueue.main.async { result(nil) }
+        }
       case "prepareWarning":
         // Answers whether notifications are allowed (asking the first time).
         alerts.requestAuthorization(options: [.alert, .sound]) { granted, _ in

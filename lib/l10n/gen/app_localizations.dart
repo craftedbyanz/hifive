@@ -7385,6 +7385,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Tatoeba · {authors}'**
   String dictTatoebaBy(String authors);
+
+  /// No description provided for @wordNotesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ vựng trên màn hình khóa'**
+  String get wordNotesTitle;
+
+  /// No description provided for @wordNotesBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} từ mỗi ngày, rải từ {from} đến {to}: những từ bạn sắp quên và từ mới bạn tự thêm.'**
+  String wordNotesBody(int n, String from, String to);
 }
 
 class _AppLocalizationsDelegate

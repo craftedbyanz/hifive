@@ -4134,4 +4134,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String dictTatoebaBy(String authors) {
     return 'Tatoeba · $authors';
   }
+
+  @override
+  String get wordNotesTitle => 'Words on the lock screen';
+
+  @override
+  String wordNotesBody(int n, String from, String to) {
+    return '$n words a day, spread from $from to $to: the words you are about to forget and new ones you added.';
+  }
 }
