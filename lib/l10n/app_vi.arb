@@ -1204,6 +1204,7 @@
     }
   },
   "gardenWeatherRain": "Vừa có mưa: bạn vừa tưới vườn.",
+  "gardenWeatherClearing": "Mưa vừa tạnh: vườn đã được tưới.",
   "gardenQuests": "Nhiệm vụ tuần",
   "questFocus": "{count}/{goal} phiên tập trung từ 25 phút",
   "@questFocus": {

@@ -2599,6 +2599,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gardenWeatherRain => '비가 와요: 방금 정원에 물을 줬어요.';
 
   @override
+  String get gardenWeatherClearing => '비가 그쳤어요: 정원에 물을 줬어요.';
+
+  @override
   String get gardenQuests => '이번 주 과제';
 
   @override

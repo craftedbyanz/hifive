@@ -818,6 +818,7 @@
   "gardenWeatherSunny": "Sunny: few words are waiting.",
   "gardenWeatherCloudy": "Cloudy: {count} words are waiting. Review to bring the sun back.",
   "gardenWeatherRain": "Rain: you just watered the garden.",
+  "gardenWeatherClearing": "The rain has passed: the garden is watered.",
   "gardenQuests": "This week",
   "questFocus": "{count}/{goal} focus sessions of 25 minutes",
   "questStudy": "{count}/{goal} days of review",

@@ -323,6 +323,23 @@ void main() {
         gardenWeather(overdue: 40, lastWater: _new, now: _new),
         GardenWeather.rain,
       );
+      // The rain stops after ten minutes and the sky clears within the hour.
+      expect(
+        gardenWeather(
+          overdue: 40,
+          lastWater: _new,
+          now: _new.add(const Duration(minutes: 10)),
+        ),
+        GardenWeather.clearing,
+      );
+      expect(
+        gardenWeather(
+          overdue: 40,
+          lastWater: _new,
+          now: _new.add(const Duration(hours: 1)),
+        ),
+        GardenWeather.cloudy,
+      );
       expect(
         gardenWeather(overdue: cloudyAt, lastWater: null, now: _new),
         GardenWeather.cloudy,

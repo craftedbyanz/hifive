@@ -1091,8 +1091,8 @@ class AppState extends ChangeNotifier {
   List<Plant> plants(DateTime from, DateTime to) =>
       plantsBetween(countedStudyCredits, focusSessions, from, to, now: now());
 
-  /// The garden's weather now: rain just after watering, clouds while
-  /// [cloudyAt] or more words wait, sun otherwise.
+  /// The garden's weather now: rain just after watering, then clearing,
+  /// clouds while [cloudyAt] or more words wait, sun otherwise.
   GardenWeather get weather => gardenWeather(
     overdue: dueBy(now()),
     lastWater: countedStudyCredits.lastOrNull?.at,

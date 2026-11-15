@@ -2659,6 +2659,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get gardenWeatherRain => 'Vừa có mưa: bạn vừa tưới vườn.';
 
   @override
+  String get gardenWeatherClearing => 'Mưa vừa tạnh: vườn đã được tưới.';
+
+  @override
   String get gardenQuests => 'Nhiệm vụ tuần';
 
   @override

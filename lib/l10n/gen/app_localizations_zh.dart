@@ -2581,6 +2581,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gardenWeatherRain => '下雨了：你刚给花园浇过水。';
 
   @override
+  String get gardenWeatherClearing => '雨停了：花园已经浇过水了。';
+
+  @override
   String get gardenQuests => '本周任务';
 
   @override

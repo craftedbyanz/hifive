@@ -712,6 +712,10 @@ class _WeatherNote extends StatelessWidget {
         CupertinoIcons.cloud_rain_fill,
         t.gardenWeatherRain,
       ),
+      GardenWeather.clearing => (
+        CupertinoIcons.cloud_sun_fill,
+        t.gardenWeatherClearing,
+      ),
     };
     return Padding(
       key: ValueKey('garden-weather-${weather.name}'),

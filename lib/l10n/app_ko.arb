@@ -818,6 +818,7 @@
   "gardenWeatherSunny": "맑음: 기다리는 단어가 거의 없어요.",
   "gardenWeatherCloudy": "흐림: 단어 {count}개가 기다리고 있어요. 복습하면 다시 맑아져요.",
   "gardenWeatherRain": "비가 와요: 방금 정원에 물을 줬어요.",
+  "gardenWeatherClearing": "비가 그쳤어요: 정원에 물을 줬어요.",
   "gardenQuests": "이번 주 과제",
   "questFocus": "25분 이상 집중 {count}/{goal}회",
   "questStudy": "복습한 날 {count}/{goal}일",

@@ -105,7 +105,7 @@ Done on 15 November 2026, for sessions and waterings from 16 November 2026 (`gar
 - Sun and water: focus minutes are sun, counted reviews are water. A study tree takes at most 5 drops a day and grows once it has 10 on 3 different days, the rhythm of spaced review; more water that day starts the next tree. A study tree watered on a day with 25 minutes of focus blooms. A growing study tree left 3 days without water droops (paler, leaning) until watered.
 - A rating waters the garden only if it took at least 1.5 s (when timed) and, for a new word, only up to the day's `newPerDay`.
 - A tree that bloomed and has stood 30 days in the garden turns ancient: larger, in a warm halo, with drifting motes.
-- Weather over the garden (current period only): rain within an hour of watering, clouds while 10 or more words wait, sun otherwise, with a line saying why.
+- Weather over the garden (current period only): rain for ten minutes after watering, then a clearing sky with a rainbow until the hour is out, clouds while 10 or more words wait, sun otherwise, with a line saying why. It is drawn in the plants' illustrated manner (`garden_weather.dart`): a sky wash, painted clouds, sunbeams and motes, rain in two depths with a puddle, ripples, splashes and mist, glints after rain.
 - Weekly quests: 3 mature sessions, 5 days of review and 1 bloom. Each week with all three done earns the next of six decorations (stone lantern, bench, pond, birdhouse, red lantern, flower bed), set along the garden's edges.
 - Seeds: every word remembered three weeks or more is a seed; the "known words" unlocks read as seeds.
 

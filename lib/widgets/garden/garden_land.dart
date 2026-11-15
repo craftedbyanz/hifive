@@ -527,10 +527,13 @@ void _garden(
   double w,
   int n,
   List<Plant> plants,
-  List<String> decor,
-) {
+  List<String> decor, {
+  GardenWeather? weather,
+  (int, int)? puddle,
+}) {
   final h = w / 2, d = w * .035 + 9, tw = w / n;
   _land(c, cx, cy, w, h, d, n);
+  if (weather != null) _ground(c, weather, cx, cy, w, h, n, puddle);
   final taken = _decorCells(n).take(decor.length).toList();
   final order = [
     for (final cell in _cellOrder(n))

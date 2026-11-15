@@ -282,21 +282,26 @@ bool _counts(FocusSession s) =>
     !_newRules(s.start) || s.minutes >= matureMinutes;
 
 /// The garden's weather, from how the learner's memory is doing: rain just
-/// after watering, clouds while many words wait, sun otherwise.
-enum GardenWeather { sunny, cloudy, rain }
+/// after watering, then a clearing sky with a rainbow, clouds while many
+/// words wait, sun otherwise. Only appended to; never stored.
+enum GardenWeather { sunny, cloudy, rain, clearing }
 
 /// Words waiting that bring clouds.
 const cloudyAt = 10;
+
+/// How long it rains after watering, and when the sky has cleared.
+const rainFor = Duration(minutes: 10), clearedAfter = Duration(hours: 1);
 
 GardenWeather gardenWeather({
   required int overdue,
   required DateTime? lastWater,
   required DateTime now,
-}) => lastWater != null && now.difference(lastWater) < const Duration(hours: 1)
-    ? GardenWeather.rain
-    : overdue >= cloudyAt
-    ? GardenWeather.cloudy
-    : GardenWeather.sunny;
+}) {
+  final since = lastWater == null ? null : now.difference(lastWater);
+  if (since != null && since < rainFor) return GardenWeather.rain;
+  if (since != null && since < clearedAfter) return GardenWeather.clearing;
+  return overdue >= cloudyAt ? GardenWeather.cloudy : GardenWeather.sunny;
+}
 
 /// A week's quests: mature focus sessions, study days and blooms.
 class WeekQuests {

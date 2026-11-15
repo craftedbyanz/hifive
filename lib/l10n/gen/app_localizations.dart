@@ -5010,6 +5010,12 @@ abstract class AppLocalizations {
   /// **'Vừa có mưa: bạn vừa tưới vườn.'**
   String get gardenWeatherRain;
 
+  /// No description provided for @gardenWeatherClearing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mưa vừa tạnh: vườn đã được tưới.'**
+  String get gardenWeatherClearing;
+
   /// No description provided for @gardenQuests.
   ///
   /// In vi, this message translates to:

@@ -2730,6 +2730,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gardenWeatherRain => 'Rain: you just watered the garden.';
 
   @override
+  String get gardenWeatherClearing =>
+      'The rain has passed: the garden is watered.';
+
+  @override
   String get gardenQuests => 'This week';
 
   @override

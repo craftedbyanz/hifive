@@ -818,6 +818,7 @@
   "gardenWeatherSunny": "晴天：待复习的词不多。",
   "gardenWeatherCloudy": "阴天：有 {count} 个词等待复习。复习一下，让花园重见阳光。",
   "gardenWeatherRain": "下雨了：你刚给花园浇过水。",
+  "gardenWeatherClearing": "雨停了：花园已经浇过水了。",
   "gardenQuests": "本周任务",
   "questFocus": "{count}/{goal} 次 25 分钟以上的专注",
   "questStudy": "复习 {count}/{goal} 天",

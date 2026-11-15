@@ -14,6 +14,7 @@ part 'garden_kit.dart';
 part 'garden_land.dart';
 part 'garden_plants.dart';
 part 'garden_trees.dart';
+part 'garden_weather.dart';
 
 /// Whether [id] has a drawing. Every id in `species` has one.
 bool hasTreeArt(String id) => _arts.containsKey(id);
@@ -141,27 +142,48 @@ class GardenScene extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = width / 2, d = width * .035 + 9;
+    final h = width / 2, d = width * .035 + 9, cell = width / cells;
+    final top = cell * 1.25;
+    final size = Size(width, h + d + cell * 1.35);
+    final sky = weather;
+    final puddle = sky == null
+        ? null
+        : _puddleCell(cells, plants.length, decorations.length);
+    void land(Canvas canvas, Size size, double t, bool still) {
+      canvas.clipRect(Offset.zero & size);
+      _garden(
+        canvas,
+        width / 2,
+        top + h / 2,
+        width,
+        cells,
+        plants,
+        decorations,
+        weather: sky,
+        puddle: puddle,
+      );
+    }
+
+    if (sky == null) return _Animated(size: size, animate: false, paint: land);
+    // The land holds still on its own layer; only the sky behind it and the
+    // weather in front move.
+    final layers = _Weather(sky, size, top, cell, switch (puddle) {
+      (final i, final j) => _iso(
+        width / 2,
+        top + h / 2,
+        width,
+        h,
+        (i + .5) / cells,
+        (j + .5) / cells,
+      ),
+      null => null,
+    });
     return _Animated(
-      size: Size(width, h + d + width / cells * 1.35),
-      // Only the weather moves: the sun's rays, the clouds and the rain.
-      animate: weather != null,
-      paint: (canvas, size, t, still) {
-        final top = width / cells * 1.25;
-        final sky = weather;
-        canvas.clipRect(Offset.zero & size);
-        if (sky != null) _weather(canvas, sky, size, top, t, behind: true);
-        _garden(
-          canvas,
-          width / 2,
-          top + h / 2,
-          width,
-          cells,
-          plants,
-          decorations,
-        );
-        if (sky != null) _weather(canvas, sky, size, top, t, behind: false);
-      },
+      size: size,
+      paint: land,
+      backdrop: layers.sky,
+      under: layers.under,
+      over: layers.over,
     );
   }
 }
@@ -174,14 +196,20 @@ typedef _Painter = void Function(
 );
 
 /// Repaints every frame while ambient motion is on; otherwise draws one still
-/// frame, so tests settle.
+/// frame, so tests settle. Given [under] or [over], only those move, each on
+/// a layer of its own below and above [paint], which is drawn once and holds
+/// still, as does [backdrop] beneath them all.
 class _Animated extends StatefulWidget {
   final Size size;
   final _Painter paint;
+  final _Painter? backdrop, under, over;
   final bool animate;
   const _Animated({
     required this.size,
     required this.paint,
+    this.backdrop,
+    this.under,
+    this.over,
     this.animate = true,
   });
 
@@ -194,8 +222,11 @@ class _AnimatedState extends State<_Animated>
   // A moment where every plant looks its best when still.
   static const _restTime = 7.3;
   final _time = ValueNotifier<double>(_restTime);
+  // At most 60 frames a second: a 120 Hz screen gains nothing from drawing
+  // slow ambient motion twice as often.
   late final Ticker _ticker = createTicker(
-    (elapsed) => _time.value = _restTime + elapsed.inMicroseconds / 1e6,
+    (elapsed) =>
+        _time.value = _restTime + (elapsed.inMicroseconds * 6e-5).floor() / 60,
   );
 
   @override
@@ -229,23 +260,45 @@ class _AnimatedState extends State<_Animated>
     super.dispose();
   }
 
+  Widget _layer(_Painter paint, ValueNotifier<double>? time, bool still) =>
+      RepaintBoundary(
+        child: CustomPaint(
+          size: widget.size,
+          painter: _ScenePainter(paint, time, still),
+        ),
+      );
+
   @override
-  Widget build(BuildContext context) => RepaintBoundary(
-    child: CustomPaint(
+  Widget build(BuildContext context) {
+    final still = !_ticker.isActive;
+    final under = widget.under, over = widget.over;
+    if (under == null && over == null) {
+      return _layer(widget.paint, _time, still);
+    }
+    return SizedBox.fromSize(
       size: widget.size,
-      painter: _ScenePainter(widget.paint, _time, !_ticker.isActive),
-    ),
-  );
+      child: Stack(
+        children: [
+          if (widget.backdrop case final back?) _layer(back, null, true),
+          if (under != null) _layer(under, _time, still),
+          _layer(widget.paint, null, true),
+          if (over != null) _layer(over, _time, still),
+        ],
+      ),
+    );
+  }
 }
 
+/// Paints [draw] at [time], or at rest without one, never repainting then.
 class _ScenePainter extends CustomPainter {
   final _Painter draw;
-  final ValueNotifier<double> time;
+  final ValueNotifier<double>? time;
   final bool still;
   _ScenePainter(this.draw, this.time, this.still) : super(repaint: time);
 
   @override
-  void paint(Canvas canvas, Size size) => draw(canvas, size, time.value, still);
+  void paint(Canvas canvas, Size size) =>
+      draw(canvas, size, time?.value ?? _AnimatedState._restTime, still);
 
   @override
   bool shouldRepaint(_ScenePainter old) =>

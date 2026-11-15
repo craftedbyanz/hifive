@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/domain/garden/garden.dart';
 import 'package:hifive/widgets/ambient.dart';
@@ -114,5 +115,41 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('only the weather repaints; the land holds still under it', (
+    tester,
+  ) async {
+    final plants = [
+      for (final s in species.take(8))
+        Plant(source: PlantSource.focus, species: s.id, at: DateTime(2026)),
+    ];
+    await tester.pumpWidget(
+      _frame(
+        GardenScene(plants: plants, width: 300, weather: GardenWeather.rain),
+        motion: true,
+      ),
+    );
+    List<int> paints() => [
+      for (final b in tester.renderObjectList<RenderRepaintBoundary>(
+        find.descendant(
+          of: find.byType(GardenScene),
+          matching: find.byType(RepaintBoundary),
+        ),
+      ))
+        b.debugSymmetricPaintCount + b.debugAsymmetricPaintCount,
+    ];
+    final before = paints();
+    for (var i = 0; i < 10; i++) {
+      await tester.pump(const Duration(milliseconds: 17));
+    }
+    final after = paints();
+    // The still sky, the clouds and rain behind, the still land, the
+    // weather in front.
+    expect(before, hasLength(4));
+    expect(after[0], before[0]);
+    expect(after[1], greaterThan(before[1]));
+    expect(after[2], before[2]);
+    expect(after[3], greaterThan(before[3]));
   });
 }
