@@ -62,7 +62,7 @@ Success prints `Upload succeeded` and `** EXPORT SUCCEEDED **`.
 
 - the build number, and that Apple processes it for about 5 to 15 minutes before it shows in TestFlight;
 - a short English "What to Test" note for Beta App Review (one line on what changed, one on what to try);
-- that App Review needs the email demo account under Test Information, since the app requires sign-in (never archive with `--dart-define=HIFIVE_EMAIL_SIGN_IN=false`, which hides email sign-in);
+- that the app requires sign-in and offers Apple and Google only, so reviewers sign in with Apple; if Beta App Review insists on the email demo account, archive again with `--dart-define=HIFIVE_EMAIL_SIGN_IN=true`;
 - what wasn't verified on a real iPhone.
 
 ## Known problems

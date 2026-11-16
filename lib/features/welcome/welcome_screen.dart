@@ -16,13 +16,11 @@ import 'welcome_motion.dart';
 
 part 'welcome_scenes.dart';
 
-/// Whether sign-in offers email and password under Apple and Google. On by
-/// default: App Review's test account signs in with email. Build with
-/// `--dart-define=HIFIVE_EMAIL_SIGN_IN=false` to hide it.
-const emailSignInEnabled = bool.fromEnvironment(
-  'HIFIVE_EMAIL_SIGN_IN',
-  defaultValue: true,
-);
+/// Whether sign-in offers email and password under Apple and Google. Off
+/// since 16 November 2026 (build 13): Apple and Google only, and App Review
+/// signs in with Apple. Build with `--dart-define=HIFIVE_EMAIL_SIGN_IN=true`
+/// for a build whose reviewers need the email test account.
+const emailSignInEnabled = bool.fromEnvironment('HIFIVE_EMAIL_SIGN_IN');
 
 /// The first screen when signed out: short demos of what Hifive does play
 /// one after another above the sign-in buttons, which never move.

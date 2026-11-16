@@ -45,8 +45,8 @@ void main() {
     for (final key in ['sign-in-apple', 'sign-in-google']) {
       expect(find.byKey(ValueKey(key)), findsOneWidget);
     }
-    // Email sign-in stays for App Review's test account.
-    expect(find.byKey(const ValueKey('sign-in-email-open')), findsOneWidget);
+    // Apple and Google only, unless the build turns email on.
+    expect(find.byKey(const ValueKey('sign-in-email-open')), findsNothing);
     expect(
       find.descendant(
         of: find.byKey(const ValueKey('sign-in-google')),
