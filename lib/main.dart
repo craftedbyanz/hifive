@@ -19,9 +19,13 @@ Future<void> main() async {
     legacy: LocalAppRepository(),
     auth: FirebaseAuthService(
       iosClientId: DefaultFirebaseOptions.currentPlatform.iosClientId,
-      // Off until the Apple Developer Program: personal teams can't sign
-      // Sign in with Apple. Re-add CODE_SIGN_ENTITLEMENTS when turning it on.
-      appleSignIn: const bool.fromEnvironment('HIFIVE_APPLE_SIGN_IN'),
+      // On since team 7GH7MJS7R2 signs Sign in with Apple (16 November
+      // 2026); `--dart-define=HIFIVE_APPLE_SIGN_IN=false` hides it, as a
+      // personal team needs.
+      appleSignIn: const bool.fromEnvironment(
+        'HIFIVE_APPLE_SIGN_IN',
+        defaultValue: true,
+      ),
       // The web OAuth client from google-services.json (client_type 3).
       webClientId: '440247164777-9q60d3r0p8s09t13igr9cbin8o1n59t2.apps.googleusercontent.com',
     ),
