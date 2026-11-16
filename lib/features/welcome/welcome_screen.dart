@@ -16,10 +16,18 @@ import 'welcome_motion.dart';
 
 part 'welcome_scenes.dart';
 
+/// Whether sign-in offers email and password. Paused on 16 November 2026,
+/// so only Apple and Google show; build with
+/// `--dart-define=HIFIVE_EMAIL_SIGN_IN=true` to bring it back, as App
+/// Review's test account needs.
+const emailSignInEnabled = bool.fromEnvironment('HIFIVE_EMAIL_SIGN_IN');
+
 /// The first screen when signed out: short demos of what Hifive does play
 /// one after another above the sign-in buttons, which never move.
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key});
+  /// Shows "Tiếp tục với email" under Apple and Google.
+  final bool emailSignIn;
+  const WelcomeScreen({super.key, this.emailSignIn = emailSignInEnabled});
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
@@ -129,16 +137,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       outlined: true,
                       onTap: busy ? null : () => _signIn(s.signInWithGoogle),
                     ),
-                    const SizedBox(height: 12),
-                    ActionButton(
-                      context.t.continueWithEmail,
-                      key: const ValueKey('sign-in-email-open'),
-                      icon: CupertinoIcons.mail,
-                      outlined: true,
-                      color: D.ink,
-                      foreground: D.ink,
-                      onTap: busy ? null : () => showEmailSignIn(context),
-                    ),
+                    if (widget.emailSignIn) ...[
+                      const SizedBox(height: 12),
+                      ActionButton(
+                        context.t.continueWithEmail,
+                        key: const ValueKey('sign-in-email-open'),
+                        icon: CupertinoIcons.mail,
+                        outlined: true,
+                        color: D.ink,
+                        foreground: D.ink,
+                        onTap: busy ? null : () => showEmailSignIn(context),
+                      ),
+                    ],
                     const SizedBox(height: 14),
                     const _Terms(),
                   ],

@@ -45,7 +45,8 @@ void main() {
     for (final key in ['sign-in-apple', 'sign-in-google']) {
       expect(find.byKey(ValueKey(key)), findsOneWidget);
     }
-    expect(find.byKey(const ValueKey('sign-in-email-open')), findsOneWidget);
+    // Email sign-in is paused unless the build turns it on.
+    expect(find.byKey(const ValueKey('sign-in-email-open')), findsNothing);
     expect(
       find.descendant(
         of: find.byKey(const ValueKey('sign-in-google')),
@@ -105,13 +106,13 @@ void main() {
     expect(find.byType(HomeScreen), findsOneWidget);
   });
 
-  testWidgets('email sign-in opens its sheet and continues to Home', (
+  testWidgets('turned on, email sign-in opens its sheet and signs in', (
     tester,
   ) async {
     final auth = MemoryAuthService()
       ..accounts['review@example.com'] = 'review-password';
     final state = fresh(auth: auth);
-    await _openApp(tester, state);
+    await mount(tester, state, const WelcomeScreen(emailSignIn: true));
     await tester.tap(find.byKey(const ValueKey('sign-in-email-open')));
     await tester.pumpAndSettle();
     expect(find.byType(EmailSignInForm), findsOneWidget);
@@ -127,7 +128,6 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('sign-in-submit')));
     await tester.pumpAndSettle();
     expect(state.user?.method, AuthMethod.email);
-    expect(find.byType(HomeScreen), findsOneWidget);
     expect(find.byType(EmailSignInForm), findsNothing);
   });
 
