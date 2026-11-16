@@ -36,6 +36,14 @@ Finder _practice(String title) => find.byWidgetPredicate(
   (w) => w is Semantics && w.properties.label == title,
 );
 
+/// The study tree's line on the garden step.
+Finder _waterLine(int drops, int days) =>
+    find.text('Cây học đang lớn · $drops/10 giọt nước · $days/3 ngày');
+
+String? _focusTitle(WidgetTester tester) => tester
+    .widget<Text>(find.byKey(const ValueKey('onboarding-focus-title')))
+    .data;
+
 bool _canContinue(WidgetTester tester) =>
     tester
         .widget<ActionButton>(find.byKey(const ValueKey('onboarding-next')))
@@ -54,10 +62,14 @@ void main() {
     expect(find.byType(OnboardingScreen), findsOneWidget);
     expect(find.byKey(const ValueKey('onboarding-back')), findsNothing);
 
-    // Welcome: a tap deals the next way to practise to the front.
+    // Welcome: a tap deals the next card to the front; the garden is last.
     expect(_practice('Viết đoạn văn'), findsOneWidget);
     await _tapKey(tester, 'onboarding-practice-stack');
     expect(_practice('Sửa câu'), findsOneWidget);
+    for (var i = 0; i < 3; i++) {
+      await _tapKey(tester, 'onboarding-practice-stack');
+    }
+    expect(_practice('Vườn và tập trung'), findsOneWidget);
     await _tapKey(tester, 'onboarding-next');
 
     // Flashcards: a tap flips the card; rating it sends it away and says
@@ -75,6 +87,40 @@ void main() {
     );
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
+    await _tapKey(tester, 'onboarding-next');
+
+    // Garden: reviews water the study tree, five drops a day, and the third
+    // day grows it.
+    expect(_heading('vườn xanh dần'), findsOneWidget);
+    expect(_waterLine(7, 2), findsOneWidget);
+    await _tapKey(tester, 'onboarding-water-2');
+    await _tapKey(tester, 'onboarding-water-0');
+    expect(_waterLine(9, 2), findsOneWidget);
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('Đủ 5 giọt hôm nay · sang ngày mới'), findsOneWidget);
+    await _tapKey(tester, 'onboarding-water-3');
+    expect(_waterLine(10, 3), findsOneWidget);
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('Một cây Sồi đã mọc trong vườn'), findsOneWidget);
+    expect(_waterLine(0, 0), findsOneWidget);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await _tapKey(tester, 'onboarding-next');
+
+    // Focus: a session plays through to the break, which makes it bloom.
+    expect(_heading('cây lớn dần'), findsOneWidget);
+    expect(_focusTitle(tester), '25:00');
+    await tester.tap(find.byKey(const ValueKey('onboarding-focus-try')));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
+    expect(_focusTitle(tester), isNot('25:00'));
+    expect(
+      find.byKey(const ValueKey('onboarding-focus-leave')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(seconds: 7));
+    expect(_focusTitle(tester), 'Hoàn thành 25 phút');
+    await _tapKey(tester, 'onboarding-focus-bloom');
+    expect(find.text('Cây đã nở hoa'), findsOneWidget);
     await _tapKey(tester, 'onboarding-next');
 
     // Writing: grading thinks, then explains.
@@ -139,10 +185,12 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('onboarding-next')));
     await tester.pump(const Duration(milliseconds: 400));
 
-    // The wait shows the answers, then opens Home.
+    // The wait shows the answers and seeds the first tree, then opens Home.
     expect(find.text('Đang lưu hồ sơ của Lan'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 4));
+    expect(find.text('Gieo hạt cho cây học đầu tiên'), findsOneWidget);
     expect(s.onboarded, isFalse);
-    await tester.pump(const Duration(seconds: 3));
+    await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(find.byType(HomeScreen), findsOneWidget);
     expect(s.name, 'Lan');
@@ -167,7 +215,7 @@ void main() {
     tester,
   ) async {
     await _openApp(tester, fresh(auth: signedIn(), onboarded: false));
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 7; i++) {
       await _tapKey(tester, 'onboarding-next');
     }
     await tester.enterText(find.byKey(const ValueKey('onboarding-name')), 'An');
@@ -191,7 +239,7 @@ void main() {
       ),
     );
     await _openApp(tester, fresh(auth: auth, onboarded: false));
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 7; i++) {
       await _tapKey(tester, 'onboarding-next');
     }
     expect(find.text('Hương'), findsOneWidget);

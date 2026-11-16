@@ -404,7 +404,14 @@ void main() {
     await t.tap(find.byKey(const ValueKey('onboarding-card')));
     await settle(t);
     await shot(t, 'onboarding_card_back');
-    for (final name in ['writing', 'grammar', 'chat', 'name']) {
+    for (final name in [
+      'garden',
+      'focus',
+      'writing',
+      'grammar',
+      'chat',
+      'name',
+    ]) {
       await next();
       await shot(t, 'onboarding_$name');
     }
@@ -416,5 +423,25 @@ void main() {
     await settle(t);
     await next();
     await shot(t, 'onboarding_goals');
+  });
+  testWidgets('preparing', (t) async {
+    // Long enough that mounting (which settles for 3 s) stays at the start.
+    const length = Duration(seconds: 60);
+    await mount(
+      t,
+      (s) => const PreparingView(
+        steps: ['A', 'B', 'C', 'D'],
+        detail: 'E',
+        duration: length,
+      ),
+    );
+    var at = const Duration(seconds: 3);
+    for (final share in const [.2, .45, .7, .82, .88, .99]) {
+      final next = length * share;
+      await t.pump(next - at);
+      at = next;
+      await shot(t, 'preparing_${(share * 100).round()}');
+    }
+    await t.pump(length);
   });
 }

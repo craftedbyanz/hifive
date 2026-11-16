@@ -5,21 +5,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
+import '../../domain/garden/garden.dart';
 import '../../domain/models/models.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
+import '../../widgets/garden/garden_art.dart';
+import '../garden/garden.dart';
 import '../learning/learning.dart';
 import 'preparing_view.dart';
 import 'welcome_motion.dart';
 
 part 'onboarding_demos.dart';
+part 'onboarding_garden.dart';
 part 'onboarding_intro.dart';
 part 'onboarding_steps.dart';
 
-/// After the first sign-in: a welcome, four ways to practise to try
-/// (flashcards first), then the learner's name, level and goals, then a
-/// short wait while the answers are saved. The answers sync, so another
+/// After the first sign-in: a welcome, flashcards to try, the garden that
+/// reviews water and the focus timer that grows it, three more ways to
+/// practise, then the learner's name, level and goals, then a short wait
+/// while the answers are saved. The answers sync, so another
 /// device signing in to the account skips this.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -27,7 +32,7 @@ class OnboardingScreen extends StatefulWidget {
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-const _nameStep = 5, _levelStep = 6, _goalStep = 7, _stepCount = 8;
+const _nameStep = 7, _levelStep = 8, _goalStep = 9, _stepCount = 10;
 
 /// The longest name, as on Profile.
 const _maxName = 12;
@@ -37,7 +42,7 @@ const _maxGoals = 3;
 
 /// How long the closing wait lasts; it saves instantly, so this is only long
 /// enough to read its lines.
-const _preparing = Duration(milliseconds: 2800);
+const _preparing = Duration(milliseconds: 4400);
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   int step = 0;
@@ -121,6 +126,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context.t.preparingSavingProfile(_name),
                 context.t.preparingChoosingLessons(level ?? ''),
                 context.t.preparingSorting,
+                context.t.preparingSeeding,
               ],
               detail: context.t.preparingDetail,
               duration: _preparing,
@@ -161,9 +167,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 _WelcomeStep(active: step == 0),
                 _FlashcardDemo(active: step == 1),
-                _WritingDemo(active: step == 2),
-                _GrammarDemo(active: step == 3),
-                _ChatDemo(active: step == 4),
+                _GardenDemo(active: step == 2),
+                _FocusDemo(active: step == 3),
+                _WritingDemo(active: step == 4),
+                _GrammarDemo(active: step == 5),
+                _ChatDemo(active: step == 6),
                 _NameStep(
                   active: step == _nameStep,
                   controller: name,

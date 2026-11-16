@@ -829,7 +829,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get welcomeStepBody =>
-      '매일 쓰고, 말하고, 단어를 복습하며 외국어를 배워요. 네 가지 연습 방법으로 조금씩 자연스럽게 늘어요.';
+      '매일 쓰고, 말하고, 단어를 복습하며 외국어를 배워요. 복습과 집중 시간이 쌓일수록 정원에 나무가 자라요.';
 
   @override
   String get practiceWriting => '문단 쓰기';
@@ -854,6 +854,88 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get practiceCardsBody => '새 단어를 저장하고 잊기 직전에 복습해요.';
+
+  @override
+  String get practiceGarden => '정원과 집중';
+
+  @override
+  String get practiceGardenBody => '단어 복습과 집중으로 나무를 키워요.';
+
+  @override
+  String get gardenStepTitle => '매일 조금씩 복습하면';
+
+  @override
+  String get gardenStepAccent => '정원이 푸르러져요';
+
+  @override
+  String get gardenStepBody =>
+      '새 단어나 복습할 단어를 하나 복습할 때마다 물 한 방울, 하루 최대 5방울이에요. 서로 다른 3일 동안 물을 주면 정원에 나무가 자라요.';
+
+  @override
+  String get gardenDemoCaps => '자라는 공부 나무';
+
+  @override
+  String gardenDemoSpecies(String species) {
+    return '$species · 바꾸기';
+  }
+
+  @override
+  String gardenDemoDay(int n) {
+    return '$n일째';
+  }
+
+  @override
+  String get gardenDemoNextDay => '오늘 5방울 완료 · 다음 날로';
+
+  @override
+  String gardenDemoPlanted(String species) {
+    return '정원에 $species 나무가 자랐어요';
+  }
+
+  @override
+  String get gardenDemoCollection => '베트남과 세계 곳곳의 나무 30종, 꾸준히 공부하면 하나씩 열려요.';
+
+  @override
+  String get focusStepTitle => '휴대폰을 내려놓으면';
+
+  @override
+  String get focusStepAccent => '나무가 자라요';
+
+  @override
+  String get focusStepBody =>
+      '공부, 글쓰기, 일할 때 타이머를 켜세요. 집중하는 동안 나무가 자라고, Hifive를 30초 넘게 떠나면 시들어요.';
+
+  @override
+  String get focusDemoTry => '해 보기';
+
+  @override
+  String get focusDemoLeave => '앱 나가 보기';
+
+  @override
+  String get focusDemoReturn => 'Hifive로 돌아가기';
+
+  @override
+  String focusDemoWarnBody(int seconds) {
+    return '나무를 지키려면 $seconds초 안에 Hifive로 돌아오세요.';
+  }
+
+  @override
+  String get focusDemoAgain => '다시 해 보기';
+
+  @override
+  String get focusFactShieldTitle => '다른 앱은 자동으로 차단';
+
+  @override
+  String get focusFactShieldBody => '시작을 누르면 방해되는 앱이 집중이 끝날 때까지 차단돼요.';
+
+  @override
+  String get focusFactLockTitle => '화면을 잠가도 괜찮아요';
+
+  @override
+  String get focusFactLockBody => '다른 앱을 열 때만 나무가 시들어요.';
+
+  @override
+  String get preparingSeeding => '첫 공부 나무의 씨앗을 심는 중';
 
   @override
   String get tapForNextWay => '탭해서 다음 학습 방법 보기';

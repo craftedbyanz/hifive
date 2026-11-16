@@ -824,7 +824,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get welcomeStepAccent => 'Hifive';
 
   @override
-  String get welcomeStepBody => '每天通过写作、口语和复习单词来学外语。四种练习方式帮你自然地一点点进步。';
+  String get welcomeStepBody => '每天通过写作、口语和复习单词来学外语。每次复习、每次专注，都让你的花园多一棵树。';
 
   @override
   String get practiceWriting => '段落写作';
@@ -849,6 +849,88 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get practiceCardsBody => '保存新单词，在快忘记时复习。';
+
+  @override
+  String get practiceGarden => '花园与专注';
+
+  @override
+  String get practiceGardenBody => '复习单词、专注计时，种出一棵棵树。';
+
+  @override
+  String get gardenStepTitle => '每天复习一点，';
+
+  @override
+  String get gardenStepAccent => '花园渐渐变绿';
+
+  @override
+  String get gardenStepBody =>
+      '每复习一个新词或到期的词就是一滴水，每天最多 5 滴。在 3 个不同的日子浇水，花园里就长出一棵树。';
+
+  @override
+  String get gardenDemoCaps => '学习树成长中';
+
+  @override
+  String gardenDemoSpecies(String species) {
+    return '$species · 更换';
+  }
+
+  @override
+  String gardenDemoDay(int n) {
+    return '第 $n 天';
+  }
+
+  @override
+  String get gardenDemoNextDay => '今天已浇满 5 滴 · 进入第二天';
+
+  @override
+  String gardenDemoPlanted(String species) {
+    return '花园里长出了一棵$species';
+  }
+
+  @override
+  String get gardenDemoCollection => '来自越南和世界各地的 30 种树，坚持学习就能逐一解锁。';
+
+  @override
+  String get focusStepTitle => '放下手机，';
+
+  @override
+  String get focusStepAccent => '小树慢慢长大';
+
+  @override
+  String get focusStepBody =>
+      '学习、写作或工作时设个计时。专注越久树长得越大；离开 Hifive 超过 30 秒，树就会枯萎。';
+
+  @override
+  String get focusDemoTry => '试一试';
+
+  @override
+  String get focusDemoLeave => '试试离开应用';
+
+  @override
+  String get focusDemoReturn => '回到 Hifive';
+
+  @override
+  String focusDemoWarnBody(int seconds) {
+    return '请在 $seconds 秒内回到 Hifive，留住你的树。';
+  }
+
+  @override
+  String get focusDemoAgain => '再试一次';
+
+  @override
+  String get focusFactShieldTitle => '自动屏蔽其他应用';
+
+  @override
+  String get focusFactShieldBody => '点开始后，让人分心的应用会被屏蔽到专注结束。';
+
+  @override
+  String get focusFactLockTitle => '锁屏不影响';
+
+  @override
+  String get focusFactLockBody => '只有打开其他应用才会让树枯萎。';
+
+  @override
+  String get preparingSeeding => '为第一棵学习树播种';
 
   @override
   String get tapForNextWay => '点按查看下一种学习方式';

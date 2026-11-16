@@ -337,7 +337,7 @@
   },
   "welcomeStepTitle": "Chào mừng",
   "welcomeStepAccent": "đến với Hifive",
-  "welcomeStepBody": "Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Bốn cách luyện tập giúp bạn tiến bộ tự nhiên, từng chút một.",
+  "welcomeStepBody": "Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Mỗi lượt ôn và mỗi phiên tập trung trồng thêm cây trong vườn của bạn.",
   "practiceWriting": "Viết đoạn văn",
   "practiceWritingBody": "Dịch và viết lại từng câu theo chủ đề bạn thích.",
   "practiceGrammar": "Sửa câu",
@@ -346,6 +346,58 @@
   "practiceChatBody": "Đóng vai trong những tình huống thật.",
   "practiceCards": "Thẻ từ vựng",
   "practiceCardsBody": "Lưu từ mới, ôn đúng lúc sắp quên.",
+  "practiceGarden": "Vườn và tập trung",
+  "practiceGardenBody": "Ôn từ và hẹn giờ tập trung để trồng cây.",
+  "gardenStepTitle": "Ôn từ mỗi ngày,",
+  "gardenStepAccent": "vườn xanh dần",
+  "gardenStepBody": "Mỗi từ mới hoặc đến hạn bạn ôn là một giọt nước, tối đa 5 giọt mỗi ngày. Tưới đủ 3 ngày là một cây mọc trong vườn.",
+  "gardenDemoCaps": "CÂY HỌC ĐANG LỚN",
+  "gardenDemoSpecies": "{species} · Đổi",
+  "@gardenDemoSpecies": {
+    "placeholders": {
+      "species": {
+        "type": "String"
+      }
+    }
+  },
+  "gardenDemoDay": "Ngày {n}",
+  "@gardenDemoDay": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "gardenDemoNextDay": "Đủ 5 giọt hôm nay · sang ngày mới",
+  "gardenDemoPlanted": "Một cây {species} đã mọc trong vườn",
+  "@gardenDemoPlanted": {
+    "placeholders": {
+      "species": {
+        "type": "String"
+      }
+    }
+  },
+  "gardenDemoCollection": "30 loài cây từ Việt Nam và khắp nơi, mở khoá dần khi bạn học đều.",
+  "focusStepTitle": "Đặt máy xuống,",
+  "focusStepAccent": "cây lớn dần",
+  "focusStepBody": "Hẹn giờ khi học, viết hay làm việc. Cây lớn theo thời gian bạn tập trung, và héo nếu bạn rời Hifive quá 30 giây.",
+  "focusDemoTry": "Bắt đầu thử",
+  "focusDemoLeave": "Thử rời ứng dụng",
+  "focusDemoReturn": "Quay lại Hifive",
+  "focusDemoWarnBody": "Quay lại Hifive trong {seconds} giây để giữ cây.",
+  "@focusDemoWarnBody": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "focusDemoAgain": "Thử lại",
+  "focusFactShieldTitle": "Tự chặn ứng dụng khác",
+  "focusFactShieldBody": "Bấm Bắt đầu là các ứng dụng gây xao nhãng bị chặn đến hết phiên.",
+  "focusFactLockTitle": "Khoá màn hình vẫn tính",
+  "focusFactLockBody": "Chỉ mở ứng dụng khác mới làm cây héo.",
+  "preparingSeeding": "Gieo hạt cho cây học đầu tiên",
   "tapForNextWay": "Chạm để xem cách học tiếp theo",
   "cardsStepTitle": "Lưu từ mới mọi lúc,",
   "cardsStepAccent": "ôn đúng lúc sắp quên",

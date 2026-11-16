@@ -848,7 +848,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get welcomeStepBody =>
-      'Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Bốn cách luyện tập giúp bạn tiến bộ tự nhiên, từng chút một.';
+      'Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Mỗi lượt ôn và mỗi phiên tập trung trồng thêm cây trong vườn của bạn.';
 
   @override
   String get practiceWriting => 'Viết đoạn văn';
@@ -874,6 +874,90 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get practiceCardsBody => 'Lưu từ mới, ôn đúng lúc sắp quên.';
+
+  @override
+  String get practiceGarden => 'Vườn và tập trung';
+
+  @override
+  String get practiceGardenBody => 'Ôn từ và hẹn giờ tập trung để trồng cây.';
+
+  @override
+  String get gardenStepTitle => 'Ôn từ mỗi ngày,';
+
+  @override
+  String get gardenStepAccent => 'vườn xanh dần';
+
+  @override
+  String get gardenStepBody =>
+      'Mỗi từ mới hoặc đến hạn bạn ôn là một giọt nước, tối đa 5 giọt mỗi ngày. Tưới đủ 3 ngày là một cây mọc trong vườn.';
+
+  @override
+  String get gardenDemoCaps => 'CÂY HỌC ĐANG LỚN';
+
+  @override
+  String gardenDemoSpecies(String species) {
+    return '$species · Đổi';
+  }
+
+  @override
+  String gardenDemoDay(int n) {
+    return 'Ngày $n';
+  }
+
+  @override
+  String get gardenDemoNextDay => 'Đủ 5 giọt hôm nay · sang ngày mới';
+
+  @override
+  String gardenDemoPlanted(String species) {
+    return 'Một cây $species đã mọc trong vườn';
+  }
+
+  @override
+  String get gardenDemoCollection =>
+      '30 loài cây từ Việt Nam và khắp nơi, mở khoá dần khi bạn học đều.';
+
+  @override
+  String get focusStepTitle => 'Đặt máy xuống,';
+
+  @override
+  String get focusStepAccent => 'cây lớn dần';
+
+  @override
+  String get focusStepBody =>
+      'Hẹn giờ khi học, viết hay làm việc. Cây lớn theo thời gian bạn tập trung, và héo nếu bạn rời Hifive quá 30 giây.';
+
+  @override
+  String get focusDemoTry => 'Bắt đầu thử';
+
+  @override
+  String get focusDemoLeave => 'Thử rời ứng dụng';
+
+  @override
+  String get focusDemoReturn => 'Quay lại Hifive';
+
+  @override
+  String focusDemoWarnBody(int seconds) {
+    return 'Quay lại Hifive trong $seconds giây để giữ cây.';
+  }
+
+  @override
+  String get focusDemoAgain => 'Thử lại';
+
+  @override
+  String get focusFactShieldTitle => 'Tự chặn ứng dụng khác';
+
+  @override
+  String get focusFactShieldBody =>
+      'Bấm Bắt đầu là các ứng dụng gây xao nhãng bị chặn đến hết phiên.';
+
+  @override
+  String get focusFactLockTitle => 'Khoá màn hình vẫn tính';
+
+  @override
+  String get focusFactLockBody => 'Chỉ mở ứng dụng khác mới làm cây héo.';
+
+  @override
+  String get preparingSeeding => 'Gieo hạt cho cây học đầu tiên';
 
   @override
   String get tapForNextWay => 'Chạm để xem cách học tiếp theo';

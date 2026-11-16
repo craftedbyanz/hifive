@@ -864,7 +864,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeStepBody =>
-      'Learn a language by writing, speaking and reviewing words every day. Four ways to practise help you improve naturally, bit by bit.';
+      'Learn a language by writing, speaking and reviewing words every day. Every review and every focus session grows your garden.';
 
   @override
   String get practiceWriting => 'Write paragraphs';
@@ -892,6 +892,90 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get practiceCardsBody =>
       'Save new words and review right before you\'d forget.';
+
+  @override
+  String get practiceGarden => 'Garden and focus';
+
+  @override
+  String get practiceGardenBody => 'Review words and focus to grow trees.';
+
+  @override
+  String get gardenStepTitle => 'Review a little each day,';
+
+  @override
+  String get gardenStepAccent => 'and your garden grows';
+
+  @override
+  String get gardenStepBody =>
+      'Every new or due word you review is a drop of water, up to 5 a day. Water on 3 different days and a tree grows in your garden.';
+
+  @override
+  String get gardenDemoCaps => 'STUDY TREE GROWING';
+
+  @override
+  String gardenDemoSpecies(String species) {
+    return '$species · Change';
+  }
+
+  @override
+  String gardenDemoDay(int n) {
+    return 'Day $n';
+  }
+
+  @override
+  String get gardenDemoNextDay => '5 drops today · on to the next day';
+
+  @override
+  String gardenDemoPlanted(String species) {
+    return 'A $species tree now grows in your garden';
+  }
+
+  @override
+  String get gardenDemoCollection =>
+      '30 kinds of trees from Vietnam and around the world, unlocked as you keep studying.';
+
+  @override
+  String get focusStepTitle => 'Put your phone down,';
+
+  @override
+  String get focusStepAccent => 'and a tree grows';
+
+  @override
+  String get focusStepBody =>
+      'Set a timer to study, write or work. The tree grows while you focus, and withers if you leave Hifive for more than 30 seconds.';
+
+  @override
+  String get focusDemoTry => 'Try it';
+
+  @override
+  String get focusDemoLeave => 'Try leaving the app';
+
+  @override
+  String get focusDemoReturn => 'Back to Hifive';
+
+  @override
+  String focusDemoWarnBody(int seconds) {
+    return 'Come back to Hifive within $seconds seconds to keep your tree.';
+  }
+
+  @override
+  String get focusDemoAgain => 'Try again';
+
+  @override
+  String get focusFactShieldTitle => 'Other apps are blocked';
+
+  @override
+  String get focusFactShieldBody =>
+      'Press Start and distracting apps stay blocked until the session ends.';
+
+  @override
+  String get focusFactLockTitle => 'Locking the screen is fine';
+
+  @override
+  String get focusFactLockBody => 'Only opening another app withers the tree.';
+
+  @override
+  String get preparingSeeding => 'Planting the seed of your first tree';
 
   @override
   String get tapForNextWay => 'Tap to see the next way to learn';

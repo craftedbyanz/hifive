@@ -1695,7 +1695,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeStepBody.
   ///
   /// In vi, this message translates to:
-  /// **'Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Bốn cách luyện tập giúp bạn tiến bộ tự nhiên, từng chút một.'**
+  /// **'Học ngoại ngữ bằng cách viết, nói và ôn từ mỗi ngày. Mỗi lượt ôn và mỗi phiên tập trung trồng thêm cây trong vườn của bạn.'**
   String get welcomeStepBody;
 
   /// No description provided for @practiceWriting.
@@ -1745,6 +1745,150 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Lưu từ mới, ôn đúng lúc sắp quên.'**
   String get practiceCardsBody;
+
+  /// No description provided for @practiceGarden.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vườn và tập trung'**
+  String get practiceGarden;
+
+  /// No description provided for @practiceGardenBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn từ và hẹn giờ tập trung để trồng cây.'**
+  String get practiceGardenBody;
+
+  /// No description provided for @gardenStepTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn từ mỗi ngày,'**
+  String get gardenStepTitle;
+
+  /// No description provided for @gardenStepAccent.
+  ///
+  /// In vi, this message translates to:
+  /// **'vườn xanh dần'**
+  String get gardenStepAccent;
+
+  /// No description provided for @gardenStepBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi từ mới hoặc đến hạn bạn ôn là một giọt nước, tối đa 5 giọt mỗi ngày. Tưới đủ 3 ngày là một cây mọc trong vườn.'**
+  String get gardenStepBody;
+
+  /// No description provided for @gardenDemoCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'CÂY HỌC ĐANG LỚN'**
+  String get gardenDemoCaps;
+
+  /// No description provided for @gardenDemoSpecies.
+  ///
+  /// In vi, this message translates to:
+  /// **'{species} · Đổi'**
+  String gardenDemoSpecies(String species);
+
+  /// No description provided for @gardenDemoDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày {n}'**
+  String gardenDemoDay(int n);
+
+  /// No description provided for @gardenDemoNextDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đủ 5 giọt hôm nay · sang ngày mới'**
+  String get gardenDemoNextDay;
+
+  /// No description provided for @gardenDemoPlanted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Một cây {species} đã mọc trong vườn'**
+  String gardenDemoPlanted(String species);
+
+  /// No description provided for @gardenDemoCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'30 loài cây từ Việt Nam và khắp nơi, mở khoá dần khi bạn học đều.'**
+  String get gardenDemoCollection;
+
+  /// No description provided for @focusStepTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt máy xuống,'**
+  String get focusStepTitle;
+
+  /// No description provided for @focusStepAccent.
+  ///
+  /// In vi, this message translates to:
+  /// **'cây lớn dần'**
+  String get focusStepAccent;
+
+  /// No description provided for @focusStepBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hẹn giờ khi học, viết hay làm việc. Cây lớn theo thời gian bạn tập trung, và héo nếu bạn rời Hifive quá 30 giây.'**
+  String get focusStepBody;
+
+  /// No description provided for @focusDemoTry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu thử'**
+  String get focusDemoTry;
+
+  /// No description provided for @focusDemoLeave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử rời ứng dụng'**
+  String get focusDemoLeave;
+
+  /// No description provided for @focusDemoReturn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại Hifive'**
+  String get focusDemoReturn;
+
+  /// No description provided for @focusDemoWarnBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại Hifive trong {seconds} giây để giữ cây.'**
+  String focusDemoWarnBody(int seconds);
+
+  /// No description provided for @focusDemoAgain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get focusDemoAgain;
+
+  /// No description provided for @focusFactShieldTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự chặn ứng dụng khác'**
+  String get focusFactShieldTitle;
+
+  /// No description provided for @focusFactShieldBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm Bắt đầu là các ứng dụng gây xao nhãng bị chặn đến hết phiên.'**
+  String get focusFactShieldBody;
+
+  /// No description provided for @focusFactLockTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoá màn hình vẫn tính'**
+  String get focusFactLockTitle;
+
+  /// No description provided for @focusFactLockBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ mở ứng dụng khác mới làm cây héo.'**
+  String get focusFactLockBody;
+
+  /// No description provided for @preparingSeeding.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gieo hạt cho cây học đầu tiên'**
+  String get preparingSeeding;
 
   /// No description provided for @tapForNextWay.
   ///

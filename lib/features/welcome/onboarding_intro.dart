@@ -89,9 +89,9 @@ class _Practice {
   const _Practice(this.color, this.icon, this.title, this.line, this.preview);
 }
 
-enum _Preview { writing, grammar, chat, cards }
+enum _Preview { writing, grammar, chat, cards, garden }
 
-const _practiceCount = 4;
+const _practiceCount = 5;
 
 List<_Practice> _practicesOf(AppLocalizations t) => [
   _Practice(
@@ -122,9 +122,16 @@ List<_Practice> _practicesOf(AppLocalizations t) => [
     t.practiceCardsBody,
     _Preview.cards,
   ),
+  _Practice(
+    D.green,
+    CupertinoIcons.tree,
+    t.practiceGarden,
+    t.practiceGardenBody,
+    _Preview.garden,
+  ),
 ];
 
-/// The four ways to practise as a stack that deals the front card away
+/// The ways to practise, and the garden, as a stack that deals the front card away
 /// every few seconds, or on a tap.
 class _PracticeStack extends StatefulWidget {
   final bool active;
@@ -403,6 +410,10 @@ class _PracticePreview extends StatelessWidget {
             child: _bar(120, alpha: .95, height: 26),
           ),
         ],
+      ),
+      // The study tree on its sunlit patch, drawn still.
+      _Preview.garden => const Center(
+        child: TreeArt(species: defaultSpecies, size: 70, animate: false),
       ),
       _Preview.cards => Row(
         children: [
