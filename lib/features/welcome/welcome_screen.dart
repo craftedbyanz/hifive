@@ -16,11 +16,13 @@ import 'welcome_motion.dart';
 
 part 'welcome_scenes.dart';
 
-/// Whether sign-in offers email and password. Paused on 16 November 2026,
-/// so only Apple and Google show; build with
-/// `--dart-define=HIFIVE_EMAIL_SIGN_IN=true` to bring it back, as App
-/// Review's test account needs.
-const emailSignInEnabled = bool.fromEnvironment('HIFIVE_EMAIL_SIGN_IN');
+/// Whether sign-in offers email and password under Apple and Google. On by
+/// default: App Review's test account signs in with email. Build with
+/// `--dart-define=HIFIVE_EMAIL_SIGN_IN=false` to hide it.
+const emailSignInEnabled = bool.fromEnvironment(
+  'HIFIVE_EMAIL_SIGN_IN',
+  defaultValue: true,
+);
 
 /// The first screen when signed out: short demos of what Hifive does play
 /// one after another above the sign-in buttons, which never move.

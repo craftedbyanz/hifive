@@ -45,8 +45,8 @@ void main() {
     for (final key in ['sign-in-apple', 'sign-in-google']) {
       expect(find.byKey(ValueKey(key)), findsOneWidget);
     }
-    // Email sign-in is paused unless the build turns it on.
-    expect(find.byKey(const ValueKey('sign-in-email-open')), findsNothing);
+    // Email sign-in stays for App Review's test account.
+    expect(find.byKey(const ValueKey('sign-in-email-open')), findsOneWidget);
     expect(
       find.descendant(
         of: find.byKey(const ValueKey('sign-in-google')),
@@ -104,6 +104,16 @@ void main() {
     await tester.pumpAndSettle();
     expect(s.user?.method, AuthMethod.google);
     expect(find.byType(HomeScreen), findsOneWidget);
+  });
+
+  testWidgets('a build can hide email sign-in', (tester) async {
+    await mount(
+      tester,
+      fresh(auth: MemoryAuthService()),
+      const WelcomeScreen(emailSignIn: false),
+    );
+    expect(find.byKey(const ValueKey('sign-in-apple')), findsOneWidget);
+    expect(find.byKey(const ValueKey('sign-in-email-open')), findsNothing);
   });
 
   testWidgets('turned on, email sign-in opens its sheet and signs in', (
