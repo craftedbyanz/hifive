@@ -63,9 +63,11 @@ private struct LockScreenView: View {
           LinearGradient(
             colors: [Color(red: 0.93, green: 1, blue: 0.86), Color(red: 0.80, green: 0.93, blue: 0.62)],
             startPoint: .top, endPoint: .bottom))
-        PlantImage(version: state.plant).padding(4)
+        // The picture is round and fills the circle, edge to edge.
+        PlantImage(version: state.plant)
       }
       .frame(width: 76, height: 76)
+      .clipShape(Circle())
       VStack(alignment: .leading, spacing: 6) {
         TimerText(state: state)
           .font(.system(size: 34, weight: .semibold).monospacedDigit())

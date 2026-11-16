@@ -19,8 +19,10 @@ part 'garden_weather.dart';
 /// Whether [id] has a drawing. Every id in `species` has one.
 bool hasTreeArt(String id) => _arts.containsKey(id);
 
-/// A PNG of species [id] at [growth] on its sunlit patch, [size] pixels a
-/// side, for the lock screen's Live Activity. Null if encoding fails.
+/// A round PNG of species [id] at [growth] on its sunlit patch, [size]
+/// pixels across, for the lock screen's Live Activity; the corners stay
+/// clear, so the grass never shows as a square under the round frame. Null
+/// if encoding fails.
 Future<Uint8List?> plantPicture(
   String id,
   double growth, {
@@ -29,7 +31,9 @@ Future<Uint8List?> plantPicture(
   final recorder = ui.PictureRecorder();
   // Young plants are small: frame them closer so they fill the circle.
   final zoom = growth < .14 ? 2.1 : (growth < .45 ? 1.45 : 1.0);
+  final side = size.toDouble();
   final canvas = Canvas(recorder)
+    ..clipPath(Path()..addOval(Rect.fromLTWH(0, 0, side, side)))
     ..scale(size / 200)
     ..translate(100, 150)
     ..scale(zoom)

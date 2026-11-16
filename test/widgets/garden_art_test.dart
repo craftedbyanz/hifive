@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,6 +16,28 @@ Widget _frame(Widget child, {bool motion = false}) => AmbientMotion(
 );
 
 void main() {
+  testWidgets('the lock screen picture is round, with clear corners', (
+    tester,
+  ) async {
+    // A sprout is framed closest, so its grass reaches the picture's edges.
+    for (final growth in const [.05, .3, 1.0]) {
+      final pixels = await tester.runAsync(() async {
+        final png = await plantPicture(defaultSpecies, growth, size: 120);
+        final codec = await ui.instantiateImageCodec(png!);
+        final image = (await codec.getNextFrame()).image;
+        final data = await image.toByteData();
+        image.dispose();
+        return data!;
+      });
+      int alpha(int x, int y) => pixels!.getUint8((y * 120 + x) * 4 + 3);
+      for (final (x, y) in const [(2, 2), (117, 2), (2, 117), (117, 117)]) {
+        expect(alpha(x, y), 0, reason: 'corner $x,$y at growth $growth');
+      }
+      // Straight down from the centre, just inside the circle.
+      expect(alpha(60, 112), greaterThan(0), reason: 'growth $growth');
+    }
+  });
+
   test('every species has a drawing', () {
     expect(species.where((s) => !hasTreeArt(s.id)), isEmpty);
   });
