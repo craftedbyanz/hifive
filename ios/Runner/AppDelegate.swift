@@ -195,20 +195,17 @@ import UserNotifications
 /// first session asks for Screen Time access. Needs iOS 16 and the Family
 /// Controls entitlement; without either a session runs unblocked.
 ///
-/// Flutter draws its frames on the main thread, so the store's work (it
-/// talks to a system daemon) runs on a queue of its own.
+/// `start` answers "on" only once the store has kept the shield, and
+/// otherwise why not ("declined", "denied", or a `failed` error with the
+/// system's reason), so the app can say so instead of failing silently.
 final class FocusShield {
   static let shared = FocusShield()
-  private let queue = DispatchQueue(label: "hifive.shield", qos: .userInitiated)
   /// The `ManagedSettingsStore`, made once (iOS 16 only).
   private var storeBox: AnyObject?
 
   func attach(_ channel: FlutterMethodChannel) {
     // A session never outlives the app, so no shield may either.
-    if #available(iOS 16, *) {
-      let store = self.store
-      queue.async { store.clearAllSettings() }
-    }
+    if #available(iOS 16, *) { store.clearAllSettings() }
     channel.setMethodCallHandler { [weak self] call, result in
       guard let self else { return result(nil) }
       guard #available(iOS 16, *) else { return result(call.method == "start" ? "unavailable" : nil) }
@@ -221,25 +218,23 @@ final class FocusShield {
             do {
               try await center.requestAuthorization(for: .individual)
             } catch {
-              return result(center.authorizationStatus == .denied ? "declined" : "unavailable")
+              if center.authorizationStatus == .denied { return result("declined") }
+              return result(FlutterError(code: "failed", message: "\(error)", details: nil))
             }
             guard center.authorizationStatus == .approved else { return result("declined") }
           }
+          // On the main thread, as Apple's samples write the store.
           let store = self.store
-          self.queue.async {
-            // Every category covers every app; the phone keeps its
-            // essentials (Phone, Settings, emergency) open by itself.
-            store.shield.applicationCategories = .all()
-            store.shield.webDomainCategories = .all()
-            DispatchQueue.main.async { result("on") }
+          store.shield.applicationCategories = .all()
+          store.shield.webDomainCategories = .all()
+          guard store.shield.applicationCategories != nil else {
+            return result(FlutterError(code: "failed", message: "the shield was not kept", details: nil))
           }
+          result("on")
         }
       case "stop":
-        let store = self.store
-        queue.async {
-          store.clearAllSettings()
-          DispatchQueue.main.async { result(nil) }
-        }
+        self.store.clearAllSettings()
+        result(nil)
       default:
         result(FlutterMethodNotImplemented)
       }

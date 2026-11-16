@@ -126,6 +126,9 @@ class _FocusScreenState extends State<FocusScreen>
   /// True while Bắt đầu waits for the shield, so a second tap does nothing.
   var _starting = false;
 
+  /// Whether other apps are blocked for this session, which it says.
+  var _shielded = false;
+
   /// Blocks other apps (asking for Screen Time access the first time),
   /// then starts the session.
   Future<void> _start() async {
@@ -134,14 +137,23 @@ class _FocusScreenState extends State<FocusScreen>
     final shield = await FocusShield.start();
     _starting = false;
     if (!mounted || _phase == _Phase.running) {
-      if (shield == ShieldResult.on && !mounted) unawaited(FocusShield.stop());
+      if (shield.result == ShieldResult.on && !mounted) {
+        unawaited(FocusShield.stop());
+      }
       return;
     }
-    if (shield == ShieldResult.declined) {
-      toast(context, context.t.focusShieldDenied);
+    // A session starts either way; the learner hears why nothing is blocked.
+    final t = context.t;
+    switch (shield.result) {
+      case ShieldResult.declined || ShieldResult.denied:
+        toast(context, t.focusShieldDenied);
+      case ShieldResult.failed:
+        toast(context, t.focusShieldFailed(shield.reason ?? ''));
+      case ShieldResult.on || ShieldResult.unavailable:
     }
     final state = AppScope.read(context);
     setState(() {
+      _shielded = shield.result == ShieldResult.on;
       _phase = _Phase.running;
       _startedAt = widget.clock();
       _recordStart = state.now();
@@ -441,6 +453,7 @@ class _FocusScreenState extends State<FocusScreen>
                     children: [
                       FocusTimer(shown),
                       FocusNote(t.focusRunningHint),
+                      if (_shielded) FocusShieldBadge(t.focusShieldOn),
                     ],
                   ),
                   _Phase.done => Column(

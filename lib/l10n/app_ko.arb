@@ -734,6 +734,8 @@
   "timerSizeYoung": "25분 미만이면 어린 나무만 자라요",
   "timerSizeAncient": "90분 이상: 희귀한 고목",
   "focusShieldDenied": "앱을 차단하려면 설정에서 스크린 타임 접근을 허용하세요.",
+  "focusShieldOn": "다른 앱 차단 중",
+  "focusShieldFailed": "다른 앱을 차단하지 못했어요: {reason}",
   "focusChangeTree": "나무 바꾸기",
   "focusMinutes": "{count}분",
   "focusRunningHint": "휴대폰을 내려놓으세요. 집중하는 동안 나무가 자라요.",

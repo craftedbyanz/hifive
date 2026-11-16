@@ -734,6 +734,8 @@
   "timerSizeYoung": "少于 25 分钟只会长出小苗",
   "timerSizeAncient": "90 分钟以上：稀有古树",
   "focusShieldDenied": "请在设置中允许“屏幕使用时间”访问以屏蔽应用。",
+  "focusShieldOn": "已屏蔽其他应用",
+  "focusShieldFailed": "未能屏蔽其他应用：{reason}",
   "focusChangeTree": "换一棵树",
   "focusMinutes": "{count} 分钟",
   "focusRunningHint": "放下手机。你专注多久，树就长多久。",

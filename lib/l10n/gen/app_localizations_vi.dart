@@ -2388,6 +2388,14 @@ class AppLocalizationsVi extends AppLocalizations {
       'Hãy cho phép quyền Thời gian sử dụng trong Cài đặt để chặn ứng dụng.';
 
   @override
+  String get focusShieldOn => 'Đang chặn ứng dụng khác';
+
+  @override
+  String focusShieldFailed(String reason) {
+    return 'Chưa chặn được ứng dụng khác: $reason';
+  }
+
+  @override
   String get focusChangeTree => 'Đổi cây';
 
   @override

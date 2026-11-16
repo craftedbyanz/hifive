@@ -4506,6 +4506,18 @@ abstract class AppLocalizations {
   /// **'Hãy cho phép quyền Thời gian sử dụng trong Cài đặt để chặn ứng dụng.'**
   String get focusShieldDenied;
 
+  /// No description provided for @focusShieldOn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chặn ứng dụng khác'**
+  String get focusShieldOn;
+
+  /// No description provided for @focusShieldFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa chặn được ứng dụng khác: {reason}'**
+  String focusShieldFailed(String reason);
+
   /// No description provided for @focusChangeTree.
   ///
   /// In vi, this message translates to:

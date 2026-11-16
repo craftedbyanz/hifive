@@ -1046,6 +1046,15 @@
   "timerSizeYoung": "Dưới 25 phút chỉ mọc cây non",
   "timerSizeAncient": "Từ 90 phút: cây cổ thụ hiếm",
   "focusShieldDenied": "Hãy cho phép quyền Thời gian sử dụng trong Cài đặt để chặn ứng dụng.",
+  "focusShieldOn": "Đang chặn ứng dụng khác",
+  "focusShieldFailed": "Chưa chặn được ứng dụng khác: {reason}",
+  "@focusShieldFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "focusChangeTree": "Đổi cây",
   "focusMinutes": "{count} phút",
   "@focusMinutes": {

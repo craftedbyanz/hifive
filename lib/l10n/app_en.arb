@@ -734,6 +734,8 @@
   "timerSizeYoung": "Under 25 minutes grows only a young plant",
   "timerSizeAncient": "90 minutes or more: a rare ancient tree",
   "focusShieldDenied": "Allow Screen Time access in Settings to block apps.",
+  "focusShieldOn": "Other apps are blocked",
+  "focusShieldFailed": "Couldn't block other apps: {reason}",
   "focusChangeTree": "Change tree",
   "focusMinutes": "{count} min",
   "focusRunningHint": "Put your phone down. Your tree grows while you focus.",

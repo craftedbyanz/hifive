@@ -10,12 +10,18 @@ import '../../helpers.dart';
 class _FakeShield {
   var answer = 'on';
   var up = false;
+
+  /// When set, `start` fails with this reason, as an iOS error does.
+  String? failure;
   final calls = <String>[];
 
   Future<Object?> handle(MethodCall call) async {
     calls.add(call.method);
     switch (call.method) {
       case 'start':
+        if (failure != null) {
+          throw PlatformException(code: 'failed', message: failure);
+        }
         up = answer == 'on';
         return answer;
       case 'stop':
@@ -61,6 +67,7 @@ void main() {
     expect(shield.calls, ['start']);
     expect(shield.up, isTrue);
     expect(find.byKey(const ValueKey('focus-cancel')), findsOneWidget);
+    expect(find.text('Đang chặn ứng dụng khác'), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey('focus-cancel')));
     await tester.pump();
@@ -101,7 +108,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(seconds: 4));
   });
 
-  testWidgets('access refused before starts quietly, unblocked', (
+  testWidgets('access refused before still says how to allow it', (
     tester,
   ) async {
     shield.answer = 'denied';
@@ -109,7 +116,38 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('focus-start')));
     await tester.pump();
     expect(find.byKey(const ValueKey('focus-cancel')), findsOneWidget);
-    expect(find.textContaining('Thời gian sử dụng'), findsNothing);
+    expect(find.textContaining('Thời gian sử dụng'), findsOneWidget);
+    expect(find.byKey(const ValueKey('focus-shielded')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('focus-cancel')));
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+  });
+
+  testWidgets('an error from the phone is shown with its reason', (
+    tester,
+  ) async {
+    shield.failure = 'FamilyControlsError.restricted';
+    await openFocus(tester);
+    await tester.tap(find.byKey(const ValueKey('focus-start')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('focus-cancel')), findsOneWidget);
+    expect(
+      find.text('Chưa chặn được ứng dụng khác: FamilyControlsError.restricted'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('focus-shielded')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('focus-cancel')));
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+  });
+
+  testWidgets('without blocking (Android) nothing is said about it', (
+    tester,
+  ) async {
+    shield.answer = 'unavailable';
+    await openFocus(tester);
+    await tester.tap(find.byKey(const ValueKey('focus-start')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('focus-shielded')), findsNothing);
+    expect(find.textContaining('chặn'), findsNothing);
     await tester.tap(find.byKey(const ValueKey('focus-cancel')));
     await tester.pump();
   });

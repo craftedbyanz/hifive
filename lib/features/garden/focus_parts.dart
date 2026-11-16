@@ -346,6 +346,40 @@ class FocusNote extends StatelessWidget {
   );
 }
 
+/// A frosted pill under the running timer saying other apps are blocked.
+class FocusShieldBadge extends StatelessWidget {
+  final String text;
+  const FocusShieldBadge(this.text, {super.key});
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: 14),
+    child: Container(
+      key: const ValueKey('focus-shielded'),
+      padding: const EdgeInsets.fromLTRB(10, 6, 12, 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: .16),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            CupertinoIcons.shield_lefthalf_fill,
+            size: 15,
+            color: Colors.white,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: D.text(13, weight: FontWeight.w600, color: Colors.white),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 class FocusButton extends StatelessWidget {
   final String id, label;
   final VoidCallback onTap;

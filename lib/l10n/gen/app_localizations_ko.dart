@@ -2331,6 +2331,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get focusShieldDenied => '앱을 차단하려면 설정에서 스크린 타임 접근을 허용하세요.';
 
   @override
+  String get focusShieldOn => '다른 앱 차단 중';
+
+  @override
+  String focusShieldFailed(String reason) {
+    return '다른 앱을 차단하지 못했어요: $reason';
+  }
+
+  @override
   String get focusChangeTree => '나무 바꾸기';
 
   @override

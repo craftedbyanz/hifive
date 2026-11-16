@@ -2313,6 +2313,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get focusShieldDenied => '请在设置中允许“屏幕使用时间”访问以屏蔽应用。';
 
   @override
+  String get focusShieldOn => '已屏蔽其他应用';
+
+  @override
+  String focusShieldFailed(String reason) {
+    return '未能屏蔽其他应用：$reason';
+  }
+
+  @override
   String get focusChangeTree => '换一棵树';
 
   @override

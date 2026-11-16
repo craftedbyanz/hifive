@@ -2459,6 +2459,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Allow Screen Time access in Settings to block apps.';
 
   @override
+  String get focusShieldOn => 'Other apps are blocked';
+
+  @override
+  String focusShieldFailed(String reason) {
+    return 'Couldn\'t block other apps: $reason';
+  }
+
+  @override
   String get focusChangeTree => 'Change tree';
 
   @override
