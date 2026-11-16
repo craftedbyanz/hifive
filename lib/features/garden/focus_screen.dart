@@ -123,7 +123,23 @@ class _FocusScreenState extends State<FocusScreen>
     super.dispose();
   }
 
-  void _start() {
+  /// True while Bắt đầu waits for the shield, so a second tap does nothing.
+  var _starting = false;
+
+  /// Blocks other apps (asking for Screen Time access the first time),
+  /// then starts the session.
+  Future<void> _start() async {
+    if (_starting || _phase == _Phase.running) return;
+    _starting = true;
+    final shield = await FocusShield.start();
+    _starting = false;
+    if (!mounted || _phase == _Phase.running) {
+      if (shield == ShieldResult.on && !mounted) unawaited(FocusShield.stop());
+      return;
+    }
+    if (shield == ShieldResult.declined) {
+      toast(context, context.t.focusShieldDenied);
+    }
     final state = AppScope.read(context);
     setState(() {
       _phase = _Phase.running;
@@ -135,17 +151,19 @@ class _FocusScreenState extends State<FocusScreen>
       _bloom.value = 0;
     });
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
-    ScreenLock.prepareWarning();
-    FocusShield.start();
+    unawaited(ScreenLock.prepareWarning());
     final tag = state.tagById(_tag);
-    FocusLive.start(
-      start: _startedAt!,
-      end: _stopwatch ? null : _startedAt!.add(_planned),
-      tag: tagName(context.t, tag),
-      color: tagColor(tag),
+    unawaited(
+      FocusLive.start(
+        start: _startedAt!,
+        end: _stopwatch ? null : _startedAt!.add(_planned),
+        tag: tagName(context.t, tag),
+        color: tagColor(tag),
+      ),
     );
+    // The lock screen's first picture waits for the first tick, a second
+    // in, so drawing it doesn't share a frame with the screen changing.
     _plantStep = -1;
-    _showPlant();
   }
 
   /// Sends the lock screen a new picture of the plant when it has grown a
@@ -322,7 +340,7 @@ class _FocusScreenState extends State<FocusScreen>
     final choice = await showTimerSheet(context, _minutes);
     if (choice == null || !mounted) return;
     setState(() => _minutes = choice.minutes);
-    if (choice.start) _start();
+    if (choice.start) unawaited(_start());
   }
 
   Future<void> _editTitle() async {
@@ -451,11 +469,6 @@ class _FocusScreenState extends State<FocusScreen>
                 const Spacer(),
                 ...switch (_phase) {
                   _Phase.setup => [
-                    // Blocking where it is decided, above Bắt đầu, not only
-                    // inside the timer sheet, where learners missed it.
-                    const ShieldControl(
-                      padding: EdgeInsets.fromLTRB(4, 0, 4, 14),
-                    ),
                     FocusButton('focus-start', t.focusStart, _start),
                   ],
                   _Phase.running => [

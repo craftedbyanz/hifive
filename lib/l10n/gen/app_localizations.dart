@@ -4356,48 +4356,6 @@ abstract class AppLocalizations {
   /// **'Từ 90 phút: cây cổ thụ hiếm'**
   String get timerSizeAncient;
 
-  /// No description provided for @focusShieldTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chặn ứng dụng gây xao nhãng'**
-  String get focusShieldTitle;
-
-  /// No description provided for @focusShieldOff.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đang tắt'**
-  String get focusShieldOff;
-
-  /// No description provided for @focusShieldPicked.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã chọn {count} mục · Đổi'**
-  String focusShieldPicked(int count);
-
-  /// No description provided for @focusShieldNone.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chưa chọn ứng dụng · Chọn'**
-  String get focusShieldNone;
-
-  /// No description provided for @focusShieldPickerTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chặn khi tập trung'**
-  String get focusShieldPickerTitle;
-
-  /// No description provided for @focusShieldDone.
-  ///
-  /// In vi, this message translates to:
-  /// **'Xong'**
-  String get focusShieldDone;
-
-  /// No description provided for @focusShieldUnavailable.
-  ///
-  /// In vi, this message translates to:
-  /// **'Bản cài này chưa được Apple cho phép chặn ứng dụng.'**
-  String get focusShieldUnavailable;
-
   /// No description provided for @focusShieldDenied.
   ///
   /// In vi, this message translates to:

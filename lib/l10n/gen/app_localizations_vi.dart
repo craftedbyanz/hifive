@@ -2300,30 +2300,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get timerSizeAncient => 'Từ 90 phút: cây cổ thụ hiếm';
 
   @override
-  String get focusShieldTitle => 'Chặn ứng dụng gây xao nhãng';
-
-  @override
-  String get focusShieldOff => 'Đang tắt';
-
-  @override
-  String focusShieldPicked(int count) {
-    return 'Đã chọn $count mục · Đổi';
-  }
-
-  @override
-  String get focusShieldNone => 'Chưa chọn ứng dụng · Chọn';
-
-  @override
-  String get focusShieldPickerTitle => 'Chặn khi tập trung';
-
-  @override
-  String get focusShieldDone => 'Xong';
-
-  @override
-  String get focusShieldUnavailable =>
-      'Bản cài này chưa được Apple cho phép chặn ứng dụng.';
-
-  @override
   String get focusShieldDenied =>
       'Hãy cho phép quyền Thời gian sử dụng trong Cài đặt để chặn ứng dụng.';
 

@@ -5,32 +5,24 @@ import 'package:hifive/features/garden/garden.dart';
 
 import '../../helpers.dart';
 
-/// A stand-in for the iOS side of the `hifive/shield` channel.
+/// A stand-in for the iOS side of the `hifive/shield` channel: `start`
+/// answers [answer] and the shield is up until `stop`.
 class _FakeShield {
-  var available = true, enabled = false, picked = 3;
-  String? enableError;
+  var answer = 'on';
+  var up = false;
   final calls = <String>[];
-
-  Map<String, Object?> get status => {
-    'available': available,
-    'enabled': enabled,
-    'picked': picked,
-  };
 
   Future<Object?> handle(MethodCall call) async {
     calls.add(call.method);
     switch (call.method) {
-      case 'enable':
-        final on = (call.arguments as Map)['on'] == true;
-        if (on && enableError != null) {
-          throw PlatformException(code: enableError!);
-        }
-        enabled = on;
-        return status;
-      case 'status' || 'pick':
-        return status;
-      default:
+      case 'start':
+        up = answer == 'on';
+        return answer;
+      case 'stop':
+        up = false;
         return null;
+      default:
+        throw MissingPluginException();
     }
   }
 }
@@ -52,78 +44,83 @@ void main() {
         .setMockMethodCallHandler(channel, null),
   );
 
-  Future<void> openTimer(WidgetTester tester) async {
+  Future<void> openFocus(WidgetTester tester) async {
     await mount(tester, fresh(), FocusScreen(clock: () => clock));
-    await tester.tap(find.byKey(const ValueKey('focus-timer-button')));
     await tester.pumpAndSettle();
   }
 
-  testWidgets('the timer sheet offers app blocking where the phone can', (
+  testWidgets('there is no switch: Bắt đầu blocks every other app', (
     tester,
   ) async {
-    await openTimer(tester);
-    // The sheet's own row is the last one; the focus screen has one too.
-    expect(find.text('Chặn ứng dụng gây xao nhãng'), findsNWidgets(2));
-    expect(find.text('Đang tắt').last, findsOneWidget);
-
-    await tester.tap(find.byKey(const ValueKey('shield-switch')).last);
-    await tester.pumpAndSettle();
-    expect(shield.calls, contains('enable'));
-    expect(find.text('Đã chọn 3 mục · Đổi'), findsOneWidget);
-  });
-
-  testWidgets('no switch where blocking is not possible', (tester) async {
-    shield.available = false;
-    await openTimer(tester);
+    await openFocus(tester);
+    expect(find.text('Chặn ứng dụng gây xao nhãng'), findsNothing);
     expect(find.byKey(const ValueKey('shield-switch')), findsNothing);
-  });
 
-  testWidgets('a build without the entitlement says why', (tester) async {
-    shield.enableError = 'unavailable';
-    await openTimer(tester);
-    await tester.tap(find.byKey(const ValueKey('shield-switch')).last);
+    await tester.tap(find.byKey(const ValueKey('focus-start')));
     await tester.pump();
-    expect(
-      find.text('Bản cài này chưa được Apple cho phép chặn ứng dụng.'),
-      findsOneWidget,
-    );
-    expect(find.text('Đang tắt'), findsWidgets);
-    await tester.pumpAndSettle(const Duration(seconds: 4));
-  });
-
-  testWidgets('a session shields apps while it runs and lifts the shield', (
-    tester,
-  ) async {
-    shield.enabled = true;
-    await openTimer(tester);
-    await tester.tap(find.byKey(const ValueKey('timer-start')));
-    await tester.pumpAndSettle();
-    expect(shield.calls.last, 'start');
+    expect(shield.calls, ['start']);
+    expect(shield.up, isTrue);
+    expect(find.byKey(const ValueKey('focus-cancel')), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey('focus-cancel')));
     await tester.pump();
-    expect(
-      shield.calls.lastIndexOf('stop'),
-      greaterThan(shield.calls.lastIndexOf('start')),
-    );
+    expect(shield.calls, ['start', 'stop']);
+    expect(shield.up, isFalse);
   });
 
-  testWidgets(
-    'blocking is switched on right above Bắt đầu, and shields on start',
-    (tester) async {
-      await mount(tester, fresh(), FocusScreen(clock: () => clock));
-      await tester.pumpAndSettle();
-      final row = tester.getRect(find.byKey(const ValueKey('shield-switch')));
-      final start = tester.getRect(find.byKey(const ValueKey('focus-start')));
-      expect(row.bottom, lessThan(start.top));
-      await tester.tap(find.byKey(const ValueKey('shield-switch')));
-      await tester.pumpAndSettle();
-      expect(shield.enabled, isTrue);
-      await tester.tap(find.byKey(const ValueKey('focus-start')));
-      await tester.pump();
-      expect(shield.calls.last, 'start');
-      await tester.tap(find.byKey(const ValueKey('focus-cancel')));
-      await tester.pump();
-    },
-  );
+  testWidgets('the timer sheet has no switch and starts the same way', (
+    tester,
+  ) async {
+    await openFocus(tester);
+    await tester.tap(find.byKey(const ValueKey('focus-timer-button')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('shield-switch')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('timer-start')));
+    await tester.pumpAndSettle();
+    expect(shield.up, isTrue);
+    await tester.tap(find.byKey(const ValueKey('focus-cancel')));
+    await tester.pump();
+    expect(shield.up, isFalse);
+  });
+
+  testWidgets('declining Screen Time still starts, and says how to allow it', (
+    tester,
+  ) async {
+    shield.answer = 'declined';
+    await openFocus(tester);
+    await tester.tap(find.byKey(const ValueKey('focus-start')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('focus-cancel')), findsOneWidget);
+    expect(
+      find.text(
+        'Hãy cho phép quyền Thời gian sử dụng trong Cài đặt để chặn ứng dụng.',
+      ),
+      findsOneWidget,
+    );
+    await tester.tap(find.byKey(const ValueKey('focus-cancel')));
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+  });
+
+  testWidgets('access refused before starts quietly, unblocked', (
+    tester,
+  ) async {
+    shield.answer = 'denied';
+    await openFocus(tester);
+    await tester.tap(find.byKey(const ValueKey('focus-start')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('focus-cancel')), findsOneWidget);
+    expect(find.textContaining('Thời gian sử dụng'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('focus-cancel')));
+    await tester.pump();
+  });
+
+  testWidgets('a second tap while waiting starts one session', (tester) async {
+    await openFocus(tester);
+    await tester.tap(find.byKey(const ValueKey('focus-start')));
+    await tester.tap(find.byKey(const ValueKey('focus-start')));
+    await tester.pump();
+    expect(shield.calls.where((c) => c == 'start'), hasLength(1));
+    await tester.tap(find.byKey(const ValueKey('focus-cancel')));
+    await tester.pump();
+  });
 }

@@ -2371,30 +2371,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timerSizeAncient => '90 minutes or more: a rare ancient tree';
 
   @override
-  String get focusShieldTitle => 'Block distracting apps';
-
-  @override
-  String get focusShieldOff => 'Off';
-
-  @override
-  String focusShieldPicked(int count) {
-    return '$count chosen · Change';
-  }
-
-  @override
-  String get focusShieldNone => 'No apps chosen · Choose';
-
-  @override
-  String get focusShieldPickerTitle => 'Blocked while focusing';
-
-  @override
-  String get focusShieldDone => 'Done';
-
-  @override
-  String get focusShieldUnavailable =>
-      'This build isn\'t allowed by Apple to block apps yet.';
-
-  @override
   String get focusShieldDenied =>
       'Allow Screen Time access in Settings to block apps.';
 

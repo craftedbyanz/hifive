@@ -993,20 +993,6 @@
   "focusDoneAncient": "Một cây cổ thụ hiếm! Hơn 90 phút tập trung làm cây toả sáng.",
   "timerSizeYoung": "Dưới 25 phút chỉ mọc cây non",
   "timerSizeAncient": "Từ 90 phút: cây cổ thụ hiếm",
-  "focusShieldTitle": "Chặn ứng dụng gây xao nhãng",
-  "focusShieldOff": "Đang tắt",
-  "focusShieldPicked": "Đã chọn {count} mục · Đổi",
-  "@focusShieldPicked": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "focusShieldNone": "Chưa chọn ứng dụng · Chọn",
-  "focusShieldPickerTitle": "Chặn khi tập trung",
-  "focusShieldDone": "Xong",
-  "focusShieldUnavailable": "Bản cài này chưa được Apple cho phép chặn ứng dụng.",
   "focusShieldDenied": "Hãy cho phép quyền Thời gian sử dụng trong Cài đặt để chặn ứng dụng.",
   "focusChangeTree": "Đổi cây",
   "focusMinutes": "{count} phút",

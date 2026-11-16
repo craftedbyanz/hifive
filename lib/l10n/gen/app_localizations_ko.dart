@@ -2246,29 +2246,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get timerSizeAncient => '90분 이상: 희귀한 고목';
 
   @override
-  String get focusShieldTitle => '방해되는 앱 차단';
-
-  @override
-  String get focusShieldOff => '꺼짐';
-
-  @override
-  String focusShieldPicked(int count) {
-    return '$count개 선택됨 · 변경';
-  }
-
-  @override
-  String get focusShieldNone => '선택한 앱 없음 · 선택';
-
-  @override
-  String get focusShieldPickerTitle => '집중하는 동안 차단';
-
-  @override
-  String get focusShieldDone => '완료';
-
-  @override
-  String get focusShieldUnavailable => '이 빌드는 아직 Apple의 앱 차단 허가를 받지 않았어요.';
-
-  @override
   String get focusShieldDenied => '앱을 차단하려면 설정에서 스크린 타임 접근을 허용하세요.';
 
   @override

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
 import '../../core/design/design.dart';
-import '../../core/services/focus_shield.dart';
 import '../../domain/garden/garden.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
@@ -139,10 +138,7 @@ class _TimerSheetState extends State<_TimerSheet> {
                           minutes: _minutes,
                           onChanged: (m) => setState(() => _minutes = m),
                         ),
-                        const ShieldControl(
-                          padding: EdgeInsets.symmetric(vertical: 18),
-                          fallback: SizedBox(height: 26),
-                        ),
+                        const SizedBox(height: 26),
                         PressFade(
                           key: const ValueKey('timer-start'),
                           onTap: () => _close(start: true),
@@ -170,136 +166,6 @@ class _TimerSheetState extends State<_TimerSheet> {
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// App blocking for focus sessions, where a session is set up: on the focus
-/// screen above Bắt đầu, and in the timer sheet. Reads the phone's status,
-/// turns blocking on (asking for Screen Time access and opening Apple's app
-/// picker the first time) and changes the chosen apps. Shows [fallback] on a
-/// phone without it (before iOS 16, Android, tests).
-class ShieldControl extends StatefulWidget {
-  final EdgeInsets padding;
-  final Widget fallback;
-  const ShieldControl({
-    super.key,
-    this.padding = EdgeInsets.zero,
-    this.fallback = const SizedBox.shrink(),
-  });
-
-  @override
-  State<ShieldControl> createState() => _ShieldControlState();
-}
-
-class _ShieldControlState extends State<ShieldControl> {
-  ShieldStatus _shield = FocusShield.off;
-
-  @override
-  void initState() {
-    super.initState();
-    FocusShield.status().then((s) {
-      if (mounted) setState(() => _shield = s);
-    });
-  }
-
-  Future<void> _switch(bool on) async {
-    final t = context.t;
-    final (status, error) = await FocusShield.setEnabled(
-      on,
-      title: t.focusShieldPickerTitle,
-      done: t.focusShieldDone,
-    );
-    if (!mounted) return;
-    setState(() => _shield = status);
-    if (error != null) {
-      toast(
-        context,
-        error == ShieldError.denied
-            ? t.focusShieldDenied
-            : t.focusShieldUnavailable,
-      );
-    }
-  }
-
-  Future<void> _pick() async {
-    final t = context.t;
-    final status = await FocusShield.pick(
-      title: t.focusShieldPickerTitle,
-      done: t.focusShieldDone,
-    );
-    if (mounted) setState(() => _shield = status);
-  }
-
-  @override
-  Widget build(BuildContext context) => !_shield.available
-      ? widget.fallback
-      : Padding(
-          padding: widget.padding,
-          child: ShieldRow(status: _shield, onSwitch: _switch, onPick: _pick),
-        );
-}
-
-/// The switch that blocks the chosen apps while a session runs, with how
-/// many are chosen and a way to change them.
-class ShieldRow extends StatelessWidget {
-  final ShieldStatus status;
-  final ValueChanged<bool> onSwitch;
-  final VoidCallback onPick;
-  const ShieldRow({
-    super.key,
-    required this.status,
-    required this.onSwitch,
-    required this.onPick,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final t = context.t;
-    final detail = !status.enabled
-        ? t.focusShieldOff
-        : status.picked == 0
-        ? t.focusShieldNone
-        : t.focusShieldPicked(status.picked);
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 8, 10, 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: .7),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            CupertinoIcons.shield_lefthalf_fill,
-            size: 22,
-            color: Palette.focusInk,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: PressFade(
-              key: const ValueKey('shield-pick'),
-              onTap: status.enabled ? onPick : null,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    t.focusShieldTitle,
-                    style: D.text(14, weight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(detail, style: D.text(12, color: D.secondary)),
-                ],
-              ),
-            ),
-          ),
-          CupertinoSwitch(
-            key: const ValueKey('shield-switch'),
-            value: status.enabled,
-            activeTrackColor: Palette.focusInk,
-            onChanged: onSwitch,
           ),
         ],
       ),

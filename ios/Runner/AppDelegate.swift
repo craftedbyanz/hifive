@@ -2,7 +2,6 @@ import ActivityKit
 import FamilyControls
 import Flutter
 import ManagedSettings
-import SwiftUI
 import UIKit
 import UserNotifications
 
@@ -191,62 +190,56 @@ import UserNotifications
   }
 }
 
-/// Blocks the apps the learner chose while a focus session runs, with the
-/// Screen Time API. The choice and the switch are kept in UserDefaults: app
-/// tokens only mean something on this phone. Needs iOS 16 and the Family
-/// Controls entitlement; without either, Flutter hides the switch or shows
-/// why it can't be turned on.
+/// Blocks every other app and website while a focus session runs, with the
+/// Screen Time API, as focus apps do: no switch and no list to pick. The
+/// first session asks for Screen Time access. Needs iOS 16 and the Family
+/// Controls entitlement; without either a session runs unblocked.
+///
+/// Flutter draws its frames on the main thread, so the store's work (it
+/// talks to a system daemon) runs on a queue of its own.
 final class FocusShield {
   static let shared = FocusShield()
-  private let defaults = UserDefaults.standard
-  private let enabledKey = "focusShield.enabled"
-  private let selectionKey = "focusShield.selection"
+  private let queue = DispatchQueue(label: "hifive.shield", qos: .userInitiated)
+  /// The `ManagedSettingsStore`, made once (iOS 16 only).
+  private var storeBox: AnyObject?
 
   func attach(_ channel: FlutterMethodChannel) {
     // A session never outlives the app, so no shield may either.
-    if #available(iOS 16, *) { store.clearAllSettings() }
+    if #available(iOS 16, *) {
+      let store = self.store
+      queue.async { store.clearAllSettings() }
+    }
     channel.setMethodCallHandler { [weak self] call, result in
       guard let self else { return result(nil) }
-      guard #available(iOS 16, *) else {
-        return result(call.method == "status" ? ["available": false, "enabled": false, "picked": 0] : nil)
-      }
-      let args = call.arguments as? [String: Any] ?? [:]
-      let title = args["title"] as? String ?? ""
-      let done = args["done"] as? String ?? ""
+      guard #available(iOS 16, *) else { return result(call.method == "start" ? "unavailable" : nil) }
       switch call.method {
-      case "status":
-        result(self.status())
-      case "enable":
-        guard args["on"] as? Bool == true else {
-          self.defaults.set(false, forKey: self.enabledKey)
-          return result(self.status())
-        }
-        Task { @MainActor in
-          do {
-            try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
-          } catch {
-            let denied = AuthorizationCenter.shared.authorizationStatus == .denied
-            return result(FlutterError(code: denied ? "denied" : "unavailable", message: "\(error)", details: nil))
-          }
-          self.defaults.set(true, forKey: self.enabledKey)
-          if self.picked() == 0 {
-            self.presentPicker(title: title, done: done) { result(self.status()) }
-          } else {
-            result(self.status())
-          }
-        }
-      case "pick":
-        self.presentPicker(title: title, done: done) { result(self.status()) }
       case "start":
-        if self.defaults.bool(forKey: self.enabledKey), let s = self.selection() {
-          self.store.shield.applications = s.applicationTokens.isEmpty ? nil : s.applicationTokens
-          self.store.shield.applicationCategories = s.categoryTokens.isEmpty ? nil : .specific(s.categoryTokens)
-          self.store.shield.webDomains = s.webDomainTokens.isEmpty ? nil : s.webDomainTokens
+        Task { @MainActor in
+          let center = AuthorizationCenter.shared
+          if center.authorizationStatus != .approved {
+            if center.authorizationStatus == .denied { return result("denied") }
+            do {
+              try await center.requestAuthorization(for: .individual)
+            } catch {
+              return result(center.authorizationStatus == .denied ? "declined" : "unavailable")
+            }
+            guard center.authorizationStatus == .approved else { return result("declined") }
+          }
+          let store = self.store
+          self.queue.async {
+            // Every category covers every app; the phone keeps its
+            // essentials (Phone, Settings, emergency) open by itself.
+            store.shield.applicationCategories = .all()
+            store.shield.webDomainCategories = .all()
+            DispatchQueue.main.async { result("on") }
+          }
         }
-        result(nil)
       case "stop":
-        self.store.clearAllSettings()
-        result(nil)
+        let store = self.store
+        queue.async {
+          store.clearAllSettings()
+          DispatchQueue.main.async { result(nil) }
+        }
       default:
         result(FlutterMethodNotImplemented)
       }
@@ -254,67 +247,11 @@ final class FocusShield {
   }
 
   @available(iOS 16, *)
-  private var store: ManagedSettingsStore { ManagedSettingsStore(named: .init("hifive.focus")) }
-
-  @available(iOS 16, *)
-  private func status() -> [String: Any] {
-    let approved = AuthorizationCenter.shared.authorizationStatus == .approved
-    return ["available": true, "enabled": approved && defaults.bool(forKey: enabledKey), "picked": picked()]
-  }
-
-  @available(iOS 16, *)
-  private func selection() -> FamilyActivitySelection? {
-    guard let data = defaults.data(forKey: selectionKey) else { return nil }
-    return try? JSONDecoder().decode(FamilyActivitySelection.self, from: data)
-  }
-
-  @available(iOS 16, *)
-  private func picked() -> Int {
-    guard let s = selection() else { return 0 }
-    return s.applicationTokens.count + s.categoryTokens.count + s.webDomainTokens.count
-  }
-
-  /// Shows Apple's app picker as a sheet that only Done closes, saves the
-  /// choice and calls [finished].
-  @available(iOS 16, *)
-  private func presentPicker(title: String, done: String, finished: @escaping () -> Void) {
-    guard var top = UIApplication.shared.connectedScenes
-      .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController }).first
-    else { return finished() }
-    while let next = top.presentedViewController { top = next }
-    var host: UIViewController?
-    let picker = ShieldPicker(selection: selection() ?? FamilyActivitySelection(), title: title, done: done) { chosen in
-      if let data = try? JSONEncoder().encode(chosen) { self.defaults.set(data, forKey: self.selectionKey) }
-      // Drop the hosting controller here, or it and its view keep each other.
-      let shown = host
-      host = nil
-      shown?.dismiss(animated: true) { finished() }
-    }
-    let controller = UIHostingController(rootView: picker)
-    controller.isModalInPresentation = true
-    host = controller
-    top.present(controller, animated: true)
-  }
-}
-
-@available(iOS 16, *)
-private struct ShieldPicker: View {
-  @State var selection: FamilyActivitySelection
-  let title: String
-  let done: String
-  let finish: (FamilyActivitySelection) -> Void
-
-  var body: some View {
-    NavigationView {
-      FamilyActivityPicker(selection: $selection)
-        .navigationTitle(title)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          ToolbarItem(placement: .confirmationAction) {
-            Button(done) { finish(selection) }
-          }
-        }
-    }
+  private var store: ManagedSettingsStore {
+    if let made = storeBox as? ManagedSettingsStore { return made }
+    let made = ManagedSettingsStore(named: .init("hifive.focus"))
+    storeBox = made
+    return made
   }
 }
 
@@ -324,6 +261,8 @@ private struct ShieldPicker: View {
 /// Group whenever it grows a step, and is told when the learner taps ✕.
 final class FocusLive {
   static let shared = FocusLive()
+  /// Pictures and their version number are only touched on this queue.
+  private let queue = DispatchQueue(label: "hifive.live", qos: .userInitiated)
   private var version = 0
 
   func attach(_ channel: FlutterMethodChannel) {
@@ -338,39 +277,46 @@ final class FocusLive {
       switch call.method {
       case "start":
         self.endAll()
-        self.clearPlants()
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return result(false) }
         let start = Date(timeIntervalSince1970: (args["start"] as? Double ?? 0) / 1000)
         let end = (args["end"] as? Double).map { Date(timeIntervalSince1970: $0 / 1000) }
         let attributes = FocusAttributes(tag: args["tag"] as? String ?? "", color: args["color"] as? String ?? "")
-        let state = FocusAttributes.ContentState(start: start, end: end, plant: self.version)
-        do {
-          if #available(iOS 16.2, *) {
-            _ = try Activity.request(attributes: attributes, content: .init(state: state, staleDate: end), pushType: nil)
-          } else {
-            _ = try Activity.request(attributes: attributes, contentState: state, pushType: nil)
+        // Files and the system's Live Activity service are slow to answer;
+        // Flutter draws on the main thread, so they wait on a queue instead.
+        self.queue.async {
+          self.clearPlants()
+          let state = FocusAttributes.ContentState(start: start, end: end, plant: self.version)
+          var shown = true
+          do {
+            if #available(iOS 16.2, *) {
+              _ = try Activity.request(attributes: attributes, content: .init(state: state, staleDate: end), pushType: nil)
+            } else {
+              _ = try Activity.request(attributes: attributes, contentState: state, pushType: nil)
+            }
+          } catch {
+            shown = false
           }
-          result(true)
-        } catch {
-          result(false)
+          DispatchQueue.main.async { result(shown) }
         }
       case "plant":
         guard let bytes = args["png"] as? FlutterStandardTypedData else { return result(nil) }
-        self.savePlant(bytes.data)
-        let version = self.version
-        Task {
-          for activity in Activity<FocusAttributes>.activities {
-            if #available(iOS 16.2, *) {
-              var state = activity.content.state
-              state.plant = version
-              await activity.update(.init(state: state, staleDate: state.end))
-            } else {
-              var state = activity.contentState
-              state.plant = version
-              await activity.update(using: state)
+        self.queue.async {
+          self.savePlant(bytes.data)
+          let version = self.version
+          Task {
+            for activity in Activity<FocusAttributes>.activities {
+              if #available(iOS 16.2, *) {
+                var state = activity.content.state
+                state.plant = version
+                await activity.update(.init(state: state, staleDate: state.end))
+              } else {
+                var state = activity.contentState
+                state.plant = version
+                await activity.update(using: state)
+              }
             }
+            DispatchQueue.main.async { result(nil) }
           }
-          result(nil)
         }
       case "end":
         self.endAll()
