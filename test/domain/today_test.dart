@@ -33,6 +33,25 @@ void main() {
       expect(step.due, DateTime(2026, 11, 1, 21, 1));
     });
 
+    test('new words met before 04:00 count for the day before', () {
+      final words = {for (final w in 'a b c d'.split(' ')) w: _w(w)};
+      final deck = Deck(
+        id: 'd',
+        title: 'd',
+        description: '',
+        words: words.values.toList(),
+      );
+      // Two new words at 23:00, then the learner goes on past midnight.
+      applyRating(words['a']!, DateTime(2026, 11, 1, 23), 2);
+      applyRating(words['b']!, DateTime(2026, 11, 1, 23), 2);
+      TodayPlan at(DateTime now) =>
+          planToday(words: words, decks: [deck], now: now, perDay: 2);
+      expect(at(DateTime(2026, 11, 2, 0, 30)).newLeft, 0);
+      expect(at(DateTime(2026, 11, 2, 0, 30)).fresh, isEmpty);
+      // The next study day starts at 04:00.
+      expect(at(DateTime(2026, 11, 2, 4)).newLeft, 2);
+    });
+
     test('work past midnight counts for the day before', () {
       final w = _w('late');
       applyRating(w, DateTime(2026, 11, 2, 1, 30), 2);

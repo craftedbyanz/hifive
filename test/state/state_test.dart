@@ -192,6 +192,35 @@ void main() {
       expect(reset.words.last.status, 'new');
     });
 
+    test('restarting a deck restarts the word in every deck', () async {
+      final a = Deck(id: 'a', title: 'A', description: '', words: []);
+      final b = Deck(id: 'b', title: 'B', description: '', words: []);
+      final inA = FlashWord(id: 'a1', word: 'Apple', meaning: 'táo');
+      final inB = FlashWord(id: 'b1', word: 'apple ', meaning: 'quả táo');
+      state
+        ..addDeck(a)
+        ..addDeck(b)
+        ..addWords(a, [inA])
+        ..addWords(b, [inB])
+        ..rate(inA, 3);
+      expect(inB.status, 'review');
+      state.resetSchedule(a);
+      // One word, one memory: the copy in B starts again too, now, as it
+      // does after a reload.
+      expect(inA.status, 'new');
+      expect(inB.status, 'new');
+      await state.flush();
+      final next = await _reload(store);
+      final restored = next.decks.singleWhere((d) => d.id == 'b').words.single;
+      expect(restored.status, 'new');
+      // Deleted and added again, the word stays restarted.
+      await state.deleteDeck(a);
+      await state.deleteDeck(b);
+      final again = FlashWord(id: 'c1', word: 'apple', meaning: 'táo');
+      state.addDeck(Deck(id: 'c', title: 'C', description: '', words: [again]));
+      expect(again.status, 'new');
+    });
+
     test('games add up from their records', () async {
       state
         ..saveGameProgress({'title': 'T'})
@@ -347,6 +376,24 @@ void main() {
     // The samples are dated 24 October; the learner started today.
     expect(state.history.any((s) => s.date.isBefore(_now)), isTrue);
     expect(state.daysWithHifive, 0);
+  });
+
+  test('a streak runs through a daylight saving change', () {
+    // In the UK, clocks went forward at 01:00 on 29 March 2026; the check
+    // is meaningful with TZ=Europe/London set.
+    var clock = DateTime(2026, 3, 28, 10);
+    final state = createAppState(
+      store: MemoryRecordStore(),
+      feedback: SilentFeedback(),
+      now: () => clock,
+    );
+    final words = state.decks.first.words;
+    for (final (i, day) in [28, 29, 30].indexed) {
+      clock = DateTime(2026, 3, day, 10);
+      state.rate(words[i], 3);
+    }
+    expect(state.streak, 3);
+    expect(state.longestStreak, 3);
   });
 
   test('reviewing words keeps the streak; samples and focus alone do not', () {

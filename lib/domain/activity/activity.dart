@@ -1,4 +1,8 @@
+import 'dart:math' as math;
+
+import '../garden/focus_session.dart';
 import '../listening/listening.dart';
+import '../models/study_session.dart';
 import '../sync/reviews.dart';
 import '../vocab/catalog.dart';
 
@@ -117,4 +121,99 @@ List<ListenSession> listenSessions(
   }
   out.sort((a, b) => b.day.at.compareTo(a.day.at));
   return out;
+}
+
+/// Everything the learner did in a stretch of time, for Thống kê: lessons,
+/// vocabulary, listening, games and focus, counted from records already
+/// kept.
+class ActivitySummary {
+  /// Lessons, vocabulary sessions, listening by video and day, and games.
+  final int sessions;
+
+  /// Different words answered in vocabulary sessions, plus the words of
+  /// lesson answers.
+  final int words;
+
+  /// Time studying: lessons, answering words and listening.
+  final int seconds;
+  final int listenSeconds, games, focusMinutes;
+  const ActivitySummary({
+    this.sessions = 0,
+    this.words = 0,
+    this.seconds = 0,
+    this.listenSeconds = 0,
+    this.games = 0,
+    this.focusMinutes = 0,
+  });
+}
+
+/// Time counted for an answer without a measured time, about one card.
+const untimedAnswer = Duration(seconds: 12);
+
+/// The longest an answer counts for: a card left open while the learner
+/// was away isn't study time.
+const longestAnswer = Duration(minutes: 1);
+
+/// Sums what happened from [from] (inclusive) to [to] (exclusive). Sample
+/// lessons count like the learner's own; listening under ten seconds a day
+/// and focus sessions that weren't finished don't.
+ActivitySummary summarizeActivity({
+  required DateTime from,
+  required DateTime to,
+  Iterable<StudySession> lessons = const [],
+  Iterable<ReviewEvent> reviews = const [],
+  Iterable<ListenDay> listening = const [],
+  Iterable<GameResult> games = const [],
+  Iterable<FocusSession> focus = const [],
+}) {
+  bool inside(DateTime at) => !at.isBefore(from) && at.isBefore(to);
+  final lessonsIn = [
+    for (final l in lessons)
+      if (inside(l.date)) l,
+  ];
+  final answers = [
+    for (final e in reviews)
+      if (e.rating >= 0 && inside(e.at)) e,
+  ];
+  final listened = [
+    for (final d in listening)
+      if (d.heard >= 10 && inside(DateTime.parse(d.day))) d,
+  ];
+  final listenSeconds = listened.fold(0, (v, d) => v + d.heard);
+  final answerMs = answers.fold(
+    0,
+    (v, e) =>
+        v +
+        math.min(
+          e.ms ?? untimedAnswer.inMilliseconds,
+          longestAnswer.inMilliseconds,
+        ),
+  );
+  final lessonWords = lessonsIn.fold(
+    0,
+    (v, l) =>
+        v +
+        l.lesson.questions.fold<int>(
+          0,
+          (a, q) => a + q.answer.split(' ').length,
+        ),
+  );
+  final gamesIn = games.where((g) => inside(g.at)).length;
+  return ActivitySummary(
+    sessions:
+        lessonsIn.length +
+        wordSessions(answers).length +
+        listened.length +
+        gamesIn,
+    words: {for (final e in answers) e.word ?? e.wordId}.length + lessonWords,
+    seconds:
+        lessonsIn.fold(0, (v, l) => v + l.seconds) +
+        answerMs ~/ 1000 +
+        listenSeconds,
+    listenSeconds: listenSeconds,
+    games: gamesIn,
+    focusMinutes: focus
+        .where((f) => f.outcome == FocusOutcome.done && inside(f.end))
+        .fold(0, (v, f) => v + f.minutes),
+  );
 }

@@ -1,5 +1,6 @@
 import '../models/deck.dart';
 import 'memory.dart';
+import 'scheduler.dart';
 
 /// Words a session takes at most; a longer day is several legs.
 const legSize = 20;
@@ -58,7 +59,9 @@ TodayPlan planToday({
   required DateTime now,
   required int perDay,
 }) {
-  final day = DateTime(now.year, now.month, now.day);
+  // New words met since the study day began: someone studying past midnight
+  // is still on the day before, as their due times are (`dueAfter`).
+  final day = studyDayStart(now);
   final due = [
     for (final w in words.values)
       if (w.status != 'new' && w.isDue(now)) w,

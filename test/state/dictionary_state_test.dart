@@ -9,6 +9,22 @@ import 'package:hifive/state/state.dart';
 
 import '../domain/dictionary/lookup_test.dart' show packBytes, packInfo;
 
+/// A pack that fails on every read, like a damaged file.
+class _BrokenIndex implements DictionaryIndex {
+  @override
+  dynamic noSuchMethod(Invocation invocation) =>
+      Future<Never>.error(StateError('damaged pack'));
+}
+
+class _BrokenStore implements DictionaryStore {
+  @override
+  Future<DictionaryIndex?> open(String pair) async => _BrokenIndex();
+  @override
+  Future<int?> version(String pair) async => 1;
+  @override
+  Future<void> install(DictionaryPackInfo pack, List<int> bytes) async {}
+}
+
 class _Packs implements DictionaryPacks {
   var fail = false;
   var downloads = 0;
@@ -167,5 +183,20 @@ void main() {
         .expand((d) => d.words)
         .map((w) => w.word.toLowerCase());
     expect(words.any((e) => have.contains(e.word.toLowerCase())), isFalse);
+  });
+
+  test('a pack that cannot be read still finds hifive words', () async {
+    final state = createAppState(
+      store: store,
+      dictionaryStore: _BrokenStore(),
+      feedback: SilentFeedback(),
+      now: () => now,
+    );
+    await state.load();
+    expect(state.dictionaryReady, isTrue);
+    final word = state.decks.first.words.first.word;
+    final result = await state.lookupWord(word);
+    expect(result.hits.map((h) => h.entry.word), contains(word));
+    expect(await state.wordsToLearn(), isEmpty);
   });
 }

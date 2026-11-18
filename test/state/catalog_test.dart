@@ -109,4 +109,16 @@ void main() {
     await state.refreshCatalog(force: true);
     expect(catalog.fetched, 2);
   });
+
+  test('coming back to the app fetches a catalog missed offline', () async {
+    catalog.fail = true;
+    final state = make();
+    await state.load();
+    await state.refreshCatalog();
+    expect(state.decks.where((d) => d.id.startsWith('cat-')), isEmpty);
+    catalog.fail = false;
+    state.appResumed();
+    await pumpEventQueue();
+    expect(state.decks.where((d) => d.id.startsWith('cat-')), hasLength(3));
+  });
 }

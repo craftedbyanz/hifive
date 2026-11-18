@@ -39,6 +39,13 @@ DateTime dueAfter(DateTime at, Duration interval) {
   return DateTime(day.year, day.month, day.day + interval.inDays, dayStartHour);
 }
 
+/// When the study day holding [at] began: [dayStartHour] that day, or the
+/// day before for work done before it.
+DateTime studyDayStart(DateTime at) {
+  final day = at.subtract(const Duration(hours: dayStartHour));
+  return DateTime(day.year, day.month, day.day, dayStartHour);
+}
+
 double _days(Duration d) => d.inSeconds / Duration.secondsPerDay;
 
 Duration _toDays(double s) =>

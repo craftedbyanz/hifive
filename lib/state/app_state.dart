@@ -447,9 +447,16 @@ class AppState extends ChangeNotifier {
   /// American IPA.
   bool get americanVoice => const {'Aaron', 'Nicky'}.contains(voice);
 
-  /// Looks [query] up in hifive's words and the installed pack.
-  Future<DictResult> lookupWord(String query) =>
-      DictionaryLookup([_curated, ?_pack]).lookup(query);
+  /// Looks [query] up in hifive's words and the installed pack. A pack that
+  /// can't be read is left out, so hifive's own words are still found.
+  Future<DictResult> lookupWord(String query) async {
+    try {
+      return await DictionaryLookup([_curated, ?_pack]).lookup(query);
+    } on Object {
+      if (_pack == null) rethrow;
+      return DictionaryLookup([_curated]).lookup(query);
+    }
+  }
 
   /// Frequent words at the learner's level that no deck has yet.
   Future<List<DictEntry>> wordsToLearn({int count = 6}) async {
@@ -458,7 +465,14 @@ class AppState extends ChangeNotifier {
     final have = uniqueWords;
     final out = <DictEntry>[];
     final seen = <String>{};
-    for (final e in await pack.atLevel(level)) {
+    final List<DictEntry> atLevel;
+    try {
+      atLevel = await pack.atLevel(level);
+    } on Object {
+      // Suggestions are extra; an unreadable pack leaves the list out.
+      return const [];
+    }
+    for (final e in atLevel) {
       final key = wordKey(e.word);
       if (have.containsKey(key) || !seen.add(key)) continue;
       out.add(e);
@@ -754,9 +768,14 @@ class AppState extends ChangeNotifier {
     commit();
   }
 
-  /// The app came back to the foreground: catch up with other devices.
+  /// The app came back to the foreground: catch up with other devices, and
+  /// fetch the catalog and dictionary if a launch without network missed
+  /// them (each checks at most about once a day otherwise).
   void appResumed() {
     if (user != null) _startSyncing();
+    if (!_loaded) return;
+    unawaited(refreshCatalog());
+    unawaited(refreshDictionary());
   }
 
   /// The app is leaving the screen: push what changed while it can.
@@ -1012,6 +1031,18 @@ class AppState extends ChangeNotifier {
 
   /// Vocabulary sessions from the review log, newest first, for Ôn tập.
   List<WordSession> get wordSessionLog => wordSessions(reviewLog);
+
+  /// What the learner did from [from] to [to], for Thống kê.
+  ActivitySummary activityBetween(DateTime from, DateTime to) =>
+      summarizeActivity(
+        from: from,
+        to: to,
+        lessons: history,
+        reviews: reviewLog,
+        listening: listenLog.days,
+        games: gameResults,
+        focus: focusSessions,
+      );
 
   /// Listening by video and day, newest first, for Ôn tập.
   List<ListenSession> get listenSessionLog =>
@@ -1688,17 +1719,30 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  /// "Đặt lại lịch": every word in [deck] starts again as new. A word is one
+  /// memory, so its cards in other decks start again too, as they would
+  /// after a reload.
   void resetSchedule(Deck deck) {
     final at = now();
+    final reset = <String>{};
     for (final word in deck.words) {
+      final key = wordKey(word.word);
+      if (!reset.add(key)) continue;
       final event = ReviewEvent(
         id: newId(),
         wordId: word.id,
         at: at,
         rating: ReviewEvent.reset,
+        word: key,
       );
-      applyReview(word, event);
+      reviewLog.add(event);
       _put(RecordKind.review, event.id, event.toJson());
+    }
+    for (final w in decks.expand((d) => d.words)) {
+      if (reset.contains(wordKey(w.word))) resetCard(w);
+    }
+    for (final w in deck.words) {
+      resetCard(w);
     }
     commit();
   }
@@ -1757,16 +1801,18 @@ class AppState extends ChangeNotifier {
     for (final r in rated) dayKey(r.event.at),
     ...listenLog.studyDays,
   };
+  // Days step by the calendar, not by 24 hours: a day around a daylight
+  // saving change is 23 or 25 hours long.
   int get streak {
     final days = studyDays;
-    var date = DateUtils.dateOnly(now());
-    if (!days.contains(dayKey(date))) {
-      date = date.subtract(const Duration(days: 1));
-    }
+    final n = now();
+    var date = DateTime(n.year, n.month, n.day);
+    DateTime dayBefore(DateTime d) => DateTime(d.year, d.month, d.day - 1);
+    if (!days.contains(dayKey(date))) date = dayBefore(date);
     var count = 0;
     while (days.contains(dayKey(date))) {
       count++;
-      date = date.subtract(const Duration(days: 1));
+      date = dayBefore(date);
     }
     return count;
   }
@@ -1776,7 +1822,8 @@ class AppState extends ChangeNotifier {
     var longest = 0, current = 0;
     DateTime? previous;
     for (final key in dates) {
-      final d = DateTime.parse(key);
+      // Parsed as UTC, where every day is 24 hours long.
+      final d = DateTime.parse('${key}T00:00:00Z');
       current = previous != null && d.difference(previous).inDays == 1
           ? current + 1
           : 1;
