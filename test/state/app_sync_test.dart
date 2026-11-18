@@ -226,6 +226,35 @@ void main() {
         size: const Size(393, 2100),
       );
       expect(find.text('Email'), findsNothing);
+      expect(find.byKey(const ValueKey('profile-sync')), findsNothing);
+    });
+
+    testWidgets('says when it last synced, and Thử lại after a failure', (
+      tester,
+    ) async {
+      final s = _device(server);
+      await s.load();
+      await s.sync();
+      await mount(
+        tester,
+        s,
+        const ProfileScreen(),
+        size: const Size(393, 2100),
+      );
+      expect(find.text('Đã đồng bộ lúc 09:00'), findsOneWidget);
+
+      server.failBefore = SyncError.unavailable;
+      await s.sync();
+      await tester.pump();
+      expect(find.byKey(const ValueKey('profile-sync-failed')), findsOneWidget);
+      expect(find.textContaining('vẫn được lưu trên máy'), findsOneWidget);
+
+      await tester.tap(find.text('Thử lại'));
+      await tester.pumpAndSettle();
+      expect(s.syncError, isNull);
+      expect(find.byKey(const ValueKey('profile-sync-failed')), findsNothing);
+      expect(find.text('Đã đồng bộ lúc 09:00'), findsOneWidget);
+      s.dispose();
     });
 
     testWidgets('a failed push asks again before signing out', (tester) async {

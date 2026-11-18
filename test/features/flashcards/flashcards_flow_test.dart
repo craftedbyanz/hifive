@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
+import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/vocab/vocab.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
@@ -31,6 +33,35 @@ void main() {
   }
 
   group('session', () {
+    testWidgets('each answer is timed; one tapped through waters nothing', (
+      tester,
+    ) async {
+      // After the garden's second rules began (16 November 2026).
+      final state = createAppState(
+        store: MemoryRecordStore(),
+        feedback: SilentFeedback(),
+        now: () => DateTime(2026, 11, 18, 9),
+      );
+      final deck = state.decks.firstWhere((d) => d.id == 'cooking');
+      await mount(
+        tester,
+        state,
+        ReviewScreen(deck: deck, words: deck.words.take(2).toList()),
+      );
+      await tester.tap(find.byKey(const ValueKey('rate-2')));
+      await tester.pumpAndSettle();
+      expect(state.reviewLog.single.ms, lessThan(1500));
+      expect(state.studyCredits, isEmpty);
+      // The next card is thought about before answering.
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 1600)),
+      );
+      await tester.tap(find.byKey(const ValueKey('rate-2')));
+      await tester.pumpAndSettle();
+      expect(state.reviewLog.last.ms, greaterThanOrEqualTo(1500));
+      expect(state.studyCredits, hasLength(1));
+    });
+
     testWidgets('each direction rates like its button, and sets the schedule', (
       tester,
     ) async {
@@ -292,10 +323,22 @@ void main() {
       await tester.tap(find.text('Not studied'));
       await tester.pumpAndSettle();
       expect(find.text('Ôn tập (0)'), findsOneWidget);
-      expect(find.text('Đã hoàn thành bài học hôm nay!'), findsOneWidget);
+      // A filter matching nothing says so, not that today is done.
+      expect(find.text('Không tìm thấy kết quả'), findsOneWidget);
       await tester.tap(find.text('Ôn tập (0)'));
       await tester.pumpAndSettle();
       expect(find.byType(ReviewScreen), findsNothing);
+    });
+
+    testWidgets('a deck without words offers to add some', (tester) async {
+      final state = fresh();
+      final deck = Deck(id: 'mine', title: 'Mine', description: '', words: []);
+      state.addDeck(deck);
+      await mount(tester, state, DeckScreen(deck: deck), size: _tall);
+      expect(find.text('Bộ thẻ này chưa có từ nào'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('deck-empty-add')));
+      await tester.pumpAndSettle();
+      expect(find.byType(DictionaryScreen), findsOneWidget);
     });
 
     testWidgets('search hides the summary, and cancel brings it back', (
@@ -320,28 +363,7 @@ void main() {
       expect(find.text('Blitz'), findsOneWidget);
     });
 
-    testWidgets('add cards shows the slots left; generating is coming soon', (
-      tester,
-    ) async {
-      final state = fresh();
-      final deck = state.decks.firstWhere((d) => d.id == 'cooking');
-      await mount(tester, state, DeckScreen(deck: deck), size: _tall);
-      await tester.tap(find.byTooltip('Tùy chọn bộ thẻ'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Add Cards'));
-      await tester.pumpAndSettle();
-      expect(find.text('Còn 90 slot'), findsOneWidget);
-      // Generating is coming soon: tapping adds no words.
-      final before = deck.words.length;
-      await tester.tap(find.byKey(const ValueKey('deck-generate')));
-      await tester.pump(const Duration(seconds: 1));
-      await tester.pumpAndSettle();
-      expect(deck.words, hasLength(before));
-    });
-
-    testWidgets('the slot pill hugs its text and Cancel stays on screen', (
-      tester,
-    ) async {
+    testWidgets('Cancel on the deck search stays on screen', (tester) async {
       final state = fresh();
       final deck = state.decks.firstWhere((d) => d.id == 'cooking');
       await mount(tester, state, DeckScreen(deck: deck));
@@ -351,19 +373,6 @@ void main() {
         find.byKey(const ValueKey('deck-search-cancel')),
       );
       expect(cancel.right, closeTo(377, 2));
-      await tester.tap(find.byKey(const ValueKey('deck-search-cancel')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byTooltip('Tùy chọn bộ thẻ'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Add Cards'));
-      await tester.pumpAndSettle();
-      final pill = find
-          .ancestor(
-            of: find.text('Còn 90 slot'),
-            matching: find.byType(Container),
-          )
-          .first;
-      expect(tester.getSize(pill).width, lessThan(120));
     });
 
     testWidgets('a meaning uses the dot\'s space once the card is not due', (

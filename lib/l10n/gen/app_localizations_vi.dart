@@ -1108,20 +1108,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addDeck => 'Thêm bộ thẻ';
 
   @override
-  String addedSampleWords(int count) {
-    return 'Đã thêm $count từ mẫu';
-  }
-
-  @override
-  String get sampleDeckDescription => 'Bộ từ vựng mẫu của bạn';
-
-  @override
-  String get cardsFailed => 'Không tạo được thẻ. Vui lòng thử lại.';
-
-  @override
-  String get addCards => 'Add Cards';
-
-  @override
   String get newDeck => 'New Deck';
 
   @override
@@ -1135,11 +1121,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get wordsToGenerateCaps => 'WORDS TO GENERATE';
-
-  @override
-  String slotsLeft(int count) {
-    return 'Còn $count slot';
-  }
 
   @override
   String get generateDeck => 'Generate Deck';
@@ -1190,9 +1171,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String reviewDue(int count) {
     return 'Ôn tập ($count)';
   }
-
-  @override
-  String get doneForToday => 'Đã hoàn thành bài học hôm nay!';
 
   @override
   String get searchCards => 'Tìm kiếm thẻ';
@@ -1532,15 +1510,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get sessionsDone => 'Buổi hoàn thành';
 
   @override
-  String get unitSentences => 'CÂU';
-
-  @override
-  String get sentencesPractised => 'Câu luyện tập';
-
-  @override
-  String get unitParagraphs => 'ĐOẠN';
-
-  @override
   String get noMistakesMonth =>
       'Bạn chưa có lỗi ngữ pháp nào trong tháng này. Tuyệt vời!';
 
@@ -1605,9 +1574,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chỉ xóa kết quả trên bản ứng dụng này. Hành động không thể hoàn tác.';
 
   @override
-  String get newPractice => 'Luyện tập mới';
-
-  @override
   String get noReviewsYet => 'Chưa có bài ôn tập';
 
   @override
@@ -1636,9 +1602,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get closeSearch => 'Đóng tìm kiếm';
-
-  @override
-  String get newPracticeLabel => 'Tạo bài luyện tập mới';
 
   @override
   String get seeMore => 'Xem thêm';
@@ -3137,10 +3100,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Nguồn nghe hifive chọn lọc theo trình độ. Gặp từ lạ thì lưu lại để ôn trong Ôn hôm nay.';
 
   @override
-  String get listenEmpty =>
-      'Đang tải nguồn nghe. Hãy kiểm tra kết nối mạng rồi mở lại.';
-
-  @override
   String listenPlaylist(String channel) {
     return 'Playlist YouTube · $channel';
   }
@@ -3348,7 +3307,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get helpBody8 =>
-      'Mỗi ngày bạn học, khu vườn của bạn lại xanh thêm một chút.\n\nCây lớn lên từ việc học\n\n• Mỗi lần ôn một từ mới hoặc một từ đến hạn là một lần tưới cây. Đủ 10 lần, một cây học mọc trong vườn.\n• Chọn loài cây học trong mục Vườn. Học càng đều, càng mở khoá thêm nhiều loài.\n\nChế độ Tập trung\n\n• Đặt thời gian, gắn nhãn (Tiếng Anh, Viết, Công việc…) rồi bắt đầu: cây lớn dần theo thời gian bạn tập trung.\n• Rời app quá 30 giây hoặc bỏ cuộc thì cây héo. Khoá màn hình thì cây vẫn lớn.\n• Xong phiên, ôn vài từ đến hạn để cây nở hoa.\n\nSắp ra mắt\n\n• Chặn các app gây xao nhãng trong lúc tập trung.\n• Âm thanh thư giãn và bài tập thở.\n• Widget màn hình chính cho cây đang lớn và số từ cần ôn.';
+      'Mỗi ngày bạn học, khu vườn của bạn lại xanh thêm một chút.\n\nCây lớn lên từ việc học\n\n• Mỗi lần ôn một từ mới hoặc một từ đến hạn là một lần tưới cây, nếu bạn dành ít nhất 1,5 giây để nhớ. Mỗi ngày cây nhận tối đa 5 lần tưới; đủ 10 lần trong 3 ngày khác nhau, một cây học mọc trong vườn.\n• Chọn loài cây học trong mục Vườn. Học càng đều, càng mở khoá thêm nhiều loài.\n\nChế độ Tập trung\n\n• Đặt thời gian, gắn nhãn (Tiếng Anh, Viết, Công việc…) rồi bắt đầu: cây lớn dần theo thời gian bạn tập trung.\n• Trên iPhone, bạn có thể chặn các app gây xao nhãng trong lúc tập trung.\n• Rời app quá 30 giây hoặc bỏ cuộc thì cây héo. Khoá màn hình thì cây vẫn lớn.\n• Sau phiên từ 25 phút, ôn vài từ đến hạn để cây nở hoa.\n\nSắp ra mắt\n\n• Âm thanh thư giãn và bài tập thở.\n• Widget màn hình chính cho cây đang lớn và số từ cần ôn.';
 
   @override
   String get helpTitle9 => 'Luyện nghe';
@@ -4108,4 +4067,42 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get guideEasyBody => 'Vuốt phải để ít gặp lại từ này hơn';
+
+  @override
+  String get storageErrorNotice =>
+      'Không đọc hoặc lưu được dữ liệu trên máy. Những gì bạn học lúc này sẽ không được lưu. Hãy đóng hẳn app rồi mở lại.';
+
+  @override
+  String get syncFailedNotice =>
+      'Chưa đồng bộ được. Dữ liệu vẫn được lưu trên máy này.';
+
+  @override
+  String syncedAt(String time) {
+    return 'Đã đồng bộ lúc $time';
+  }
+
+  @override
+  String get syncingNow => 'Đang đồng bộ…';
+
+  @override
+  String get todayNoWords => 'Chưa có từ để ôn';
+
+  @override
+  String get todayNoWordsBody => 'Chọn một bộ thẻ để bắt đầu';
+
+  @override
+  String get listenLoading => 'Đang tải nguồn nghe…';
+
+  @override
+  String get catalogFailed =>
+      'Chưa tải được nội dung. Hãy kiểm tra kết nối mạng rồi thử lại.';
+
+  @override
+  String get unitMinutes => 'PHÚT';
+
+  @override
+  String get unitGames => 'LƯỢT';
+
+  @override
+  String get deckNoWords => 'Bộ thẻ này chưa có từ nào';
 }

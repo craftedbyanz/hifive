@@ -84,26 +84,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
-  void newLesson() => sheet<void>(
-    context,
-    Column(
-      children: [
-        SheetTitle(context.t.newPractice),
-        for (final mode in StudyMode.values)
-          ListTile(
-            key: ValueKey('history-new-${mode.name}'),
-            leading: Icon(mode.icon),
-            title: Text(mode.title(context)),
-            subtitle: Text(mode.category(context)),
-            onTap: () {
-              Navigator.pop(context);
-              go<void>(context, TopicScreen(mode: mode));
-            },
-          ),
-      ],
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
@@ -308,35 +288,32 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
-                // Survey 75 shows "+" beside the search field; it was never
-                // pressed there, and here it starts a new lesson. While
-                // searching it becomes ✕, which ends the search (survey 124).
-                Semantics(
-                  button: true,
-                  label: searching
-                      ? context.t.closeSearch
-                      : context.t.newPracticeLabel,
-                  child: GestureDetector(
-                    key: ValueKey(searching ? 'history-close' : 'history-new'),
-                    onTap: searching
-                        ? () => setState(() {
-                            search.clear();
-                            query = '';
-                            focus.unfocus();
-                          })
-                        : newLesson,
-                    child: _GlassCapsule(
-                      height: 48,
-                      width: 48,
-                      child: Icon(
-                        searching ? CupertinoIcons.xmark : CupertinoIcons.add,
-                        size: 24,
-                        color: D.ink,
+                // ✕ ends a search. There is no "+" for a new lesson: the
+                // practice modes are still coming soon.
+                if (searching) ...[
+                  const SizedBox(width: 10),
+                  Semantics(
+                    button: true,
+                    label: context.t.closeSearch,
+                    child: GestureDetector(
+                      key: const ValueKey('history-close'),
+                      onTap: () => setState(() {
+                        search.clear();
+                        query = '';
+                        focus.unfocus();
+                      }),
+                      child: const _GlassCapsule(
+                        height: 48,
+                        width: 48,
+                        child: Icon(
+                          CupertinoIcons.xmark,
+                          size: 24,
+                          color: D.ink,
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
           ),

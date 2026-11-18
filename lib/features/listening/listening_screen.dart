@@ -25,13 +25,24 @@ class ListeningScreen extends StatefulWidget {
 }
 
 class _ListeningScreenState extends State<ListeningScreen> {
+  /// Set while the catalog is being fetched for this screen.
+  bool _loading = false;
+
   @override
   void initState() {
     super.initState();
     final state = AppScope.read(context);
     if (state.listening.isEmpty || state.listening.first.episodes.isEmpty) {
-      state.refreshCatalog(force: true);
+      _fetch();
     }
+  }
+
+  /// Fetches the catalog; an empty list after it means it failed (offline,
+  /// or the server had none), which the empty state offers to try again.
+  Future<void> _fetch() async {
+    setState(() => _loading = true);
+    await AppScope.read(context).refreshCatalog(force: true);
+    if (mounted) setState(() => _loading = false);
   }
 
   @override
@@ -56,14 +67,40 @@ class _ListeningScreenState extends State<ListeningScreen> {
             ),
           ],
           _Heading(t.listenSources),
-          if (sources.isEmpty)
+          if (sources.isEmpty && _loading)
             Padding(
               padding: const EdgeInsets.only(top: 24),
-              child: Text(
-                t.listenEmpty,
+              child: Column(
+                key: const ValueKey('listen-loading'),
+                children: [
+                  const CupertinoActivityIndicator(),
+                  const SizedBox(height: 10),
+                  Text(
+                    t.listenLoading,
+                    textAlign: TextAlign.center,
+                    style: D.text(14, color: D.secondary, height: 1.5),
+                  ),
+                ],
+              ),
+            )
+          else if (sources.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Column(
                 key: const ValueKey('listen-empty'),
-                textAlign: TextAlign.center,
-                style: D.text(14, color: D.secondary, height: 1.5),
+                children: [
+                  Text(
+                    t.catalogFailed,
+                    textAlign: TextAlign.center,
+                    style: D.text(14, color: D.secondary, height: 1.5),
+                  ),
+                  const SizedBox(height: 14),
+                  ActionButton(
+                    t.retry,
+                    key: const ValueKey('listen-retry'),
+                    onTap: _fetch,
+                  ),
+                ],
               ),
             )
           else

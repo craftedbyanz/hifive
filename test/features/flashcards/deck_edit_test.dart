@@ -141,9 +141,12 @@ void main() {
     // The new deck opens, ready for words.
     expect(find.byType(DeckScreen), findsOneWidget);
 
+    // The empty deck offers "Thêm từ" itself, as its menu does.
+    expect(find.byKey(const ValueKey('deck-empty-add')), findsOneWidget);
     await tester.tap(find.byTooltip('Tùy chọn bộ thẻ'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Thêm từ'));
+    // The menu's row, drawn over the page.
+    await tester.tap(find.text('Thêm từ').last);
     await tester.pumpAndSettle();
     // "Thêm từ" opens the dictionary; with no word typed, the learner
     // enters words by hand.

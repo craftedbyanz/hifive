@@ -100,9 +100,13 @@ class HomeTodayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final plan = AppScope.of(context).today;
+    final state = AppScope.of(context);
+    final plan = state.today;
     final leg = plan.leg();
     final done = leg.isEmpty;
+    // No word in any deck yet (say the catalog hasn't loaded): nothing was
+    // studied, so the card points to the decks rather than saying "done".
+    final empty = done && state.uniqueWords.isEmpty;
     final minutes = (leg.length * secondsPerCard / 60).ceil();
     return PressFade(
       key: const ValueKey('home-today'),
@@ -134,13 +138,17 @@ class HomeTodayCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      done ? t.todayAllDone : t.todayHeadline,
+                      empty
+                          ? t.todayNoWords
+                          : done
+                          ? t.todayAllDone
+                          : t.todayHeadline,
                       style: D.text(19, weight: FontWeight.w800, spacing: -.4),
                     ),
                     const SizedBox(height: 9),
                     if (done)
                       Text(
-                        t.todayDoneBody,
+                        empty ? t.todayNoWordsBody : t.todayDoneBody,
                         key: const ValueKey('home-today-summary'),
                         style: D.text(12.5, color: D.secondary),
                       )
@@ -166,11 +174,13 @@ class HomeTodayCard extends StatelessWidget {
             SizedBox(
               width: 108,
               child: done
-                  ? const Center(
+                  ? Center(
                       child: Icon(
-                        CupertinoIcons.checkmark_seal_fill,
+                        empty
+                            ? CupertinoIcons.square_stack_3d_up_fill
+                            : CupertinoIcons.checkmark_seal_fill,
                         size: 44,
-                        color: D.green,
+                        color: empty ? D.muted : D.green,
                       ),
                     )
                   : _CardFan(word: leg.first.word),

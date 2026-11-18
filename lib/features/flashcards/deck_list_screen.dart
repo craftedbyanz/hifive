@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
-import '../../domain/repositories/repositories.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -74,9 +73,16 @@ class DeckListScreen extends StatelessWidget {
                 if (state.decks.isEmpty)
                   SizedBox(
                     height: 440,
+                    // hifive's decks come from the catalog: without them,
+                    // most likely it hasn't loaded, so it can be fetched.
                     child: EmptyView(
                       title: context.t.noDecks,
-                      subtitle: context.t.noDecksBody,
+                      subtitle: state.catalog == null
+                          ? context.t.noDecksBody
+                          : context.t.catalogFailed,
+                      action: state.catalog == null
+                          ? null
+                          : const _CatalogRetry(),
                     ),
                   )
                 else
@@ -139,6 +145,32 @@ class DeckListScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+/// "Thử lại" for the catalog, with a spinner while it loads.
+class _CatalogRetry extends StatefulWidget {
+  const _CatalogRetry();
+  @override
+  State<_CatalogRetry> createState() => _CatalogRetryState();
+}
+
+class _CatalogRetryState extends State<_CatalogRetry> {
+  var _loading = false;
+
+  Future<void> _retry() async {
+    setState(() => _loading = true);
+    await AppScope.read(context).refreshCatalog(force: true);
+    if (mounted) setState(() => _loading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) => _loading
+      ? const CupertinoActivityIndicator()
+      : ActionButton(
+          context.t.retry,
+          key: const ValueKey('deck-catalog-retry'),
+          onTap: _retry,
+        );
 }
 
 class _DeckCard extends StatelessWidget {
@@ -228,34 +260,27 @@ class _DeckCard extends StatelessWidget {
   );
 }
 
-/// New Deck, or Add Cards when [deck] is given. Returns a deck made empty
-/// for the learner to fill.
-Future<Deck?> deckForm(BuildContext context, {Deck? deck}) =>
-    showModalBottomSheet<Deck>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: false,
-      backgroundColor: Colors.transparent,
-      barrierColor: Palette.sheetBarrier,
-      elevation: 0,
-      builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(
-          9,
-          0,
-          9,
-          9 + MediaQuery.viewInsetsOf(ctx).bottom,
-        ),
-        child: _DeckForm(
-          deck: deck,
-          onAdded: (count) => toast(context, context.t.addedSampleWords(count)),
-        ),
-      ),
-    );
+/// New Deck. Returns a deck made empty for the learner to fill.
+Future<Deck?> deckForm(BuildContext context) => showModalBottomSheet<Deck>(
+  context: context,
+  isScrollControlled: true,
+  showDragHandle: false,
+  backgroundColor: Colors.transparent,
+  barrierColor: Palette.sheetBarrier,
+  elevation: 0,
+  builder: (ctx) => Padding(
+    padding: EdgeInsets.fromLTRB(
+      9,
+      0,
+      9,
+      9 + MediaQuery.viewInsetsOf(ctx).bottom,
+    ),
+    child: const _DeckForm(),
+  ),
+);
 
 class _DeckForm extends StatefulWidget {
-  final Deck? deck;
-  final ValueChanged<int> onAdded;
-  const _DeckForm({required this.deck, required this.onAdded});
+  const _DeckForm();
   @override
   State<_DeckForm> createState() => _DeckFormState();
 }
@@ -263,14 +288,11 @@ class _DeckForm extends StatefulWidget {
 class _DeckFormState extends State<_DeckForm> {
   static const maxCards = 100;
   // Owned by this state because the sheet still builds while it animates closed.
-  late final title = TextEditingController(text: widget.deck?.title ?? '');
+  final title = TextEditingController();
   int count = 10;
-  bool generating = false;
 
   /// The new deck's icon, by its number in [deckIcons].
   int icon = 0;
-
-  int get remaining => maxCards - (widget.deck?.words.length ?? 0);
 
   @override
   void dispose() {
@@ -318,45 +340,8 @@ class _DeckFormState extends State<_DeckForm> {
     if (picked != null && mounted) setState(() => icon = picked);
   }
 
-  /// Asks [DeckGenerator] for words, then saves them. A failure keeps the
-  /// sheet open so the learner can try again.
-  Future<void> generate() async {
-    setState(() => generating = true);
-    final state = AppScope.read(context);
-    final deck = widget.deck;
-    try {
-      final words = await state.deckGenerator.generate(
-        language: state.language,
-        topic: title.text.trim(),
-        count: count,
-        exclude: deck?.words ?? const [],
-      );
-      if (!mounted) return;
-      if (deck == null) {
-        state.addDeck(
-          Deck(
-            id: state.newId(),
-            title: title.text.trim(),
-            description: context.t.sampleDeckDescription,
-            icon: icon,
-            words: words,
-          ),
-        );
-      } else {
-        state.addWords(deck, words);
-      }
-      Navigator.pop(context);
-      widget.onAdded(words.length);
-    } catch (_) {
-      if (!mounted) return;
-      setState(() => generating = false);
-      toast(context, context.t.cardsFailed);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final locked = widget.deck != null;
     return ClipRSuperellipse(
       borderRadius: BorderRadius.circular(38),
       child: ColoredBox(
@@ -384,7 +369,7 @@ class _DeckFormState extends State<_DeckForm> {
                   alignment: Alignment.center,
                   children: [
                     Text(
-                      locked ? context.t.addCards : context.t.newDeck,
+                      context.t.newDeck,
                       style: D.text(
                         15,
                         weight: FontWeight.w700,
@@ -432,13 +417,8 @@ class _DeckFormState extends State<_DeckForm> {
               TextField(
                 key: const ValueKey('deck-topic'),
                 controller: title,
-                readOnly: locked,
                 onChanged: (_) => setState(() {}),
-                style: D.text(
-                  14.7,
-                  weight: locked ? FontWeight.w600 : FontWeight.w400,
-                  height: 20 / 14.7,
-                ),
+                style: D.text(14.7, weight: FontWeight.w400, height: 20 / 14.7),
                 decoration: InputDecoration(
                   hintText: context.t.topicNameHint,
                   hintStyle: D.text(
@@ -447,69 +427,51 @@ class _DeckFormState extends State<_DeckForm> {
                     height: 20 / 15,
                   ),
                   filled: true,
-                  fillColor: locked
-                      ? Palette.settingsPanel
-                      : Palette.settingsPage,
+                  fillColor: Palette.settingsPage,
                   isDense: true,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 15,
                     vertical: 16,
                   ),
                   // A new deck's icon, tapped to choose another.
-                  prefixIcon: locked
-                      ? null
-                      : PressFade(
-                          key: const ValueKey('deck-form-icon'),
-                          onTap: _pickIcon,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 4),
-                            child: Container(
-                              width: 34,
-                              height: 34,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                deckIcons[icon],
-                                size: 18,
-                                color: D.ink,
-                              ),
-                            ),
-                          ),
+                  prefixIcon: PressFade(
+                    key: const ValueKey('deck-form-icon'),
+                    onTap: _pickIcon,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 4),
+                      child: Container(
+                        width: 34,
+                        height: 34,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
                         ),
+                        child: Icon(deckIcons[icon], size: 18, color: D.ink),
+                      ),
+                    ),
+                  ),
                   prefixIconConstraints: const BoxConstraints(),
-                  suffixIcon: locked
-                      ? const Icon(
-                          CupertinoIcons.lock_fill,
-                          size: 15,
-                          color: Palette.settingsHint,
-                        )
-                      : null,
-                  enabledBorder: _border(locked),
-                  focusedBorder: _border(locked),
+                  enabledBorder: _border,
+                  focusedBorder: _border,
                 ),
               ),
-              if (!locked) ...[
-                const SizedBox(height: 14),
-                ActionButton(
-                  context.t.deckCreate,
-                  key: const ValueKey('deck-create'),
-                  onTap: title.text.trim().isEmpty ? null : _create,
+              const SizedBox(height: 14),
+              ActionButton(
+                context.t.deckCreate,
+                key: const ValueKey('deck-create'),
+                onTap: title.text.trim().isEmpty ? null : _create,
+              ),
+              const SizedBox(height: 22),
+              Text(
+                context.t.deckOrAi,
+                textAlign: TextAlign.center,
+                style: D.text(
+                  12.5,
+                  weight: FontWeight.w600,
+                  color: Palette.settingsHint,
                 ),
-                const SizedBox(height: 22),
-                Text(
-                  context.t.deckOrAi,
-                  textAlign: TextAlign.center,
-                  style: D.text(
-                    12.5,
-                    weight: FontWeight.w600,
-                    color: Palette.settingsHint,
-                  ),
-                ),
-                const SizedBox(height: 4),
-              ] else
-                const SizedBox(height: 21),
+              ),
+              const SizedBox(height: 4),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -544,7 +506,7 @@ class _DeckFormState extends State<_DeckForm> {
                   maxWidth: MediaQuery.sizeOf(context).width - 18,
                   child: _Ruler(
                     value: count,
-                    max: remaining.clamp(5, maxCards),
+                    max: maxCards,
                     onChanged: (v) => setState(() => count = v),
                   ),
                 ),
@@ -562,32 +524,7 @@ class _DeckFormState extends State<_DeckForm> {
                   ),
                 ),
               ),
-              if (locked) ...[
-                const SizedBox(height: 9),
-                Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6.5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Palette.slotFill,
-                      borderRadius: BorderRadius.circular(13),
-                    ),
-                    child: Text(
-                      context.t.slotsLeft(remaining),
-                      style: D.text(
-                        12,
-                        weight: FontWeight.w600,
-                        color: Palette.slotInk,
-                        height: 1,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-              ] else
-                const SizedBox(height: 32),
+              const SizedBox(height: 32),
               // Words come from samples, not AI yet, so generating is shown as
               // coming soon.
               Semantics(
@@ -624,11 +561,9 @@ class _DeckFormState extends State<_DeckForm> {
     );
   }
 
-  static OutlineInputBorder _border(bool locked) => OutlineInputBorder(
+  static final _border = OutlineInputBorder(
     borderRadius: BorderRadius.circular(16),
-    borderSide: locked
-        ? BorderSide.none
-        : const BorderSide(color: Palette.settingsPanel),
+    borderSide: const BorderSide(color: Palette.settingsPanel),
   );
 }
 

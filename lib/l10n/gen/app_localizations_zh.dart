@@ -1073,20 +1073,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addDeck => '添加卡组';
 
   @override
-  String addedSampleWords(int count) {
-    return '已添加 $count 个示例单词';
-  }
-
-  @override
-  String get sampleDeckDescription => '你的示例词汇卡组';
-
-  @override
-  String get cardsFailed => '无法生成卡片，请重试。';
-
-  @override
-  String get addCards => '添加卡片';
-
-  @override
   String get newDeck => '新建卡组';
 
   @override
@@ -1100,11 +1086,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get wordsToGenerateCaps => '生成单词数';
-
-  @override
-  String slotsLeft(int count) {
-    return '还剩 $count 个位置';
-  }
 
   @override
   String get generateDeck => '生成卡组';
@@ -1155,9 +1136,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String reviewDue(int count) {
     return '复习（$count）';
   }
-
-  @override
-  String get doneForToday => '今天的学习已完成！';
 
   @override
   String get searchCards => '搜索卡片';
@@ -1496,15 +1474,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sessionsDone => '完成的练习';
 
   @override
-  String get unitSentences => '句';
-
-  @override
-  String get sentencesPractised => '练习的句子';
-
-  @override
-  String get unitParagraphs => '段';
-
-  @override
   String get noMistakesMonth => '本月你没有任何语法错误，太棒了！';
 
   @override
@@ -1567,9 +1536,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get clearHistoryBody => '只会清除本应用中的结果，且无法撤销。';
 
   @override
-  String get newPractice => '新的练习';
-
-  @override
   String get noReviewsYet => '还没有练习记录';
 
   @override
@@ -1597,9 +1563,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get closeSearch => '关闭搜索';
-
-  @override
-  String get newPracticeLabel => '新建练习';
 
   @override
   String get seeMore => '查看更多';
@@ -3047,9 +3010,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get listenIntro => 'hifive 按程度精选的听力。遇到生词就保存，在今日复习里复习。';
 
   @override
-  String get listenEmpty => '正在加载听力资源。请检查网络后重新打开。';
-
-  @override
   String listenPlaylist(String channel) {
     return 'YouTube 播放列表 · $channel';
   }
@@ -3247,7 +3207,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get helpBody8 =>
-      '你每天学习，花园就会更绿一点。\n\n学习让树成长\n\n• 每复习一个新词或到期的词，就是给树浇一次水。浇满 10 次，花园里就会长出一棵学习树。\n• 在花园中选择学习树的品种。学得越规律，解锁的品种越多。\n\n专注模式\n\n• 设定时间，选择标签（英语、写作、工作……）后开始：树会随着你专注的时间长大。\n• 离开应用超过 30 秒或放弃，树就会枯萎。锁屏时树仍会继续长大。\n• 一次专注结束后，复习几个到期的词，让树开花。\n\n即将推出\n\n• 专注时屏蔽让人分心的应用。\n• 放松音效和呼吸练习。\n• 显示成长中的树和待复习单词数的主屏幕小组件。';
+      '每天学习，你的花园都会更绿一点。\n\n学习让树成长\n\n• 每复习一个新词或到期的词，只要花至少 1.5 秒回想，就是给树浇一次水。每天最多浇 5 次；在 3 个不同的日子里浇满 10 次，花园里就会长出一棵学习树。\n• 在花园中选择学习树的品种。学得越规律，解锁的品种越多。\n\n专注模式\n\n• 设定时间，选择标签（英语、写作、工作……）后开始：树会随着你专注的时间长大。\n• 在 iPhone 上，专注时可以屏蔽让人分心的应用。\n• 离开应用超过 30 秒或放弃，树就会枯萎。锁屏时树仍会继续长大。\n• 专注 25 分钟以上后，复习几个到期的词，让树开花。\n\n即将推出\n\n• 放松音效和呼吸练习。\n• 显示成长中的树和待复习单词数的主屏幕小组件。';
 
   @override
   String get helpTitle9 => '听力练习';
@@ -3993,4 +3953,39 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get guideEasyBody => '向右滑，这个词会少出现';
+
+  @override
+  String get storageErrorNotice => '无法读取或保存本机数据。现在的学习进度不会被保存。请彻底关闭应用后重新打开。';
+
+  @override
+  String get syncFailedNotice => '暂时无法同步。你的数据仍保存在本机。';
+
+  @override
+  String syncedAt(String time) {
+    return '已于 $time 同步';
+  }
+
+  @override
+  String get syncingNow => '正在同步…';
+
+  @override
+  String get todayNoWords => '还没有单词';
+
+  @override
+  String get todayNoWordsBody => '选择一个词卡组开始';
+
+  @override
+  String get listenLoading => '正在加载听力资源…';
+
+  @override
+  String get catalogFailed => '内容加载失败。请检查网络后重试。';
+
+  @override
+  String get unitMinutes => '分钟';
+
+  @override
+  String get unitGames => '局';
+
+  @override
+  String get deckNoWords => '这个词卡组还没有单词';
 }

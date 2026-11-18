@@ -66,21 +66,20 @@ void main() {
 }
 
 void searchAndMore() {
-  testWidgets('searching swaps + for ✕ and counts matches', (tester) async {
+  testWidgets('searching shows ✕ and counts matches', (tester) async {
     final state = fresh(includeExamples: true);
     await mount(tester, state, const HistoryScreen(), size: tall);
-    expect(find.byKey(const ValueKey('history-new')), findsOneWidget);
+    expect(find.byKey(const ValueKey('history-close')), findsNothing);
     final title = state.history.first.lesson.title;
     await tester.enterText(
       find.byKey(const ValueKey('history-search')),
       title.substring(0, 4),
     );
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('history-new')), findsNothing);
     expect(find.text('1'), findsWidgets);
     await tester.tap(find.byKey(const ValueKey('history-close')));
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('history-new')), findsOneWidget);
+    expect(find.byKey(const ValueKey('history-close')), findsNothing);
   });
 
   testWidgets('a section page counts its sessions', (tester) async {

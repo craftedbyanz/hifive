@@ -2166,30 +2166,6 @@ abstract class AppLocalizations {
   /// **'Thêm bộ thẻ'**
   String get addDeck;
 
-  /// No description provided for @addedSampleWords.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã thêm {count} từ mẫu'**
-  String addedSampleWords(int count);
-
-  /// No description provided for @sampleDeckDescription.
-  ///
-  /// In vi, this message translates to:
-  /// **'Bộ từ vựng mẫu của bạn'**
-  String get sampleDeckDescription;
-
-  /// No description provided for @cardsFailed.
-  ///
-  /// In vi, this message translates to:
-  /// **'Không tạo được thẻ. Vui lòng thử lại.'**
-  String get cardsFailed;
-
-  /// No description provided for @addCards.
-  ///
-  /// In vi, this message translates to:
-  /// **'Add Cards'**
-  String get addCards;
-
   /// No description provided for @newDeck.
   ///
   /// In vi, this message translates to:
@@ -2219,12 +2195,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'WORDS TO GENERATE'**
   String get wordsToGenerateCaps;
-
-  /// No description provided for @slotsLeft.
-  ///
-  /// In vi, this message translates to:
-  /// **'Còn {count} slot'**
-  String slotsLeft(int count);
 
   /// No description provided for @generateDeck.
   ///
@@ -2321,12 +2291,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ôn tập ({count})'**
   String reviewDue(int count);
-
-  /// No description provided for @doneForToday.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã hoàn thành bài học hôm nay!'**
-  String get doneForToday;
 
   /// No description provided for @searchCards.
   ///
@@ -2940,24 +2904,6 @@ abstract class AppLocalizations {
   /// **'Buổi hoàn thành'**
   String get sessionsDone;
 
-  /// No description provided for @unitSentences.
-  ///
-  /// In vi, this message translates to:
-  /// **'CÂU'**
-  String get unitSentences;
-
-  /// No description provided for @sentencesPractised.
-  ///
-  /// In vi, this message translates to:
-  /// **'Câu luyện tập'**
-  String get sentencesPractised;
-
-  /// No description provided for @unitParagraphs.
-  ///
-  /// In vi, this message translates to:
-  /// **'ĐOẠN'**
-  String get unitParagraphs;
-
   /// No description provided for @noMistakesMonth.
   ///
   /// In vi, this message translates to:
@@ -3078,12 +3024,6 @@ abstract class AppLocalizations {
   /// **'Chỉ xóa kết quả trên bản ứng dụng này. Hành động không thể hoàn tác.'**
   String get clearHistoryBody;
 
-  /// No description provided for @newPractice.
-  ///
-  /// In vi, this message translates to:
-  /// **'Luyện tập mới'**
-  String get newPractice;
-
   /// No description provided for @noReviewsYet.
   ///
   /// In vi, this message translates to:
@@ -3137,12 +3077,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đóng tìm kiếm'**
   String get closeSearch;
-
-  /// No description provided for @newPracticeLabel.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tạo bài luyện tập mới'**
-  String get newPracticeLabel;
 
   /// No description provided for @seeMore.
   ///
@@ -5796,12 +5730,6 @@ abstract class AppLocalizations {
   /// **'Nguồn nghe hifive chọn lọc theo trình độ. Gặp từ lạ thì lưu lại để ôn trong Ôn hôm nay.'**
   String get listenIntro;
 
-  /// No description provided for @listenEmpty.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đang tải nguồn nghe. Hãy kiểm tra kết nối mạng rồi mở lại.'**
-  String get listenEmpty;
-
   /// No description provided for @listenPlaylist.
   ///
   /// In vi, this message translates to:
@@ -6141,7 +6069,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpBody8.
   ///
   /// In vi, this message translates to:
-  /// **'Mỗi ngày bạn học, khu vườn của bạn lại xanh thêm một chút.\n\nCây lớn lên từ việc học\n\n• Mỗi lần ôn một từ mới hoặc một từ đến hạn là một lần tưới cây. Đủ 10 lần, một cây học mọc trong vườn.\n• Chọn loài cây học trong mục Vườn. Học càng đều, càng mở khoá thêm nhiều loài.\n\nChế độ Tập trung\n\n• Đặt thời gian, gắn nhãn (Tiếng Anh, Viết, Công việc…) rồi bắt đầu: cây lớn dần theo thời gian bạn tập trung.\n• Rời app quá 30 giây hoặc bỏ cuộc thì cây héo. Khoá màn hình thì cây vẫn lớn.\n• Xong phiên, ôn vài từ đến hạn để cây nở hoa.\n\nSắp ra mắt\n\n• Chặn các app gây xao nhãng trong lúc tập trung.\n• Âm thanh thư giãn và bài tập thở.\n• Widget màn hình chính cho cây đang lớn và số từ cần ôn.'**
+  /// **'Mỗi ngày bạn học, khu vườn của bạn lại xanh thêm một chút.\n\nCây lớn lên từ việc học\n\n• Mỗi lần ôn một từ mới hoặc một từ đến hạn là một lần tưới cây, nếu bạn dành ít nhất 1,5 giây để nhớ. Mỗi ngày cây nhận tối đa 5 lần tưới; đủ 10 lần trong 3 ngày khác nhau, một cây học mọc trong vườn.\n• Chọn loài cây học trong mục Vườn. Học càng đều, càng mở khoá thêm nhiều loài.\n\nChế độ Tập trung\n\n• Đặt thời gian, gắn nhãn (Tiếng Anh, Viết, Công việc…) rồi bắt đầu: cây lớn dần theo thời gian bạn tập trung.\n• Trên iPhone, bạn có thể chặn các app gây xao nhãng trong lúc tập trung.\n• Rời app quá 30 giây hoặc bỏ cuộc thì cây héo. Khoá màn hình thì cây vẫn lớn.\n• Sau phiên từ 25 phút, ôn vài từ đến hạn để cây nở hoa.\n\nSắp ra mắt\n\n• Âm thanh thư giãn và bài tập thở.\n• Widget màn hình chính cho cây đang lớn và số từ cần ôn.'**
   String get helpBody8;
 
   /// No description provided for @helpTitle9.
@@ -7457,6 +7385,72 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Vuốt phải để ít gặp lại từ này hơn'**
   String get guideEasyBody;
+
+  /// No description provided for @storageErrorNotice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đọc hoặc lưu được dữ liệu trên máy. Những gì bạn học lúc này sẽ không được lưu. Hãy đóng hẳn app rồi mở lại.'**
+  String get storageErrorNotice;
+
+  /// No description provided for @syncFailedNotice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đồng bộ được. Dữ liệu vẫn được lưu trên máy này.'**
+  String get syncFailedNotice;
+
+  /// No description provided for @syncedAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đồng bộ lúc {time}'**
+  String syncedAt(String time);
+
+  /// No description provided for @syncingNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang đồng bộ…'**
+  String get syncingNow;
+
+  /// No description provided for @todayNoWords.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có từ để ôn'**
+  String get todayNoWords;
+
+  /// No description provided for @todayNoWordsBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn một bộ thẻ để bắt đầu'**
+  String get todayNoWordsBody;
+
+  /// No description provided for @listenLoading.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải nguồn nghe…'**
+  String get listenLoading;
+
+  /// No description provided for @catalogFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tải được nội dung. Hãy kiểm tra kết nối mạng rồi thử lại.'**
+  String get catalogFailed;
+
+  /// No description provided for @unitMinutes.
+  ///
+  /// In vi, this message translates to:
+  /// **'PHÚT'**
+  String get unitMinutes;
+
+  /// No description provided for @unitGames.
+  ///
+  /// In vi, this message translates to:
+  /// **'LƯỢT'**
+  String get unitGames;
+
+  /// No description provided for @deckNoWords.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ thẻ này chưa có từ nào'**
+  String get deckNoWords;
 }
 
 class _AppLocalizationsDelegate

@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hifive/app/app.dart';
+import 'package:hifive/data/data.dart';
+import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/domain/vocab/vocab.dart';
 import 'package:hifive/features/listening/listening.dart';
 import 'package:hifive/state/state.dart';
@@ -9,6 +12,19 @@ import 'package:hifive/state/state.dart';
 import '../../helpers.dart';
 
 final _pack = File('worker/catalog/en/3.json').readAsStringSync();
+
+/// Serves pack 3, or fails like a phone offline.
+class _Catalog implements CatalogRepository {
+  var fail = false;
+  @override
+  Future<int?> latestVersion(String language) async {
+    if (fail) throw const SocketException('offline');
+    return 3;
+  }
+
+  @override
+  Future<String> pack(String language, int version) async => _pack;
+}
 
 /// Plays nothing; tests move it by hand.
 class FakePlayer extends ListenPlayer {
@@ -73,12 +89,27 @@ void main() {
     expect(parseListening(older).single.episodes, isEmpty);
   });
 
-  testWidgets('without a catalog the screen says sources are loading', (
+  testWidgets('a catalog that fails to load says so and loads on Thử lại', (
     tester,
   ) async {
-    await mount(tester, fresh(), const ListeningScreen());
+    final catalog = _Catalog()..fail = true;
+    final state = createAppState(
+      store: MemoryRecordStore(),
+      catalog: catalog,
+      feedback: SilentFeedback(),
+      now: () => DateTime(2026, 11, 18, 9),
+    )..onboarded = true;
+    await state.load();
+    await mount(tester, state, const ListeningScreen());
     expect(find.byKey(const ValueKey('listen-empty')), findsOneWidget);
+    expect(find.text('Thử lại'), findsOneWidget);
     expect(find.byKey(const ValueKey('listen-resume')), findsNothing);
+
+    catalog.fail = false;
+    await tester.tap(find.byKey(const ValueKey('listen-retry')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('listen-empty')), findsNothing);
+    expect(find.text('A1 luyện nghe tiếng Anh cơ bản'), findsOneWidget);
   });
 
   testWidgets('a source shows its episodes and how many were heard', (

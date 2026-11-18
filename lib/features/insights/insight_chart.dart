@@ -9,13 +9,16 @@ class _WeekChart extends StatelessWidget {
     final today = DateUtils.dateOnly(now);
     // The reference ends the week on today, so the first bar is six days ago.
     final days = [
-      for (var i = 6; i >= 0; i--) today.subtract(Duration(days: i)),
+      for (var i = 6; i >= 0; i--)
+        DateTime(today.year, today.month, today.day - i),
     ];
+    // Sessions of every kind each day: lessons, vocabulary, listening and
+    // games.
     final counts = [
       for (final day in days)
-        state.history
-            .where((h) => AppState.dayKey(h.date) == AppState.dayKey(day))
-            .length,
+        state
+            .activityBetween(day, DateTime(day.year, day.month, day.day + 1))
+            .sessions,
     ];
     final highest = counts.fold(1, (a, b) => a > b ? a : b);
     final names = context.t.weekdaysMonFirst.split(',');

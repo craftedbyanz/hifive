@@ -60,8 +60,12 @@ void main() {
     expect(find.text('TỪ'), findsOneWidget);
     expect(find.text('00:34'), findsOneWidget);
     expect(find.text('GIỜ'), findsOneWidget);
-    expect(find.text('10'), findsOneWidget);
-    expect(find.text('CÂU'), findsOneWidget);
+    // Listening, games and focus, the second row, are all still at zero.
+    expect(find.text('PHÚT'), findsNWidgets(2));
+    expect(find.text('LƯỢT'), findsOneWidget);
+    expect(find.text('CÂU'), findsNothing);
+    // The time it was worked out, not a fixed one.
+    expect(find.text('Cập nhật lúc 01:43 hôm nay'), findsOneWidget);
     expect(
       find.text(
         'Bạn đã hoàn thành 1 buổi tập trong Tháng 11, 2026, và 1 buổi trong năm nay.',
@@ -69,6 +73,39 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('1 lỗi ngữ pháp'), findsOneWidget);
+  });
+
+  testWidgets('counts words, listening, games and focus, not only lessons', (
+    tester,
+  ) async {
+    final state = fresh();
+    final deck = state.decks.first;
+    // Two words in one sitting, timed at 20 s and 50 s, and one untimed.
+    state
+      ..rate(deck.words[0], 2, ms: 20000)
+      ..rate(deck.words[1], 3, ms: 50000)
+      ..rate(deck.words[1], 3)
+      ..listened('video', position: 300, heard: 300)
+      ..finishGame(40, clearResume: false);
+    await mount(tester, state, const InsightScreen(), size: _tall);
+    final summary = state.activityBetween(
+      DateTime(2026, 11),
+      DateTime(2026, 12),
+    );
+    expect(summary.words, 2);
+    expect(summary.seconds, 20 + 50 + 12 + 300);
+    expect(summary.listenSeconds, 300);
+    expect(summary.games, 1);
+    // A vocabulary session, a video heard and a game.
+    expect(summary.sessions, 3);
+    expect(find.text('3RD'), findsOneWidget);
+    expect(find.text('00:06'), findsOneWidget);
+    expect(find.text('5'), findsWidgets);
+    // No lesson this month: nothing claims there were no grammar mistakes.
+    expect(find.textContaining('lỗi ngữ pháp'), findsNothing);
+    expect(find.byKey(const ValueKey('insight-ai-info')), findsNothing);
+    // Today's bar counts all three.
+    expect(find.byKey(const ValueKey('insight-bar-6')), findsOneWidget);
   });
 
   testWidgets('counts days with Hifive from the first use', (tester) async {

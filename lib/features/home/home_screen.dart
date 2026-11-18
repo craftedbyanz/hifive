@@ -1,11 +1,13 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../core/design/design.dart';
 import '../../core/services/screen_lock.dart';
+import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
 import '../flashcards/flashcards.dart';
@@ -194,6 +196,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Nothing is saved while the device's data
+                              // can't be read or written, so the learner
+                              // hears it before studying.
+                              if (state.storageError != null)
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    16,
+                                    44,
+                                    16,
+                                    16,
+                                  ),
+                                  child: Notice(
+                                    key: const ValueKey('storage-error'),
+                                    icon: CupertinoIcons
+                                        .exclamationmark_triangle_fill,
+                                    text: context.t.storageErrorNotice,
+                                  ),
+                                ),
                               HomeIntro(ambient: _ambient),
                               const SizedBox(height: 23),
                               ModeCarousel(

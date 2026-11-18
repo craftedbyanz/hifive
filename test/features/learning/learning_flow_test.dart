@@ -8,7 +8,6 @@ import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/domain/sync/sync.dart';
 import 'package:hifive/features/game/game.dart';
-import 'package:hifive/features/history/history.dart';
 import 'package:hifive/features/insights/insights.dart';
 import 'package:hifive/features/learning/learning.dart';
 import 'package:hifive/l10n/l10n.dart';
@@ -722,18 +721,6 @@ void main() {
     });
   });
 
-  testWidgets('history + starts a new lesson in the chosen mode', (
-    tester,
-  ) async {
-    await mount(tester, fresh(includeExamples: true), const HistoryScreen());
-    await tester.tap(find.byKey(const ValueKey('history-new')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('history-new-writing')));
-    await tester.pumpAndSettle();
-    final topics = tester.widget<TopicScreen>(find.byType(TopicScreen));
-    expect(topics.mode, StudyMode.writing);
-  });
-
   testWidgets('Xoay on the game home turns the screen and the game', (
     tester,
   ) async {
@@ -791,16 +778,16 @@ void main() {
             ),
           ];
 
-    testWidgets('Tạo bởi AI explains the suggestions', (tester) async {
+    testWidgets('Tạo bởi AI is not claimed while suggestions are coming soon', (
+      tester,
+    ) async {
       await mount(
         tester,
         withMistake(_FailingInsights()..fail = false),
         const InsightScreen(),
         size: const Size(393, 1500),
       );
-      await tester.tap(find.byKey(const ValueKey('insight-ai-info')));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('AI tổng hợp'), findsOneWidget);
+      expect(find.byKey(const ValueKey('insight-ai-info')), findsNothing);
     });
   });
 }

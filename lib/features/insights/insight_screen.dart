@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
-import '../../domain/models/models.dart';
 import '../../domain/vocab/vocab.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
@@ -51,23 +51,18 @@ class _InsightScreenState extends State<InsightScreen> {
   Widget build(BuildContext context) {
     final s = AppScope.of(context), now = s.now();
     final monthName = context.t.monthYearShort(now.month, now.year);
-    final year = s.history.where((h) => h.date.year == now.year).toList();
-    final month = year.where((h) => h.date.month == now.month).toList();
-    final seconds = month.fold(0, (v, h) => v + h.seconds);
-    final words = month.fold(
-      0,
-      (v, h) =>
-          v +
-          h.lesson.questions.fold<int>(
-            0,
-            (a, q) => a + q.answer.split(' ').length,
-          ),
+    final month = s.history
+        .where((h) => h.date.year == now.year && h.date.month == now.month)
+        .toList();
+    // Everything studied, not only lessons: vocabulary, listening, games
+    // and focus count too.
+    final activity = s.activityBetween(
+      DateTime(now.year, now.month),
+      DateTime(now.year, now.month + 1),
     );
-    int sessions(StudyMode mode) =>
-        month.where((h) => h.lesson.mode == mode).length;
-    final sentences = month
-        .where((h) => h.lesson.mode == StudyMode.grammar)
-        .fold(0, (v, h) => v + h.lesson.questions.length);
+    final yearSessions = s
+        .activityBetween(DateTime(now.year), DateTime(now.year + 1))
+        .sessions;
     final mistakes = month.fold(
       0,
       (v, h) => v + h.answers.where((a) => a.firstScore < .65).length,
@@ -95,15 +90,15 @@ class _InsightScreenState extends State<InsightScreen> {
               ),
               const SizedBox(width: 6),
               Text(
-                context.t.updatedToday('09:41'),
+                context.t.updatedToday(DateFormat('HH:mm').format(now)),
                 style: D.text(13, color: Palette.insightFaint, height: 17 / 13),
               ),
             ],
           ),
           const SizedBox(height: 31),
           _SessionSummary(
-            count: month.length,
-            yearCount: year.length,
+            count: activity.sessions,
+            yearCount: yearSessions,
             monthName: monthName,
             now: now,
             studyDays: s.studyDays,
@@ -115,7 +110,7 @@ class _InsightScreenState extends State<InsightScreen> {
             stats: [
               _StatData(
                 icon: const _BookGlyph(color: Palette.insightBook),
-                value: '$words',
+                value: '${activity.words}',
                 unit: context.t.unitWords,
                 label: context.t.vocabularyLearned,
               ),
@@ -125,7 +120,7 @@ class _InsightScreenState extends State<InsightScreen> {
                   size: 18,
                   color: Palette.insightClock,
                 ),
-                value: _hoursAndMinutes(seconds),
+                value: _hoursAndMinutes(activity.seconds),
                 unit: context.t.unitHours,
                 label: context.t.studyTime,
               ),
@@ -135,7 +130,7 @@ class _InsightScreenState extends State<InsightScreen> {
                   size: 18,
                   color: D.green,
                 ),
-                value: '${month.length}',
+                value: '${activity.sessions}',
                 unit: context.t.unitSessions,
                 label: context.t.sessionsDone,
               ),
@@ -143,51 +138,62 @@ class _InsightScreenState extends State<InsightScreen> {
           ),
           _StatRow(
             stats: [
+              // Writing, grammar and conversation are coming soon, so the
+              // second row shows what can be done now.
               _StatData(
                 icon: const Icon(
-                  CupertinoIcons.text_bubble_fill,
+                  CupertinoIcons.headphones,
                   size: 19,
                   color: D.blue,
                 ),
-                value: '$sentences',
-                unit: context.t.unitSentences,
-                label: context.t.sentencesPractised,
+                value: '${activity.listenSeconds ~/ 60}',
+                unit: context.t.unitMinutes,
+                label: context.t.menuListen,
               ),
               _StatData(
                 icon: const Icon(
-                  CupertinoIcons.person_2_fill,
-                  size: 22,
+                  CupertinoIcons.gamecontroller_fill,
+                  size: 20,
                   color: Palette.insightPeople,
                 ),
-                value: '${sessions(StudyMode.conversation)}',
-                label: context.t.modeChatTitle,
+                value: '${activity.games}',
+                unit: context.t.unitGames,
+                label: context.t.activityGames,
               ),
               _StatData(
-                icon: const CustomPaint(
-                  size: Size(17, 15),
-                  painter: TextLinesPainter(color: Palette.yellow),
+                icon: const Icon(
+                  CupertinoIcons.tree,
+                  size: 19,
+                  color: Palette.yellow,
                 ),
-                value: '${sessions(StudyMode.writing)}',
-                unit: context.t.unitParagraphs,
-                label: context.t.modeWritingTitle,
+                value: '${activity.focusMinutes}',
+                unit: context.t.unitMinutes,
+                label: context.t.activityFocus,
               ),
             ],
           ),
           const SizedBox(height: 9),
           const Divider(height: 1, color: Palette.insightDot),
-          const SizedBox(height: 35),
-          if (mistakes == 0)
-            // No reference state with zero mistakes has been observed.
-            Text(
-              context.t.noMistakesMonth,
-              style: D.text(21, weight: FontWeight.w700),
-            )
-          else ...[
-            _MistakeSummary(count: mistakes),
-            _tipsArea(),
+          // Mistakes come from lessons, which are coming soon: without a
+          // lesson this month there is nothing to say about them.
+          if (month.isNotEmpty) ...[
+            const SizedBox(height: 35),
+            if (mistakes == 0)
+              // No reference state with zero mistakes has been observed.
+              Text(
+                context.t.noMistakesMonth,
+                style: D.text(21, weight: FontWeight.w700),
+              )
+            else ...[
+              _MistakeSummary(count: mistakes),
+              _tipsArea(),
+            ],
           ],
-          const SizedBox(height: 34),
-          const _GeneratedByAi(),
+          // Only suggestions are made by AI, and only once they are shown.
+          if (_tips == _TipsState.shown) ...[
+            const SizedBox(height: 34),
+            const _GeneratedByAi(),
+          ],
           const SizedBox(height: 33),
           _WeekChart(state: s, now: now),
           const SizedBox(height: 31),

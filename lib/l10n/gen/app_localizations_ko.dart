@@ -1081,20 +1081,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addDeck => '덱 추가';
 
   @override
-  String addedSampleWords(int count) {
-    return '예시 단어 $count개를 추가했어요';
-  }
-
-  @override
-  String get sampleDeckDescription => '나의 예시 단어 덱';
-
-  @override
-  String get cardsFailed => '카드를 만들지 못했어요. 다시 시도하세요.';
-
-  @override
-  String get addCards => '카드 추가';
-
-  @override
   String get newDeck => '새 덱';
 
   @override
@@ -1108,11 +1094,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get wordsToGenerateCaps => '생성할 단어 수';
-
-  @override
-  String slotsLeft(int count) {
-    return '남은 자리 $count개';
-  }
 
   @override
   String get generateDeck => '덱 생성';
@@ -1163,9 +1144,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String reviewDue(int count) {
     return '복습 ($count)';
   }
-
-  @override
-  String get doneForToday => '오늘 학습을 마쳤어요!';
 
   @override
   String get searchCards => '카드 검색';
@@ -1505,15 +1483,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get sessionsDone => '완료한 학습';
 
   @override
-  String get unitSentences => '문장';
-
-  @override
-  String get sentencesPractised => '연습한 문장';
-
-  @override
-  String get unitParagraphs => '문단';
-
-  @override
   String get noMistakesMonth => '이번 달에는 문법 오류가 없어요. 훌륭해요!';
 
   @override
@@ -1576,9 +1545,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get clearHistoryBody => '이 앱의 결과만 지워지며 되돌릴 수 없어요.';
 
   @override
-  String get newPractice => '새 연습';
-
-  @override
   String get noReviewsYet => '아직 기록이 없어요';
 
   @override
@@ -1606,9 +1572,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get closeSearch => '검색 닫기';
-
-  @override
-  String get newPracticeLabel => '새 연습 만들기';
 
   @override
   String get seeMore => '더 보기';
@@ -3066,9 +3029,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get listenIntro => 'hifive가 수준별로 고른 듣기예요. 모르는 단어는 저장해 오늘의 복습에서 복습해요.';
 
   @override
-  String get listenEmpty => '듣기 자료를 불러오는 중이에요. 연결을 확인하고 다시 열어 주세요.';
-
-  @override
   String listenPlaylist(String channel) {
     return 'YouTube 재생목록 · $channel';
   }
@@ -3267,7 +3227,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get helpBody8 =>
-      '공부하는 날마다 정원이 조금씩 더 푸르러져요.\n\n공부로 자라는 나무\n\n• 새 단어나 복습할 단어를 하나 복습할 때마다 나무에 물을 줘요. 10번 주면 정원에 공부 나무가 자라요.\n• 정원에서 공부 나무 종류를 골라요. 꾸준히 공부할수록 더 많은 종류가 열려요.\n\n집중 모드\n\n• 시간을 정하고 태그(영어, 쓰기, 업무…)를 고른 뒤 시작하면, 집중하는 동안 나무가 자라요.\n• 앱을 30초 넘게 떠나거나 포기하면 나무가 시들어요. 화면을 잠가도 나무는 계속 자라요.\n• 세션이 끝나면 복습할 단어 몇 개를 복습해 나무에 꽃을 피워요.\n\n곧 출시\n\n• 집중하는 동안 방해되는 앱 차단.\n• 편안한 소리와 호흡 연습.\n• 자라는 나무와 복습할 단어 수를 보여 주는 홈 화면 위젯.';
+      '공부하는 날마다 정원이 조금씩 더 푸르러져요.\n\n공부로 자라는 나무\n\n• 새 단어나 복습할 단어를 1.5초 이상 떠올려 복습할 때마다 나무에 물을 줘요. 하루에 최대 5번까지 줄 수 있고, 서로 다른 3일에 걸쳐 10번 주면 정원에 공부 나무가 자라요.\n• 정원에서 공부 나무 종류를 골라요. 꾸준히 공부할수록 더 많은 종류가 열려요.\n\n집중 모드\n\n• 시간을 정하고 태그(영어, 쓰기, 업무…)를 고른 뒤 시작하면, 집중하는 동안 나무가 자라요.\n• iPhone에서는 집중하는 동안 방해되는 앱을 차단할 수 있어요.\n• 앱을 30초 넘게 떠나거나 포기하면 나무가 시들어요. 화면을 잠가도 나무는 계속 자라요.\n• 25분 이상 집중한 뒤 복습할 단어 몇 개를 복습해 나무에 꽃을 피워요.\n\n곧 출시\n\n• 편안한 소리와 호흡 연습.\n• 자라는 나무와 복습할 단어 수를 보여 주는 홈 화면 위젯.';
 
   @override
   String get helpTitle9 => '듣기 연습';
@@ -4017,4 +3977,40 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get guideEasyBody => '오른쪽으로 밀면 이 단어가 덜 나와요';
+
+  @override
+  String get storageErrorNotice =>
+      '이 기기의 데이터를 읽거나 저장할 수 없어요. 지금 학습한 내용은 저장되지 않아요. 앱을 완전히 종료한 뒤 다시 열어 주세요.';
+
+  @override
+  String get syncFailedNotice => '동기화하지 못했어요. 데이터는 이 기기에 저장되어 있어요.';
+
+  @override
+  String syncedAt(String time) {
+    return '$time에 동기화됨';
+  }
+
+  @override
+  String get syncingNow => '동기화 중…';
+
+  @override
+  String get todayNoWords => '아직 단어가 없어요';
+
+  @override
+  String get todayNoWordsBody => '단어장을 골라 시작하세요';
+
+  @override
+  String get listenLoading => '듣기 자료를 불러오는 중…';
+
+  @override
+  String get catalogFailed => '콘텐츠를 불러오지 못했어요. 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
+  String get unitMinutes => '분';
+
+  @override
+  String get unitGames => '판';
+
+  @override
+  String get deckNoWords => '이 단어장에는 아직 단어가 없어요';
 }

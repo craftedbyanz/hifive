@@ -1126,26 +1126,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addDeck => 'Add deck';
 
   @override
-  String addedSampleWords(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Added $count sample words',
-      one: 'Added 1 sample word',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get sampleDeckDescription => 'Your sample vocabulary deck';
-
-  @override
-  String get cardsFailed => 'Couldn\'t create cards. Please try again.';
-
-  @override
-  String get addCards => 'Add Cards';
-
-  @override
   String get newDeck => 'New Deck';
 
   @override
@@ -1159,17 +1139,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wordsToGenerateCaps => 'WORDS TO GENERATE';
-
-  @override
-  String slotsLeft(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count slots left',
-      one: '1 slot left',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get generateDeck => 'Generate Deck';
@@ -1220,9 +1189,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String reviewDue(int count) {
     return 'Review ($count)';
   }
-
-  @override
-  String get doneForToday => 'You\'re done for today!';
 
   @override
   String get searchCards => 'Search cards';
@@ -1587,15 +1553,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sessionsDone => 'Sessions done';
 
   @override
-  String get unitSentences => 'SENTENCES';
-
-  @override
-  String get sentencesPractised => 'Sentences practised';
-
-  @override
-  String get unitParagraphs => 'PARAS';
-
-  @override
   String get noMistakesMonth => 'No grammar mistakes this month. Great work!';
 
   @override
@@ -1666,9 +1623,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'This only clears results in this app and can\'t be undone.';
 
   @override
-  String get newPractice => 'New practice';
-
-  @override
   String get noReviewsYet => 'No results yet';
 
   @override
@@ -1702,9 +1656,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get closeSearch => 'Close search';
-
-  @override
-  String get newPracticeLabel => 'Start a new practice';
 
   @override
   String get seeMore => 'See more';
@@ -3209,10 +3160,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Listening picked by hifive for your level. Save new words to review them in Today\'s review.';
 
   @override
-  String get listenEmpty =>
-      'Loading listening sources. Check your connection and open this again.';
-
-  @override
   String listenPlaylist(String channel) {
     return 'YouTube playlist · $channel';
   }
@@ -3419,7 +3366,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpBody8 =>
-      'Every day you study, your garden grows a little greener.\n\nTrees that grow from studying\n\n• Each new or due word you review waters your tree. Ten waterings grow a study tree in your garden.\n• Choose your study tree in Garden. The more regularly you study, the more species you unlock.\n\nFocus mode\n\n• Set a time, pick a tag (English, Writing, Work…) and start: your tree grows as you focus.\n• Leave the app for more than 30 seconds or give up and the tree withers. Locking the phone keeps it growing.\n• After a session, review a few due words to make it bloom.\n\nComing soon\n\n• Blocking distracting apps while you focus.\n• Relaxing sounds and breathing exercises.\n• A home screen widget with your growing tree and words to review.';
+      'Every day you study, your garden grows a little greener.\n\nTrees that grow from studying\n\n• Each new or due word you review waters your tree, if you take at least 1.5 seconds to recall it. A tree takes up to 5 waterings a day; ten over 3 different days grow a study tree in your garden.\n• Choose your study tree in Garden. The more regularly you study, the more species you unlock.\n\nFocus mode\n\n• Set a time, pick a tag (English, Writing, Work…) and start: your tree grows as you focus.\n• On iPhone, you can block distracting apps while you focus.\n• Leave the app for more than 30 seconds or give up and the tree withers. Locking the phone keeps it growing.\n• After a session of 25 minutes or more, review a few due words to make it bloom.\n\nComing soon\n\n• Relaxing sounds and breathing exercises.\n• A home screen widget with your growing tree and words to review.';
 
   @override
   String get helpTitle9 => 'Listening';
@@ -4184,4 +4131,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get guideEasyBody => 'Swipe right to see this word less often';
+
+  @override
+  String get storageErrorNotice =>
+      'Hifive can\'t read or save data on this device. What you study now won\'t be saved. Close the app fully and open it again.';
+
+  @override
+  String get syncFailedNotice =>
+      'Couldn\'t sync. Your data is still saved on this device.';
+
+  @override
+  String syncedAt(String time) {
+    return 'Synced at $time';
+  }
+
+  @override
+  String get syncingNow => 'Syncing…';
+
+  @override
+  String get todayNoWords => 'No words yet';
+
+  @override
+  String get todayNoWordsBody => 'Pick a deck to start';
+
+  @override
+  String get listenLoading => 'Loading listening sources…';
+
+  @override
+  String get catalogFailed =>
+      'Couldn\'t load the content. Check your connection and try again.';
+
+  @override
+  String get unitMinutes => 'MIN';
+
+  @override
+  String get unitGames => 'GAMES';
+
+  @override
+  String get deckNoWords => 'This deck has no words yet';
 }

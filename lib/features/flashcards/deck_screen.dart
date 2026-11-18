@@ -10,7 +10,6 @@ import '../../widgets/common.dart';
 import '../community/community.dart';
 import '../game/game.dart';
 import 'deck_edit_sheet.dart';
-import 'deck_list_screen.dart';
 import 'dictionary_screen.dart';
 import 'review_screen.dart';
 import 'word_screen.dart';
@@ -66,7 +65,6 @@ class _DeckScreenState extends State<DeckScreen> {
         context.t.addWords,
         icon: CupertinoIcons.text_badge_plus,
       ),
-      GlassMenuItem('add', context.t.addCards, icon: CupertinoIcons.sparkles),
       GlassMenuItem('edit', context.t.editDeck, icon: CupertinoIcons.pencil),
       GlassMenuItem(
         'reset',
@@ -110,8 +108,6 @@ class _DeckScreenState extends State<DeckScreen> {
       if (mounted) setState(() {});
     } else if (choice == 'share') {
       await sheet<void>(context, ShareDeckSheet(deck: widget.deck));
-    } else if (choice == 'add') {
-      await deckForm(context, deck: widget.deck);
     } else if (await confirm(
       context,
       context.t.restartDeckTitle,
@@ -201,25 +197,47 @@ class _DeckScreenState extends State<DeckScreen> {
                           onFilter: (v) => setState(() => filter = v),
                         ),
                 ),
+                // An empty list is a deck without words, which offers to
+                // add some, or a search or filter that matched nothing.
                 if (list.isEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 62),
                     child: Column(
+                      key: const ValueKey('deck-words-empty'),
                       children: [
-                        const Icon(
-                          CupertinoIcons.checkmark_circle,
+                        Icon(
+                          deck.words.isEmpty
+                              ? CupertinoIcons.square_stack_3d_up
+                              : CupertinoIcons.search,
                           size: 36,
                           color: Palette.settingsEdge,
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          context.t.doneForToday,
+                          deck.words.isEmpty
+                              ? context.t.deckNoWords
+                              : context.t.noResultsFound,
                           style: D.text(
                             14,
                             color: Palette.settingsHint,
                             height: 17 / 14,
                           ),
                         ),
+                        if (deck.words.isEmpty) ...[
+                          const SizedBox(height: 18),
+                          ActionButton(
+                            context.t.addWords,
+                            key: const ValueKey('deck-empty-add'),
+                            icon: CupertinoIcons.text_badge_plus,
+                            onTap: () async {
+                              await go<void>(
+                                context,
+                                DictionaryScreen(deck: deck),
+                              );
+                              if (mounted) setState(() {});
+                            },
+                          ),
+                        ],
                       ],
                     ),
                   ),
