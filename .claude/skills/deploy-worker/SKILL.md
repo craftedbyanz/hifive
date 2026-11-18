@@ -40,8 +40,9 @@ npx wrangler deploy
 ## 4. Smoke-check
 
 ```sh
-curl -s -o /dev/null -w '%{http_code}\n' https://hifive-api.hifive-worker.workers.dev/v1/catalog/manifest.json   # 200
+curl -s -o /dev/null -w '%{http_code}\n' https://hifive-api.hifive-worker.workers.dev/v1/catalog/manifest        # 200
 curl -s -o /dev/null -w '%{http_code}\n' -X POST https://hifive-api.hifive-worker.workers.dev/v1/sync              # 401 without a token
+curl -s -o /dev/null -w '%{http_code}\n' -X POST https://hifive-api.hifive-worker.workers.dev/v1/decks/generate    # 401 without a token
 ```
 
 A 503 from `/v1/sync` with a token means Google's Firebase keys couldn't be fetched (`src/auth.ts`).
