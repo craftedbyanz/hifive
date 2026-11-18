@@ -7386,30 +7386,6 @@ abstract class AppLocalizations {
   /// **'Vuốt phải để ít gặp lại từ này hơn'**
   String get guideEasyBody;
 
-  /// No description provided for @storageErrorNotice.
-  ///
-  /// In vi, this message translates to:
-  /// **'Không đọc hoặc lưu được dữ liệu trên máy. Những gì bạn học lúc này sẽ không được lưu. Hãy đóng hẳn app rồi mở lại.'**
-  String get storageErrorNotice;
-
-  /// No description provided for @syncFailedNotice.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chưa đồng bộ được. Dữ liệu vẫn được lưu trên máy này.'**
-  String get syncFailedNotice;
-
-  /// No description provided for @syncedAt.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã đồng bộ lúc {time}'**
-  String syncedAt(String time);
-
-  /// No description provided for @syncingNow.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đang đồng bộ…'**
-  String get syncingNow;
-
   /// No description provided for @todayNoWords.
   ///
   /// In vi, this message translates to:

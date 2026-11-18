@@ -11,24 +11,6 @@ import '../../helpers.dart';
 void main() {
   setUpAll(loadAppFonts);
 
-  testWidgets('Home warns when the device data cannot be saved', (
-    tester,
-  ) async {
-    final state = fresh();
-    await mount(tester, state, const HomeScreen(animateAmbient: false));
-    expect(find.byKey(const ValueKey('storage-error')), findsNothing);
-
-    state
-      ..storageError = 'Không thể lưu thay đổi trên thiết bị.'
-      ..setVoice('Nicky');
-    await tester.pump();
-    expect(find.byKey(const ValueKey('storage-error')), findsOneWidget);
-    expect(
-      find.textContaining('sẽ không được lưu', findRichText: true),
-      findsOneWidget,
-    );
-  });
-
   testWidgets('with no words at all, today points to the decks', (
     tester,
   ) async {

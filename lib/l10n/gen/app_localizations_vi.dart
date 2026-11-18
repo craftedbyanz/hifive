@@ -4069,22 +4069,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get guideEasyBody => 'Vuốt phải để ít gặp lại từ này hơn';
 
   @override
-  String get storageErrorNotice =>
-      'Không đọc hoặc lưu được dữ liệu trên máy. Những gì bạn học lúc này sẽ không được lưu. Hãy đóng hẳn app rồi mở lại.';
-
-  @override
-  String get syncFailedNotice =>
-      'Chưa đồng bộ được. Dữ liệu vẫn được lưu trên máy này.';
-
-  @override
-  String syncedAt(String time) {
-    return 'Đã đồng bộ lúc $time';
-  }
-
-  @override
-  String get syncingNow => 'Đang đồng bộ…';
-
-  @override
   String get todayNoWords => 'Chưa có từ để ôn';
 
   @override

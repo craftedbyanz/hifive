@@ -4133,22 +4133,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guideEasyBody => 'Swipe right to see this word less often';
 
   @override
-  String get storageErrorNotice =>
-      'Hifive can\'t read or save data on this device. What you study now won\'t be saved. Close the app fully and open it again.';
-
-  @override
-  String get syncFailedNotice =>
-      'Couldn\'t sync. Your data is still saved on this device.';
-
-  @override
-  String syncedAt(String time) {
-    return 'Synced at $time';
-  }
-
-  @override
-  String get syncingNow => 'Syncing…';
-
-  @override
   String get todayNoWords => 'No words yet';
 
   @override

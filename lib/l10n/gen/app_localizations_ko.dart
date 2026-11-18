@@ -3979,21 +3979,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guideEasyBody => '오른쪽으로 밀면 이 단어가 덜 나와요';
 
   @override
-  String get storageErrorNotice =>
-      '이 기기의 데이터를 읽거나 저장할 수 없어요. 지금 학습한 내용은 저장되지 않아요. 앱을 완전히 종료한 뒤 다시 열어 주세요.';
-
-  @override
-  String get syncFailedNotice => '동기화하지 못했어요. 데이터는 이 기기에 저장되어 있어요.';
-
-  @override
-  String syncedAt(String time) {
-    return '$time에 동기화됨';
-  }
-
-  @override
-  String get syncingNow => '동기화 중…';
-
-  @override
   String get todayNoWords => '아직 단어가 없어요';
 
   @override

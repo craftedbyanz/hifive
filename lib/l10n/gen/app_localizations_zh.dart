@@ -3955,20 +3955,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get guideEasyBody => '向右滑，这个词会少出现';
 
   @override
-  String get storageErrorNotice => '无法读取或保存本机数据。现在的学习进度不会被保存。请彻底关闭应用后重新打开。';
-
-  @override
-  String get syncFailedNotice => '暂时无法同步。你的数据仍保存在本机。';
-
-  @override
-  String syncedAt(String time) {
-    return '已于 $time 同步';
-  }
-
-  @override
-  String get syncingNow => '正在同步…';
-
-  @override
   String get todayNoWords => '还没有单词';
 
   @override

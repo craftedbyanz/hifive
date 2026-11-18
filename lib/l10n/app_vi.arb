@@ -2278,17 +2278,6 @@
   "guideKnownBody": "Vuốt lên khi bạn trả lời đúng nghĩa và phát âm",
   "guideEasy": "Quá dễ",
   "guideEasyBody": "Vuốt phải để ít gặp lại từ này hơn",
-  "storageErrorNotice": "Không đọc hoặc lưu được dữ liệu trên máy. Những gì bạn học lúc này sẽ không được lưu. Hãy đóng hẳn app rồi mở lại.",
-  "syncFailedNotice": "Chưa đồng bộ được. Dữ liệu vẫn được lưu trên máy này.",
-  "syncedAt": "Đã đồng bộ lúc {time}",
-  "@syncedAt": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "syncingNow": "Đang đồng bộ…",
   "todayNoWords": "Chưa có từ để ôn",
   "todayNoWordsBody": "Chọn một bộ thẻ để bắt đầu",
   "listenLoading": "Đang tải nguồn nghe…",

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
@@ -54,7 +53,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-          const _SyncStatus(),
           const SizedBox(height: 15.5),
           // Plus is not on sale yet: the banner says so and opens nothing.
           const _TrialBanner(),
@@ -216,51 +214,6 @@ class ProfileScreen extends StatelessWidget {
     if (!shown && context.mounted) {
       toast(context, context.t.cannotOpenHere);
     }
-  }
-}
-
-/// Whether the account's data reached the server: when it last did, a sync
-/// running now, or a failed one with "Thử lại". Nothing without sync.
-class _SyncStatus extends StatelessWidget {
-  const _SyncStatus();
-  @override
-  Widget build(BuildContext context) {
-    final s = AppScope.of(context), t = context.t;
-    if (s.syncService == null || s.user == null) return const SizedBox();
-    if (s.syncError != null && !s.syncing) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 14),
-        child: Notice(
-          key: const ValueKey('profile-sync-failed'),
-          icon: CupertinoIcons.exclamationmark_triangle_fill,
-          text: t.syncFailedNotice,
-          color: D.orange,
-          action: t.retry,
-          onAction: () => unawaited(s.sync()),
-        ),
-      );
-    }
-    final at = s.lastSyncedAt;
-    final String text;
-    if (s.syncing) {
-      text = t.syncingNow;
-    } else if (at != null) {
-      final now = s.now();
-      final today = DateUtils.isSameDay(at, now);
-      text = t.syncedAt(DateFormat(today ? 'HH:mm' : 'dd/MM HH:mm').format(at));
-    } else {
-      return const SizedBox();
-    }
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Center(
-        child: Text(
-          text,
-          key: const ValueKey('profile-sync'),
-          style: D.text(12.5, color: D.secondary),
-        ),
-      ),
-    );
   }
 }
 
