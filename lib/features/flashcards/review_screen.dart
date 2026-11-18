@@ -70,6 +70,10 @@ class _ReviewScreenState extends State<ReviewScreen>
   FlashWord? previous;
   int passed = 0, again = 0;
 
+  /// Time since the top card came up, kept with its rating: an answer
+  /// quicker than `AppState.quickestWatering` doesn't water the garden.
+  final _answer = Stopwatch()..start();
+
   /// Cards brought back once for a Khó still in their learning steps.
   final stepped = <String>{};
   bool done = false, autoplay = false, colorful = false;
@@ -187,7 +191,15 @@ class _ReviewScreenState extends State<ReviewScreen>
     final state = AppScope.read(context);
     final word = queue.first;
     state.feedback.tap();
-    state.rate(word, value, source: widget.source);
+    state.rate(
+      word,
+      value,
+      source: widget.source,
+      ms: _answer.elapsedMilliseconds,
+    );
+    _answer
+      ..reset()
+      ..start();
     // Rated, the card's next intervals change even if it comes straight back.
     _intervals = null;
     activeRating = value;

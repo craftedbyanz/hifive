@@ -4,6 +4,8 @@ import 'package:hifive/app/app.dart';
 import 'package:hifive/core/services/screen_lock.dart';
 import 'package:hifive/data/data.dart';
 import 'package:hifive/domain/garden/garden.dart';
+import 'package:hifive/domain/models/models.dart';
+import 'package:hifive/features/flashcards/flashcards.dart';
 import 'package:hifive/features/garden/garden.dart';
 import 'package:hifive/l10n/l10n.dart';
 import 'package:hifive/state/state.dart';
@@ -278,6 +280,43 @@ void main() {
       findsOneWidget,
     );
     expect(find.byKey(const ValueKey('focus-review')), findsNothing);
+  });
+
+  testWidgets('the break offers due words first, each once, within the day', (
+    tester,
+  ) async {
+    clock = DateTime(2026, 11, 10, 9);
+    state = createAppState(
+      store: MemoryRecordStore(),
+      feedback: SilentFeedback(),
+      now: () => clock,
+    );
+    final cooking = state.decks.firstWhere((d) => d.id == 'cooking');
+    final learned = cooking.words[5];
+    state
+      ..rate(learned, 2)
+      // The same word in a deck of the learner's own.
+      ..addDeck(
+        Deck(
+          id: 'mine',
+          title: 'Mine',
+          description: '',
+          words: [FlashWord(id: 'copy', word: learned.word, meaning: '')],
+        ),
+      )
+      ..setNewPerDay(2);
+    // A week later the word is due.
+    clock = DateTime(2026, 11, 17, 9);
+    await open(tester);
+    await start(tester, minutes: 25);
+    await wait(tester, const Duration(minutes: 25));
+    await tester.tap(find.byKey(const ValueKey('focus-review')));
+    await tester.pumpAndSettle();
+    final words = tester.widget<ReviewScreen>(find.byType(ReviewScreen)).words;
+    expect(words.first.word, learned.word);
+    expect(words.map((w) => w.word.toLowerCase()).toSet(), hasLength(3));
+    // One word due and the day's two new words, not eight from deck order.
+    expect(words, hasLength(3));
   });
 
   testWidgets('the timer sheet says when a length grows only a young plant', (

@@ -69,7 +69,18 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
     Column(
       children: [
         SheetTitle(context.t.chooseDeck),
-        for (final deck in state.decks)
+        if (!state.decks.any((d) => d.words.isNotEmpty))
+          Padding(
+            key: const ValueKey('game-no-decks'),
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            child: Text(
+              context.t.noDecks,
+              textAlign: TextAlign.center,
+              style: D.text(15, color: D.secondary),
+            ),
+          ),
+        // A deck without words would start a game that is already over.
+        for (final deck in state.decks.where((d) => d.words.isNotEmpty))
           ListTile(
             leading: const Icon(Icons.style_rounded),
             title: Text(deck.title),

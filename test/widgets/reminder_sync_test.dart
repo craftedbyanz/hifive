@@ -64,6 +64,40 @@ void main() {
     );
   });
 
+  testWidgets('a nudge offers only the new words the decks still hold', (
+    tester,
+  ) async {
+    final state = fresh()..setReminder(on: true, time: '20:00');
+    // Keep three new words: every other word was met days ago and isn't
+    // due for a long while.
+    final unseen = state.uniqueWords.values.skip(3).toList();
+    for (final w in unseen) {
+      w
+        ..status = 'review'
+        ..due = DateTime(2027);
+    }
+    var list = await scheduled(tester, state);
+    expect(
+      list.first['body'],
+      '3 từ mới, khoảng 2 phút, và cây học của bạn được tưới.',
+    );
+    // With none left, there is nothing to nudge about.
+    for (final w in state.uniqueWords.values) {
+      w
+        ..status = 'review'
+        ..due = DateTime(2027);
+    }
+    calls.clear();
+    state.setVoice('Nicky');
+    await tester.pump(const Duration(seconds: 3));
+    final call = calls.where((c) => c.method == 'scheduleReminders');
+    list = call.isEmpty
+        ? const []
+        : (call.last.arguments as List).cast<Map<Object?, Object?>>();
+    expect(list, isEmpty);
+    expect(calls.map((c) => c.method), contains('cancelReminder'));
+  });
+
   testWidgets('no nudge on a day the learner already studied', (tester) async {
     final state = fresh()..setReminder(on: true, time: '20:00');
     // Rated "Dễ", the word is studied today and not due again for days.

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
@@ -89,9 +90,14 @@ class _ReminderSyncState extends State<ReminderSync>
     _askOnce();
     final t = context.t;
     final first = state.nextReminder;
+    // A nudge never offers more new words than the decks still hold.
+    final unseen = state.uniqueWords.values
+        .where((w) => w.status == 'new')
+        .length;
+    final fresh = math.min(state.newPerDay, unseen);
     final reminders = [
       for (var i = 0; i < ReminderSync.days; i++)
-        ?_note(state, t, _at(first, i)),
+        ?_note(state, t, _at(first, i), fresh),
     ];
     if (reminders.isEmpty) {
       ScreenLock.cancelReminder();
@@ -131,12 +137,13 @@ class _ReminderSyncState extends State<ReminderSync>
   }
 
   /// What the reminder at [at] says: the words due by then, or on a day
-  /// with none a nudge to learn a few new ones, unless the learner already
-  /// studied that day or takes no new words.
+  /// with none a nudge to learn [fresh] new ones, unless the learner already
+  /// studied that day or has no new word to take.
   static ({DateTime at, String title, String body})? _note(
     AppState state,
     AppLocalizations t,
     DateTime at,
+    int fresh,
   ) {
     final due = state.dueBy(at);
     if (due > 0) {
@@ -148,7 +155,6 @@ class _ReminderSyncState extends State<ReminderSync>
         ),
       );
     }
-    final fresh = state.newPerDay;
     if (fresh == 0 || state.studyDays.contains(AppState.dayKey(at))) {
       return null;
     }

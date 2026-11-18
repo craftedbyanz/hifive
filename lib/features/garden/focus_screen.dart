@@ -312,11 +312,11 @@ class _FocusScreenState extends State<FocusScreen>
     }
   }
 
-  List<FlashWord> _dueWords(AppState state) => state.decks
-      .expand((d) => d.words)
-      .where((w) => w.isDue(state.now()))
-      .take(FocusScreen.breakWords)
-      .toList();
+  /// The break's words: the start of today's plan, so words due come first,
+  /// each word once however many decks hold it, and new words only within
+  /// the day's limit.
+  List<FlashWord> _dueWords(AppState state) =>
+      state.today.leg(FocusScreen.breakWords);
 
   Future<void> _review() async {
     final state = AppScope.read(context);
