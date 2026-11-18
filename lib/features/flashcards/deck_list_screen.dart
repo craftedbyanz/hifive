@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
+import '../../domain/repositories/repositories.dart';
 import '../../l10n/l10n.dart';
 import '../../state/state.dart';
 import '../../widgets/common.dart';
@@ -286,13 +287,17 @@ class _DeckForm extends StatefulWidget {
 }
 
 class _DeckFormState extends State<_DeckForm> {
-  static const maxCards = 100;
+  /// The most words one deck made with AI takes (`worker/src/generate.ts`).
+  static const maxCards = 50;
   // Owned by this state because the sheet still builds while it animates closed.
   final title = TextEditingController();
   int count = 10;
 
   /// The new deck's icon, by its number in [deckIcons].
   int icon = 0;
+
+  /// True while AI picks the words.
+  bool generating = false;
 
   @override
   void dispose() {
@@ -314,6 +319,36 @@ class _DeckFormState extends State<_DeckForm> {
     );
     state.addDeck(deck);
     Navigator.pop(context, deck);
+  }
+
+  /// Makes the deck with words chosen by AI, then opens it. A failure keeps
+  /// the sheet open and says why.
+  Future<void> _generate() async {
+    final name = title.text.trim();
+    if (name.isEmpty || generating) return;
+    final state = AppScope.read(context), t = context.t;
+    FocusScope.of(context).unfocus();
+    setState(() => generating = true);
+    try {
+      final deck = await state.generateDeck(
+        title: name,
+        description: t.deckMadeWithAi,
+        icon: icon,
+        count: count,
+      );
+      if (!mounted) return;
+      toast(context, t.deckGenerated(deck.words.length));
+      Navigator.pop(context, deck);
+    } on GenerateException catch (e) {
+      if (!mounted) return;
+      setState(() => generating = false);
+      toast(context, switch (e.error) {
+        GenerateError.dailyLimit => t.generateDailyLimit,
+        GenerateError.noWords => t.generateNoWords,
+        GenerateError.unavailable ||
+        GenerateError.unauthorized => t.generateFailed,
+      });
+    }
   }
 
   Future<void> _pickIcon() async {
@@ -525,34 +560,14 @@ class _DeckFormState extends State<_DeckForm> {
                 ),
               ),
               const SizedBox(height: 32),
-              // Words come from samples, not AI yet, so generating is shown as
-              // coming soon.
-              Semantics(
+              // AI names the words; the dictionary gives their meanings.
+              ActionButton(
+                generating ? context.t.generatingDeck : context.t.generateDeck,
                 key: const ValueKey('deck-generate'),
-                label: '${context.t.generateDeck}, ${context.t.comingSoon}',
-                child: Container(
-                  height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Palette.generateOff,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        context.t.generateDeck,
-                        style: D.text(
-                          14.5,
-                          weight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const SoonBadge(light: true),
-                    ],
-                  ),
-                ),
+                icon: CupertinoIcons.sparkles,
+                onTap: generating || title.text.trim().isEmpty
+                    ? null
+                    : _generate,
               ),
             ],
           ),

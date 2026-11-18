@@ -124,18 +124,15 @@ void main() {
 
   test('only English has bundled flashcard words', () async {
     const decks = MockDeckGenerator(latency: Duration.zero);
-    final english = await decks.generate(
-      language: Language.english,
+    Future<List<String>> ask(Language language) => decks.suggest(
+      idToken: null,
+      language: language,
       topic: 'Travel',
+      level: 'A1',
       count: 3,
     );
-    expect(english, hasLength(3));
-    final korean = await decks.generate(
-      language: Language.korean,
-      topic: 'Travel',
-      count: 3,
-    );
-    expect(korean, isEmpty);
+    expect(await ask(Language.english), hasLength(3));
+    expect(await ask(Language.korean), isEmpty);
   });
 
   testWidgets('the Home flag follows the study language', (tester) async {

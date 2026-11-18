@@ -18,6 +18,16 @@ import {
 } from "./circles";
 import type { Env } from "./env";
 import {
+  countUse,
+  generateLimits,
+  parseGenerate,
+  parseWords,
+  prompt,
+  usesLeft,
+  wordModel,
+  type WordModel,
+} from "./generate";
+import {
   blockOwner,
   codePattern,
   countAdd,
@@ -40,8 +50,25 @@ const maxBodyBytes = 33 * 1024 * 1024;
 const json = (body: unknown, status = 200) =>
   Response.json(body, { status, headers: { "cache-control": "no-store" } });
 
-/** Builds the API; tests pass their own signing keys. */
-export function createHandler(keys: JWTVerifyGetKey, now: () => Date = () => new Date()) {
+/** The model behind decks made with AI, through the Worker's binding. */
+const workersAi =
+  (env: Env): WordModel =>
+  async (messages, maxTokens) => {
+    const out = (await env.AI.run(wordModel, { messages, max_tokens: maxTokens })) as {
+      response?: string;
+    };
+    return out.response ?? "";
+  };
+
+/**
+ * Builds the API; tests pass their own signing keys and, for decks made
+ * with AI, their own model.
+ */
+export function createHandler(
+  keys: JWTVerifyGetKey,
+  now: () => Date = () => new Date(),
+  model: (env: Env) => WordModel = workersAi,
+) {
   /** The signed-in caller, or the response to send instead. */
   async function signedIn(request: Request, env: Env): Promise<Caller | Response> {
     const header = request.headers.get("authorization") ?? "";
@@ -210,9 +237,39 @@ export function createHandler(keys: JWTVerifyGetKey, now: () => Date = () => new
     return json({ error: "not_found" }, 404);
   }
 
+  /**
+   * Words for a deck made with AI: the caller's topic, level and count in,
+   * English words out, at most [generateLimits.perDay] decks an account a
+   * day. A failed or empty answer isn't counted against the day.
+   */
+  async function generate(request: Request, env: Env): Promise<Response> {
+    if (request.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+    const caller = await signedIn(request, env);
+    if (caller instanceof Response) return caller;
+    const b = await body(request, generateLimits.bodyBytes);
+    if (b instanceof Response) return b;
+    const parsed = parseGenerate(b.value);
+    if (typeof parsed === "string") return json({ error: "invalid_request", detail: parsed }, 400);
+    const left = await usesLeft(env.DB, caller.uid, now());
+    if (left === 0) return json({ error: "daily_limit", left: 0 }, 429);
+    const max = Math.min(generateLimits.maxCount * 2, Math.ceil(parsed.count * 1.5));
+    let text: string;
+    try {
+      text = await model(env)(prompt(parsed), max * 8 + 32);
+    } catch (e) {
+      console.error("workers ai failed", e instanceof Error ? e.message : String(e));
+      return json({ error: "ai_unavailable" }, 503);
+    }
+    const words = parseWords(text, parsed.exclude, max);
+    if (words.length === 0) return json({ error: "no_words" }, 502);
+    await countUse(env.DB, caller.uid, now());
+    return json({ words, left: left - 1 });
+  }
+
   return {
     async fetch(request: Request, env: Env): Promise<Response> {
       const url = new URL(request.url);
+      if (url.pathname === "/v1/decks/generate") return generate(request, env);
       if (url.pathname === "/v1/account") {
         // Deletes the caller's account data; the app then deletes the
         // Firebase account (docs/backend-plan.md, account deletion).

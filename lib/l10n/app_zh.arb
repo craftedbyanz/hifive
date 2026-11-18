@@ -1222,5 +1222,11 @@
   "unitGames": "局",
   "deckNoWords": "这个词卡组还没有单词",
   "newPerDayHint": "0 到 50 个",
-  "newPerDayEdit": "输入每天的新词数"
+  "newPerDayEdit": "输入每天的新词数",
+  "deckMadeWithAi": "AI 生成的词卡组",
+  "generatingDeck": "正在生成…",
+  "generateDailyLimit": "今天的 5 次 AI 生成已用完，请明天再试。",
+  "generateFailed": "暂时无法生成词卡组。请检查网络后重试。",
+  "generateNoWords": "没有找到适合这个主题的单词。请换个主题试试。",
+  "deckGenerated": "已生成 {count} 张卡片"
 }

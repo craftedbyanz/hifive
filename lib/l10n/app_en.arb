@@ -1222,5 +1222,11 @@
   "unitGames": "GAMES",
   "deckNoWords": "This deck has no words yet",
   "newPerDayHint": "0 to 50 words",
-  "newPerDayEdit": "Enter new words a day"
+  "newPerDayEdit": "Enter new words a day",
+  "deckMadeWithAi": "Made with AI",
+  "generatingDeck": "Generating…",
+  "generateDailyLimit": "You've used today's 5 decks made with AI. Try again tomorrow.",
+  "generateFailed": "Couldn't make the deck. Check your connection and try again.",
+  "generateNoWords": "No words found for this topic. Try another one.",
+  "deckGenerated": "{count} cards made"
 }

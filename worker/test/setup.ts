@@ -16,5 +16,6 @@ beforeEach(async () => {
     env.DB.prepare("DELETE FROM circles"),
     env.DB.prepare("DELETE FROM circle_members"),
     env.DB.prepare("DELETE FROM assignments"),
+    env.DB.prepare("DELETE FROM ai_usage"),
   ]);
 });

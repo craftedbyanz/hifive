@@ -187,6 +187,10 @@ Agreed on 14 November 2026 and parked; not started. Today's episode lists are a 
 
 Before step 2: enable YouTube Data API v3 in Google Cloud project `hifive-3371b`, create an API key restricted to it, and run `(cd worker && npx wrangler secret put YOUTUBE_API_KEY)`.
 
+### AI decks
+
+Built on 18 November 2026. New Deck's "Generate Deck" makes a deck about the name typed, 5 to 50 words (the ruler). The app sends the topic, the learner's level and the count to the Worker (`POST /v1/decks/generate`, `worker/src/generate.ts`), which asks Workers AI (`@cf/meta/llama-3.1-8b-instruct-fp8-fast`, on the Free plan's 10,000 Neurons a day shared by every learner, about 20 Neurons a deck) for English words or short phrases, one per line, and keeps only plain words of up to three parts. The model only names words: `AppState.generateDeck` gives each one the meaning, IPA and example of its dictionary entry (hifive's own words first, then the pack) and drops any word without one, so a made-up word or meaning never becomes a card; with no word left it says to try another topic. Each account may make 5 decks a day (UTC), counted in D1 (`ai_usage`, deleted with the account) only when words came back; the sixth gets 429 and the app says to try tomorrow. Offline or with the model down (including the day's free Neurons spent), the sheet stays open and says so. Add Cards with AI is not offered; "Thêm từ" adds words to an existing deck.
+
 ### 6. Later - todo
 
 - Starting and hiding catalog decks, notes on catalog words (new record kinds), browsing the catalog by level and topic.

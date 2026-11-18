@@ -4,7 +4,8 @@ import { leave } from "./circles";
  * Deletes everything the server keeps about [uid] (App Store guideline
  * 5.1.1(v)): synced records, devices, the decks they shared with what others
  * did to them (adds, reports, class assignments), their own adds, reports and
- * blocks, blocks of them, and their place in study groups and classes. A
+ * blocks, blocks of them, their AI deck counts, and their place in study
+ * groups and classes. A
  * circle they own passes to the next member, or goes when they were the last,
  * as when leaving. Counters others see (a deck's adds) are kept. The Firebase
  * account itself is deleted by the app, which holds the credentials.
@@ -28,5 +29,6 @@ export async function deleteAccount(db: D1Database, uid: string): Promise<void> 
     db.prepare("DELETE FROM records WHERE uid = ?1").bind(uid),
     db.prepare("DELETE FROM devices WHERE uid = ?1").bind(uid),
     db.prepare("DELETE FROM users WHERE uid = ?1").bind(uid),
+    db.prepare("DELETE FROM ai_usage WHERE uid = ?1").bind(uid),
   ]);
 }

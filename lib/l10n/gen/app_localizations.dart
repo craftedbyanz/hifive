@@ -7439,6 +7439,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Nhập số từ mới mỗi ngày'**
   String get newPerDayEdit;
+
+  /// No description provided for @deckMadeWithAi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ thẻ tạo bằng AI'**
+  String get deckMadeWithAi;
+
+  /// No description provided for @generatingDeck.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tạo…'**
+  String get generatingDeck;
+
+  /// No description provided for @generateDailyLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn đã dùng hết 5 lượt tạo bằng AI. Hãy thử lại vào ngày mai.'**
+  String get generateDailyLimit;
+
+  /// No description provided for @generateFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tạo được bộ thẻ. Hãy kiểm tra kết nối mạng rồi thử lại.'**
+  String get generateFailed;
+
+  /// No description provided for @generateNoWords.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm được từ phù hợp với chủ đề này. Hãy thử một chủ đề khác.'**
+  String get generateNoWords;
+
+  /// No description provided for @deckGenerated.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tạo {count} thẻ'**
+  String deckGenerated(int count);
 }
 
 class _AppLocalizationsDelegate

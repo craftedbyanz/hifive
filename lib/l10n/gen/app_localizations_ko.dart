@@ -4004,4 +4004,24 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get newPerDayEdit => '하루 새 단어 수 입력';
+
+  @override
+  String get deckMadeWithAi => 'AI로 만든 단어장';
+
+  @override
+  String get generatingDeck => '만드는 중…';
+
+  @override
+  String get generateDailyLimit => '오늘 AI로 만들 수 있는 5번을 모두 썼어요. 내일 다시 해 보세요.';
+
+  @override
+  String get generateFailed => '단어장을 만들지 못했어요. 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
+  String get generateNoWords => '이 주제에 맞는 단어를 찾지 못했어요. 다른 주제로 해 보세요.';
+
+  @override
+  String deckGenerated(int count) {
+    return '카드 $count장을 만들었어요';
+  }
 }

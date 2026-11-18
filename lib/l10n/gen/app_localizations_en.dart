@@ -4159,4 +4159,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newPerDayEdit => 'Enter new words a day';
+
+  @override
+  String get deckMadeWithAi => 'Made with AI';
+
+  @override
+  String get generatingDeck => 'Generating…';
+
+  @override
+  String get generateDailyLimit =>
+      'You\'ve used today\'s 5 decks made with AI. Try again tomorrow.';
+
+  @override
+  String get generateFailed =>
+      'Couldn\'t make the deck. Check your connection and try again.';
+
+  @override
+  String get generateNoWords =>
+      'No words found for this topic. Try another one.';
+
+  @override
+  String deckGenerated(int count) {
+    return '$count cards made';
+  }
 }

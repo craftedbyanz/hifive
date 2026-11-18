@@ -9,6 +9,9 @@
   // assets: `catalog/manifest.json` and one pack per language and version.
   // Only the Worker serves them, under /v1/catalog. Edit and `npm run deploy`.
   "assets": { "directory": "./catalog", "binding": "CATALOG", "run_worker_first": true },
+  // Workers AI picks the words of decks made with AI (src/generate.ts).
+  // It always runs on Cloudflare, also under `wrangler dev`; tests fake it.
+  "ai": { "binding": "AI", "remote": true },
   "d1_databases": [
     {
       "binding": "DB",

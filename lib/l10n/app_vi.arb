@@ -2286,5 +2286,18 @@
   "unitGames": "LƯỢT",
   "deckNoWords": "Bộ thẻ này chưa có từ nào",
   "newPerDayHint": "Từ 0 đến 50 từ",
-  "newPerDayEdit": "Nhập số từ mới mỗi ngày"
+  "newPerDayEdit": "Nhập số từ mới mỗi ngày",
+  "deckMadeWithAi": "Bộ thẻ tạo bằng AI",
+  "generatingDeck": "Đang tạo…",
+  "generateDailyLimit": "Hôm nay bạn đã dùng hết 5 lượt tạo bằng AI. Hãy thử lại vào ngày mai.",
+  "generateFailed": "Chưa tạo được bộ thẻ. Hãy kiểm tra kết nối mạng rồi thử lại.",
+  "generateNoWords": "Không tìm được từ phù hợp với chủ đề này. Hãy thử một chủ đề khác.",
+  "deckGenerated": "Đã tạo {count} thẻ",
+  "@deckGenerated": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

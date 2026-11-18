@@ -9,7 +9,10 @@ const { publicKey, privateKey } = await generateKeyPair("RS256");
 const jwk: JWK = { ...(await exportJWK(publicKey)), kid: "test", alg: "RS256" };
 const other = await generateKeyPair("RS256");
 
-export const handler = createHandler(createLocalJWKSet({ keys: [jwk] }));
+/** Verifies the tokens [token] makes. */
+export const keys = createLocalJWKSet({ keys: [jwk] });
+
+export const handler = createHandler(keys);
 
 /** A Firebase-shaped ID token; [overrides] break one part of it. */
 export async function token(

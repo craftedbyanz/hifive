@@ -42,7 +42,7 @@ AppState createAppState({
   lessons: lessons ?? MockLessonRepository(),
   grading: grading ?? const MockGradingRepository(),
   conversation: conversation ?? const MockConversationRepository(),
-  deckGenerator: deckGenerator ?? MockDeckGenerator(now: now ?? DateTime.now),
+  deckGenerator: deckGenerator ?? const MockDeckGenerator(),
   insights: insights ?? const MockInsightRepository(),
   decks: sampleDecks ? seedDecks() : <Deck>[],
   examples: includeExamples ? sampleHistory() : const [],

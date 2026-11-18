@@ -1,45 +1,29 @@
 import '../../domain/models/models.dart';
 import '../../domain/repositories/deck_generator.dart';
-import '../../domain/sync/ids.dart';
 import '../content/en/decks.dart';
 
-/// Hands out the words already bundled with the app. The reference's
-/// generation was never run, so neither its timing nor its output is known.
-/// Only English has bundled words; other languages get none.
+/// Names the words already bundled with the app, whatever the topic: a
+/// stand-in for builds without the Worker, and for tests. Only English has
+/// bundled words; other languages get none.
 class MockDeckGenerator implements DeckGenerator {
   final Duration latency;
-  final DateTime Function() now;
-  const MockDeckGenerator({
-    this.latency = const Duration(milliseconds: 900),
-    this.now = DateTime.now,
-  });
+  const MockDeckGenerator({this.latency = const Duration(milliseconds: 900)});
 
   @override
-  Future<List<FlashWord>> generate({
+  Future<List<String>> suggest({
+    required String? idToken,
     required Language language,
     required String topic,
+    required String level,
     required int count,
-    List<FlashWord> exclude = const [],
+    List<String> exclude = const [],
   }) async {
     if (latency > Duration.zero) await Future<void>.delayed(latency);
     if (language != Language.english) return const [];
-    final unique = <String, FlashWord>{
-      for (final w in seedDecks().expand((d) => d.words)) w.word: w,
-    };
-    return unique.values
-        .where((w) => !exclude.any((v) => v.word == w.word))
-        .take(count)
-        .map(
-          (w) => FlashWord(
-            id: uuidV7(now()),
-            word: w.word,
-            meaning: w.meaning,
-            phonetic: w.phonetic,
-            example: w.example,
-            partOfSpeech: w.partOfSpeech,
-            definition: w.definition,
-          ),
-        )
-        .toList();
+    final skip = {for (final w in exclude) w.trim().toLowerCase()};
+    return {
+      for (final w in seedDecks().expand((d) => d.words))
+        w.word.trim().toLowerCase(),
+    }.where((w) => !skip.contains(w)).take(count).toList();
   }
 }

@@ -4095,4 +4095,27 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get newPerDayEdit => 'Nhập số từ mới mỗi ngày';
+
+  @override
+  String get deckMadeWithAi => 'Bộ thẻ tạo bằng AI';
+
+  @override
+  String get generatingDeck => 'Đang tạo…';
+
+  @override
+  String get generateDailyLimit =>
+      'Hôm nay bạn đã dùng hết 5 lượt tạo bằng AI. Hãy thử lại vào ngày mai.';
+
+  @override
+  String get generateFailed =>
+      'Chưa tạo được bộ thẻ. Hãy kiểm tra kết nối mạng rồi thử lại.';
+
+  @override
+  String get generateNoWords =>
+      'Không tìm được từ phù hợp với chủ đề này. Hãy thử một chủ đề khác.';
+
+  @override
+  String deckGenerated(int count) {
+    return 'Đã tạo $count thẻ';
+  }
 }

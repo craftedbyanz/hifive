@@ -3980,4 +3980,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get newPerDayEdit => '输入每天的新词数';
+
+  @override
+  String get deckMadeWithAi => 'AI 生成的词卡组';
+
+  @override
+  String get generatingDeck => '正在生成…';
+
+  @override
+  String get generateDailyLimit => '今天的 5 次 AI 生成已用完，请明天再试。';
+
+  @override
+  String get generateFailed => '暂时无法生成词卡组。请检查网络后重试。';
+
+  @override
+  String get generateNoWords => '没有找到适合这个主题的单词。请换个主题试试。';
+
+  @override
+  String deckGenerated(int count) {
+    return '已生成 $count 张卡片';
+  }
 }

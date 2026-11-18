@@ -5,10 +5,34 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hifive/app/app.dart';
 import 'package:hifive/core/services/feedback_service.dart';
 import 'package:hifive/data/data.dart';
+import 'package:hifive/domain/models/models.dart';
 import 'package:hifive/domain/repositories/repositories.dart';
 import 'package:hifive/features/flashcards/flashcards.dart';
 
 import '../../helpers.dart';
+
+/// Names [words], or fails with [error], and records what it was asked.
+class _Generator implements DeckGenerator {
+  List<String> words;
+  GenerateError? error;
+  final topics = <String>[], levels = <String>[];
+  _Generator(this.words);
+
+  @override
+  Future<List<String>> suggest({
+    required String? idToken,
+    required Language language,
+    required String topic,
+    required String level,
+    required int count,
+    List<String> exclude = const [],
+  }) async {
+    topics.add(topic);
+    levels.add(level);
+    if (error case final e?) throw GenerateException(e);
+    return words;
+  }
+}
 
 /// Serves the starter pack, or fails like a phone offline.
 class _Catalog implements CatalogRepository {
@@ -49,26 +73,68 @@ void main() {
     expect(state.decks, hasLength(3));
   });
 
-  testWidgets('generating a deck is coming soon and adds nothing', (
+  testWidgets('Generate Deck makes a deck with dictionary meanings', (
     tester,
   ) async {
-    final state = fresh();
+    final generator = _Generator([
+      'deadline',
+      'zzzblorp',
+      'Deadline',
+      'rotate',
+    ]);
+    final state = fresh(deckGenerator: generator)..setLevel('B1');
     final count = state.decks.length;
     await mount(tester, state, const DeckListScreen());
     await tester.tap(find.byTooltip('Thêm bộ thẻ'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(const ValueKey('deck-topic')), 'Du lịch');
-    await tester.pump();
-    expect(
-      find.descendant(
-        of: find.byKey(const ValueKey('deck-generate')),
-        matching: find.text('Sắp ra mắt'),
-      ),
-      findsOneWidget,
-    );
+    // Nothing to make without a topic.
     await tester.tap(find.byKey(const ValueKey('deck-generate')));
-    await tester.pump(const Duration(seconds: 1));
+    await tester.pump();
+    expect(generator.topics, isEmpty);
+    await tester.enterText(find.byKey(const ValueKey('deck-topic')), 'Bếp');
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('deck-generate')));
     await tester.pumpAndSettle();
+
+    expect(generator.topics, ['Bếp']);
+    expect(generator.levels, ['B1']);
+    expect(state.decks, hasLength(count + 1));
+    final deck = state.decks.last;
+    expect(deck.title, 'Bếp');
+    // A made-up word is dropped and a repeat kept once; meanings come from
+    // hifive's own words.
+    expect(deck.words.map((w) => w.word), ['Deadline', 'Rotate']);
+    expect(deck.words.every((w) => w.meaning.isNotEmpty), isTrue);
+    expect(find.byType(DeckScreen), findsOneWidget);
+    expect(find.text('Đã tạo 2 thẻ'), findsOneWidget);
+  });
+
+  testWidgets('a failed generation keeps the sheet open and says why', (
+    tester,
+  ) async {
+    final generator = _Generator(const [])..error = GenerateError.dailyLimit;
+    final state = fresh(deckGenerator: generator);
+    final count = state.decks.length;
+    await mount(tester, state, const DeckListScreen());
+    await tester.tap(find.byTooltip('Thêm bộ thẻ'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const ValueKey('deck-topic')), 'Bếp');
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('deck-generate')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('hết 5 lượt'), findsOneWidget);
+    expect(find.byKey(const ValueKey('deck-generate')), findsOneWidget);
+    expect(state.decks, hasLength(count));
+
+    // Words the dictionary doesn't know make no deck either.
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
+    generator
+      ..error = null
+      ..words = ['zzzblorp'];
+    await tester.tap(find.byKey(const ValueKey('deck-generate')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('chủ đề khác'), findsOneWidget);
     expect(state.decks, hasLength(count));
   });
 

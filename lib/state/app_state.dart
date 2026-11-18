@@ -540,6 +540,64 @@ class AppState extends ChangeNotifier {
     return card;
   }
 
+  /// Makes a deck named [title] of about [count] words about it, chosen by
+  /// AI for the learner's level. Each word takes its meaning, IPA and
+  /// example from the dictionary (hifive's words first, then the pack); a
+  /// word the dictionary doesn't know is left out, so no made-up word or
+  /// meaning becomes a card. Throws [GenerateException].
+  Future<Deck> generateDeck({
+    required String title,
+    required String description,
+    required int icon,
+    required int count,
+  }) async {
+    final topic = title.trim();
+    final words = await deckGenerator.suggest(
+      idToken: await auth.idToken(),
+      language: language,
+      topic: topic,
+      level: level,
+      count: count,
+    );
+    final indexes = [_curated, ?_pack];
+    final cards = <FlashWord>[];
+    final seen = <String>{};
+    for (final word in words) {
+      if (cards.length >= count) break;
+      final entry = await _meaningFor(word, indexes);
+      if (entry == null || !seen.add(wordKey(entry.word))) continue;
+      cards.add(entry.toCard(id: newId(), american: americanVoice));
+    }
+    if (cards.isEmpty) throw const GenerateException(GenerateError.noWords);
+    final deck = Deck(
+      id: newId(),
+      title: topic,
+      description: description,
+      icon: icon,
+      words: cards,
+    );
+    addDeck(deck);
+    return deck;
+  }
+
+  /// The first entry for exactly [word] that has a meaning, if any.
+  static Future<DictEntry?> _meaningFor(
+    String word,
+    List<DictionaryIndex> indexes,
+  ) async {
+    final key = dictKey(word);
+    for (final index in indexes) {
+      try {
+        for (final e in await index.entries(key)) {
+          if (!e.needsMeaning && e.senses.isNotEmpty) return e;
+        }
+      } on Object {
+        // An unreadable pack: try the next index.
+      }
+    }
+    return null;
+  }
+
   /// Takes [card] out of [deck]; its reviews stay, as for any card.
   void removeWord(Deck deck, FlashWord card) {
     if (!deck.words.remove(card)) return;

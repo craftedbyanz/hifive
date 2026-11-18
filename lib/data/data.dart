@@ -17,6 +17,7 @@ export 'mock/mock_lesson_repository.dart';
 export 'remote/firebase_auth_service.dart';
 export 'remote/http_catalog_repository.dart';
 export 'remote/http_circle_repository.dart';
+export 'remote/http_deck_generator.dart';
 export 'remote/http_dictionary_packs.dart';
 export 'remote/http_share_repository.dart';
 export 'remote/http_sync_service.dart';
