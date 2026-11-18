@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/design/design.dart';
 import '../../domain/models/models.dart';
@@ -474,13 +475,30 @@ class _Stepper extends StatelessWidget {
         CupertinoIcons.minus,
         (value - 5).clamp(0, 50),
       ),
-      SizedBox(
-        width: 34,
-        child: Text(
-          '$value',
-          key: const ValueKey('new-per-day'),
-          textAlign: TextAlign.center,
-          style: D.text(16, weight: FontWeight.w800),
+      // Tapped, the number can be typed exactly.
+      Semantics(
+        button: true,
+        label: context.t.newPerDayEdit,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () async {
+            final typed = await sheet<int>(context, _NewPerDaySheet(value));
+            if (typed != null) onChanged(typed);
+          },
+          child: SizedBox(
+            width: 40,
+            height: 30,
+            child: Center(
+              child: Text(
+                '$value',
+                key: const ValueKey('new-per-day'),
+                textAlign: TextAlign.center,
+                style: D
+                    .text(16, weight: FontWeight.w800)
+                    .copyWith(decoration: TextDecoration.underline),
+              ),
+            ),
+          ),
         ),
       ),
       _button(
@@ -490,4 +508,73 @@ class _Stepper extends StatelessWidget {
       ),
     ],
   );
+}
+
+/// Types the number of new words a day, 0 to 50.
+class _NewPerDaySheet extends StatefulWidget {
+  final int value;
+  const _NewPerDaySheet(this.value);
+  @override
+  State<_NewPerDaySheet> createState() => _NewPerDaySheetState();
+}
+
+class _NewPerDaySheetState extends State<_NewPerDaySheet> {
+  late final _field = TextEditingController(text: '${widget.value}');
+
+  int? get _typed {
+    final n = int.tryParse(_field.text.trim());
+    return n != null && n >= 0 && n <= 50 ? n : null;
+  }
+
+  @override
+  void dispose() {
+    _field.dispose();
+    super.dispose();
+  }
+
+  void _done() {
+    if (_typed case final n?) Navigator.of(context).pop(n);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(t.newPerDayTitle, style: D.text(18, weight: FontWeight.w800)),
+          const SizedBox(height: 14),
+          TextField(
+            key: const ValueKey('new-per-day-field'),
+            controller: _field,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(2),
+            ],
+            textInputAction: TextInputAction.done,
+            onChanged: (_) => setState(() {}),
+            onSubmitted: (_) => _done(),
+            decoration: InputDecoration(
+              helperText: t.newPerDayHint,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 14,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          ActionButton(
+            t.save,
+            key: const ValueKey('new-per-day-save'),
+            onTap: _typed == null ? null : _done,
+          ),
+        ],
+      ),
+    );
+  }
 }

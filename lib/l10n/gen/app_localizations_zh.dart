@@ -3974,4 +3974,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get deckNoWords => '这个词卡组还没有单词';
+
+  @override
+  String get newPerDayHint => '0 到 50 个';
+
+  @override
+  String get newPerDayEdit => '输入每天的新词数';
 }

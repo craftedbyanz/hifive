@@ -1220,5 +1220,7 @@
   "catalogFailed": "콘텐츠를 불러오지 못했어요. 연결을 확인하고 다시 시도해 주세요.",
   "unitMinutes": "분",
   "unitGames": "판",
-  "deckNoWords": "이 단어장에는 아직 단어가 없어요"
+  "deckNoWords": "이 단어장에는 아직 단어가 없어요",
+  "newPerDayHint": "0~50개",
+  "newPerDayEdit": "하루 새 단어 수 입력"
 }

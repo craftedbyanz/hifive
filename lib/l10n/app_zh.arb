@@ -1220,5 +1220,7 @@
   "catalogFailed": "内容加载失败。请检查网络后重试。",
   "unitMinutes": "分钟",
   "unitGames": "局",
-  "deckNoWords": "这个词卡组还没有单词"
+  "deckNoWords": "这个词卡组还没有单词",
+  "newPerDayHint": "0 到 50 个",
+  "newPerDayEdit": "输入每天的新词数"
 }

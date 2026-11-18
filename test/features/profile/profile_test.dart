@@ -67,6 +67,26 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('new-per-day-more')));
     await tester.pump();
     expect(state.newPerDay, 15);
+    // Tapping the number lets the learner type it exactly, up to 50.
+    await tester.tap(find.byKey(const ValueKey('new-per-day')));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const ValueKey('new-per-day-field')),
+      '60',
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('new-per-day-save')));
+    await tester.pumpAndSettle();
+    expect(state.newPerDay, 15);
+    await tester.enterText(
+      find.byKey(const ValueKey('new-per-day-field')),
+      '7',
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('new-per-day-save')));
+    await tester.pumpAndSettle();
+    expect(state.newPerDay, 7);
+    expect(find.text('7'), findsOneWidget);
     // Words are studied on flip cards only: no exercise switches.
     expect(find.text('Bài tập gõ từ'), findsNothing);
   });

@@ -7427,6 +7427,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Bộ thẻ này chưa có từ nào'**
   String get deckNoWords;
+
+  /// No description provided for @newPerDayHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ 0 đến 50 từ'**
+  String get newPerDayHint;
+
+  /// No description provided for @newPerDayEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập số từ mới mỗi ngày'**
+  String get newPerDayEdit;
 }
 
 class _AppLocalizationsDelegate

@@ -3998,4 +3998,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get deckNoWords => '이 단어장에는 아직 단어가 없어요';
+
+  @override
+  String get newPerDayHint => '0~50개';
+
+  @override
+  String get newPerDayEdit => '하루 새 단어 수 입력';
 }

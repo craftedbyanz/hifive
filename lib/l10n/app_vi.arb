@@ -2284,5 +2284,7 @@
   "catalogFailed": "Chưa tải được nội dung. Hãy kiểm tra kết nối mạng rồi thử lại.",
   "unitMinutes": "PHÚT",
   "unitGames": "LƯỢT",
-  "deckNoWords": "Bộ thẻ này chưa có từ nào"
+  "deckNoWords": "Bộ thẻ này chưa có từ nào",
+  "newPerDayHint": "Từ 0 đến 50 từ",
+  "newPerDayEdit": "Nhập số từ mới mỗi ngày"
 }

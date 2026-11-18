@@ -1220,5 +1220,7 @@
   "catalogFailed": "Couldn't load the content. Check your connection and try again.",
   "unitMinutes": "MIN",
   "unitGames": "GAMES",
-  "deckNoWords": "This deck has no words yet"
+  "deckNoWords": "This deck has no words yet",
+  "newPerDayHint": "0 to 50 words",
+  "newPerDayEdit": "Enter new words a day"
 }

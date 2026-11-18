@@ -4153,4 +4153,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deckNoWords => 'This deck has no words yet';
+
+  @override
+  String get newPerDayHint => '0 to 50 words';
+
+  @override
+  String get newPerDayEdit => 'Enter new words a day';
 }

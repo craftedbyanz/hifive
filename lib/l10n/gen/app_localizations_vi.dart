@@ -4089,4 +4089,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deckNoWords => 'Bộ thẻ này chưa có từ nào';
+
+  @override
+  String get newPerDayHint => 'Từ 0 đến 50 từ';
+
+  @override
+  String get newPerDayEdit => 'Nhập số từ mới mỗi ngày';
 }
